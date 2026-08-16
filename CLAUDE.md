@@ -145,6 +145,20 @@ Check on the rendered file:
 - `<ol>` default markers + a CSS `counter()` = doubled numbers. Set `list-style:none` on the `<ol>` and `<li>`.
 - A prompt implying an uploaded image doesn't guarantee one is attached — check.
 
+### Version control & checkpoints (do this every round)
+Same habit as the dastangoi project: **commit and push a labeled checkpoint after every round of changes**, without waiting to be asked. This is what lets the user roll back to any previous version.
+
+- Repo (private): **https://github.com/Finntrado/ucan**, default branch `main`, identity `Shashikant`.
+- Auth: `gh` CLI is already logged in as `Finntrado` (keyring-backed, `repo` scope) — no separate token file needed here. Push commands need network, so run them with `dangerouslyDisableSandbox: true`.
+
+Checkpoint commands:
+```bash
+cd C:\Users\Chatw\Desktop\ucan
+git add -A
+git commit -m "<short summary of this round>"
+git push origin main
+```
+
 ---
 
 ## 6. Page inventory (all in `pages/`)
