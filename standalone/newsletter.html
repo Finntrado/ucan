@@ -27,6 +27,27 @@
 
 
 
+<style>
+/* 7-item nav needs more room than the original 1000px breakpoint allowed */
+@media (max-width:1240px){.header .nav{display:none}.header .menu-btn{display:grid}}
+</style>
+<style>
+/* pre-existing narrow-width overflow: hero grid track was sized by min-content */
+@media (max-width:640px){
+  .nl-hero-grid{grid-template-columns:minmax(0,1fr)}
+  .nl-hero-grid>*{min-width:0}
+  .nl-hero h1{font-size:clamp(28px,9vw,42px)}
+  .nl-hero h1,.nl-hero p{overflow-wrap:break-word}
+}
+</style>
+<style>
+/* pre-existing narrow-width overflow: header CTA buttons and featured-card track */
+@media (max-width:640px){
+  .header-cta .btn{display:none}
+  .featured-card{grid-template-columns:minmax(0,1fr)}
+  .featured-card>*{min-width:0}
+}
+</style>
 </head>
 <body>
 
@@ -44,7 +65,7 @@
       <div class="nav-item"><a class="nav-link" href="our-people.html">Our People</a></div>
       <div class="nav-item"><a class="nav-link" href="impact.html">Impact</a></div>
       <div class="nav-item"><a class="nav-link" href="learning-network.html">Learning Network</a></div>
-      <div class="nav-item"><a class="nav-link" href="https://urban.org.in/urban-reforms-collective">Urban Reforms Collective</a></div>
+      <div class="nav-item"><a class="nav-link" href="urban-reforms-collective.html">Urban Reforms Collective</a></div><div class="nav-item"><a class="nav-link" href="rfc.html">Request for Collaboration</a></div>
       <div class="nav-item"><a class="nav-link" aria-current="page" href="newsletter.html">Newsletter</a></div>
     </nav>
     <div class="header-cta">
@@ -61,7 +82,7 @@
   <div class="sheet-group"><a href="our-people.html">Our People</a></div>
   <div class="sheet-group"><a href="impact.html">Impact</a></div>
   <div class="sheet-group"><a href="learning-network.html">Learning Network</a></div>
-  <div class="sheet-group"><a href="https://urban.org.in/urban-reforms-collective">Urban Reforms Collective</a></div>
+  <div class="sheet-group"><a href="urban-reforms-collective.html">Urban Reforms Collective</a><a href="rfc.html">Request for Collaboration</a></div>
   <div class="sheet-group"><a href="newsletter.html">Newsletter</a></div>
 </div>
 
@@ -220,7 +241,7 @@
       <a class="explore-link" href="our-people.html">Our People<svg viewBox="0 0 12 12" fill="none"><path d="M2 6h8m0 0L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
       <a class="explore-link" href="impact.html">Impact<svg viewBox="0 0 12 12" fill="none"><path d="M2 6h8m0 0L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
       <a class="explore-link" href="learning-network.html">Learning Network<svg viewBox="0 0 12 12" fill="none"><path d="M2 6h8m0 0L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
-      <a class="explore-link" href="https://urban.org.in/urban-reforms-collective">Urban Reforms Collective<svg viewBox="0 0 12 12" fill="none"><path d="M2 6h8m0 0L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
+      <a class="explore-link" href="urban-reforms-collective.html">Urban Reforms Collective<svg viewBox="0 0 12 12" fill="none"><path d="M2 6h8m0 0L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
       <a class="explore-link" href="https://urban.org.in/requests-for-collaboration">Request for Collaboration<svg viewBox="0 0 12 12" fill="none"><path d="M2 6h8m0 0L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
     </div>
   </div>
@@ -237,7 +258,7 @@
         <p>Driving inclusive urban governance in India's Tier II and Tier III cities through collective action.</p>
         <a href="mailto:connect@urban.org.in">connect@urban.org.in</a>
       </div>
-      <div><h4>Quick Links</h4><ul><li><a href="about.html">About</a></li><li><a href="our-people.html">Our People</a></li><li><a href="impact.html">Impact</a></li><li><a href="learning-network.html">Learning Network</a></li><li><a href="https://urban.org.in/urban-reforms-collective">Urban Reforms Collective</a></li><li><a href="newsletter.html">Newsletter</a></li></ul></div>
+      <div><h4>Quick Links</h4><ul><li><a href="about.html">About</a></li><li><a href="our-people.html">Our People</a></li><li><a href="impact.html">Impact</a></li><li><a href="learning-network.html">Learning Network</a></li><li><a href="urban-reforms-collective.html">Urban Reforms Collective</a><a href="rfc.html">Request for Collaboration</a></li><li><a href="newsletter.html">Newsletter</a></li></ul></div>
       <div><h4>Connect With Us</h4><ul><li><a href="https://www.linkedin.com/company/urban-collective-action-network-u-can/" rel="noopener">LinkedIn</a></li><li><a href="https://www.youtube.com/@U-CAN24" rel="noopener">YouTube</a></li><li><a href="mailto:connect@urban.org.in">connect@urban.org.in</a></li></ul></div>
       
     </div>

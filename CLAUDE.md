@@ -20,7 +20,9 @@ ucan/
 │   ├── profile-siddharth-pandit.html
 │   ├── learning-network.html
 │   ├── newsletter.html
-│   └── newsletter-urban-brief-june-2026.html
+│   ├── newsletter-urban-brief-june-2026.html
+│   ├── urban-reforms-collective.html
+│   └── rfc.html
 └── _mhtml-originals/       # read-only backup of the browser-saved .mhtml snapshots these came from — don't edit
 ```
 This replaced an earlier handoff where pages only existed as `.mhtml` browser snapshots (Chrome "Save Page As → Single File"); they were unpacked into plain self-contained `.html` (resources re-inlined as data URIs). Filenames were later renamed to drop the `u-can-` prefix and the homepage renamed to `index.html`, matching dastangoi's naming (`about.html`, `dastan.html`, etc.) so the site has a real root document and no naming clashes on Vercel. Work directly in `standalone/*.html` going forward.
@@ -57,8 +59,8 @@ python -c "import pypdf; r=pypdf.PdfReader('Website - Plan and Content Revisions
 | 33–43 | **Events**: City Mixers (11 events, full write-ups) |
 | 44–46 | **Annual Forum 2025** |
 | 49–50 | Learning Network (explicitly: "Content - to be kept as is") |
-| 51–53 | **Request for Collaboration (RFC)** |
-| 54–55 | **Urban Reforms Collective (URC)** + its 2 named bug fixes |
+| 51–53 | Request for Collaboration (RFC) — *built, see §12* |
+| 54–55 | Urban Reforms Collective (URC) + its 2 named bug fixes — *built, see §12* |
 | 56–57 | **Our Members** (organisations — 8 members + 3 Friends, alt text, H2 fixes) |
 
 Bolded rows are pages that **do not exist in `standalone/` yet** — the PDF contains their full approved copy, so they can be built without re-fetching anything.
@@ -131,7 +133,8 @@ Every page's header nav and footer "Quick Links" use the **same 6 destinations, 
 | Our People | `our-people.html` |
 | Impact | `impact.html` |
 | Learning Network | `learning-network.html` |
-| Urban Reforms Collective | `https://urban.org.in/urban-reforms-collective` (external — not built locally yet, see §6) |
+| Urban Reforms Collective | `urban-reforms-collective.html` |
+| Request for Collaboration | `rfc.html` |
 | Newsletter | `newsletter.html` |
 
 Rules:
@@ -251,13 +254,13 @@ git push origin main
 | `learning-network.html` | Learning Network for Urban Managers | Learning Network for Urban Managers | Done, in repo |
 | `newsletter.html` | Newsletter — Urban Governance Updates | Newsletter — Urban Governance Updates | Done, in repo (wasn't in the original chat's inventory — recovered from a saved snapshot) |
 | `newsletter-urban-brief-june-2026.html` | The Urban Brief — June 2026 (newsletter detail) | The Urban Brief — June 2026 | Done, in repo (also not in the original inventory) |
+| `urban-reforms-collective.html` | Urban Reforms Collective (URC) | Championing a Collective Reform Agenda for India's Cities | **Rebuilt from scratch** — see §12 |
+| `rfc.html` | Request for Collaboration (RFC) | Enabling Collaboration as a Way of Working in India's Urban Ecosystem | **Rebuilt from scratch** — see §12 |
 
-**NOT recovered — no source exists in this repo, needs to be regenerated or re-fetched from the original chat before it's lost:**
+**NOT recovered:**
 
 | File | Page | Status |
 |---|---|---|
-| `urban-reforms-collective.html` | Urban Reforms Collective (URC) | **Missing.** No `.mhtml`/`.html` snapshot was ever saved for this one. |
-| `rfc.html` | Request for Collaboration (RFC) | **Missing.** Same — never saved out of the original chat's sandbox. |
 | homepage-redesign variant vs original homepage | Two homepage variants were mentioned in the original session; only one homepage snapshot (`index.html`) made it out. If the other variant matters, it needs to be re-pulled from the original chat. |
 
 ### Page-specific notes
@@ -272,9 +275,9 @@ git push origin main
 
 **Learning Network** — content verbatim incl. preserved source typo **"saeries"** (should be "series") and a double space in the source title (both flagged to user, fix still pending their OK). Hero (3 chips) → Overview (2-col split: statement + body left, 5-row stat panel right) → How it took shape (text + teal-deep numbered card) → 3 pilot workshop cards (Maharashtra 35+, Andhra Pradesh ~40·13 cities, Maharashtra virtual) → What pilot revealed (3 numbered) → From pilot to platform (5 target-dot items) → Why this matters (teal band, 4 lime stat callouts + network motif) → report/one-pager PDF links.
 
-**Urban Reforms Collective (URC)** — **file missing from this repo, see §6.** Notes preserved from the original session in case it needs rebuilding: two bug fixes were applied (FAQ #6 heading "part ofthe" → "part of the"; FAQ #11 mailto `info@urbanreformscollective.org` → `reforms@urban.org.in`, visible text was already correct). Sections: hero (3 chips) → Need for URC (text + teal-deep "alignment gap" 01/02/03 card) → What URC aims to do (2-col body + 3 aim cards) → Gallery (heading left + context note right, 6 WordPress images with `onerror` placeholders, asymmetric grid) → **11-FAQ accordion** (keyboard-accessible: `aria-expanded`/`aria-controls`/`hidden`) → Get Involved band ("Write to us" → `mailto:reforms@urban.org.in`). `FAQPage` JSON-LD.
+**Urban Reforms Collective (URC)** — **built, see §12.** Historical notes from the original session: two bug fixes were applied (FAQ #6 heading "part ofthe" → "part of the"; FAQ #11 mailto `info@urbanreformscollective.org` → `reforms@urban.org.in`, visible text was already correct). Sections: hero (3 chips) → Need for URC (text + teal-deep "alignment gap" 01/02/03 card) → What URC aims to do (2-col body + 3 aim cards) → Gallery (heading left + context note right, 6 WordPress images with `onerror` placeholders, asymmetric grid) → **11-FAQ accordion** (keyboard-accessible: `aria-expanded`/`aria-controls`/`hidden`) → Get Involved band ("Write to us" → `mailto:reforms@urban.org.in`). `FAQPage` JSON-LD.
 
-**Request for Collaboration (RFC)** — **file missing from this repo, see §6.** Notes preserved in case it needs rebuilding: "Read the Phase I Report" hero CTA → live report URL. Sections: hero (3 chips + 2 CTAs) → Why collaboration matters (text + 2 bullet lists left, dark Ink "collaboration gap" pull-quote card right) → What is the RFC (description + 3 stacked objective cards left, "Three questions the RFC explores" 01/02/03 panel right) → Practice-informed framework (text + report CTA left, 2 framework images right with `onerror` placeholders) → Know more band (`connect@urban.org.in`). All content verbatim.
+**Request for Collaboration (RFC)** — **built, see §12.** Historical notes from the original session: "Read the Phase I Report" hero CTA → live report URL. Sections: hero (3 chips + 2 CTAs) → Why collaboration matters (text + 2 bullet lists left, dark Ink "collaboration gap" pull-quote card right) → What is the RFC (description + 3 stacked objective cards left, "Three questions the RFC explores" 01/02/03 panel right) → Practice-informed framework (text + report CTA left, 2 framework images right with `onerror` placeholders) → Know more band (`connect@urban.org.in`). All content verbatim.
 
 ---
 
@@ -285,7 +288,7 @@ git push origin main
 3. **Learning Network typo fixes** — "saeries" → "series" and the title double-space. **Resolved: leave as-is.** PDF p.50 explicitly states "Content - to be kept as is" for this page, which matches the user's earlier instruction. Don't re-raise.
 4. **Retroactive dead-space audit** on any older/thin sections — offered for About / Our People / Impact / Profile.
 5. **Real images for gallery/framework/member-logo/photo elements** load only on the live server. Placeholders are in place; confirm they resolve once deployed.
-6. **Build the pages the PDF has full approved copy for but that don't exist yet** (see §1a table) — in the PDF's own priority order: **URC** and **RFC** (Phase 1 items, and the two files noted as missing in §6), then **Our Members** (organisations), **Annual Forum 2025**, **City Mixers**, **U-CAN Fellowship** + its 3 sub-pages (Blogs by Fellows, Meet the 2024-25 Fellows, L&D Calendar). No content needs re-fetching — the PDF has it all, including per-page title tags and meta descriptions.
+6. **Build the remaining pages the PDF has full approved copy for** (see §1a table). URC and RFC are now **done** (§12). Still to build, in the PDF's order: **Our Members** (organisations), **Annual Forum 2025**, **City Mixers** (11 events), **U-CAN Fellowship** + its 3 sub-pages (Blogs by Fellows, Meet the 2024-25 Fellows, L&D Calendar with 12 sessions). No content needs re-fetching — the PDF has it all, including per-page title tags and meta descriptions.
 7. **Wire up the JavaScript** (§3b) — still the highest-priority functional gap, unrelated to content.
 
 ---
@@ -350,3 +353,52 @@ Checked and deliberately **not** changed:
 - **"saeries"** typo in `learning-network.html` — PDF says keep content as-is (§7.3).
 - **Homepage "Our Members" / "Friends of U-CAN" headings** — the PDF's `"our members" → "Member Organisations"` H2 fix targets the standalone Our Members *page*, which isn't built locally; the homepage section headings were already correctly cased.
 - **Member logos** — all 11 are present and correctly inlined as base64 with proper alt text; they are not broken.
+
+---
+
+## 12. URC + RFC build log (newest round)
+
+Both previously-missing Phase 1 pages are now built, verified, and in `standalone/`.
+
+**Sources used:** the content PDF (§1a pp.51–55) as the spec, plus the live pages for the sections the PDF marks "remains as is" (URC's *Need for a URC*, *What the URC aims to do*, and all 11 FAQs). Content is verbatim; nothing was invented. The live pages were pulled with `curl` into the scratchpad and parsed locally — `WebFetch`'s summariser refuses to reproduce long verbatim passages, so don't rely on it for content migration.
+
+**PDF bug fixes applied (both verified in the built file):**
+- FAQ #6 heading: `part ofthe URC` → **`part of the URC`**
+- FAQ #11 mailto: now points to **`reforms@urban.org.in`** (was `info@urbanreformscollective.org`)
+
+**How they were built:** `about.html` is still the shell, but the two new pages were assembled by a small builder (`shellkit.py` + `build_urc.py` / `build_rfc.py`, kept in the session scratchpad, not the repo). The shell's base64 stylesheet link is reused byte-for-byte; page-specific CSS is added as a plain `<style>` block before `</head>` rather than trying to edit the base64 blob. Reusable classes taken from the shell: `.wrap .sec .sec.alt .sec-head .kicker .lead .hero .hero-in .hero-tag .hero-lede .crumb .rv .d1/.d2/.d3 .btn .btn.line .btn.on-photo .btn.ghost-photo .ctaband .news .vh`. New classes added by these pages: `.hero-chips .hero-actions .split .body .cols2 .numcard .aims/.aim .blist .pq .gal .faq .fw`.
+
+**Layout patterns used (all pass the §4 dead-space rule):**
+- URC *Need for a URC* — body text left + teal-deep numbered `.numcard` right ("Urban reform requires:" 01/02/03).
+- URC *What the URC aims to do* — two-column body (`.cols2`) + three `.aim` cards. The three aims are verbatim from FAQ #1's "it focuses on three things".
+- URC *Gallery* — heading left + context note right, then 6 WordPress photos in a 3-col grid, each with a branded placeholder behind and `onerror="this.style.display='none'"` so the tile degrades cleanly.
+- URC *FAQs* — 11 `<details>/<summary>` items, keyboard-accessible, first one open. **Native `<details>` was used deliberately so the accordion works with zero JS** (§3b).
+- RFC *Why collaboration matters* — text + 5-item `.blist` left, dark-Ink `.pq` pull-quote right; then a full-width lead-in and the 3 barriers as `.aim` cards (an earlier two-column version left the left column thin — that was a dead-space violation and was restructured).
+- RFC *Framework* — text + report CTA left, framework diagram right with the same `onerror` placeholder treatment.
+
+**These two pages have real JSON-LD** (`WebPage` + `BreadcrumbList` + `Organization`, and a full 11-question `FAQPage` on URC). Note this makes them the **only** pages in the repo with structured data — see §13.
+
+---
+
+## 13. Two more repo-wide gaps found while building (not introduced by this round)
+
+1. **JSON-LD is missing from all 8 unpacked pages.** The mhtml→html unpack stripped every `<script>` tag, and `application/ld+json` blocks are `<script>` tags, so the structured data went with the JS (§3b). §1 lists JSON-LD `@graph` as a non-negotiable, so all 8 need theirs restored. `urban-reforms-collective.html` and `rfc.html` are currently the only pages that have any.
+2. **`about.html` had the `.sec-num` ghost numerals back** — 3 of them, fully styled and rendering, which §3 says is a regression. Removed, and `.sec-head` collapsed to a single column via a small `<style>` override.
+
+### Line endings differ between old and new pages
+The 8 unpacked pages use `\r\r\n` (§3a). **The two new pages use normal `\n`.** Check which you're editing before doing multi-line string substitution — a script that assumes one will silently fail on the other.
+
+### Nav breakpoint overrides (why they exist)
+Going from 6 to 7 nav items overflowed three pages horizontally, which is a hard §5 failure. Each header has its own breakpoint, so each got a small `<style>` override appended before `</head>`:
+- shell pages (`.bar`): burger now at **≤1000px** (was 860px), plus a tighter gap between 1001–1180px
+- `index.html` (`.nav .links`): burger now at **≤1000px** (was 880px)
+- `newsletter.html` (`.header .nav`): mobile sheet now at **≤1240px** (was ≤1000px)
+
+If nav items are ever added or removed, **re-run the overflow check** — these thresholds are tuned to exactly 7 items.
+
+### Verification harness
+Playwright is installed in the session scratchpad with `verify.js`, which checks all 10 pages at 13 widths (1440→320) for horizontal overflow, plus single-`h1`, valid JSON-LD, no `.sec-num`/`.sec-mark`, and zero console/page errors. **All 10 pages currently pass.** Rebuild it with `npm i playwright && npx playwright install chromium`, serve `standalone/` on a port, and point the script at it.
+
+While fixing the nav overflow, three **pre-existing** overflow bugs were also fixed (confirmed against the previous commit first, so they weren't mine):
+- `newsletter.html` @320/@360 — `.nl-hero-grid` track was sized by min-content; `.header-cta` buttons and the `.featured-card` track also overflowed.
+- `newsletter-urban-brief-june-2026.html` @768 and below — `figure.sec-img` carried 40px side margins inside an already-padded `.wrap`.

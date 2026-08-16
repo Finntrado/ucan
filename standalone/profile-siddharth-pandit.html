@@ -43,6 +43,11 @@
 
 
 
+<style>
+/* 7-item nav needs more room than the shell's 860px burger breakpoint allowed */
+@media (max-width:1000px){.bar .nav,.bar .bar-cta{display:none}.bar .burger{display:flex}}
+@media (min-width:1001px) and (max-width:1180px){.bar .nav{gap:22px}.bar .nav a{font-size:14px}}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
@@ -58,14 +63,15 @@
       <a href="our-people.html" class="on" aria-current="page">Our People</a>
       <a href="impact.html">Impact</a>
       <a href="learning-network.html">Learning Network</a>
-      <a href="https://urban.org.in/urban-reforms-collective">Urban Reforms Collective</a>
+      <a href="urban-reforms-collective.html">Urban Reforms Collective</a>
+      <a href="rfc.html">Request for Collaboration</a>
       <a href="newsletter.html">Newsletter</a>
     </nav>
     <a class="bar-cta" href="#connect">Subscribe</a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="msheet" aria-label="Open navigation menu"><span></span></button>
   </div>
   <div class="msheet" id="msheet"><div class="wrap">
-    <a href="about.html">About</a><a href="our-people.html">Our People</a><a href="impact.html">Impact</a><a href="learning-network.html">Learning Network</a><a href="https://urban.org.in/urban-reforms-collective">Urban Reforms Collective</a><a href="newsletter.html">Newsletter</a><a href="#connect">Subscribe</a>
+    <a href="about.html">About</a><a href="our-people.html">Our People</a><a href="impact.html">Impact</a><a href="learning-network.html">Learning Network</a><a href="urban-reforms-collective.html">Urban Reforms Collective</a><a href="rfc.html">Request for Collaboration</a><a href="newsletter.html">Newsletter</a><a href="#connect">Subscribe</a>
   </div></div>
 </header>
 
@@ -177,7 +183,7 @@
           <li><a href="our-people.html">Our People</a></li>
           <li><a href="impact.html">Impact</a></li>
           <li><a href="learning-network.html">Learning Network</a></li>
-          <li><a href="https://urban.org.in/urban-reforms-collective">Urban Reforms Collective</a></li>
+          <li><a href="urban-reforms-collective.html">Urban Reforms Collective</a><a href="rfc.html">Request for Collaboration</a></li>
           <li><a href="newsletter.html">Newsletter</a></li>
         </ul>
       </nav>
