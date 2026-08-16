@@ -90,6 +90,44 @@ If you see either class name resurface, it's a regression — strip it and colla
 
 ---
 
+## 3a. Site-wide navigation (header + footer) — must stay identical across every page
+
+Every page's header nav and footer "Quick Links" use the **same 6 destinations, in this order**, referenced from urban.org.in's real IA (About Us / Initiatives / Our Members / Media):
+
+| Label | Href |
+|---|---|
+| About | `about.html` |
+| Our Members | `our-people.html` |
+| Impact | `impact.html` |
+| Learning Network | `learning-network.html` |
+| Urban Reforms Collective | `https://urban.org.in/urban-reforms-collective` (external — not built locally yet, see §6) |
+| Newsletter | `newsletter.html` |
+
+Rules:
+- **Brand/logo always links to `index.html`** (the homepage), on every page including sub-pages.
+- **The header CTA ("Subscribe") is a same-page anchor `#connect`**, not a cross-page link — every page has its own DPDP-gated newsletter section with that id.
+- **Individual detail/article pages are NOT added to this nav** (`profile-siddharth-pandit.html`, `newsletter-urban-brief-june-2026.html`) — same convention as the live site, where a member profile or a single newsletter issue isn't itself a nav item. These pages still carry the site header/footer for wayfinding; mark the closest parent item active (e.g. profile pages → "Our Members" `on`/`aria-current`, the newsletter article → its own minimal 3-link masthead nav rather than the full 6).
+- When a locally-built page is linked from body copy (CTA buttons, card links, breadcrumbs), point it at the local file, not the live urban.org.in URL — e.g. Siddharth Pandit's card on `our-people.html` links to `profile-siddharth-pandit.html`, not the live member URL. The other 22 member cards still point live (no local page exists yet for them).
+- Not-yet-built pages (Urban Reforms Collective, RFC, Media hub, Fellowship, Events) stay pointed at the live `urban.org.in` URL until they're built locally — don't invent local files for them.
+- **Markup differs by page, content doesn't.** 5 pages (`about`, `impact`, `learning-network`, `our-people`, `profile-siddharth-pandit`) share the About shell's `.bar`/`.msheet` header CSS. `index.html`, `newsletter.html`, and `newsletter-urban-brief-june-2026.html` each have their own bespoke header/footer CSS baked into a per-file base64-encoded stylesheet blob — their nav *content* was brought in line with the table above, but their visual chrome was deliberately left alone rather than risking a full CSS rewrite of an already-approved design. If a true visual unification is ever wanted, it requires decoding each page's base64 CSS blob, merging in the shell's `.bar`/`.msheet` rules, and re-encoding — not attempted so far.
+- All 8 pages use `\r\r\n` (double-CR) line endings — a quirk from the original mhtml unpack, consistent across every file. Plain string edits with `\n` or `\r\n` separators will silently fail to match; use `\r\r\n` when doing multi-line text substitution (e.g. via a small Python script with `newline=''`), not the Edit tool's line-based matching.
+
+---
+
+## 3b. KNOWN GAP: zero JavaScript anywhere in the repo
+
+As of the last pass, **every page in `standalone/` has zero `<script>` tags.** This means, on every page, the following are pure non-functional markup right now:
+- Burger/mobile menu toggle (`#burger` → `.msheet`/`.mobile-menu`/`#mob-nav`)
+- Cookie banner (10s delay, `localStorage` `ucan_consent_v1`)
+- DPDP newsletter consent gate (currently nothing blocks submission without email+checkbox)
+- Count-up stat animations
+- Scroll-reveal (`.rv`/`.in` — currently just statically rendered as visible)
+- FAQ accordion (n/a currently, no FAQ page built yet)
+
+This predates the nav/footer consistency work and wasn't introduced by it — flagged here so it isn't mistaken for "already working." Whoever picks this up next should treat wiring up a shared JS file (or per-page inline script, matching the About shell's documented intent in §5) as a priority fix, since it affects a **hard DPDP compliance requirement** (§1) and the mobile nav now relies on the same burger/`.msheet` pattern across every page.
+
+---
+
 ## 4. THE DEAD-SPACE RULE (hard requirement)
 
 > **Never leave large blank/dead space in any section.** Either (a) spread text full-width left-to-right, or (b) fill the empty side with a relevant, purposeful design element (stat callouts, motif, image, quote card, question panel, etc.).
