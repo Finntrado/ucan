@@ -22,7 +22,8 @@ ucan/
 │   ├── newsletter.html
 │   ├── newsletter-urban-brief-june-2026.html
 │   ├── urban-reforms-collective.html
-│   └── rfc.html
+│   ├── rfc.html
+│   └── profile-<slug>.html          # 23 member profiles, generated — see §14
 └── _mhtml-originals/       # read-only backup of the browser-saved .mhtml snapshots these came from — don't edit
 ```
 This replaced an earlier handoff where pages only existed as `.mhtml` browser snapshots (Chrome "Save Page As → Single File"); they were unpacked into plain self-contained `.html` (resources re-inlined as data URIs). Filenames were later renamed to drop the `u-can-` prefix and the homepage renamed to `index.html`, matching dastangoi's naming (`about.html`, `dastan.html`, etc.) so the site has a real root document and no naming clashes on Vercel. Work directly in `standalone/*.html` going forward.
@@ -149,17 +150,28 @@ Rules:
 
 ---
 
-## 3b. KNOWN GAP: zero JavaScript anywhere in the repo
+## 3b. RESOLVED: JavaScript is now wired up (was: zero JS anywhere)
 
-As of the last pass, **every page in `standalone/` has zero `<script>` tags.** This means, on every page, the following are pure non-functional markup right now:
-- Burger/mobile menu toggle (`#burger` → `.msheet`/`.mobile-menu`/`#mob-nav`)
-- Cookie banner (10s delay, `localStorage` `ucan_consent_v1`)
-- DPDP newsletter consent gate (currently nothing blocks submission without email+checkbox)
-- Count-up stat animations
-- Scroll-reveal (`.rv`/`.in` — currently just statically rendered as visible)
-- FAQ accordion (n/a currently, no FAQ page built yet)
+**Fixed.** Every page now carries one inlined `<script data-ucan="behaviour">` block (identical on all pages, injected before `</body>`). Source of truth: `ucan.js` in the session scratchpad — **edit that and re-run `inject_js.py`, never hand-edit one page's copy**, or the pages drift apart.
 
-This predates the nav/footer consistency work and wasn't introduced by it — flagged here so it isn't mistaken for "already working." Whoever picks this up next should treat wiring up a shared JS file (or per-page inline script, matching the About shell's documented intent in §5) as a priority fix, since it affects a **hard DPDP compliance requirement** (§1) and the mobile nav now relies on the same burger/`.msheet` pattern across every page.
+What it wires up, all defensively (each feature no-ops when its markup is absent, so the one block suits every page variant):
+1. Sticky header `.scrolled` state
+2. Mobile menu — handles all three markups: `#burger`→`#msheet`, `#burger`→`#mobile-menu`, `#menuBtn`→`#mob-nav` (+`#closeBtn`); closes on link-click and Escape, manages `aria-expanded`
+3. Scroll reveal `.rv`/`.reveal` → `.in`/`.visible`
+4. Count-ups (`data-to`, `data-suffix`, `data-comma` with `en-IN` grouping)
+5. **DPDP newsletter consent gate** — blocks submit without a valid email *and* a ticked box, and emits an auditable consent record (`console.log`) with timestamp + notice version
+6. Cookie banner — 10s delay, `localStorage` `ucan_consent_v1`, privacy-preserving default, reopen from the footer link
+7. Newsletter archive "Load older editions"
+8. Back-to-top on the newsletter article
+9. FAQ one-open-at-a-time (URC's accordion is native `<details>`, so it works even with JS off)
+
+All of it respects `prefers-reduced-motion` (count-ups jump to final values, reveals show immediately).
+
+**Two gotchas worth keeping:**
+- **Don't clear the form error on the email's `change` event.** Focusing the consent checkbox blurs the email, which fires `change` and instantly wipes the error the submit handler just showed — the gate then looks broken while actually working. Clear on the email's `input` and the checkbox's `change` only.
+- **Every newsletter form needs `novalidate`.** Otherwise native HTML5 validation blocks submit before the handler runs, so the custom DPDP message never appears. `newsletter.html`'s form was missing it.
+
+Also added while wiring this up: the **cookie banner markup** (it existed only in CSS — no page actually had the `#cc` element), and a **DPDP consent checkbox + notice on `newsletter.html`'s subscribe form**, which had neither.
 
 ---
 
@@ -283,13 +295,15 @@ git push origin main
 
 ## 7. Pending / standing offers
 
-1. **Generate all 23 individual profile pages** using the Siddharth Pandit template (numeral-not-mark treatment; §3). **Blocker:** only Siddharth's full bio is available (fetched earlier). For the other 22, the user must supply bios, OR accept (a) header/photo/facts complete with a placeholder bio line, or (b) name/role/org/group only. **Photos:** `avatars_b64.json` itself is gone (see §9), but the 22 real photos still exist inlined inside `standalone/our-people.html` and `standalone/impact.html` — they can be re-extracted from there if needed rather than re-requesting from the original chat. Meghna Indurkar photo still missing regardless.
-2. **Meghna Bandelwar Indurkar photo** — still needed (Our People monogram + Impact placeholder). Drop-in swap when provided.
+1. ~~**Generate all 23 individual profile pages**~~ — **done, see §14.** The old blocker ("only Siddharth's bio is available") no longer applies: every bio is fetchable from `urban.org.in/member/<slug>/`, which the original chat's sandbox couldn't reach.
+2. ~~**Meghna Bandelwar Indurkar photo**~~ — **found.** Her live member page does carry a real portrait. Its WordPress filename is misleading (`mayura-gadkari-principal-artha-global.png`), which is likely why it was assumed missing, but the image is verifiably a different person from Mayura's (different SHA, visually confirmed). Now inlined on her profile page. **Worth a human sanity-check that it is in fact Meghna**, given the filename.
 3. **Learning Network typo fixes** — "saeries" → "series" and the title double-space. **Resolved: leave as-is.** PDF p.50 explicitly states "Content - to be kept as is" for this page, which matches the user's earlier instruction. Don't re-raise.
 4. **Retroactive dead-space audit** on any older/thin sections — offered for About / Our People / Impact / Profile.
 5. **Real images for gallery/framework/member-logo/photo elements** load only on the live server. Placeholders are in place; confirm they resolve once deployed.
 6. **Build the remaining pages the PDF has full approved copy for** (see §1a table). URC and RFC are now **done** (§12). Still to build, in the PDF's order: **Our Members** (organisations), **Annual Forum 2025**, **City Mixers** (11 events), **U-CAN Fellowship** + its 3 sub-pages (Blogs by Fellows, Meet the 2024-25 Fellows, L&D Calendar with 12 sessions). No content needs re-fetching — the PDF has it all, including per-page title tags and meta descriptions.
-7. **Wire up the JavaScript** (§3b) — still the highest-priority functional gap, unrelated to content.
+7. ~~**Wire up the JavaScript**~~ — **done, see §3b.**
+8. **Still open on the profile pages:** `our-people.html` now links all 28 cards to local profiles, but `impact.html`'s three "In their words" portraits are not linked to them. Low priority.
+9. **Photos on the profile pages are 220×220 WebP re-encodes** of the live originals (which are only 250–300px to begin with). If higher-resolution portraits exist, swapping them in would improve the hero on large screens.
 
 ---
 
@@ -382,7 +396,7 @@ Both previously-missing Phase 1 pages are now built, verified, and in `standalon
 
 ## 13. Two more repo-wide gaps found while building (not introduced by this round)
 
-1. **JSON-LD is missing from all 8 unpacked pages.** The mhtml→html unpack stripped every `<script>` tag, and `application/ld+json` blocks are `<script>` tags, so the structured data went with the JS (§3b). §1 lists JSON-LD `@graph` as a non-negotiable, so all 8 need theirs restored. `urban-reforms-collective.html` and `rfc.html` are currently the only pages that have any.
+1. ~~**JSON-LD is missing from all 8 unpacked pages.**~~ **Fixed.** Every page now carries exactly one `<script type="application/ld+json" data-ucan="schema">` block: `Organization` + `WebPage` + `BreadcrumbList` (plus `WebSite` on the homepage, `FAQPage` on URC, `Article` on the newsletter issue, and `Person` + `ProfilePage` on each member profile). Regenerate with `add_jsonld.py`; profile schema is emitted by `build_profiles.py`.
 2. **`about.html` had the `.sec-num` ghost numerals back** — 3 of them, fully styled and rendering, which §3 says is a regression. Removed, and `.sec-head` collapsed to a single column via a small `<style>` override.
 
 ### Line endings differ between old and new pages
@@ -402,3 +416,40 @@ Playwright is installed in the session scratchpad with `verify.js`, which checks
 While fixing the nav overflow, three **pre-existing** overflow bugs were also fixed (confirmed against the previous commit first, so they weren't mine):
 - `newsletter.html` @320/@360 — `.nl-hero-grid` track was sized by min-content; `.header-cta` buttons and the `.featured-card` track also overflowed.
 - `newsletter-urban-brief-june-2026.html` @768 and below — `figure.sec-img` carried 40px side margins inside an already-padded `.wrap`.
+
+---
+
+## 14. Member profile pages (23 of them) + how to regenerate
+
+`profile-<slug>.html` exists for **every one of the 23 people** on Our People, all built from the approved `profile-siddharth-pandit.html` layout, and all 28 cards on `our-people.html` now link to them locally.
+
+### The old blocker is gone
+§7 used to say the other 22 bios had to come from the user. They didn't: **every bio, portrait and LinkedIn URL is on `urban.org.in/member/<slug>/`**, which the original chat's sandbox couldn't reach (403). `curl` from here reaches it fine. Nothing was written by hand — all content is verbatim from those pages.
+
+### The generation pipeline (session scratchpad, not in the repo)
+Run in this order:
+1. `roster.py` → `roster.json` — scrapes name / slug / role / group / inlined 120px avatar out of `our-people.html`. **Gotcha:** Our Team cards use `class="p-role team"`, not `class="p-role"` — a regex pinned to the exact class silently drops all 4 team members and yields 19 people instead of 23.
+2. `fetch_bios.py` → `bios.json` — bio paragraphs + personal LinkedIn. **Gotcha:** match `linkedin.com/in/` specifically; a looser pattern grabs the footer's U-CAN *company* page and every member ends up with the same link. 16 of 23 have a personal profile; the other 7 correctly render no LinkedIn button and `—` in the At-a-glance panel.
+3. `fetch_photos.py` → `photos220.json` — downloads the full-res portrait, centre-square-crops, resizes to 220px, re-encodes as WebP (~4–9KB each). Also SHA-compares every source image and reports duplicates, which is how Meghna's photo was confirmed genuine rather than a copy of Mayura's.
+4. `build_profiles.py` — writes all 23 pages and `profile_map.json` (slug → filename) for relinking `our-people.html`.
+
+### Conventions baked into the generated pages
+- **Filename:** `profile-<slug>.html`, with any trailing `-2` stripped (`viraj-tyagi-2` → `profile-viraj-tyagi.html`). Canonical still points at the real live URL, `/member/viraj-tyagi-2/`.
+- **Our Team vs everyone else:** for team members `role` is a job title and the organisation is U-CAN; for everyone else `role` holds their *organisation*. The template's role/affiliation lines and the At-a-glance panel switch accordingly.
+- **People in two groups** (e.g. Founding Circle *and* Stewardship Team) get the first as the hero badge and both listed in At-a-glance.
+- Each page carries `Person` + `ProfilePage` + `BreadcrumbList` + `Organization` JSON-LD, `og:type=profile`, and a meta description trimmed from the opening bio sentence.
+- A monogram placeholder exists for anyone without a photo — currently unused, since all 23 have one.
+
+### Regenerating after a change
+The builders are **idempotent**: re-running overwrites all 23 pages. But they read the *current* `profile-siddharth-pandit.html` as the template, so anything injected site-wide afterwards (JS, cookie banner, nav edits) is inherited automatically — which also means **re-running after a site-wide change will pick it up, and re-running before it will not**. Order matters: inject site-wide changes first, then rebuild profiles, or just re-run both.
+
+---
+
+## 15. Verification harness (expanded)
+
+Two scripts in the scratchpad, both pointed at a static server on `standalone/`:
+
+- **`verify.js`** — all 32 pages × 13 widths (1440→320): zero horizontal overflow, exactly one `<h1>`, ≥1 valid JSON-LD block, no `.sec-num`/`.sec-mark`, zero console/page errors.
+- **`test_js.js`** — 47 functional assertions: the DPDP gate on all four form variants (blocks empty, blocks email-without-consent, accepts both, logs the consent record only on success), the cookie banner (hidden at 5s, visible at ~11s, dismiss, `localStorage`, footer reopen), the burger menu on all three markups (open/close/aria/Escape), count-ups (normal + reduced-motion), and the FAQ accordion.
+
+**Both suites pass fully as of this round.** Re-run them after any site-wide change; the nav-width thresholds in §13 and the form gotchas in §3b are exactly the kind of thing they catch.
