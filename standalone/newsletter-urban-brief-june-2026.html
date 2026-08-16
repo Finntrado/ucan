@@ -511,6 +511,9 @@
 </div>
 
 
+
+
+
 
 <script data-ucan="behaviour">
 /* U-CAN shared behaviour — inlined into every page in standalone/.
@@ -583,6 +586,49 @@
           btn.focus();
         }
       });
+    });
+  })();
+
+  /* ---------- 2b. desktop nav dropdowns ----------
+     Hover is pure CSS; this adds click + keyboard so the menus are usable
+     without a pointer, and closes them on Escape / outside click. */
+  (function navDropdowns() {
+    var items = $$(".ucnav-i");
+    if (!items.length) return;
+
+    var closeAll = function (except) {
+      items.forEach(function (it) {
+        if (it === except) return;
+        it.classList.remove("open");
+        var t = $(".ucnav-t", it);
+        if (t && t.tagName === "BUTTON") t.setAttribute("aria-expanded", "false");
+      });
+    };
+
+    items.forEach(function (it) {
+      var trigger = $(".ucnav-t", it);
+      if (!trigger) return;
+
+      trigger.addEventListener("click", function (e) {
+        // a real link (About Us) still navigates on click; only buttons toggle
+        if (trigger.tagName !== "BUTTON") return;
+        e.preventDefault();
+        var open = it.classList.toggle("open");
+        trigger.setAttribute("aria-expanded", open ? "true" : "false");
+        closeAll(it);
+      });
+
+      it.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && it.classList.contains("open")) {
+          it.classList.remove("open");
+          if (trigger.tagName === "BUTTON") trigger.setAttribute("aria-expanded", "false");
+          trigger.focus();
+        }
+      });
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest || !e.target.closest(".ucnav-i")) closeAll(null);
     });
   })();
 

@@ -29,7 +29,7 @@
 
 <style>
 /* 7-item nav needs more room than the original 1000px breakpoint allowed */
-@media (max-width:1240px){.header .nav{display:none}.header .menu-btn{display:grid}}
+@media (max-width:940px){.header .nav{display:none}.header .menu-btn{display:grid}}
 </style>
 <style>
 /* pre-existing narrow-width overflow: hero grid track was sized by min-content */
@@ -106,6 +106,43 @@
   ]
 }
 </script>
+<style data-ucan="nav">
+/* ——— site nav: 5 top-level items with dropdowns (mirrors urban.org.in IA) ——— */
+.ucnav{display:flex;align-items:center;gap:clamp(2px,1.1vw,14px);flex-wrap:nowrap}
+.ucnav-i{position:relative;display:flex;align-items:center}
+.ucnav-t{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  font-family:var(--sans);font-size:14.5px;font-weight:600;line-height:1;
+  color:var(--ink);text-decoration:none;background:none;border:0;cursor:pointer;
+  padding:10px 10px;border-radius:2px;transition:color .18s ease,background .18s ease}
+.ucnav-t:hover,.ucnav-i:hover>.ucnav-t{color:var(--teal-deep);background:rgba(31,143,123,.07)}
+.ucnav-t.on{color:var(--teal-deep)}
+.ucnav-t.on::after{content:"";position:absolute;left:10px;right:10px;bottom:2px;height:2px;background:var(--teal)}
+.ucnav-i>.ucnav-t.on::after{left:10px;right:22px}
+.ucnav-cv{width:9px;height:6px;flex:0 0 9px;transition:transform .2s ease;opacity:.75}
+.ucnav-i:hover .ucnav-cv,.ucnav-i.open .ucnav-cv{transform:rotate(180deg)}
+.ucnav-dd{position:absolute;top:100%;left:0;min-width:246px;padding:8px;
+  background:var(--paper,#FBFAF6);border:1px solid var(--line);
+  box-shadow:0 18px 44px -22px rgba(14,83,72,.55);
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:opacity .18s ease,transform .18s ease,visibility .18s;z-index:80}
+.ucnav-i:hover .ucnav-dd,.ucnav-i.open .ucnav-dd,.ucnav-i:focus-within .ucnav-dd{opacity:1;visibility:visible;transform:translateY(0)}
+.ucnav-dd a{display:block;padding:10px 12px;font-family:var(--sans);font-size:14px;font-weight:500;
+  line-height:1.35;color:var(--ink-soft);text-decoration:none;border-radius:2px}
+.ucnav-dd a:hover,.ucnav-dd a:focus-visible{background:var(--paper-alt,#E9F5F2);color:var(--teal-deep)}
+.ucnav-i:last-child .ucnav-dd{left:auto;right:0}
+
+/* mobile sheet */
+.ucmob{display:flex;flex-direction:column;gap:2px}
+.ucmob-t{display:block;padding:13px 0;font-family:var(--display);font-weight:700;
+  font-size:19px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.ucmob-g{border-bottom:1px solid var(--line);padding:13px 0}
+.ucmob-h{font-family:var(--display);font-weight:700;font-size:19px;color:var(--ink);margin:0 0 6px}
+.ucmob-l{display:flex;flex-direction:column}
+.ucmob-l a{padding:8px 0 8px 14px;font-family:var(--sans);font-size:15px;font-weight:500;
+  color:var(--ink-soft);text-decoration:none;border-left:2px solid var(--line)}
+.ucmob-l a:hover{color:var(--teal-deep);border-left-color:var(--teal)}
+.ucmob-cta{color:var(--teal-deep)}
+</style>
 </head>
 <body>
 
@@ -118,14 +155,7 @@
       <span class="logo-mark" aria-hidden="true">U</span>
       <span class="logo-word">U-CAN<small>Urban Collective Action Network</small></span>
     </a>
-    <nav class="nav" aria-label="Primary">
-      <div class="nav-item"><a class="nav-link" href="about.html">About</a></div>
-      <div class="nav-item"><a class="nav-link" href="our-people.html">Our People</a></div>
-      <div class="nav-item"><a class="nav-link" href="impact.html">Impact</a></div>
-      <div class="nav-item"><a class="nav-link" href="learning-network.html">Learning Network</a></div>
-      <div class="nav-item"><a class="nav-link" href="urban-reforms-collective.html">Urban Reforms Collective</a></div><div class="nav-item"><a class="nav-link" href="rfc.html">Request for Collaboration</a></div>
-      <div class="nav-item"><a class="nav-link" aria-current="page" href="newsletter.html">Newsletter</a></div>
-    </nav>
+    <nav class="nav" aria-label="Primary"><div class="ucnav"><div class="ucnav-i"><a class="ucnav-t" href="about.html">About Us<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><div class="ucnav-dd"><a href="about.html">About U-CAN</a><a href="about.html#vision">Vision</a><a href="about.html#mission">Mission</a><a href="about.html#principles">Governing Principles</a><a href="about.html#timeline">Timeline</a><a href="our-people.html">Our People</a><a href="impact.html">Impact</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Initiatives<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="urban-reforms-collective.html">Urban Reforms Collective (URC)</a><a href="rfc.html">Request for Collaboration (RFC)</a><a href="learning-network.html">Learning Network for Urban Managers</a><a href="https://urban.org.in/u-can-fellowship/">U-CAN Fellowship</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Events<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="city-mixers.html">U-CAN City Mixers</a><a href="annual-forum-2025.html">The U-CAN Annual Forum 2025</a></div></div><a class="ucnav-t" href="https://urban.org.in/our-members/">Our Members</a><div class="ucnav-i"><button type="button" class="ucnav-t on" aria-expanded="false" aria-haspopup="true">Media<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="newsletter.html">Newsletter</a><a href="https://urban.org.in/city-champions/">City Champions</a><a href="https://urban.org.in/policy-webinars/">Policy Webinars</a></div></div></div></nav>
     <div class="header-cta">
       <a class="btn btn-ghost" href="our-people.html">Our People</a>
       <a class="btn btn-primary" href="about.html">About U-CAN<svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8m0 0L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></a>
@@ -136,12 +166,7 @@
 
 <div class="sheet" id="mob-nav" aria-hidden="true">
   <button class="menu-btn sheet-close" aria-label="Close menu" id="closeBtn"><svg viewBox="0 0 18 18" fill="none" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></button>
-  <div class="sheet-group"><a href="about.html">About</a></div>
-  <div class="sheet-group"><a href="our-people.html">Our People</a></div>
-  <div class="sheet-group"><a href="impact.html">Impact</a></div>
-  <div class="sheet-group"><a href="learning-network.html">Learning Network</a></div>
-  <div class="sheet-group"><a href="urban-reforms-collective.html">Urban Reforms Collective</a><a href="rfc.html">Request for Collaboration</a></div>
-  <div class="sheet-group"><a href="newsletter.html">Newsletter</a></div>
+<div class="ucmob"><div class="ucmob-g"><p class="ucmob-h">About Us</p><div class="ucmob-l"><a href="about.html">About U-CAN</a><a href="about.html#vision">Vision</a><a href="about.html#mission">Mission</a><a href="about.html#principles">Governing Principles</a><a href="about.html#timeline">Timeline</a><a href="our-people.html">Our People</a><a href="impact.html">Impact</a></div></div><div class="ucmob-g"><p class="ucmob-h">Initiatives</p><div class="ucmob-l"><a href="urban-reforms-collective.html">Urban Reforms Collective (URC)</a><a href="rfc.html">Request for Collaboration (RFC)</a><a href="learning-network.html">Learning Network for Urban Managers</a><a href="https://urban.org.in/u-can-fellowship/">U-CAN Fellowship</a></div></div><div class="ucmob-g"><p class="ucmob-h">Events</p><div class="ucmob-l"><a href="city-mixers.html">U-CAN City Mixers</a><a href="annual-forum-2025.html">The U-CAN Annual Forum 2025</a></div></div><a class="ucmob-t" href="https://urban.org.in/our-members/">Our Members</a><div class="ucmob-g"><p class="ucmob-h">Media</p><div class="ucmob-l"><a href="newsletter.html">Newsletter</a><a href="https://urban.org.in/city-champions/">City Champions</a><a href="https://urban.org.in/policy-webinars/">Policy Webinars</a></div></div><a class="ucmob-t ucmob-cta" href="#connect">Subscribe</a></div>
 </div>
 
 <main id="main">
@@ -351,6 +376,9 @@
 </div>
 
 
+
+
+
 
 <script data-ucan="behaviour">
 /* U-CAN shared behaviour — inlined into every page in standalone/.
@@ -423,6 +451,49 @@
           btn.focus();
         }
       });
+    });
+  })();
+
+  /* ---------- 2b. desktop nav dropdowns ----------
+     Hover is pure CSS; this adds click + keyboard so the menus are usable
+     without a pointer, and closes them on Escape / outside click. */
+  (function navDropdowns() {
+    var items = $$(".ucnav-i");
+    if (!items.length) return;
+
+    var closeAll = function (except) {
+      items.forEach(function (it) {
+        if (it === except) return;
+        it.classList.remove("open");
+        var t = $(".ucnav-t", it);
+        if (t && t.tagName === "BUTTON") t.setAttribute("aria-expanded", "false");
+      });
+    };
+
+    items.forEach(function (it) {
+      var trigger = $(".ucnav-t", it);
+      if (!trigger) return;
+
+      trigger.addEventListener("click", function (e) {
+        // a real link (About Us) still navigates on click; only buttons toggle
+        if (trigger.tagName !== "BUTTON") return;
+        e.preventDefault();
+        var open = it.classList.toggle("open");
+        trigger.setAttribute("aria-expanded", open ? "true" : "false");
+        closeAll(it);
+      });
+
+      it.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && it.classList.contains("open")) {
+          it.classList.remove("open");
+          if (trigger.tagName === "BUTTON") trigger.setAttribute("aria-expanded", "false");
+          trigger.focus();
+        }
+      });
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest || !e.target.closest(".ucnav-i")) closeAll(null);
     });
   })();
 

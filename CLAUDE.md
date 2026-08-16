@@ -23,6 +23,8 @@ ucan/
 │   ├── newsletter-urban-brief-june-2026.html
 │   ├── urban-reforms-collective.html
 │   ├── rfc.html
+│   ├── city-mixers.html
+│   ├── annual-forum-2025.html
 │   └── profile-<slug>.html          # 23 member profiles, generated — see §14
 └── _mhtml-originals/       # read-only backup of the browser-saved .mhtml snapshots these came from — don't edit
 ```
@@ -57,8 +59,8 @@ python -c "import pypdf; r=pypdf.PdfReader('Website - Plan and Content Revisions
 | 13–15 | About Us, Our People (SEO copy, hooks, timeline addition) |
 | 15–17 | Impact: all 8 proof points + "In their words" quotes |
 | 19–32 | **U-CAN Fellowship**, Blogs by Fellows, Meet the 2024-25 Fellows, L&D Calendar (12 sessions) |
-| 33–43 | **Events**: City Mixers (11 events, full write-ups) |
-| 44–46 | **Annual Forum 2025** |
+| 33–43 | Events: City Mixers (11 events, full write-ups) — *built, see §16* |
+| 44–46 | Annual Forum 2025 — *built, see §16* |
 | 49–50 | Learning Network (explicitly: "Content - to be kept as is") |
 | 51–53 | Request for Collaboration (RFC) — *built, see §12* |
 | 54–55 | Urban Reforms Collective (URC) + its 2 named bug fixes — *built, see §12* |
@@ -124,31 +126,30 @@ If you see either class name resurface, it's a regression — strip it and colla
 
 ---
 
-## 3a. Site-wide navigation (header + footer) — must stay identical across every page
+## 3a. Site-wide navigation — 5 top-level items with dropdowns
 
-Every page's header nav and footer "Quick Links" use the **same 6 destinations, in this order**, referenced from urban.org.in's real IA (About Us / Initiatives / Our Members / Media):
+**The nav mirrors urban.org.in's real IA**, not a flat list. An earlier flat 7-item bar was replaced because the long labels wrapped onto two lines and looked broken. Structure (live site's top level; About Us submenu is the one the PDF prescribes on p.14):
 
-| Label | Href |
-|---|---|
-| About | `about.html` |
-| Our People | `our-people.html` |
-| Impact | `impact.html` |
-| Learning Network | `learning-network.html` |
-| Urban Reforms Collective | `urban-reforms-collective.html` |
-| Request for Collaboration | `rfc.html` |
-| Newsletter | `newsletter.html` |
+| Top level | Href | Dropdown |
+|---|---|---|
+| About Us | `about.html` | About U-CAN · Vision (`#vision`) · Mission (`#mission`) · Governing Principles (`#principles`) · Timeline (`#timeline`) · Our People · Impact |
+| Initiatives | — | Urban Reforms Collective (URC) · Request for Collaboration (RFC) · Learning Network for Urban Managers · U-CAN Fellowship *(live)* |
+| Events | — | U-CAN City Mixers · The U-CAN Annual Forum 2025 |
+| Our Members | `https://urban.org.in/our-members/` *(live — organisations page, not built)* | — |
+| Media | — | Newsletter · City Champions *(live)* · Policy Webinars *(live)* |
 
 Rules:
-- **"Our People" ≠ "Our Members".** Per the content PDF (§2a) these are two *different* pages, and the live site agrees: `/our-members/` lists **member organisations** (8 orgs + 3 "Friends of U-CAN"), while **Our People** lists **individuals** (Founding Circle / Steering Committee / Stewardship Team / Our Team). `standalone/our-people.html` is the *people* page — label it "Our People". The member-organisations page is **not built locally**; its content currently lives only as the `#members` section on `index.html`.
-- **Brand/logo always links to `index.html`** (the homepage), on every page including sub-pages.
-- **The header CTA ("Subscribe") is a same-page anchor `#connect`**, not a cross-page link — every page has its own DPDP-gated newsletter section with that id.
-- **Individual detail/article pages are NOT added to this nav** (`profile-siddharth-pandit.html`, `newsletter-urban-brief-june-2026.html`) — same convention as the live site, where a member profile or a single newsletter issue isn't itself a nav item. These pages still carry the site header/footer for wayfinding; mark the closest parent item active (e.g. profile pages → "Our Members" `on`/`aria-current`, the newsletter article → its own minimal 3-link masthead nav rather than the full 6).
-- When a locally-built page is linked from body copy (CTA buttons, card links, breadcrumbs), point it at the local file, not the live urban.org.in URL — e.g. Siddharth Pandit's card on `our-people.html` links to `profile-siddharth-pandit.html`, not the live member URL. The other 22 member cards still point live (no local page exists yet for them).
-- Not-yet-built pages (Urban Reforms Collective, RFC, Media hub, Fellowship, Events) stay pointed at the live `urban.org.in` URL until they're built locally — don't invent local files for them.
-- **Markup differs by page, content doesn't.** 5 pages (`about`, `impact`, `learning-network`, `our-people`, `profile-siddharth-pandit`) share the About shell's `.bar`/`.msheet` header CSS. `index.html`, `newsletter.html`, and `newsletter-urban-brief-june-2026.html` each have their own bespoke header/footer CSS baked into a per-file base64-encoded stylesheet blob — their nav *content* was brought in line with the table above, but their visual chrome was deliberately left alone rather than risking a full CSS rewrite of an already-approved design. If a true visual unification is ever wanted, it requires decoding each page's base64 CSS blob, merging in the shell's `.bar`/`.msheet` rules, and re-encoding — not attempted so far.
-- All 8 pages use `\r\r\n` (double-CR) line endings — a quirk from the original mhtml unpack, consistent across every file. Plain string edits with `\n` or `\r\n` separators will silently fail to match; use `\r\r\n` when doing multi-line text substitution (e.g. via a small Python script with `newline=''`), not the Edit tool's line-based matching.
+- **"Our People" ≠ "Our Members".** Our People = individuals (under About Us); Our Members = the 8 member organisations + 3 Friends (top-level, still live-only). `standalone/our-people.html` is the *people* page.
+- **Brand/logo always links to `index.html`**; the header CTA "Subscribe" is the same-page anchor `#connect`.
+- **Individual detail pages are not nav items** (member profiles, a single newsletter issue). They still carry the header/footer; profiles mark **About Us** active. `newsletter-urban-brief-june-2026.html` keeps its own minimal 3-link masthead and is skipped by the nav script.
+- Not-yet-built pages stay pointed at the live `urban.org.in` URL.
+- **The nav is generated, not hand-written.** `rebuild_nav.py` (scratchpad) holds the single `NAV` definition plus the `.ucnav`/`.ucmob` markup and CSS, and rewrites every page. Edit that and re-run — never hand-edit one page's nav.
+- **Markup differs by page; the nav component doesn't.** The three header shells (`.bar`, index's `.nav`, newsletter's `.header`) each keep their own chrome, but all three now host the identical `.ucnav` desktop component and `.ucmob` mobile component, styled by one injected `<style data-ucan="nav">` block. Dropdowns open on hover via CSS and on click/keyboard via the shared JS (Escape and outside-click close them).
+- All 8 originally-unpacked pages use `
 
----
+
+` (double-CR) line endings; pages generated later use plain `
+`. Check which you're editing before doing multi-line string substitution.
 
 ## 3b. RESOLVED: JavaScript is now wired up (was: zero JS anywhere)
 
@@ -268,6 +269,8 @@ git push origin main
 | `newsletter-urban-brief-june-2026.html` | The Urban Brief — June 2026 (newsletter detail) | The Urban Brief — June 2026 | Done, in repo (also not in the original inventory) |
 | `urban-reforms-collective.html` | Urban Reforms Collective (URC) | Championing a Collective Reform Agenda for India's Cities | **Rebuilt from scratch** — see §12 |
 | `rfc.html` | Request for Collaboration (RFC) | Enabling Collaboration as a Way of Working in India's Urban Ecosystem | **Rebuilt from scratch** — see §12 |
+| `city-mixers.html` | U-CAN City Mixers (11 events) | U-CAN City Mixers | **Built** — see §16 |
+| `annual-forum-2025.html` | The U-CAN Annual Forum 2025 | The U-CAN Annual Forum 2025 | **Built** — see §16 |
 
 **NOT recovered:**
 
@@ -300,7 +303,7 @@ git push origin main
 3. **Learning Network typo fixes** — "saeries" → "series" and the title double-space. **Resolved: leave as-is.** PDF p.50 explicitly states "Content - to be kept as is" for this page, which matches the user's earlier instruction. Don't re-raise.
 4. **Retroactive dead-space audit** on any older/thin sections — offered for About / Our People / Impact / Profile.
 5. **Real images for gallery/framework/member-logo/photo elements** load only on the live server. Placeholders are in place; confirm they resolve once deployed.
-6. **Build the remaining pages the PDF has full approved copy for** (see §1a table). URC and RFC are now **done** (§12). Still to build, in the PDF's order: **Our Members** (organisations), **Annual Forum 2025**, **City Mixers** (11 events), **U-CAN Fellowship** + its 3 sub-pages (Blogs by Fellows, Meet the 2024-25 Fellows, L&D Calendar with 12 sessions). No content needs re-fetching — the PDF has it all, including per-page title tags and meta descriptions.
+6. **Build the remaining pages the PDF has full approved copy for** (see §1a table). Done so far: URC + RFC (§12), City Mixers + Annual Forum 2025 (§16). **Still to build:** **Our Members** (the organisations page — currently the only nav item still pointing live), and the **U-CAN Fellowship** group: the Fellowship page itself, Blogs by Our Fellows, Meet the 2024-25 Fellows (8 fellows), and the L&D Calendar (12 sessions, each with its own title tag + meta description). No content needs re-fetching — the PDF has it all.
 7. ~~**Wire up the JavaScript**~~ — **done, see §3b.**
 8. **Still open on the profile pages:** `our-people.html` now links all 28 cards to local profiles, but `impact.html`'s three "In their words" portraits are not linked to them. Low priority.
 9. **Photos on the profile pages are 220×220 WebP re-encodes** of the live originals (which are only 250–300px to begin with). If higher-resolution portraits exist, swapping them in would improve the hero on large screens.
@@ -453,3 +456,29 @@ Two scripts in the scratchpad, both pointed at a static server on `standalone/`:
 - **`test_js.js`** — 47 functional assertions: the DPDP gate on all four form variants (blocks empty, blocks email-without-consent, accepts both, logs the consent record only on success), the cookie banner (hidden at 5s, visible at ~11s, dismiss, `localStorage`, footer reopen), the burger menu on all three markups (open/close/aria/Escape), count-ups (normal + reduced-motion), and the FAQ accordion.
 
 **Both suites pass fully as of this round.** Re-run them after any site-wide change; the nav-width thresholds in §13 and the form gotchas in §3b are exactly the kind of thing they catch.
+
+---
+
+## 16. Events pages: City Mixers + Annual Forum 2025
+
+Both built from the PDF (§1a pp.35–46), cross-checked against the live pages for the sections the PDF marks unchanged. Builder: `build_events.py` in the scratchpad (uses `shellkit.py`).
+
+**`city-mixers.html`** — all 11 mixers, newest first, each an alternating image + write-up row (`.mx`). Copy is verbatim from the PDF.
+**`annual-forum-2025.html`** — hero + Quick Overview (text + a stats card) + the report block + all 8 testimonials in a 2-column grid + a 15-photo gallery + the 4 partner logos. The PDF's two named heading fixes are applied: **"In Their Words"** (trailing ellipsis dropped) and **"Photos from the Forum"** (capitalised).
+
+### Two content discrepancies found — PDF was followed, live site looks wrong
+1. **The live City Mixers page dates two mixers as 2026 that the PDF dates 2025** (WRI India, April 11; Artha Global, April 14). The PDF's sequence is internally consistent and calls the WRI one "the first-ever U-CAN City Mixer", so the PDF was followed. The live page also lists two extra entries (Artha 24 Apr 2025, eGov 10 Apr 2025) that look like duplicates of the 2026 ones with the wrong year, and is **missing Shelter Associates (15 May 2026)** which the PDF has. **Worth someone reconciling the live page.**
+2. **The Reap Benefit / CPR photos may be swapped on the live site.** The file named `RB-mixer.webp` sits on the CPR entry and `gdgdg.jpg` on the Reap Benefit entry. The live DOM pairing was mirrored (it's verifiably correct for the other nine — the file `WhatsApp-Image-2025-10-10…` lands exactly on the 10 Oct 2025 mixer), so the pairing here is the source's, not an error introduced in the rebuild. Flagged for a human to confirm.
+
+Shelter Associates has no photo on the live page, so its card shows a branded "Photographs coming soon" tile.
+
+---
+
+## 17. Four traps worth knowing before touching the build scripts
+
+These all cost real debugging time this round.
+
+1. **`rebuild_nav.py` is only idempotent because it explicitly strips its own previous output first.** Its container swap finds an opening tag and then the next `</div></div>`, but the markup it inserts *contains* `</div></div>` — so a second pass matches inside its own output and orphans the remainder loose into `<header>`, where the mobile menu then renders on desktop. If you change that markup, keep `strip_previous()` in step with it. Symptom: mobile nav links appear stacked under the header at desktop width.
+2. **`shellkit.py` reads `about.html` as the shell, and about.html now carries its own JSON-LD, `<style>` and `<script>` blocks.** These are stripped during head extraction — without that, every newly built page silently inherits *About's* schema (telling crawlers the new page is the About page) plus a duplicate nav stylesheet. Check `ld=1` in `verify.js` output after building anything new.
+3. **Never construct a WordPress image URL.** Both the folder (`/2025/09/` vs `/2025/10/`) and the size suffix (`-768x576`) matter, and neither is guessable — the upload month often doesn't match the event month. Copy the exact `src` string out of the fetched live page. Stripping `-768x576` to get "the original" 404s about half the time.
+4. **`loading="lazy"` makes image checks lie.** A headless check right after `load` reports most images broken simply because they never entered the viewport. Scroll the full page first, then wait, then count `naturalWidth`. (`imgcheck2.js` does this; it's how both pages were confirmed at 10/10 and 20/20.)
