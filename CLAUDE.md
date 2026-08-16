@@ -36,6 +36,37 @@ This replaced an earlier handoff where pages only existed as `.mhtml` browser sn
 
 ---
 
+## 1a. CONTENT SOURCE OF TRUTH — `Website - Plan and Content Revisions.pdf`
+
+`Website - Plan and Content Revisions.pdf` (57pp, committed at repo root) is the **authoritative content spec** and **outranks the live urban.org.in site** wherever the two disagree. It is the client's own 12-month plan + approved page-by-page copy, including exact title tags, meta descriptions, H1s, opening hooks, section copy, alt text, and named bug fixes.
+
+Extract its text with:
+```bash
+python -c "import pypdf; r=pypdf.PdfReader('Website - Plan and Content Revisions.pdf'); print('\n'.join((p.extract_text() or '') for p in r.pages))"
+```
+(`pypdf` is installed. The raw extract puts each word on its own line — collapse whitespace before reading.)
+
+**What the PDF covers, by page:**
+| PDF pages | Content |
+|---|---|
+| 2–4 | 12-month plan, Phases 1–3 (what to build/change, in priority order) |
+| 5–12 | Homepage: full new copy + SEO block + before/after table |
+| 13–15 | About Us, Our People (SEO copy, hooks, timeline addition) |
+| 15–17 | Impact: all 8 proof points + "In their words" quotes |
+| 19–32 | **U-CAN Fellowship**, Blogs by Fellows, Meet the 2024-25 Fellows, L&D Calendar (12 sessions) |
+| 33–43 | **Events**: City Mixers (11 events, full write-ups) |
+| 44–46 | **Annual Forum 2025** |
+| 49–50 | Learning Network (explicitly: "Content - to be kept as is") |
+| 51–53 | **Request for Collaboration (RFC)** |
+| 54–55 | **Urban Reforms Collective (URC)** + its 2 named bug fixes |
+| 56–57 | **Our Members** (organisations — 8 members + 3 Friends, alt text, H2 fixes) |
+
+Bolded rows are pages that **do not exist in `standalone/` yet** — the PDF contains their full approved copy, so they can be built without re-fetching anything.
+
+**Verified-aligned as of the last pass** (homepage, about, our-people, impact, learning-network all match the PDF; see §6 for the per-page audit result).
+
+---
+
 ## 2. Design system ("editorial civic")
 
 Verified against the official **U-CAN Brand Guidelines** (`/mnt/user-data/uploads/U-CAN_-_Brand_Guidelines.docx`).
@@ -97,13 +128,14 @@ Every page's header nav and footer "Quick Links" use the **same 6 destinations, 
 | Label | Href |
 |---|---|
 | About | `about.html` |
-| Our Members | `our-people.html` |
+| Our People | `our-people.html` |
 | Impact | `impact.html` |
 | Learning Network | `learning-network.html` |
 | Urban Reforms Collective | `https://urban.org.in/urban-reforms-collective` (external — not built locally yet, see §6) |
 | Newsletter | `newsletter.html` |
 
 Rules:
+- **"Our People" ≠ "Our Members".** Per the content PDF (§2a) these are two *different* pages, and the live site agrees: `/our-members/` lists **member organisations** (8 orgs + 3 "Friends of U-CAN"), while **Our People** lists **individuals** (Founding Circle / Steering Committee / Stewardship Team / Our Team). `standalone/our-people.html` is the *people* page — label it "Our People". The member-organisations page is **not built locally**; its content currently lives only as the `#members` section on `index.html`.
 - **Brand/logo always links to `index.html`** (the homepage), on every page including sub-pages.
 - **The header CTA ("Subscribe") is a same-page anchor `#connect`**, not a cross-page link — every page has its own DPDP-gated newsletter section with that id.
 - **Individual detail/article pages are NOT added to this nav** (`profile-siddharth-pandit.html`, `newsletter-urban-brief-june-2026.html`) — same convention as the live site, where a member profile or a single newsletter issue isn't itself a nav item. These pages still carry the site header/footer for wayfinding; mark the closest parent item active (e.g. profile pages → "Our Members" `on`/`aria-current`, the newsletter article → its own minimal 3-link masthead nav rather than the full 6).
@@ -207,7 +239,7 @@ git push origin main
 
 ## 6. Page inventory (all in `standalone/`)
 
-**Recovered and present in this repo:**
+**Recovered and present in this repo** — all 8 audited against the content PDF (§1a) and confirmed aligned:
 
 | File | Page | H1 | Status |
 |---|---|---|---|
@@ -250,9 +282,11 @@ git push origin main
 
 1. **Generate all 23 individual profile pages** using the Siddharth Pandit template (numeral-not-mark treatment; §3). **Blocker:** only Siddharth's full bio is available (fetched earlier). For the other 22, the user must supply bios, OR accept (a) header/photo/facts complete with a placeholder bio line, or (b) name/role/org/group only. **Photos:** `avatars_b64.json` itself is gone (see §9), but the 22 real photos still exist inlined inside `standalone/our-people.html` and `standalone/impact.html` — they can be re-extracted from there if needed rather than re-requesting from the original chat. Meghna Indurkar photo still missing regardless.
 2. **Meghna Bandelwar Indurkar photo** — still needed (Our People monogram + Impact placeholder). Drop-in swap when provided.
-3. **Learning Network typo fixes** — "saeries" → "series" and the title double-space. Offered; awaiting user's go-ahead (they said "use content as-is").
+3. **Learning Network typo fixes** — "saeries" → "series" and the title double-space. **Resolved: leave as-is.** PDF p.50 explicitly states "Content - to be kept as is" for this page, which matches the user's earlier instruction. Don't re-raise.
 4. **Retroactive dead-space audit** on any older/thin sections — offered for About / Our People / Impact / Profile.
 5. **Real images for gallery/framework/member-logo/photo elements** load only on the live server. Placeholders are in place; confirm they resolve once deployed.
+6. **Build the pages the PDF has full approved copy for but that don't exist yet** (see §1a table) — in the PDF's own priority order: **URC** and **RFC** (Phase 1 items, and the two files noted as missing in §6), then **Our Members** (organisations), **Annual Forum 2025**, **City Mixers**, **U-CAN Fellowship** + its 3 sub-pages (Blogs by Fellows, Meet the 2024-25 Fellows, L&D Calendar). No content needs re-fetching — the PDF has it all, including per-page title tags and meta descriptions.
+7. **Wire up the JavaScript** (§3b) — still the highest-priority functional gap, unrelated to content.
 
 ---
 
@@ -296,3 +330,23 @@ git push origin main
 9. Model choice is up to the user's current Claude Code default; the "Sonnet 4.6" note was specific to the original chat-based session and doesn't necessarily carry over.
 
 **Golden rules:** content verbatim · no dead space · single h1 · CLS 0 · lime on dark only · no ghost numerals or logo marks · placeholders for server-only images · verify before shipping.
+
+---
+
+## 11. PDF content audit — result log (last full pass)
+
+Every existing page was diffed against `Website - Plan and Content Revisions.pdf` (§1a) and against live urban.org.in. Result: **the redesigned pages already implement the PDF's approved copy closely.** Title tags, meta descriptions, H1s and opening hooks matched verbatim on homepage / about / our-people / learning-network; Impact's 8 proof points matched word-for-word.
+
+Deltas found and fixed:
+1. **Nav mislabel** — "Our Members" pointed at `our-people.html`. Per PDF these are different pages (§3a). Relabelled to "Our People" across all 8 files (23 links).
+2. **`impact.html` meta description** — was bespoke; replaced with the PDF's exact wording (also synced the OG + Twitter copies).
+3. **`impact.html` "Nine ways…"** — factually wrong, only 8 proof points exist → "Eight ways".
+4. **`impact.html` Pratima Joshi quote** — two clauses had been dropped ("how officials perceive us", "thereby shortening our learning curve"). Restored to the PDF's full text; the verbatim rule (§1) applies to quotes especially.
+5. **`about.html` "See our full impact"** — pointed at live `/media/` instead of the local `impact.html`.
+6. **`index.html` "Meet our members" hero CTA** — pointed at the People page; now targets the on-page `#members` organisations section, so label and destination agree.
+7. **Member logo naming** — "Praja.org" → "Praja Foundation" (alt + aria-label), matching the PDF's alt-text list.
+
+Checked and deliberately **not** changed:
+- **"saeries"** typo in `learning-network.html` — PDF says keep content as-is (§7.3).
+- **Homepage "Our Members" / "Friends of U-CAN" headings** — the PDF's `"our members" → "Member Organisations"` H2 fix targets the standalone Our Members *page*, which isn't built locally; the homepage section headings were already correctly cased.
+- **Member logos** — all 11 are present and correctly inlined as base64 with proper alt text; they are not broken.
