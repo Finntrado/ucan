@@ -8,22 +8,22 @@ Working guide for continuing the **urban.org.in** (Urban Collective Action Netwo
 
 Redesigning the live urban.org.in site, one page at a time, as **brand-compliant, single-file, responsive HTML pages** in a fresh "editorial civic" design language. Each page is a self-contained `.html` file (inline CSS + JS + base64 assets) that can be dropped straight into WordPress/Elementor or served statically.
 
-**Repo layout (Claude Code, persistent):**
+**Repo layout (Claude Code, persistent) — mirrors the dastangoi project's `standalone/` convention so Vercel deploys cleanly:**
 ```
 ucan/
 ├── CLAUDE.md
-├── pages/                  # the actual editable pages — work here
-│   ├── u-can-homepage.html
-│   ├── u-can-about-us.html          # THE SHELL — copy this to start a new page
-│   ├── u-can-our-people.html
-│   ├── u-can-impact.html
-│   ├── u-can-profile-siddharth-pandit.html
-│   ├── u-can-learning-network.html
-│   ├── u-can-newsletter.html
-│   └── u-can-newsletter-urban-brief-june-2026.html
+├── standalone/             # the actual editable pages — work here — this is the Vercel Root Directory
+│   ├── index.html                   # homepage
+│   ├── about.html                    # THE SHELL — copy this to start a new page
+│   ├── our-people.html
+│   ├── impact.html
+│   ├── profile-siddharth-pandit.html
+│   ├── learning-network.html
+│   ├── newsletter.html
+│   └── newsletter-urban-brief-june-2026.html
 └── _mhtml-originals/       # read-only backup of the browser-saved .mhtml snapshots these came from — don't edit
 ```
-This replaced an earlier handoff where pages only existed as `.mhtml` browser snapshots (Chrome "Save Page As → Single File"); they were unpacked into plain self-contained `.html` (resources re-inlined as data URIs) and moved into `pages/`. Work directly in `pages/*.html` going forward.
+This replaced an earlier handoff where pages only existed as `.mhtml` browser snapshots (Chrome "Save Page As → Single File"); they were unpacked into plain self-contained `.html` (resources re-inlined as data URIs). Filenames were later renamed to drop the `u-can-` prefix and the homepage renamed to `index.html`, matching dastangoi's naming (`about.html`, `dastan.html`, etc.) so the site has a real root document and no naming clashes on Vercel. Work directly in `standalone/*.html` going forward.
 
 **Non-negotiables for every page:**
 - Content is used **verbatim from the source page** — no rewriting, no paraphrasing, no invented copy. Only change something if the user explicitly asks (usually named bug fixes). If a typo exists in the source, preserve it and flag it; don't silently fix.
@@ -111,11 +111,11 @@ Patterns already used to satisfy this (reuse these):
 
 ## 5. Build & verify workflow
 
-Everything lives in the repo now — no sandbox, no reset. Work directly on the files in `pages/`.
+Everything lives in the repo now — no sandbox, no reset. Work directly on the files in `standalone/`.
 
 ### The reusable shell
-`pages/u-can-about-us.html` is the **canonical shell** — it contains the full head, CSS, nav, footer, cookie banner, and JS. To build a new page:
-1. Copy the About page to a new file in `pages/`.
+`standalone/about.html` is the **canonical shell** — it contains the full head, CSS, nav, footer, cookie banner, and JS. To build a new page:
+1. Copy the About page to a new file in `standalone/`.
 2. Extract the logo data-URI: regex for `<img src="(data:image/webp;base64,...)" width="38"` → save as the logo string.
 3. Swap `<title>`, meta description, canonical, hreflang, OG/Twitter, and the JSON-LD block.
 4. Inject page-specific CSS before `</style>`.
@@ -159,30 +159,36 @@ git commit -m "<short summary of this round>"
 git push origin main
 ```
 
+### Vercel deployment
+- **Root Directory:** `standalone` (Project Settings → General → Root Directory).
+- **Build/Install Command:** none — static HTML, no build step. **Output Directory:** default/`.`.
+- `index.html` is the homepage, so the bare domain resolves correctly — no redirect/rewrite needed.
+- `_mhtml-originals/` and `_scripts/` sit outside `standalone/`, so they're never deployed.
+
 ---
 
-## 6. Page inventory (all in `pages/`)
+## 6. Page inventory (all in `standalone/`)
 
 **Recovered and present in this repo:**
 
 | File | Page | H1 | Status |
 |---|---|---|---|
-| `u-can-homepage.html` | Homepage (editorial-civic redesign) | — | Done, in repo |
-| `u-can-about-us.html` | About Us — **THE SHELL** | About U-CAN | Done, in repo |
-| `u-can-our-people.html` | Our People (28 cards, 22/23 real photos) | Our People | Done, in repo |
-| `u-can-impact.html` | Impact ("What We've Built Together") | What We've Built Together | Done, in repo |
-| `u-can-profile-siddharth-pandit.html` | Individual profile **template** | Siddharth Pandit | Done, in repo (template) |
-| `u-can-learning-network.html` | Learning Network for Urban Managers | Learning Network for Urban Managers | Done, in repo |
-| `u-can-newsletter.html` | Newsletter — Urban Governance Updates | Newsletter — Urban Governance Updates | Done, in repo (wasn't in the original chat's inventory — recovered from a saved snapshot) |
-| `u-can-newsletter-urban-brief-june-2026.html` | The Urban Brief — June 2026 (newsletter detail) | The Urban Brief — June 2026 | Done, in repo (also not in the original inventory) |
+| `index.html` | Homepage (editorial-civic redesign) | — | Done, in repo |
+| `about.html` | About Us — **THE SHELL** | About U-CAN | Done, in repo |
+| `our-people.html` | Our People (28 cards, 22/23 real photos) | Our People | Done, in repo |
+| `impact.html` | Impact ("What We've Built Together") | What We've Built Together | Done, in repo |
+| `profile-siddharth-pandit.html` | Individual profile **template** | Siddharth Pandit | Done, in repo (template) |
+| `learning-network.html` | Learning Network for Urban Managers | Learning Network for Urban Managers | Done, in repo |
+| `newsletter.html` | Newsletter — Urban Governance Updates | Newsletter — Urban Governance Updates | Done, in repo (wasn't in the original chat's inventory — recovered from a saved snapshot) |
+| `newsletter-urban-brief-june-2026.html` | The Urban Brief — June 2026 (newsletter detail) | The Urban Brief — June 2026 | Done, in repo (also not in the original inventory) |
 
 **NOT recovered — no source exists in this repo, needs to be regenerated or re-fetched from the original chat before it's lost:**
 
 | File | Page | Status |
 |---|---|---|
-| `u-can-urban-reforms-collective.html` | Urban Reforms Collective (URC) | **Missing.** No `.mhtml`/`.html` snapshot was ever saved for this one. |
-| `u-can-rfc.html` | Request for Collaboration (RFC) | **Missing.** Same — never saved out of the original chat's sandbox. |
-| `u-can-homepage-redesign.html` vs original homepage | Two homepage variants were mentioned in the original session; only one homepage snapshot (`u-can-homepage.html`) made it out. If the other variant matters, it needs to be re-pulled from the original chat. |
+| `urban-reforms-collective.html` | Urban Reforms Collective (URC) | **Missing.** No `.mhtml`/`.html` snapshot was ever saved for this one. |
+| `rfc.html` | Request for Collaboration (RFC) | **Missing.** Same — never saved out of the original chat's sandbox. |
+| homepage-redesign variant vs original homepage | Two homepage variants were mentioned in the original session; only one homepage snapshot (`index.html`) made it out. If the other variant matters, it needs to be re-pulled from the original chat. |
 
 ### Page-specific notes
 
@@ -204,7 +210,7 @@ git push origin main
 
 ## 7. Pending / standing offers
 
-1. **Generate all 23 individual profile pages** using the Siddharth Pandit template (numeral-not-mark treatment; §3). **Blocker:** only Siddharth's full bio is available (fetched earlier). For the other 22, the user must supply bios, OR accept (a) header/photo/facts complete with a placeholder bio line, or (b) name/role/org/group only. **Photos:** `avatars_b64.json` itself is gone (see §9), but the 22 real photos still exist inlined inside `pages/u-can-our-people.html` and `pages/u-can-impact.html` — they can be re-extracted from there if needed rather than re-requesting from the original chat. Meghna Indurkar photo still missing regardless.
+1. **Generate all 23 individual profile pages** using the Siddharth Pandit template (numeral-not-mark treatment; §3). **Blocker:** only Siddharth's full bio is available (fetched earlier). For the other 22, the user must supply bios, OR accept (a) header/photo/facts complete with a placeholder bio line, or (b) name/role/org/group only. **Photos:** `avatars_b64.json` itself is gone (see §9), but the 22 real photos still exist inlined inside `standalone/our-people.html` and `standalone/impact.html` — they can be re-extracted from there if needed rather than re-requesting from the original chat. Meghna Indurkar photo still missing regardless.
 2. **Meghna Bandelwar Indurkar photo** — still needed (Our People monogram + Impact placeholder). Drop-in swap when provided.
 3. **Learning Network typo fixes** — "saeries" → "series" and the title double-space. Offered; awaiting user's go-ahead (they said "use content as-is").
 4. **Retroactive dead-space audit** on any older/thin sections — offered for About / Our People / Impact / Profile.
@@ -220,7 +226,7 @@ git push origin main
 - Optional: split base64 assets into an `/assets` folder to shrink HTML and improve caching (currently everything is inline for portability).
 - Re-run the full verification (§5) on the deployed URL.
 
-**Local preview:** no build step — just open a file in `pages/` directly in a browser, or serve the folder (`python -m http.server 8080` from `pages/`, then visit `http://localhost:8080/u-can-about-us.html`).
+**Local preview:** no build step — just open a file in `standalone/` directly in a browser, or serve the folder (`python -m http.server 8080` from `standalone/`, then visit `http://localhost:8080/about.html`).
 
 ---
 
@@ -230,12 +236,12 @@ git push origin main
 - **Brand guidelines** (`U-CAN_-_Brand_Guidelines.docx`) — missing.
 - **12-month planning doc** (`Website_-_12-month_planning.docx`) — missing.
 - **Raw people photos** (22 headshots, `.webp`/`.png`) — missing.
-- **`avatars_b64.json`** (slug → base64 WebP avatar map) — missing. Note: the photos themselves are still present *inside* `pages/u-can-our-people.html` and `pages/u-can-impact.html` as inlined base64 `<img>` data, since those pages were recovered as full self-contained HTML. It's only the standalone JSON map (useful for reuse across the 23 individual profile pages, see §7) that's gone.
+- **`avatars_b64.json`** (slug → base64 WebP avatar map) — missing. Note: the photos themselves are still present *inside* `standalone/our-people.html` and `standalone/impact.html` as inlined base64 `<img>` data, since those pages were recovered as full self-contained HTML. It's only the standalone JSON map (useful for reuse across the 23 individual profile pages, see §7) that's gone.
 
 **Present:**
 - **Logo:** inlined inside each page's HTML (`data:image/webp;base64,…` at `width="38"`) — no separate file needed.
 - **Live report (RFC):** https://urban.org.in/from-parellel-to-together-building-a-collaboration-practice-for-indias-urban-ecosystem
-- **Learning Network PDFs:** one-pager + knowledge report (URLs inline in `pages/u-can-learning-network.html`)
+- **Learning Network PDFs:** one-pager + knowledge report (URLs inline in `standalone/learning-network.html`)
 
 ---
 
@@ -243,12 +249,12 @@ git push origin main
 
 1. Get the target URL + the user's spec (title tag, meta, H1 to keep, any bug fixes, which sections stay verbatim).
 2. Fetch the live page; extract content **verbatim**.
-3. Copy `pages/u-can-about-us.html` (the shell); swap meta/title/canonical/OG/JSON-LD/nav/`ids`.
+3. Copy `standalone/about.html` (the shell); swap meta/title/canonical/OG/JSON-LD/nav/`ids`.
 4. Build the `<main>` — **every section must pass the dead-space rule (§4)**.
 5. Reuse established patterns (teal-deep cards, stat panels, pull-quote cards, numbered question panels, card grids). Cycle accents through the teal family; lime only on dark.
 6. Add `onerror` placeholders for any WordPress-hosted images.
 7. Verify: 1 h1, CLS 0, no console errors, clean 320–1440, valid JSON-LD, consent + banner working, no ghost numerals/marks. (No Playwright/sandbox here — check by opening the file in a real browser; ask the user to confirm visually if you can't verify something yourself.)
-8. Save the new file into `pages/` and commit it (see the checkpoint workflow — same habit as other repos: commit after every round of changes).
+8. Save the new file into `standalone/` (short filename, no `u-can-` prefix — see §1) and commit it (see the checkpoint workflow — same habit as other repos: commit after every round of changes).
 9. Model choice is up to the user's current Claude Code default; the "Sonnet 4.6" note was specific to the original chat-based session and doesn't necessarily carry over.
 
 **Golden rules:** content verbatim · no dead space · single h1 · CLS 0 · lime on dark only · no ghost numerals or logo marks · placeholders for server-only images · verify before shipping.
