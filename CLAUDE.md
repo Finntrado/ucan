@@ -566,3 +566,65 @@ Both suites run against `python -m http.server 8099` in `standalone/`, and both 
 - **`imgcheck2.js` / `imgblogs2.js`** — remote images, after scrolling (and after expanding collapsed grids). City Mixers 10/10, Annual Forum 20/20, RFC 1/1, **fellow-blogs 58/58**.
 
 **Trap this round:** the blog grid's "Show all posts" button was a no-op because the archive handler was scoped to `.issue` only, so 46 of 58 thumbnails never even requested. The handler covers `.issue, .bcard`. When a listing looks like it has broken images, **check the reveal button before blaming the URLs.**
+
+---
+
+## 22. Every link is now a page (59 → 148)
+
+**Rule going forward: if the site links to it, the site contains it.** The only
+exceptions are hosted files and viewers that have no static content (below).
+
+| Built this round | Count | Source |
+|---|---|---|
+| `newsletter-<slug>.html` | 13 | the real archive on urban.org.in (Nov 2023 – Nov 2024) |
+| `blog-<slug>.html` | 58 | `urban.org.in/fellow-blogs/<slug>/`, body verbatim |
+| `policy-webinars.html` + `webinar-<slug>.html` | 1 + 9 | `urban.org.in/policy-webinars/` and its `/etn/` pages |
+| `webinar-recap-<slug>.html` | 4 | `urban.org.in/webinars/<slug>/` — separate recap articles |
+| `event-hosted-by-artha-global.html` | 1 | an `/etn/` page that belongs to City Mixers, not the webinars |
+| `city-champions.html` | 1 | 4 podcast episodes, YouTube ids pulled from Elementor settings |
+| `privacy-policy.html`, `terms-of-use.html` | 2 | verbatim; they were linked 119 + 59 times from the footer |
+
+`relink_all.py` then repointed **669 anchors** at the new local pages. It rewrites
+`<a href>` **only** — canonical / hreflang / og:url / JSON-LD keep pointing at
+urban.org.in, because that is where these pages get published.
+
+### What is deliberately still external
+- **Hosted PDFs** (Annual Forum report, Learning Network one-pager and knowledge
+  report, the four webinar decks, the May 2024 newsletter). They are files, not pages.
+- **`/ucan-brochure-final/`** and the **RFC "From Parallel to Together" report** —
+  both are JS flipbook viewers. No static content, no reachable PDF, nothing to migrate.
+- Member organisations' own websites, YouTube, LinkedIn.
+
+### The newsletters have no content to migrate — this needs U-CAN
+Every live issue page at `urban.org.in/newsletter/<slug>/` is **empty**: the body is
+a single unprocessed `[acf_pdf_embed]` shortcode with no PDF attached. Only **May
+2024** has a real PDF (`/2024/06/May-2024.pdf`). What the live site actually shows
+for an issue is its cover image, so that is what these pages present — inlined as
+WebP so they render without urban.org.in — plus prev/next and the subscribe path.
+**To finish these properly, U-CAN must supply the 12 missing newsletter PDFs.**
+
+### Scraping notes
+- Post bodies live in `.elementor-widget-theme-post-content > .elementor-widget-container`;
+  event bodies in `.etn-event-content-body`. `wpbody.py` extracts either by **counting
+  div depth** (Elementor nests freely, so a lazy regex closes in the wrong place) and
+  sanitises down to the tag set the design system styles.
+- **City Champions has no `<iframe>`** — its four videos are Elementor
+  `data-settings` JSON with escaped `youtube_url` values. Parse the ids out; don't
+  look for embeds.
+- **Newsletter archive cards are `<article class="elementor-post">`.** Parse per card.
+  Taking "the last `<img>` before the heading" pairs every issue with the *previous*
+  one's cover — the whole archive comes out shifted by one, which is how November 2024
+  ended up with no image and October 2024 with November's.
+- `prep_issues.py` · `prep_blogs.py` · `build_posts.py` · `build_issues.py` ·
+  `build_media.py` · `build_recaps.py` · `build_static.py` · `relink_all.py`.
+
+### Sandbox trap
+`mkdir` run **without** `dangerouslyDisableSandbox` creates directories in an overlay
+the unsandboxed run cannot see, so a later `curl -o` into them fails with "No such file
+or directory" while `ls` says they exist. Do the mkdir and the fetch in the **same**
+unsandboxed call (or just use Python's `os.makedirs` inside the fetch script).
+
+### Verification at 148 pages
+`verify.js` — 148 pages × 13 widths, **all pass**. `test_js.js` — **91 assertions, 0
+failing**. `imgblogs2.js` — the blog grid loads **58/58** thumbnails after expanding.
+An internal-link audit reports **zero broken internal links**.
