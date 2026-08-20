@@ -43,7 +43,7 @@ This replaced an earlier handoff where pages only existed as `.mhtml` browser sn
 
 ## 1a. CONTENT SOURCE OF TRUTH — `Website - Plan and Content Revisions.pdf`
 
-`Website - Plan and Content Revisions.pdf` (57pp, committed at repo root) is the **authoritative content spec** and **outranks the live urban.org.in site** wherever the two disagree. It is the client's own 12-month plan + approved page-by-page copy, including exact title tags, meta descriptions, H1s, opening hooks, section copy, alt text, and named bug fixes.
+`Website - Plan and Content Revisions.pdf` (**64pp**, committed at repo root) is the **authoritative content spec** and **outranks the live urban.org.in site** wherever the two disagree. It is the client's own 12-month plan + approved page-by-page copy, including exact title tags, meta descriptions, H1s, opening hooks, section copy, alt text, and named bug fixes.
 
 Extract its text with:
 ```bash
@@ -658,3 +658,51 @@ match (`ucnav-bar`, `bar-in`, `f-sub`, …), and the injected chrome stylesheet 
 page per stylesheet variant and asserts the geometry is byte-identical, that `#cc`
 computes to `position: fixed`, and that nothing in the header carries a border.
 **115 assertions, 0 failing.**
+
+---
+
+## 24. The 64-page PDF revision (Media)
+
+The content PDF was replaced with a 64-page version. A per-page diff showed
+**pages 1–57 unchanged**, so every page already built stayed valid — the revision
+only adds a Media section covering the two pages that had been built from the live
+site without any PDF guidance.
+
+**City Champions** (pp.60–61) — `build_static.py`:
+- Title tag → `City Champions Podcast | U-CAN`; H1 → **City Champions Podcast**;
+  meta description replaced with the PDF's.
+- Intro reordered to the PDF's sequence: the "In mid-2024…" partnership paragraph
+  leads, then "The City Champions podcast brings together voices…".
+- **Episode 2 rewritten.** The live site had duplicated Episode 1's blurb onto
+  Episode 2, which the previous build faithfully carried over; the PDF flags it
+  ("was duplicated from Episode 1") and supplies real copy.
+- Episode 3 title-cased per the PDF; featured guests use the PDF's
+  `Name, Role, Organisation` form (episodes 3–4 normalised to match).
+- Closing CTA is now the PDF's YouTube link, replacing the generic media band.
+
+**Policy Webinars** (p.64) — `build_media.py`: PDF title tag, meta description and
+intro, all verbatim. The bespoke "One question at a time, in public" section the
+earlier build had invented (the live page carried no intro) is **removed** — no copy
+on that page is now anything but the PDF's.
+
+### Two bugs caught while rebuilding
+- **The YouTube ids were in the wrong order.** They were parsed out of Elementor
+  `data-settings` in DOM order and assigned to episodes 1-4 in sequence, but that
+  order is not the episode order: episodes 1, 2 and 3 all showed the wrong video.
+  Correct mapping (verified against each id's **YouTube oEmbed title**, not DOM
+  position): Ep1 `hGHrr2mD6O8` · Ep2 `scZQvFPqNA4` · Ep3 `LLa14DgZz4c` ·
+  Ep4 `j6qcGe_aLjk`. **Never infer media order from embed position — look up the title.**
+- **`.blist li` is a CSS grid**, so an `<a>` followed by plain text becomes *two*
+  grid items and the line splits across rows. Any list item with an inline link must
+  wrap its whole content in one `<span>`.
+
+### A partial build is worse than a failed one
+`chrome.py` and `rebuild_nav.py` both died mid-pass on a transient Windows
+`OSError: [Errno 22]`, leaving 12 pages without the chrome stylesheet and 106
+without the nav — silently, because the traceback scrolled past. Both writers now
+retry a locked file, and **`checksite.py` is the last step of the chain**: it asserts
+every shared component (chrome/nav/rhythm/JS/header/footer/cookie banner) is present
+exactly once on all 148 pages and exits non-zero otherwise.
+
+**Build chain order:** `build_*` → `chrome.py` → `rebuild_nav.py` → `rhythm.py` →
+`inject_js.py` → `relink_all.py` → `checksite.py`.
