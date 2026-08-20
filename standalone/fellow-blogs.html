@@ -141,13 +141,25 @@
 /* ——— quote grid (annual forum) ——— */
 .qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,2.2vw,26px);margin-top:clamp(28px,3.5vw,40px)}
 .qgrid>*{min-width:0}
-.qc{margin:0;border:1px solid var(--line);background:var(--paper);padding:clamp(24px,2.6vw,32px);display:flex;flex-direction:column;gap:16px}
+.qc{margin:0;position:relative;overflow:hidden;border:1px solid var(--line);background:var(--paper);
+  padding:clamp(26px,2.8vw,34px);display:flex;flex-direction:column;gap:18px;
+  transition:border-color .25s var(--e),transform .25s var(--e),box-shadow .25s var(--e)}
 .sec.alt .qc{background:#fff}
-.qc blockquote{margin:0;font-size:16px;line-height:1.7;color:var(--ink);overflow-wrap:break-word}
-.qc blockquote::before{content:"“";font-family:var(--display);font-weight:800;font-size:34px;line-height:0;color:var(--teal);margin-right:4px;vertical-align:-6px}
-.qc figcaption{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}
-.qc figcaption b{display:block;font-family:var(--display);font-size:15px}
-.qc figcaption span{display:block;font-size:13px;color:var(--ink-soft);margin-top:3px;line-height:1.5}
+.qc:hover{border-color:var(--teal);transform:translateY(-3px);box-shadow:var(--shadow)}
+.qc .qm{position:absolute;top:-16px;right:14px;font-family:var(--display);font-weight:800;
+  font-size:120px;line-height:1;color:var(--teal);opacity:.09;pointer-events:none;user-select:none}
+.qc blockquote{margin:0;position:relative;z-index:1;font-size:clamp(16px,1.7vw,17.5px);
+  line-height:1.72;color:var(--ink);overflow-wrap:break-word}
+.qc figcaption{margin-top:auto;border-top:1px solid var(--line);padding-top:16px;
+  display:flex;align-items:center;gap:14px}
+.qc figcaption>*{min-width:0}
+.qc .av{width:56px;height:56px;border-radius:50%;overflow:hidden;flex:none;background:var(--paper-alt);
+  display:flex;align-items:center;justify-content:center}
+.qc .av img{width:100%;height:100%;object-fit:cover;display:block}
+.qc .av.mono{background:var(--teal-deep);color:var(--lime);font-family:var(--display);
+  font-weight:800;font-size:19px;letter-spacing:.02em}
+.qc .qn b{display:block;font-family:var(--display);font-size:15.5px;color:var(--ink)}
+.qc .qn>span{display:block;font-size:13px;color:var(--ink-soft);margin-top:3px;line-height:1.5}
 
 /* ——— partner logos ——— */
 .ptrow{list-style:none;margin:clamp(26px,3.2vw,38px) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -156,6 +168,8 @@
 .pt img{position:relative;z-index:1;max-width:100%;max-height:70px;width:auto;height:auto;object-fit:contain}
 .pt .ph{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px}
 .pt .ph b{font-family:var(--display);font-weight:700;font-size:12.5px;color:var(--teal-text);line-height:1.35}
+/* a logo with a transparent background would otherwise show the name through it */
+.pt.ok .ph,.gal figure.ok .ph{display:none}
 
 @media(max-width:900px){
   .mx{grid-template-columns:1fr}
@@ -172,6 +186,101 @@
   .gal{grid-template-columns:1fr}
   .numcard li,.blist li{grid-template-columns:auto 1fr}
 }
+
+/* ——— icon primitives ——— */
+.ic{display:block;width:24px;height:24px;flex:none}
+.icb{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-text);flex:none;
+  transition:background .25s var(--e),color .25s var(--e),border-color .25s var(--e),transform .25s var(--e)}
+.sec.alt .icb{background:#fff}
+.icb.on-dark{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:var(--lime)}
+
+/* ——— icon rows inside a dark numbered card (URC "Urban reform requires") ——— */
+.icrow{list-style:none;margin:0;padding:0;position:relative;z-index:1}
+.icrow li{list-style:none;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;
+  padding:16px 0;border-top:1px solid rgba(255,255,255,.16)}
+.icrow li:first-child{border-top:0;padding-top:0}
+.icrow span{color:#DCEAE6;font-size:15.5px;line-height:1.6;min-width:0;padding-top:11px}
+
+/* ——— icon cards (RFC objectives, Fellowship highlights) ——— */
+.aim.icard .n,.hlc.icard .n{display:none}
+.icard{display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;
+  transition:border-color .25s var(--e),transform .25s var(--e),box-shadow .25s var(--e)}
+.icard::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--teal);
+  transform:scaleX(0);transform-origin:left;transition:transform .35s var(--e)}
+.icard:hover,.icard:focus-within{border-color:var(--teal);transform:translateY(-3px);box-shadow:var(--shadow)}
+.icard:hover::after,.icard:focus-within::after{transform:scaleX(1)}
+.icard:hover .icb,.icard:focus-within .icb{background:var(--teal-deep);border-color:var(--teal-deep);color:var(--lime)}
+.icard .ihead{display:flex;align-items:center;gap:14px}
+.icard .ihead h3{margin:0;font-size:17.5px;line-height:1.3;min-width:0}
+.icard .step{margin-left:auto;font-family:var(--display);font-weight:800;font-size:12.5px;
+  letter-spacing:.12em;color:var(--teal-text);flex:none}
+
+/* ——— vertical stepper (Learning Network pilot phase) ——— */
+.stepper{list-style:none;margin:0;padding:0;position:relative;z-index:1;counter-reset:st}
+.stepper li{list-style:none;counter-increment:st;position:relative;display:grid;
+  grid-template-columns:auto 1fr;gap:16px;padding-bottom:22px}
+.stepper li:last-child{padding-bottom:0}
+.stepper li::before{content:counter(st);grid-row:1;grid-column:1;display:flex;align-items:center;
+  justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--lime);
+  color:var(--teal-deep);font-family:var(--display);font-weight:800;font-size:15px;flex:none}
+.stepper li::after{content:"";position:absolute;left:16.5px;top:38px;bottom:6px;width:1px;
+  background:rgba(205,222,113,.38)}
+.stepper li:last-child::after{display:none}
+.stepper p{margin:0;padding-top:6px;color:#EAF3F0;font-size:15.5px;line-height:1.6;min-width:0}
+
+/* ——— stat tiles with icons (L&D at a glance) ——— */
+.stiles{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.stiles>*{min-width:0}
+.stile{list-style:none;border:1px solid var(--line);background:var(--paper);padding:18px 18px 20px;
+  display:flex;flex-direction:column;gap:10px;transition:border-color .25s var(--e),background .25s var(--e)}
+.stile:hover{border-color:var(--teal)}
+.stile .icb{width:38px;height:38px}
+.stile .icb .ic{width:20px;height:20px}
+.stile b{font-family:var(--display);font-weight:800;font-size:clamp(22px,2.6vw,30px);
+  line-height:1;color:var(--teal-deep);letter-spacing:-.01em}
+.stile b.sm{font-size:clamp(15px,1.7vw,18px);line-height:1.3}
+.stile span{font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+
+/* ——— social handle row (Meet the Fellows) ——— */
+.soc{display:flex;gap:8px;margin-top:auto;padding-top:12px}
+.soc a{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;
+  border:1px solid var(--line);color:var(--teal-text);background:transparent;
+  transition:background .2s var(--e),color .2s var(--e),border-color .2s var(--e)}
+.soc a .ic{width:16px;height:16px}
+.soc a:hover{background:var(--teal-deep);border-color:var(--teal-deep);color:var(--lime)}
+.soc.on-dark{margin-top:20px;padding-top:0}
+.soc.on-dark a{border-color:rgba(255,255,255,.24);color:var(--lime)}
+.soc.on-dark a:hover{background:var(--lime);border-color:var(--lime);color:var(--teal-deep)}
+
+/* ——— tabs (Fellowship: knowledge / network / funding) ——— */
+.tabs{margin-top:clamp(24px,3vw,34px)}
+.tablist{display:flex;flex-wrap:wrap;gap:10px}
+.tabs .tab{font:inherit;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;
+  align-items:center;gap:10px;padding:12px 20px;line-height:1.2;
+  border:1px solid var(--line);background:#fff;color:var(--ink-soft);
+  transition:background .25s var(--e),color .25s var(--e),border-color .25s var(--e)}
+.sec.alt .tabs .tab{background:var(--paper)}
+.tabs .tab .ic{width:19px;height:19px}
+.tabs .tab:hover{border-color:var(--teal);color:var(--teal-text)}
+.tabs .tab[aria-selected="true"]{background:var(--teal-deep);border-color:var(--teal-deep);color:#fff}
+.tabs .tab[aria-selected="true"] .ic{color:var(--lime)}
+.tabpane{background:var(--teal-deep);color:#EAF3F0;padding:clamp(26px,3.4vw,40px);
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,3vw,34px);align-items:start}
+.tabpane>*{min-width:0}
+.tabpane[hidden]{display:none}
+.tabpane .tnum{font-family:var(--display);font-weight:800;font-size:clamp(40px,6vw,68px);
+  line-height:.9;color:var(--lime);letter-spacing:-.02em}
+.tabpane h3{font-size:clamp(20px,2.4vw,27px);color:#fff;margin:0 0 12px;line-height:1.2}
+.tabpane p{margin:0;font-size:clamp(15px,1.7vw,17px);line-height:1.7;color:#DCEAE6;max-width:72ch}
+@media(max-width:640px){
+  .tabpane{grid-template-columns:1fr;gap:14px}
+  .tabs .tab{flex:1 1 auto;justify-content:center;padding:12px 14px}
+}
+
+@media(max-width:900px){.stiles{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.stiles{grid-template-columns:1fr}}
+
 </style>
 
 <style>
@@ -183,6 +292,9 @@
 .panel h3{font-size:15px;letter-spacing:.02em;margin-bottom:16px}
 .prow{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:13px 0;border-top:1px solid var(--line);align-items:baseline}
 .prow:first-of-type{border-top:0;padding-top:0}
+a.prow{text-decoration:none;transition:color .2s var(--e)}
+a.prow span{transition:color .2s var(--e)}
+a.prow:hover span{color:var(--teal-text)}
 .prow b{font-family:var(--display);font-weight:800;font-size:20px;color:var(--teal-deep);line-height:1}
 .prow span{font-size:14.5px;color:var(--ink-soft);line-height:1.55;min-width:0}
 
@@ -215,7 +327,9 @@
 .fcard{display:flex;flex-direction:column;height:100%;background:#fff;border:1px solid var(--line);
   text-decoration:none;overflow:hidden;transition:border-color .2s var(--e),transform .2s var(--e),box-shadow .2s var(--e)}
 .sec.alt .fcard{background:var(--paper)}
-.fcard:hover{border-color:var(--teal);transform:translateY(-3px);box-shadow:var(--shadow)}
+.fcard:hover,.fcard:focus-within{border-color:var(--teal);transform:translateY(-3px);box-shadow:var(--shadow)}
+.fcard .flink{display:flex;flex-direction:column;flex:1;text-decoration:none;color:inherit}
+.fcard .soc{margin:0 18px 18px;padding-top:14px;border-top:1px solid var(--line)}
 .fcard img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;background:var(--paper-alt)}
 .fcard .fb{padding:18px 18px 20px;display:flex;flex-direction:column;gap:5px;flex:1}
 .fcard .fn{font-family:var(--display);font-weight:700;font-size:16.5px;line-height:1.25;color:var(--ink)}
@@ -265,6 +379,39 @@
 .bcard.hidden{display:none}
 .moreWrap{display:flex;justify-content:center;margin-top:clamp(26px,3.2vw,38px)}
 
+/* ——— blog tags + author filter ——— */
+.btags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.03em;
+  padding:3px 9px;border:1px solid var(--line);border-radius:999px;
+  background:var(--paper-alt);color:var(--teal-text);line-height:1.5}
+.sec.alt .tag{background:#fff}
+.fbar{display:flex;flex-wrap:wrap;gap:9px;margin:clamp(22px,2.6vw,30px) 0 0}
+.filter-btn{font:inherit;font-size:14px;font-weight:600;cursor:pointer;
+  padding:9px 16px;border:1px solid var(--line);border-radius:999px;
+  background:#fff;color:var(--ink-soft);line-height:1.2;
+  transition:border-color .2s var(--e),color .2s var(--e),background .2s var(--e)}
+.filter-btn:hover{border-color:var(--teal);color:var(--teal-text)}
+.filter-btn.active{background:var(--teal-deep);border-color:var(--teal-deep);color:#fff}
+.filter-btn .c{opacity:.6;font-weight:500;margin-left:5px}
+.fcount{font-size:14px;color:var(--ink-soft);margin-top:16px}
+
+/* ——— a Fellow's own posts, on their profile page ——— */
+.alist{list-style:none;margin:clamp(24px,3vw,34px) 0 0;padding:0;
+  display:grid;gap:14px}
+.alist li{list-style:none}
+.arow{display:grid;grid-template-columns:74px 1fr;gap:clamp(14px,2vw,20px);
+  align-items:center;background:#fff;border:1px solid var(--line);
+  padding:14px;text-decoration:none;
+  transition:border-color .2s var(--e),transform .2s var(--e),box-shadow .2s var(--e)}
+.sec.alt .arow{background:var(--paper)}
+.arow:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:var(--shadow)}
+.arow>*{min-width:0}
+.arow .at{width:74px;height:74px;background:var(--paper-alt);overflow:hidden}
+.arow .at img{width:100%;height:100%;object-fit:cover}
+.arow h3{font-size:16.5px;line-height:1.34;color:var(--ink);overflow-wrap:break-word}
+.arow .ad{display:block;font-family:var(--display);font-weight:700;font-size:12px;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--teal-text);margin-bottom:5px}
+
 /* ——— session list (L&D calendar) ——— */
 .slist{list-style:none;margin:clamp(28px,3.6vw,42px) 0 0;padding:0;border-top:1px solid var(--line)}
 .slist li{list-style:none}
@@ -303,6 +450,8 @@
   .sdate{grid-column:1/-1;width:auto}
 }
 @media(max-width:680px){
+  .arow{grid-template-columns:56px 1fr}
+  .arow .at{width:56px;height:56px}
   .mgrid{grid-template-columns:repeat(2,1fr)}
   .fgrid{grid-template-columns:repeat(2,1fr)}
   .bgrid{grid-template-columns:1fr}
@@ -550,22 +699,22 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
 <header class="bar" id="bar">
   <div class="bar-in">
-    <a class="brand" href="index.html" aria-label="U-CAN — Urban Collective Action Network, home">
+    <a class="brand" href="/" aria-label="U-CAN — Urban Collective Action Network, home">
       <img src="data:image/webp;base64,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" width="38" height="38" alt="" fetchpriority="high" decoding="async">
       <span><b>U-CAN</b><small>Urban Collective Action Network</small></span>
     </a>
-    <nav class="ucnav-bar" aria-label="Primary"><div class="ucnav"><div class="ucnav-i"><a class="ucnav-t" href="about.html">About Us<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><div class="ucnav-dd"><a href="about.html">About U-CAN</a><a href="our-people.html">Our People</a><a href="impact.html">Impact</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t on" aria-expanded="false" aria-haspopup="true">Initiatives<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="urban-reforms-collective.html">Urban Reforms Collective (URC)</a><a href="rfc.html">Request for Collaboration (RFC)</a><a href="learning-network.html">Learning Network for Urban Managers</a><a href="fellowship.html">U-CAN Fellowship</a><p class="ucnav-gh">Fellowship</p><a href="meet-the-fellows.html">Meet the 2024-25 Fellows</a><a href="fellow-blogs.html">Blogs by Our Fellows</a><a href="ld-calendar.html">L&D Calendar</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Events<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="city-mixers.html">U-CAN City Mixers</a><a href="annual-forum-2025.html">The U-CAN Annual Forum 2025</a></div></div><a class="ucnav-t" href="our-members.html">Our Members</a><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Media<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="newsletter.html">Newsletter</a><a href="city-champions.html">City Champions</a><a href="policy-webinars.html">Policy Webinars</a></div></div></div></nav>
-    <a class="bar-cta" href="newsletter.html#subscribe">Subscribe</a>
+    <nav class="ucnav-bar" aria-label="Primary"><div class="ucnav"><div class="ucnav-i"><a class="ucnav-t" href="about">About Us<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><div class="ucnav-dd"><a href="about">About U-CAN</a><a href="our-people">Our People</a><a href="impact">Impact</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t on" aria-expanded="false" aria-haspopup="true">Initiatives<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="urban-reforms-collective">Urban Reforms Collective (URC)</a><a href="rfc">Request for Collaboration (RFC)</a><a href="learning-network">Learning Network for Urban Managers</a><a href="fellowship">U-CAN Fellowship</a><p class="ucnav-gh">Fellowship</p><a href="meet-the-fellows">Meet the 2024-25 Fellows</a><a href="fellow-blogs">Blogs by Our Fellows</a><a href="ld-calendar">L&D Calendar</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Events<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="city-mixers">U-CAN City Mixers</a><a href="annual-forum-2025">The U-CAN Annual Forum 2025</a></div></div><a class="ucnav-t" href="our-members">Our Members</a><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Media<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="newsletter">Newsletter</a><a href="city-champions">City Champions</a><a href="policy-webinars">Policy Webinars</a></div></div></div></nav>
+    <a class="bar-cta" href="newsletter#subscribe">Subscribe</a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="msheet" aria-label="Open navigation menu"><span></span></button>
   </div>
-  <div class="msheet" id="msheet"><div class="wrap"><div class="ucmob"><div class="ucmob-g"><p class="ucmob-h">About Us</p><div class="ucmob-l"><a href="about.html">About U-CAN</a><a href="our-people.html">Our People</a><a href="impact.html">Impact</a></div></div><div class="ucmob-g"><p class="ucmob-h">Initiatives</p><div class="ucmob-l"><a href="urban-reforms-collective.html">Urban Reforms Collective (URC)</a><a href="rfc.html">Request for Collaboration (RFC)</a><a href="learning-network.html">Learning Network for Urban Managers</a><a href="fellowship.html">U-CAN Fellowship</a><p class="ucmob-gh">Fellowship</p><a href="meet-the-fellows.html">Meet the 2024-25 Fellows</a><a href="fellow-blogs.html">Blogs by Our Fellows</a><a href="ld-calendar.html">L&D Calendar</a></div></div><div class="ucmob-g"><p class="ucmob-h">Events</p><div class="ucmob-l"><a href="city-mixers.html">U-CAN City Mixers</a><a href="annual-forum-2025.html">The U-CAN Annual Forum 2025</a></div></div><a class="ucmob-t" href="our-members.html">Our Members</a><div class="ucmob-g"><p class="ucmob-h">Media</p><div class="ucmob-l"><a href="newsletter.html">Newsletter</a><a href="city-champions.html">City Champions</a><a href="policy-webinars.html">Policy Webinars</a></div></div><a class="ucmob-t ucmob-cta" href="newsletter.html#subscribe">Subscribe</a></div></div></div>
+  <div class="msheet" id="msheet"><div class="wrap"><div class="ucmob"><div class="ucmob-g"><p class="ucmob-h">About Us</p><div class="ucmob-l"><a href="about">About U-CAN</a><a href="our-people">Our People</a><a href="impact">Impact</a></div></div><div class="ucmob-g"><p class="ucmob-h">Initiatives</p><div class="ucmob-l"><a href="urban-reforms-collective">Urban Reforms Collective (URC)</a><a href="rfc">Request for Collaboration (RFC)</a><a href="learning-network">Learning Network for Urban Managers</a><a href="fellowship">U-CAN Fellowship</a><p class="ucmob-gh">Fellowship</p><a href="meet-the-fellows">Meet the 2024-25 Fellows</a><a href="fellow-blogs">Blogs by Our Fellows</a><a href="ld-calendar">L&D Calendar</a></div></div><div class="ucmob-g"><p class="ucmob-h">Events</p><div class="ucmob-l"><a href="city-mixers">U-CAN City Mixers</a><a href="annual-forum-2025">The U-CAN Annual Forum 2025</a></div></div><a class="ucmob-t" href="our-members">Our Members</a><div class="ucmob-g"><p class="ucmob-h">Media</p><div class="ucmob-l"><a href="newsletter">Newsletter</a><a href="city-champions">City Champions</a><a href="policy-webinars">Policy Webinars</a></div></div><a class="ucmob-t ucmob-cta" href="newsletter#subscribe">Subscribe</a></div></div></div>
 </header>
 
 <main id="main">
 
 <section class="hero" aria-labelledby="pt">
   <div class="hero-in">
-    <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <a href="fellowship.html">U-CAN Fellowship</a> <span aria-hidden="true">/</span> <span>Blogs by Our Fellows</span></nav>
+    <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="fellowship">U-CAN Fellowship</a> <span aria-hidden="true">/</span> <span>Blogs by Our Fellows</span></nav>
     <p class="hero-tag">U-CAN Fellowship</p>
     <h1 id="pt">Blogs by Our Fellows</h1>
     <p class="hero-lede">Reflections and field notes from the U-CAN Fellowship, written by fellows
@@ -588,15 +737,16 @@ footer a:hover{color:var(--lime,#CDDE71)}
       </div>
       <div class="panel rv d1">
         <h3>Posts by Fellow</h3>
-        <div class="prow"><b>9</b><span>Aanchal Aggarwal</span></div>
-        <div class="prow"><b>9</b><span>Shreya Krishnan</span></div>
-        <div class="prow"><b>8</b><span>Aashima Arora</span></div>
-        <div class="prow"><b>8</b><span>Anwesha Bhattacharya</span></div>
-        <div class="prow"><b>7</b><span>Ramya M A</span></div>
-        <div class="prow"><b>7</b><span>Sharathppriyaa Venkatesan</span></div>
-        <div class="prow"><b>5</b><span>Manisha Bisht</span></div>
-        <div class="prow"><b>5</b><span>Shubhi Kesarwani</span></div>
+        <a class="prow" href="profile-fellow-aanchal-aggarwal"><b>9</b><span>Aanchal Aggarwal</span></a>
+        <a class="prow" href="profile-fellow-shreya-krishnan"><b>9</b><span>Shreya Krishnan</span></a>
+        <a class="prow" href="profile-fellow-aashima-arora"><b>8</b><span>Aashima Arora</span></a>
+        <a class="prow" href="profile-fellow-anwesha-bhattacharya"><b>8</b><span>Anwesha Bhattacharya</span></a>
+        <a class="prow" href="profile-fellow-ramya-ma"><b>7</b><span>Ramya M A</span></a>
+        <a class="prow" href="profile-fellow-sharathappriyaa-venkatesan"><b>7</b><span>Sharathppriyaa Venkatesan</span></a>
+        <a class="prow" href="profile-fellow-manisha-bisht"><b>5</b><span>Manisha Bisht</span></a>
+        <a class="prow" href="profile-fellow-shubhi-kesarwani"><b>5</b><span>Shubhi Kesarwani</span></a>
       </div>
+
     </div>
   </div>
 </section>
@@ -606,528 +756,654 @@ footer a:hover{color:var(--lime,#CDDE71)}
     <div class="sec-head rv">
       <p class="kicker" data-num="—">The archive</p>
       <h2 id="al">All posts</h2>
-      <p class="lead">58 posts from the 2024-25 cohort, newest first. Each opens on urban.org.in.</p>
+    </div>
+    <div class="fbar" role="group" aria-label="Filter posts by Fellow">
+      <button type="button" class="filter-btn active" data-filter="all">All Fellows<span class="c">58</span></button>
+      <button type="button" class="filter-btn" data-filter="aanchal-aggarwal">Aanchal Aggarwal<span class="c">9</span></button>
+      <button type="button" class="filter-btn" data-filter="aashima-arora">Aashima Arora<span class="c">8</span></button>
+      <button type="button" class="filter-btn" data-filter="anwesha-bhattacharya">Anwesha Bhattacharya<span class="c">8</span></button>
+      <button type="button" class="filter-btn" data-filter="manisha-bisht">Manisha Bisht<span class="c">5</span></button>
+      <button type="button" class="filter-btn" data-filter="ramya-ma">Ramya M A<span class="c">7</span></button>
+      <button type="button" class="filter-btn" data-filter="sharathappriyaa-venkatesan">Sharathppriyaa Venkatesan<span class="c">7</span></button>
+      <button type="button" class="filter-btn" data-filter="shreya-krishnan">Shreya Krishnan<span class="c">9</span></button>
+      <button type="button" class="filter-btn" data-filter="shubhi-kesarwani">Shubhi Kesarwani<span class="c">5</span></button>
     </div>
     <div class="bgrid">
-      <a class="bcard rv" href="blog-what-has-citizen-participation-led-to-impact-and-outcomes.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv" href="blog-what-has-citizen-participation-led-to-impact-and-outcomes"
+        data-author="aanchal-aggarwal" data-date="2025-12-03">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/12/1-5.png" alt="What has Citizen Participation led to? Impact and Outcomes" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>What has Citizen Participation led to? Impact and Outcomes</h3>
           <span class="bx">Open Space Development in an informal settlement in Odisha under Jaga Mission Over the past several months, my journey through …</span>
+          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Housing</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>December 3, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv d1" href="blog-what-the-city-taught-me.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv d1" href="blog-what-the-city-taught-me"
+        data-author="aashima-arora" data-date="2025-12-03">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/12/Aashima-9-Image-1024x682.jpg" alt="What the City Taught Me" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>What the City Taught Me</h3>
           <span class="bx">Showcasing SVHPS project to the community, government stakeholders and urban experts in Yuvascape held in October 2025 Looking Back to …</span>
+          <span class="btags"><span class="tag">Community</span></span>
           <span class="bm"><b>Aashima Arora</b><span>December 3, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv d2" href="blog-urban-experiments-everyday-experts-lessons-from-pelathope.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv d2" href="blog-urban-experiments-everyday-experts-lessons-from-pelathope"
+        data-author="shreya-krishnan" data-date="2025-12-03">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/12/Shreya-Blog-8-1024x508.png" alt="“Urban Experiments, Everyday Experts: Lessons from Pelathope”" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>“Urban Experiments, Everyday Experts: Lessons from Pelathope”</h3>
           <span class="bx">It was a muggy June afternoon when we found ourselves staring at stagnant water collecting near the entrance of Pelathope …</span>
+          <span class="btags"><span class="tag">Water security</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>December 3, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv" href="blog-methods-and-approaches-for-sustained-participation-2.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv" href="blog-methods-and-approaches-for-sustained-participation-2"
+        data-author="aanchal-aggarwal" data-date="2025-12-02">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/12/Aanchal-8-Image.jpg" alt="Methods and Approaches for sustained Participation" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Methods and Approaches for sustained Participation</h3>
           <span class="bx">Capacity Building Workshop,Ward Committee, Mangaluru In the previous blog, I discussed how meetings keep dialogue continuous and decisions transparent. But …</span>
+          <span class="btags"><span class="tag">Citizen participation</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>December 2, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv d1" href="blog-pilots-as-proof-of-possibility-2.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv d1" href="blog-pilots-as-proof-of-possibility-2"
+        data-author="shreya-krishnan" data-date="2025-12-02">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/12/Aashima-8-Image-1.png" alt="Pilots as Proof of Possibility" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Pilots as Proof of Possibility</h3>
           <span class="bx">Source: Coimbatore Creates Case for Tactical Urbanism Why Pilots Matter Ideas can be powerful, but unless they are tested on …</span>
+          <span class="btags"><span class="tag">Urban practice</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>December 2, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv d2" href="blog-unpacking-the-why-of-pull-my-personal-journey-to-social-en.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv d2" href="blog-unpacking-the-why-of-pull-my-personal-journey-to-social-en"
+        data-author="shreya-krishnan" data-date="2025-12-02">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/12/Shreya-Blog-7-1024x768.jpg" alt="Unpacking the “why” of PULL: my personal journey to social…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Unpacking the “why” of PULL: my personal journey to social…</h3>
           <span class="bx">Our doors opened at 9 a.m. on a balmy Saturday morning in March — and one and a half hours …</span>
+          <span class="btags"><span class="tag">Urban practice</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>December 2, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv" href="blog-field-notes-in-building-a-community-around-a-shared-neighb.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv" href="blog-field-notes-in-building-a-community-around-a-shared-neighb"
+        data-author="shreya-krishnan" data-date="2025-12-02">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/12/Shreya-Blog-6-1024x682.jpg" alt="Field notes in building a community around a shared neighbourhood…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Field notes in building a community around a shared neighbourhood…</h3>
           <span class="bx">From March 21st to 23rd, the historic neighborhood of Mylapore came alive with stories, photographs, and community spirit at the …</span>
+          <span class="btags"><span class="tag">Public space</span><span class="tag">Community</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>December 2, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv d1" href="blog-pitching-possibility-turning-youth-designs-into-city-conve.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv d1" href="blog-pitching-possibility-turning-youth-designs-into-city-conve"
+        data-author="aashima-arora" data-date="2025-12-01">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/12/Aashima-7-Image-1024x724.png" alt="Pitching Possibility: Turning Youth Designs into City Conversations" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Pitching Possibility: Turning Youth Designs into City Conversations</h3>
           <span class="bx">Source: Putting quality of life at the heart of planning From Groundwork to Possibility Over the past several months, adolescents …</span>
+          <span class="btags"><span class="tag">Youth</span><span class="tag">Planning</span></span>
           <span class="bm"><b>Aashima Arora</b><span>December 1, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv d2" href="blog-introducing-the-pelathope-urban-living-lab.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv d2" href="blog-introducing-the-pelathope-urban-living-lab"
+        data-author="shreya-krishnan" data-date="2025-12-01">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/12/Shreya-Blog-5-1024x682.png" alt="Introducing the Pelathope urban living lab" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Introducing the Pelathope urban living lab</h3>
           <span class="bx">Mylapore is one of Chennai’s oldest and most storied neighborhoods, renowned for its rich cultural, religious, and architectural heritage. Many …</span>
+          <span class="btags"><span class="tag">Public space</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>December 1, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv" href="blog-design-of-platform-meeting-conduct-and-quality.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv" href="blog-design-of-platform-meeting-conduct-and-quality"
+        data-author="aanchal-aggarwal" data-date="2025-11-30">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/Aanchal-7-Image-1024x401.jpg" alt="Design of Platform: Meeting Conduct and Quality" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Design of Platform: Meeting Conduct and Quality</h3>
           <span class="bx">A Ward Committee Meeting at a Municipal Park in Bhuj, Gujarat In the previous blog, I explored how the composition …</span>
+          <span class="btags"><span class="tag">Governance</span><span class="tag">Public space</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>November 30, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv d1" href="blog-reclaiming-the-past-how-heritage-precincts-can-power-the-f.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv d1" href="blog-reclaiming-the-past-how-heritage-precincts-can-power-the-f"
+        data-author="shreya-krishnan" data-date="2025-11-30">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/Shreya-Blog-4.jpg" alt="Reclaiming the Past: How Heritage Precincts Can Power the Future…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Reclaiming the Past: How Heritage Precincts Can Power the Future…</h3>
           <span class="bx">I visited the historic precincts of Shahjahanabad (Delhi), Chowk (Lucknow), Mylapore (Chennai) and Panchvati in Nashik recently on work expeditions. …</span>
+          <span class="btags"><span class="tag">Public space</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>November 30, 2025</span></span>
         </span>
       </a>
-      <a class="bcard rv d2" href="blog-cohesion-and-culture-whats-urban-development-got-to-do-wit.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard rv d2" href="blog-cohesion-and-culture-whats-urban-development-got-to-do-wit"
+        data-author="shreya-krishnan" data-date="2025-11-29">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/Shreya-Blog-3-1024x768.jpg" alt="Cohesion and culture: what’s urban development got to do with…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Cohesion and culture: what’s urban development got to do with…</h3>
           <span class="bx">I remember the first community engagement workshop I helped organise as an urban designer twelve years ago for a street …</span>
+          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Public space</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>November 29, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-design-of-platform-composition-representation-and-depth-of.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-design-of-platform-composition-representation-and-depth-of"
+        data-author="aanchal-aggarwal" data-date="2025-11-28">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/Aanchal-6-Image-1024x766.jpg" alt="Design of Platform — Composition, Representation and Depth of Participation" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Design of Platform — Composition, Representation and Depth of Participation</h3>
           <span class="bx">A Ward Committee Meeting in Hoodi Ward, Bengaluru In the previous blogs, I explored how laws, institutions, and collaborations create …</span>
+          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Governance</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>November 28, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-drawing-together-co-designing-public-spaces-with-jaipurs-a.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-drawing-together-co-designing-public-spaces-with-jaipurs-a"
+        data-author="aashima-arora" data-date="2025-11-28">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/12/Aashima-6-Image-1024x576.png" alt="Drawing Together: Co-Designing Public Spaces with Jaipur’s Adolescents" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Drawing Together: Co-Designing Public Spaces with Jaipur’s Adolescents</h3>
           <span class="bx">Source: Research on exploring the role of (co)design by Penny Hagen Designing with, not for, that’s the shift we set …</span>
+          <span class="btags"><span class="tag">Public space</span><span class="tag">Youth</span></span>
           <span class="bm"><b>Aashima Arora</b><span>November 28, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-neighbourhoods-as-social-glue-neglected-and-overlooked-but.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-neighbourhoods-as-social-glue-neglected-and-overlooked-but"
+        data-author="shreya-krishnan" data-date="2025-11-28">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/1-1.png" alt="Neighbourhoods as social glue: neglected and overlooked, but essential for…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Neighbourhoods as social glue: neglected and overlooked, but essential for…</h3>
           <span class="bx">In my previous reflections, I explored how planning systems often exclude communities from shaping urban futures. Here, I focus on …</span>
+          <span class="btags"><span class="tag">Public space</span><span class="tag">Community</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>November 28, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-collaborative-governance-partnerships-behind-effective-par.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-collaborative-governance-partnerships-behind-effective-par"
+        data-author="aanchal-aggarwal" data-date="2025-11-27">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/Aanchal-5-Image.jpg" alt="Collaborative Governance: Partnerships Behind Effective Participation" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Collaborative Governance: Partnerships Behind Effective Participation</h3>
           <span class="bx">A Slum Dwellers Association Meeting As a U-CAN fellow with Janaagraha, my study on Participatory Governance has shown that Governance …</span>
+          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Governance</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>November 27, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-building-trust-one-conversation-at-a-time.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-building-trust-one-conversation-at-a-time"
+        data-author="aashima-arora" data-date="2025-11-27">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/1-3.png" alt="Building Trust, One Conversation at a Time" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Building Trust, One Conversation at a Time</h3>
           <span class="bx">Source: UNICEF’s Social and Community listening framework As we move from understanding public space challenges to shaping their solutions, a …</span>
+          <span class="btags"><span class="tag">Public space</span><span class="tag">Community</span></span>
           <span class="bm"><b>Aashima Arora</b><span>November 27, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-how-can-planners-empower-communities-to-create-more-inclus.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-how-can-planners-empower-communities-to-create-more-inclus"
+        data-author="shreya-krishnan" data-date="2025-11-27">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/2.png" alt="How can planners empower communities to create more inclusive cities?" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>How can planners empower communities to create more inclusive cities?</h3>
           <span class="bx">When I was in architecture school at the University of Texas at Austin 20 years ago, I was struck by …</span>
+          <span class="btags"><span class="tag">Community</span><span class="tag">Planning</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>November 27, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-water-security-and-the-role-of-a-rainwater-harvesting-calc.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-water-security-and-the-role-of-a-rainwater-harvesting-calc"
+        data-author="shubhi-kesarwani" data-date="2025-11-09">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/Shubhi-blog-8-1024x576.jpg" alt="Water Security and the Role of a Rainwater Harvesting Calculator" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Water Security and the Role of a Rainwater Harvesting Calculator</h3>
           <span class="bx">Over the past few months, I have been focusing on water governance—not just as an enabler of growth but as …</span>
+          <span class="btags"><span class="tag">Water security</span><span class="tag">Governance</span></span>
           <span class="bm"><b>Shubhi Kesarwani</b><span>November 9, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-smart-cities-women-and-safety-when-technology-empowers-or.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-smart-cities-women-and-safety-when-technology-empowers-or"
+        data-author="anwesha-bhattacharya" data-date="2025-11-09">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/Anwesha-blog-8-1024x576.jpg" alt="Smart Cities, Women, and Safety: When Technology Empowers or Excludes" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Smart Cities, Women, and Safety: When Technology Empowers or Excludes</h3>
           <span class="bx">“Smart cities promise efficiency, but can they also promise safety? For women, technology could be both a shield and a …</span>
+          <span class="btags"><span class="tag">Gender &amp; safety</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>November 9, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-harnessing-rainwater-to-secure-indias-urban-future-industr.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-harnessing-rainwater-to-secure-indias-urban-future-industr"
+        data-author="shubhi-kesarwani" data-date="2025-11-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/Shubhi-blog-7-1024x576.jpg" alt="Harnessing Rainwater to Secure India’s Urban Future: Industry’s Role and…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Harnessing Rainwater to Secure India’s Urban Future: Industry’s Role and…</h3>
           <span class="bx">Harnessing Rainwater to Secure India’s Urban Future: Industry’s Role and a Calculator’s Impact As I stand on my balcony in …</span>
+          <span class="btags"><span class="tag">Water security</span><span class="tag">Data &amp; evidence</span></span>
           <span class="bm"><b>Shubhi Kesarwani</b><span>November 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-built-by-her-stories-of-women-transforming-indian-cities.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-built-by-her-stories-of-women-transforming-indian-cities"
+        data-author="anwesha-bhattacharya" data-date="2025-11-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/10/Anwesha-blog-7-1024x576.jpg" alt="Built by Her: Stories of Women Transforming Indian Cities" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Built by Her: Stories of Women Transforming Indian Cities</h3>
           <span class="bx">Urban planning shapes how people live, yet those who design our cities rarely reflect their full diversity. While women now …</span>
+          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Community</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>November 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-beyond-burden-margins-as-makers.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-beyond-burden-margins-as-makers"
+        data-author="sharathappriyaa-venkatesan" data-date="2025-10-15">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/10/Sharatha-Blog-7-1024x681.png" alt="Beyond Burden: Margins as Makers" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Beyond Burden: Margins as Makers</h3>
           <span class="bx">What happens when participation isn’t symbolic, but structural? In the climate conversation, we often hear who suffers first or suffers …</span>
+          <span class="btags"><span class="tag">Climate action</span><span class="tag">Citizen participation</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>October 15, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-the-other-side-of-climate-action-where-plans-meet-people.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-the-other-side-of-climate-action-where-plans-meet-people"
+        data-author="sharathappriyaa-venkatesan" data-date="2025-10-15">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/10/Sharatha-Blog-6.png" alt="The Other Side of Climate Action: Where Plans Meet People" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>The Other Side of Climate Action: Where Plans Meet People</h3>
           <span class="bx">The signs of climate disruption in cities are no longer abstract. We have seen how Bengaluru experiences this crisis; unevenly, …</span>
+          <span class="btags"><span class="tag">Climate action</span><span class="tag">Community</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>October 15, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-from-vision-to-will-leadership-and-the-long-arc-of-climate.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-from-vision-to-will-leadership-and-the-long-arc-of-climate"
+        data-author="sharathappriyaa-venkatesan" data-date="2025-10-15">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/10/Sharatha-Blog-5.png" alt="From Vision to Will: Leadership and the Long Arc of…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>From Vision to Will: Leadership and the Long Arc of…</h3>
           <span class="bx">Climate action often begins with urgency. Plans are announced, budgets committed, and pilots launched. But somewhere between the drawing board …</span>
+          <span class="btags"><span class="tag">Climate action</span><span class="tag">Governance</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>October 15, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-quantifying-the-invisible-how-a-simple-tool-is-changing-ra.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-quantifying-the-invisible-how-a-simple-tool-is-changing-ra"
+        data-author="shubhi-kesarwani" data-date="2025-10-09">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/Shubhi-blog-6-1024x576.jpg" alt="Quantifying the Invisible: How a Simple Tool is Changing Rainwater…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Quantifying the Invisible: How a Simple Tool is Changing Rainwater…</h3>
           <span class="bx">Quantifying the Invisible: How a Simple Tool is Changing Rainwater Harvesting in Cities Over the last year, I’ve been closely …</span>
+          <span class="btags"><span class="tag">Water security</span><span class="tag">Data &amp; evidence</span></span>
           <span class="bm"><b>Shubhi Kesarwani</b><span>October 9, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-rebuilding-the-city-how-infrastructure-shapes-safety-and-a.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-rebuilding-the-city-how-infrastructure-shapes-safety-and-a"
+        data-author="anwesha-bhattacharya" data-date="2025-10-09">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/10/Anwesha-blog-6-1024x683.png" alt="Rebuilding the City: How Infrastructure Shapes Safety and Access in…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Rebuilding the City: How Infrastructure Shapes Safety and Access in…</h3>
           <span class="bx">In earlier blogs, we explored safety through complaints and planning through data. This time, we shift to the roads we …</span>
+          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Data &amp; evidence</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>October 9, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-reflections-from-the-field-reimagining-urban-water-securit.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-reflections-from-the-field-reimagining-urban-water-securit"
+        data-author="shubhi-kesarwani" data-date="2025-09-09">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/09/Shubhi-Blog-5-1024x576.jpg" alt="Reflections from the Field: Reimagining Urban Water Security in Gurugram" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Reflections from the Field: Reimagining Urban Water Security in Gurugram</h3>
           <span class="bx">This past month, I’ve found myself revisiting the foundational principles we established back in 2019, when our team at GuruJal …</span>
+          <span class="btags"><span class="tag">Water security</span></span>
           <span class="bm"><b>Shubhi Kesarwani</b><span>September 9, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-beyond-the-numbers-the-power-of-gender-disaggregated-data.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-beyond-the-numbers-the-power-of-gender-disaggregated-data"
+        data-author="anwesha-bhattacharya" data-date="2025-09-09">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/11/Anwesha-blog-5-1024x678.png" alt="Beyond the Numbers: The Power of Gender-Disaggregated Data" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Beyond the Numbers: The Power of Gender-Disaggregated Data</h3>
           <span class="bx">Urban planning is often seen as a technical field, filled with maps, blueprints, and models. But behind every design decision …</span>
+          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Data &amp; evidence</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>September 9, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-reimagining-air-quality-interventions-through-clean-air-zo.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-reimagining-air-quality-interventions-through-clean-air-zo"
+        data-author="ramya-ma" data-date="2025-07-25">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/Ramya-Blog-6.png" alt="Reimagining Air Quality Interventions through Clean Air Zones" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Reimagining Air Quality Interventions through Clean Air Zones</h3>
           <span class="bx">Nationally, it is seen that the non-attainment cities are working towards improving air quality through various measures targeting several sectors. …</span>
+          <span class="btags"><span class="tag">Air quality</span><span class="tag">Data &amp; evidence</span></span>
           <span class="bm"><b>Ramya M A</b><span>July 25, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-patterns-in-participation-tracing-what-works.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-patterns-in-participation-tracing-what-works"
+        data-author="aanchal-aggarwal" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/A-Citizen-Forum.png" alt="Patterns in Participation – Tracing What Works" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Patterns in Participation – Tracing What Works</h3>
           <span class="bx">Source:https://citizenmatters.in/dehradun-citizens-forum-mayoral-dialogue-local-governance/, 2025 After spending the first few weeks of the fellowship immersed in legal frameworks and state-level policies, I found …</span>
+          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Governance</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-between-policy-and-practice-the-gap-between-intention-and.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-between-policy-and-practice-the-gap-between-intention-and"
+        data-author="aanchal-aggarwal" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/gap-ana.png" alt="Between Policy and Practice/ The Gap Between Intention and Implementation" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Between Policy and Practice/ The Gap Between Intention and Implementation</h3>
           <span class="bx">The decentralisation of urban governance was envisioned in the 74th Constitutional Amendment Act (CAA) of 1993, marking a significant step …</span>
+          <span class="btags"><span class="tag">Governance</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-enabling-ecosystem-for-citizen-participation.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-enabling-ecosystem-for-citizen-participation"
+        data-author="aanchal-aggarwal" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/742_30_1_2024_21_33_13_1_DSC_4283-1024x576.jpeg" alt="Enabling Ecosystem for Citizen Participation" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Enabling Ecosystem for Citizen Participation</h3>
           <span class="bx">Area Sabha meeting at Ward 183 in Palavakkam, Chennai Source:https://www.thehindu.com/news/cities/chennai/area-sabhas-the-ground-that-remains-to-be-covered/article69443930.ece As my study on Participatory Governance progressed, one thing became …</span>
+          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Governance</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-the-missing-link-why-jaipurs-public-spaces-fail-adolescent.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-the-missing-link-why-jaipurs-public-spaces-fail-adolescent"
+        data-author="aashima-arora" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/Youthindia20241.png" alt="The Missing Link: Why Jaipur’s Public Spaces Fail Adolescents" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>The Missing Link: Why Jaipur’s Public Spaces Fail Adolescents</h3>
           <span class="bx">In my pursuit of understanding the complexities of public spaces in urban settings, the U-CAN Fellowship gave me the opportunity …</span>
+          <span class="btags"><span class="tag">Public space</span><span class="tag">Youth</span></span>
           <span class="bm"><b>Aashima Arora</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-this-city-isnt-for-you-women-safety-and-jaipur.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-this-city-isnt-for-you-women-safety-and-jaipur"
+        data-author="aashima-arora" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/jaipur1.png" alt="This City Isn’t for You – Women, Safety, and Jaipur" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>This City Isn’t for You – Women, Safety, and Jaipur</h3>
           <span class="bx">Listening to Lived Realities Through my fieldwork in Jaipur’s neighbourhoods, I’ve spent time speaking with adolescent girls about their experiences …</span>
+          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Public space</span></span>
           <span class="bm"><b>Aashima Arora</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-cities-that-get-it-right-and-what-jaipur-can-learn.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-cities-that-get-it-right-and-what-jaipur-can-learn"
+        data-author="aashima-arora" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/jaipur.png" alt="Cities that get it right and what Jaipur can learn" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Cities that get it right and what Jaipur can learn</h3>
           <span class="bx">As Jaipur grapples with creating safe, vibrant public spaces for its youth, looking outward at global and national examples can …</span>
+          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Public space</span></span>
           <span class="bm"><b>Aashima Arora</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-from-the-margins-to-the-map-womens-participation-in-urban.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-from-the-margins-to-the-map-womens-participation-in-urban"
+        data-author="anwesha-bhattacharya" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/women-participation.png" alt="From the Margins to the Map: Women’s Participation in Urban…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>From the Margins to the Map: Women’s Participation in Urban…</h3>
           <span class="bx">Urban planning in cities like Gurgaon has long been shaped by the priorities of a narrow group, often overlooking the …</span>
+          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Citizen participation</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-designing-for-dignity-gender-urban-planning-and-the-shape.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-designing-for-dignity-gender-urban-planning-and-the-shape"
+        data-author="anwesha-bhattacharya" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/safety-design.png" alt="Designing for Dignity: Gender, Urban Planning, and the Shape of…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Designing for Dignity: Gender, Urban Planning, and the Shape of…</h3>
           <span class="bx">In earlier articles, we examined the range of complaints received by the Gurugram Police—from domestic disputes to street harassment—and how …</span>
+          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Public space</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-understanding-womens-safety-in-gurgaon-a-collaborative-app.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-understanding-womens-safety-in-gurgaon-a-collaborative-app"
+        data-author="anwesha-bhattacharya" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/women-safety.png" alt="Understanding Women’s Safety in Gurgaon: A Collaborative Approach" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Understanding Women’s Safety in Gurgaon: A Collaborative Approach</h3>
           <span class="bx">In the last piece, I shared how my journey through India’s evolving cities:, especially Gurgaon, has revealed the deep-rooted cultural …</span>
+          <span class="btags"><span class="tag">Gender &amp; safety</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-a-marathon-against-air-pollution.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-a-marathon-against-air-pollution"
+        data-author="ramya-ma" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/Eastern_express_highway_mumba-1024x768.jpg" alt="A marathon against air pollution" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>A marathon against air pollution</h3>
           <span class="bx">Exploring a little deeper into haze and air pollution, I came across a few articles on people’s day-to-day experiences. There …</span>
+          <span class="btags"><span class="tag">Air quality</span><span class="tag">Community</span></span>
           <span class="bm"><b>Ramya M A</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-global-stance-on-air-quality.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-global-stance-on-air-quality"
+        data-author="ramya-ma" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/global-air.png" alt="Global Stance on Air Quality" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Global Stance on Air Quality</h3>
           <span class="bx">Having understood the main reasons for the Haze in Mumbai as Air Pollution (while its humid weather and the coastline …</span>
+          <span class="btags"><span class="tag">Air quality</span></span>
           <span class="bm"><b>Ramya M A</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-where-does-india-stand-on-air-quality.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-where-does-india-stand-on-air-quality"
+        data-author="ramya-ma" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/air-quality1.png" alt="Where does India stand on Air Quality?" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Where does India stand on Air Quality?</h3>
           <span class="bx">In addition to the global frameworks, efforts at the national level play a substantial role in managing air quality/ pollution. …</span>
+          <span class="btags"><span class="tag">Air quality</span></span>
           <span class="bm"><b>Ramya M A</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-from-paper-to-pause-why-climate-projects-stall.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-from-paper-to-pause-why-climate-projects-stall"
+        data-author="sharathappriyaa-venkatesan" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/Climate-change.png" alt="From Paper to Pause: Why Climate Projects Stall?" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>From Paper to Pause: Why Climate Projects Stall?</h3>
           <span class="bx">Climate efforts don’t lack vision or direction. But in between the budgets and broken pavements, execution slips. In Bengaluru, as …</span>
+          <span class="btags"><span class="tag">Climate action</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-well-meant-plans-unkept-promises-when-climate-plans-stall.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-well-meant-plans-unkept-promises-when-climate-plans-stall"
+        data-author="sharathappriyaa-venkatesan" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/how-cities-function.png" alt="Well-Meant Plans, Unkept Promises: When Climate Plans Stall" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Well-Meant Plans, Unkept Promises: When Climate Plans Stall</h3>
           <span class="bx">Bengaluru’s climate realities are no longer future tense. They show up in shrinking green cover, overheated summers, erratic water access, …</span>
+          <span class="btags"><span class="tag">Water security</span><span class="tag">Climate action</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-living-the-heat-some-feel-it-first-some-feel-it-worse.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-living-the-heat-some-feel-it-first-some-feel-it-worse"
+        data-author="sharathappriyaa-venkatesan" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/Living-the-Heat.png" alt="Living the Heat: Some Feel It First, Some Feel It…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Living the Heat: Some Feel It First, Some Feel It…</h3>
           <span class="bx">The signs of Bengaluru’s changing climate are no longer subtle. Milder mornings have given way to harsh heat, cool breezes …</span>
+          <span class="btags"><span class="tag">Climate action</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-planning-what-matters-data-driven.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-planning-what-matters-data-driven"
+        data-author="manisha-bisht" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/Spatial-analysis1.png" alt="Planning what matters : Data-Driven" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Planning what matters : Data-Driven</h3>
           <span class="bx">Why do we still see open garbage dumps in our neighbourhoods? Why are drains overflowing right next to newly built …</span>
+          <span class="btags"><span class="tag">Public space</span><span class="tag">Data &amp; evidence</span></span>
           <span class="bm"><b>Manisha Bisht</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-centering-people-in-the-planning-process-mapping-what-matt.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-centering-people-in-the-planning-process-mapping-what-matt"
+        data-author="manisha-bisht" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/interaction-on-field.png" alt="Centering People in the Planning Process: Mapping What Matters" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Centering People in the Planning Process: Mapping What Matters</h3>
           <span class="bx">As I deepen my understanding of spatial data and how it can illuminate service gaps, I’ve also strengthened my belief …</span>
+          <span class="btags"><span class="tag">Data &amp; evidence</span><span class="tag">Community</span></span>
           <span class="bm"><b>Manisha Bisht</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-what-is-the-problem-peeling-the-onion.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-what-is-the-problem-peeling-the-onion"
+        data-author="manisha-bisht" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/Toilet-scheme.png" alt="What is the Problem? Peeling the Onion!" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>What is the Problem? Peeling the Onion!</h3>
           <span class="bx">“We were given a toilet under the scheme, but the pit is broken, so we don’t use it.” These were …</span>
+          <span class="btags"><span class="tag">Urban practice</span></span>
           <span class="bm"><b>Manisha Bisht</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-urban-development-place-based-people-powered-and-future-re.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-urban-development-place-based-people-powered-and-future-re"
+        data-author="manisha-bisht" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/cso-shelter-associate.png" alt="Urban Development: Place-based, people-powered, and future-ready" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Urban Development: Place-based, people-powered, and future-ready</h3>
           <span class="bx">As I reflect on this journey, from witnessing urban failures to peeling back their layered causes, exploring the potential of …</span>
+          <span class="btags"><span class="tag">Community</span></span>
           <span class="bm"><b>Manisha Bisht</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-dilemma-of-an-urban-dweller-when-problem-becomes-daily-lif.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-dilemma-of-an-urban-dweller-when-problem-becomes-daily-lif"
+        data-author="manisha-bisht" data-date="2025-07-05">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/07/city-transformation.png" alt="Dilemma of an Urban Dweller : When problem becomes Daily…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Dilemma of an Urban Dweller : When problem becomes Daily…</h3>
           <span class="bx">As urban dwellers, we don’t encounter our cities as abstract zones, we live them. Silently and constantly, we experience both …</span>
+          <span class="btags"><span class="tag">Urban practice</span></span>
           <span class="bm"><b>Manisha Bisht</b><span>July 5, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-an-approach-to-addressing-air-quality-how-and-why.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-an-approach-to-addressing-air-quality-how-and-why"
+        data-author="ramya-ma" data-date="2025-06-24">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/06/Ramya-Blog-5.png" alt="An approach to addressing Air Quality: How and Why?" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>An approach to addressing Air Quality: How and Why?</h3>
           <span class="bx">Aiming towards accelerating efforts by cities, the central government in September 2022, raised the NCAP goal from aiming for a …</span>
+          <span class="btags"><span class="tag">Air quality</span></span>
           <span class="bm"><b>Ramya M A</b><span>June 24, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-a-city-i-knew-a-crisis-i-see.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-a-city-i-knew-a-crisis-i-see"
+        data-author="sharathappriyaa-venkatesan" data-date="2025-05-07">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/05/Photo-for-Sharathas-blog.jpg" alt="A City I Knew, A Crisis I See" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>A City I Knew, A Crisis I See</h3>
           <span class="bx">Bengaluru means different things to different people. For me, it’s February mornings in the early 2000s—fog clinging to the window …</span>
+          <span class="btags"><span class="tag">Community</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>May 7, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-towards-a-more-democratic-city-reflections-on-participatio.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-towards-a-more-democratic-city-reflections-on-participatio"
+        data-author="aanchal-aggarwal" data-date="2025-05-07">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/05/Screenshot-2025-05-15-201623.png" alt="Towards a more democratic city: Reflections on participation" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Towards a more democratic city: Reflections on participation</h3>
           <span class="bx">I grew up in Jammu, a small city nestled in the foothills of the Himalayas. Like many others, I left …</span>
+          <span class="btags"><span class="tag">Citizen participation</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>May 7, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-between-heritage-and-hangouts-youth-and-the-changing-publi.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-between-heritage-and-hangouts-youth-and-the-changing-publi"
+        data-author="aashima-arora" data-date="2025-05-07">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/05/Jaipur-1024x656.png" alt="Between Heritage and Hangouts: Youth and the Changing Public Life…" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Between Heritage and Hangouts: Youth and the Changing Public Life…</h3>
           <span class="bx">Ajmeri Gate- Gateway to Jaipur’s Heritage. Photo credit: Author The beautiful city of Jaipur has always been a major pin …</span>
+          <span class="btags"><span class="tag">Public space</span><span class="tag">Youth</span></span>
           <span class="bm"><b>Aashima Arora</b><span>May 7, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-addressing-womens-safety-challenges-in-gurugram.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-addressing-womens-safety-challenges-in-gurugram"
+        data-author="anwesha-bhattacharya" data-date="2025-05-07">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/05/Photo-for-Gurgaon-blog.jpg" alt="Addressing Women’s Safety Challenges in Gurugram" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>Addressing Women’s Safety Challenges in Gurugram</h3>
           <span class="bx">Since childhood, I’ve been drawn to exploration, not just of places but of the stories and cultures within them. Inspired …</span>
+          <span class="btags"><span class="tag">Gender &amp; safety</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>May 7, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d1" href="blog-the-urban-haze.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d1" href="blog-the-urban-haze"
+        data-author="ramya-ma" data-date="2025-04-23">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/04/air-pollutions-1-1024x576.png" alt="The Urban Haze" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>The Urban Haze</h3>
           <span class="bx">As I moved into the city of Mumbai, I started exploring the neighbourhood of my new workplace. I was delighted …</span>
+          <span class="btags"><span class="tag">Air quality</span><span class="tag">Public space</span></span>
           <span class="bm"><b>Ramya M A</b><span>April 23, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv d2" href="blog-indias-water-crisis-a-looming-disaster.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv d2" href="blog-indias-water-crisis-a-looming-disaster"
+        data-author="shubhi-kesarwani" data-date="2025-04-22">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/04/Water-crisis-1-1024x576.png" alt="India’s Water Crisis: A Looming Disaster" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>India’s Water Crisis: A Looming Disaster</h3>
           <span class="bx">I grew up in the city of Prayagraj, Uttar Pradesh (formerly known as Allahabad), popularly known for hosting the Kumbh …</span>
+          <span class="btags"><span class="tag">Water security</span></span>
           <span class="bm"><b>Shubhi Kesarwani</b><span>April 22, 2025</span></span>
         </span>
       </a>
-      <a class="bcard hidden rv" href="blog-the-daily-dilemma-walking-mumbais-ever-changing-streets.html" target="_blank" rel="noopener noreferrer">
+      <a class="bcard hidden rv" href="blog-the-daily-dilemma-walking-mumbais-ever-changing-streets"
+        data-author="ramya-ma" data-date="2025-01-13">
         <span class="bi"><img src="https://urban.org.in/wp-content/uploads/2025/01/Ramya-Blog-7-1024x683.png" alt="The daily dilemma: Walking Mumbai’s ever-changing streets" loading="lazy" decoding="async"
           onerror="this.closest('.bi').style.display='none'"></span>
         <span class="bb">
           <h3>The daily dilemma: Walking Mumbai’s ever-changing streets</h3>
           <span class="bx">While walking home from my office in Mumbai, I am often struck by the diversity of experiences along the way. …</span>
+          <span class="btags"><span class="tag">Public space</span></span>
           <span class="bm"><b>Ramya M A</b><span>January 13, 2025</span></span>
         </span>
       </a>
@@ -1144,7 +1420,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
   <div class="wrap">
     <div class="f-grid">
       <div>
-        <a class="brand" href="index.html" aria-label="U-CAN home">
+        <a class="brand" href="/" aria-label="U-CAN home">
           <img src="data:image/webp;base64,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" width="38" height="38" alt="" loading="lazy" decoding="async">
           <span><b>U-CAN</b><small>Urban Collective Action Network</small></span>
         </a>
@@ -1153,24 +1429,24 @@ footer a:hover{color:var(--lime,#CDDE71)}
       <nav aria-label="Quick links">
         <h4>Explore</h4>
         <ul>
-          <li><a href="about.html">About U-CAN</a></li>
-          <li><a href="our-people.html">Our People</a></li>
-          <li><a href="impact.html">Impact</a></li>
-          <li><a href="our-members.html">Our Members</a></li>
-          <li><a href="city-mixers.html">City Mixers</a></li>
-          <li><a href="annual-forum-2025.html">Annual Forum 2025</a></li>
+          <li><a href="about">About U-CAN</a></li>
+          <li><a href="our-people">Our People</a></li>
+          <li><a href="impact">Impact</a></li>
+          <li><a href="our-members">Our Members</a></li>
+          <li><a href="city-mixers">City Mixers</a></li>
+          <li><a href="annual-forum-2025">Annual Forum 2025</a></li>
         </ul>
       </nav>
       <nav aria-label="Initiatives">
         <h4>Initiatives</h4>
         <ul>
-          <li><a href="urban-reforms-collective.html">Urban Reforms Collective</a></li>
-          <li><a href="rfc.html">Request for Collaboration</a></li>
-          <li><a href="learning-network.html">Learning Network</a></li>
-          <li><a href="fellowship.html">U-CAN Fellowship</a></li>
-          <li><a href="newsletter.html">Newsletter</a></li>
-          <li><a href="policy-webinars.html">Policy Webinars</a></li>
-          <li><a href="city-champions.html">City Champions</a></li>
+          <li><a href="urban-reforms-collective">Urban Reforms Collective</a></li>
+          <li><a href="rfc">Request for Collaboration</a></li>
+          <li><a href="learning-network">Learning Network</a></li>
+          <li><a href="fellowship">U-CAN Fellowship</a></li>
+          <li><a href="newsletter">Newsletter</a></li>
+          <li><a href="policy-webinars">Policy Webinars</a></li>
+          <li><a href="city-champions">City Champions</a></li>
         </ul>
       </nav>
       <div class="f-sub" id="connect">
@@ -1188,7 +1464,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
           </div>
           <p class="nerr" role="alert">Please enter a valid email address and tick the consent box to continue.</p>
           <p class="nok" role="status">Thanks — you're on the list. We've recorded your consent and the time it was given.</p>
-          <p class="f-legal">U-CAN is the Data Fiduciary for this data under the Digital Personal Data Protection Act, 2023. Request access, correction or erasure at <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>. See our <a href="privacy-policy.html">Privacy Policy</a>.</p>
+          <p class="f-legal">U-CAN is the Data Fiduciary for this data under the Digital Personal Data Protection Act, 2023. Request access, correction or erasure at <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>. See our <a href="privacy-policy">Privacy Policy</a>.</p>
         </form>
         <ul class="f-social">
           <li><a href="https://www.youtube.com/@U-CAN24" target="_blank" rel="noopener noreferrer">YouTube</a></li>
@@ -1199,7 +1475,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
     <div class="f-bottom">
       <span>© U-CAN 2026. All Rights Reserved</span>
-      <span><a href="terms-of-use.html">Terms of Use</a><a href="privacy-policy.html">Privacy Policy</a><button type="button" class="cookie-link" id="cookie-reopen">Manage cookies</button></span>
+      <span><a href="terms-of-use">Terms of Use</a><a href="privacy-policy">Privacy Policy</a><button type="button" class="cookie-link" id="cookie-reopen">Manage cookies</button></span>
     </div>
   </div>
 </footer>
@@ -1525,7 +1801,9 @@ footer a:hover{color:var(--lime,#CDDE71)}
           return;
         }
         issues.forEach(function (el) {
-          el.classList.toggle("hidden", el.dataset.year !== year);
+          // the newsletter archive keys on year, the blog grid on author
+          var key = el.dataset.year || el.dataset.author;
+          el.classList.toggle("hidden", key !== year);
         });
         if (wrap) wrap.style.display = "none";
       });
@@ -1558,6 +1836,37 @@ footer a:hover{color:var(--lime,#CDDE71)}
           items.forEach(function (o) { if (o !== d) o.open = false; });
         });
       });
+    });
+  })();
+
+  /* ---------- 10. tabs (Fellowship: knowledge / network / funding) ----------
+     Markup is fully usable with JS off — every pane renders, and only the
+     first is hidden once this runs. */
+  (function tabs() {
+    $$("[data-tabs]").forEach(function (root) {
+      var btns = $$('[role="tab"]', root);
+      var panes = $$('[role="tabpanel"]', root);
+      if (btns.length < 2 || btns.length !== panes.length) return;
+
+      var select = function (i, focus) {
+        btns.forEach(function (b, n) {
+          b.setAttribute("aria-selected", n === i ? "true" : "false");
+          b.tabIndex = n === i ? 0 : -1;
+        });
+        panes.forEach(function (p, n) { p.hidden = n !== i; });
+        if (focus) btns[i].focus();
+      };
+
+      btns.forEach(function (b, i) {
+        b.addEventListener("click", function () { select(i); });
+        b.addEventListener("keydown", function (e) {
+          var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+          if (!d) return;
+          e.preventDefault();
+          select((i + d + btns.length) % btns.length, true);
+        });
+      });
+      select(0);
     });
   })();
 })();

@@ -141,13 +141,25 @@
 /* ——— quote grid (annual forum) ——— */
 .qgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(18px,2.2vw,26px);margin-top:clamp(28px,3.5vw,40px)}
 .qgrid>*{min-width:0}
-.qc{margin:0;border:1px solid var(--line);background:var(--paper);padding:clamp(24px,2.6vw,32px);display:flex;flex-direction:column;gap:16px}
+.qc{margin:0;position:relative;overflow:hidden;border:1px solid var(--line);background:var(--paper);
+  padding:clamp(26px,2.8vw,34px);display:flex;flex-direction:column;gap:18px;
+  transition:border-color .25s var(--e),transform .25s var(--e),box-shadow .25s var(--e)}
 .sec.alt .qc{background:#fff}
-.qc blockquote{margin:0;font-size:16px;line-height:1.7;color:var(--ink);overflow-wrap:break-word}
-.qc blockquote::before{content:"“";font-family:var(--display);font-weight:800;font-size:34px;line-height:0;color:var(--teal);margin-right:4px;vertical-align:-6px}
-.qc figcaption{margin-top:auto;border-top:1px solid var(--line);padding-top:14px}
-.qc figcaption b{display:block;font-family:var(--display);font-size:15px}
-.qc figcaption span{display:block;font-size:13px;color:var(--ink-soft);margin-top:3px;line-height:1.5}
+.qc:hover{border-color:var(--teal);transform:translateY(-3px);box-shadow:var(--shadow)}
+.qc .qm{position:absolute;top:-16px;right:14px;font-family:var(--display);font-weight:800;
+  font-size:120px;line-height:1;color:var(--teal);opacity:.09;pointer-events:none;user-select:none}
+.qc blockquote{margin:0;position:relative;z-index:1;font-size:clamp(16px,1.7vw,17.5px);
+  line-height:1.72;color:var(--ink);overflow-wrap:break-word}
+.qc figcaption{margin-top:auto;border-top:1px solid var(--line);padding-top:16px;
+  display:flex;align-items:center;gap:14px}
+.qc figcaption>*{min-width:0}
+.qc .av{width:56px;height:56px;border-radius:50%;overflow:hidden;flex:none;background:var(--paper-alt);
+  display:flex;align-items:center;justify-content:center}
+.qc .av img{width:100%;height:100%;object-fit:cover;display:block}
+.qc .av.mono{background:var(--teal-deep);color:var(--lime);font-family:var(--display);
+  font-weight:800;font-size:19px;letter-spacing:.02em}
+.qc .qn b{display:block;font-family:var(--display);font-size:15.5px;color:var(--ink)}
+.qc .qn>span{display:block;font-size:13px;color:var(--ink-soft);margin-top:3px;line-height:1.5}
 
 /* ——— partner logos ——— */
 .ptrow{list-style:none;margin:clamp(26px,3.2vw,38px) 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
@@ -156,6 +168,8 @@
 .pt img{position:relative;z-index:1;max-width:100%;max-height:70px;width:auto;height:auto;object-fit:contain}
 .pt .ph{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px}
 .pt .ph b{font-family:var(--display);font-weight:700;font-size:12.5px;color:var(--teal-text);line-height:1.35}
+/* a logo with a transparent background would otherwise show the name through it */
+.pt.ok .ph,.gal figure.ok .ph{display:none}
 
 @media(max-width:900px){
   .mx{grid-template-columns:1fr}
@@ -172,6 +186,101 @@
   .gal{grid-template-columns:1fr}
   .numcard li,.blist li{grid-template-columns:auto 1fr}
 }
+
+/* ——— icon primitives ——— */
+.ic{display:block;width:24px;height:24px;flex:none}
+.icb{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;
+  border:1px solid var(--line);background:var(--paper);color:var(--teal-text);flex:none;
+  transition:background .25s var(--e),color .25s var(--e),border-color .25s var(--e),transform .25s var(--e)}
+.sec.alt .icb{background:#fff}
+.icb.on-dark{border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:var(--lime)}
+
+/* ——— icon rows inside a dark numbered card (URC "Urban reform requires") ——— */
+.icrow{list-style:none;margin:0;padding:0;position:relative;z-index:1}
+.icrow li{list-style:none;display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;
+  padding:16px 0;border-top:1px solid rgba(255,255,255,.16)}
+.icrow li:first-child{border-top:0;padding-top:0}
+.icrow span{color:#DCEAE6;font-size:15.5px;line-height:1.6;min-width:0;padding-top:11px}
+
+/* ——— icon cards (RFC objectives, Fellowship highlights) ——— */
+.aim.icard .n,.hlc.icard .n{display:none}
+.icard{display:flex;flex-direction:column;gap:14px;position:relative;overflow:hidden;
+  transition:border-color .25s var(--e),transform .25s var(--e),box-shadow .25s var(--e)}
+.icard::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--teal);
+  transform:scaleX(0);transform-origin:left;transition:transform .35s var(--e)}
+.icard:hover,.icard:focus-within{border-color:var(--teal);transform:translateY(-3px);box-shadow:var(--shadow)}
+.icard:hover::after,.icard:focus-within::after{transform:scaleX(1)}
+.icard:hover .icb,.icard:focus-within .icb{background:var(--teal-deep);border-color:var(--teal-deep);color:var(--lime)}
+.icard .ihead{display:flex;align-items:center;gap:14px}
+.icard .ihead h3{margin:0;font-size:17.5px;line-height:1.3;min-width:0}
+.icard .step{margin-left:auto;font-family:var(--display);font-weight:800;font-size:12.5px;
+  letter-spacing:.12em;color:var(--teal-text);flex:none}
+
+/* ——— vertical stepper (Learning Network pilot phase) ——— */
+.stepper{list-style:none;margin:0;padding:0;position:relative;z-index:1;counter-reset:st}
+.stepper li{list-style:none;counter-increment:st;position:relative;display:grid;
+  grid-template-columns:auto 1fr;gap:16px;padding-bottom:22px}
+.stepper li:last-child{padding-bottom:0}
+.stepper li::before{content:counter(st);grid-row:1;grid-column:1;display:flex;align-items:center;
+  justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--lime);
+  color:var(--teal-deep);font-family:var(--display);font-weight:800;font-size:15px;flex:none}
+.stepper li::after{content:"";position:absolute;left:16.5px;top:38px;bottom:6px;width:1px;
+  background:rgba(205,222,113,.38)}
+.stepper li:last-child::after{display:none}
+.stepper p{margin:0;padding-top:6px;color:#EAF3F0;font-size:15.5px;line-height:1.6;min-width:0}
+
+/* ——— stat tiles with icons (L&D at a glance) ——— */
+.stiles{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.stiles>*{min-width:0}
+.stile{list-style:none;border:1px solid var(--line);background:var(--paper);padding:18px 18px 20px;
+  display:flex;flex-direction:column;gap:10px;transition:border-color .25s var(--e),background .25s var(--e)}
+.stile:hover{border-color:var(--teal)}
+.stile .icb{width:38px;height:38px}
+.stile .icb .ic{width:20px;height:20px}
+.stile b{font-family:var(--display);font-weight:800;font-size:clamp(22px,2.6vw,30px);
+  line-height:1;color:var(--teal-deep);letter-spacing:-.01em}
+.stile b.sm{font-size:clamp(15px,1.7vw,18px);line-height:1.3}
+.stile span{font-size:13.5px;color:var(--ink-soft);line-height:1.45}
+
+/* ——— social handle row (Meet the Fellows) ——— */
+.soc{display:flex;gap:8px;margin-top:auto;padding-top:12px}
+.soc a{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;
+  border:1px solid var(--line);color:var(--teal-text);background:transparent;
+  transition:background .2s var(--e),color .2s var(--e),border-color .2s var(--e)}
+.soc a .ic{width:16px;height:16px}
+.soc a:hover{background:var(--teal-deep);border-color:var(--teal-deep);color:var(--lime)}
+.soc.on-dark{margin-top:20px;padding-top:0}
+.soc.on-dark a{border-color:rgba(255,255,255,.24);color:var(--lime)}
+.soc.on-dark a:hover{background:var(--lime);border-color:var(--lime);color:var(--teal-deep)}
+
+/* ——— tabs (Fellowship: knowledge / network / funding) ——— */
+.tabs{margin-top:clamp(24px,3vw,34px)}
+.tablist{display:flex;flex-wrap:wrap;gap:10px}
+.tabs .tab{font:inherit;font-size:15px;font-weight:600;cursor:pointer;display:inline-flex;
+  align-items:center;gap:10px;padding:12px 20px;line-height:1.2;
+  border:1px solid var(--line);background:#fff;color:var(--ink-soft);
+  transition:background .25s var(--e),color .25s var(--e),border-color .25s var(--e)}
+.sec.alt .tabs .tab{background:var(--paper)}
+.tabs .tab .ic{width:19px;height:19px}
+.tabs .tab:hover{border-color:var(--teal);color:var(--teal-text)}
+.tabs .tab[aria-selected="true"]{background:var(--teal-deep);border-color:var(--teal-deep);color:#fff}
+.tabs .tab[aria-selected="true"] .ic{color:var(--lime)}
+.tabpane{background:var(--teal-deep);color:#EAF3F0;padding:clamp(26px,3.4vw,40px);
+  display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,3vw,34px);align-items:start}
+.tabpane>*{min-width:0}
+.tabpane[hidden]{display:none}
+.tabpane .tnum{font-family:var(--display);font-weight:800;font-size:clamp(40px,6vw,68px);
+  line-height:.9;color:var(--lime);letter-spacing:-.02em}
+.tabpane h3{font-size:clamp(20px,2.4vw,27px);color:#fff;margin:0 0 12px;line-height:1.2}
+.tabpane p{margin:0;font-size:clamp(15px,1.7vw,17px);line-height:1.7;color:#DCEAE6;max-width:72ch}
+@media(max-width:640px){
+  .tabpane{grid-template-columns:1fr;gap:14px}
+  .tabs .tab{flex:1 1 auto;justify-content:center;padding:12px 14px}
+}
+
+@media(max-width:900px){.stiles{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.stiles{grid-template-columns:1fr}}
+
 </style>
 
 <style>
@@ -183,6 +292,9 @@
 .panel h3{font-size:15px;letter-spacing:.02em;margin-bottom:16px}
 .prow{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:13px 0;border-top:1px solid var(--line);align-items:baseline}
 .prow:first-of-type{border-top:0;padding-top:0}
+a.prow{text-decoration:none;transition:color .2s var(--e)}
+a.prow span{transition:color .2s var(--e)}
+a.prow:hover span{color:var(--teal-text)}
 .prow b{font-family:var(--display);font-weight:800;font-size:20px;color:var(--teal-deep);line-height:1}
 .prow span{font-size:14.5px;color:var(--ink-soft);line-height:1.55;min-width:0}
 
@@ -215,7 +327,9 @@
 .fcard{display:flex;flex-direction:column;height:100%;background:#fff;border:1px solid var(--line);
   text-decoration:none;overflow:hidden;transition:border-color .2s var(--e),transform .2s var(--e),box-shadow .2s var(--e)}
 .sec.alt .fcard{background:var(--paper)}
-.fcard:hover{border-color:var(--teal);transform:translateY(-3px);box-shadow:var(--shadow)}
+.fcard:hover,.fcard:focus-within{border-color:var(--teal);transform:translateY(-3px);box-shadow:var(--shadow)}
+.fcard .flink{display:flex;flex-direction:column;flex:1;text-decoration:none;color:inherit}
+.fcard .soc{margin:0 18px 18px;padding-top:14px;border-top:1px solid var(--line)}
 .fcard img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;background:var(--paper-alt)}
 .fcard .fb{padding:18px 18px 20px;display:flex;flex-direction:column;gap:5px;flex:1}
 .fcard .fn{font-family:var(--display);font-weight:700;font-size:16.5px;line-height:1.25;color:var(--ink)}
@@ -265,6 +379,39 @@
 .bcard.hidden{display:none}
 .moreWrap{display:flex;justify-content:center;margin-top:clamp(26px,3.2vw,38px)}
 
+/* ——— blog tags + author filter ——— */
+.btags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.tag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.03em;
+  padding:3px 9px;border:1px solid var(--line);border-radius:999px;
+  background:var(--paper-alt);color:var(--teal-text);line-height:1.5}
+.sec.alt .tag{background:#fff}
+.fbar{display:flex;flex-wrap:wrap;gap:9px;margin:clamp(22px,2.6vw,30px) 0 0}
+.filter-btn{font:inherit;font-size:14px;font-weight:600;cursor:pointer;
+  padding:9px 16px;border:1px solid var(--line);border-radius:999px;
+  background:#fff;color:var(--ink-soft);line-height:1.2;
+  transition:border-color .2s var(--e),color .2s var(--e),background .2s var(--e)}
+.filter-btn:hover{border-color:var(--teal);color:var(--teal-text)}
+.filter-btn.active{background:var(--teal-deep);border-color:var(--teal-deep);color:#fff}
+.filter-btn .c{opacity:.6;font-weight:500;margin-left:5px}
+.fcount{font-size:14px;color:var(--ink-soft);margin-top:16px}
+
+/* ——— a Fellow's own posts, on their profile page ——— */
+.alist{list-style:none;margin:clamp(24px,3vw,34px) 0 0;padding:0;
+  display:grid;gap:14px}
+.alist li{list-style:none}
+.arow{display:grid;grid-template-columns:74px 1fr;gap:clamp(14px,2vw,20px);
+  align-items:center;background:#fff;border:1px solid var(--line);
+  padding:14px;text-decoration:none;
+  transition:border-color .2s var(--e),transform .2s var(--e),box-shadow .2s var(--e)}
+.sec.alt .arow{background:var(--paper)}
+.arow:hover{border-color:var(--teal);transform:translateY(-2px);box-shadow:var(--shadow)}
+.arow>*{min-width:0}
+.arow .at{width:74px;height:74px;background:var(--paper-alt);overflow:hidden}
+.arow .at img{width:100%;height:100%;object-fit:cover}
+.arow h3{font-size:16.5px;line-height:1.34;color:var(--ink);overflow-wrap:break-word}
+.arow .ad{display:block;font-family:var(--display);font-weight:700;font-size:12px;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--teal-text);margin-bottom:5px}
+
 /* ——— session list (L&D calendar) ——— */
 .slist{list-style:none;margin:clamp(28px,3.6vw,42px) 0 0;padding:0;border-top:1px solid var(--line)}
 .slist li{list-style:none}
@@ -303,6 +450,8 @@
   .sdate{grid-column:1/-1;width:auto}
 }
 @media(max-width:680px){
+  .arow{grid-template-columns:56px 1fr}
+  .arow .at{width:56px;height:56px}
   .mgrid{grid-template-columns:repeat(2,1fr)}
   .fgrid{grid-template-columns:repeat(2,1fr)}
   .bgrid{grid-template-columns:1fr}
@@ -588,29 +737,29 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
 <header class="bar" id="bar">
   <div class="bar-in">
-    <a class="brand" href="index.html" aria-label="U-CAN — Urban Collective Action Network, home">
+    <a class="brand" href="/" aria-label="U-CAN — Urban Collective Action Network, home">
       <img src="data:image/webp;base64,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" width="38" height="38" alt="" fetchpriority="high" decoding="async">
       <span><b>U-CAN</b><small>Urban Collective Action Network</small></span>
     </a>
-    <nav class="ucnav-bar" aria-label="Primary"><div class="ucnav"><div class="ucnav-i"><a class="ucnav-t" href="about.html">About Us<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><div class="ucnav-dd"><a href="about.html">About U-CAN</a><a href="our-people.html">Our People</a><a href="impact.html">Impact</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t on" aria-expanded="false" aria-haspopup="true">Initiatives<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="urban-reforms-collective.html">Urban Reforms Collective (URC)</a><a href="rfc.html">Request for Collaboration (RFC)</a><a href="learning-network.html">Learning Network for Urban Managers</a><a href="fellowship.html">U-CAN Fellowship</a><p class="ucnav-gh">Fellowship</p><a href="meet-the-fellows.html">Meet the 2024-25 Fellows</a><a href="fellow-blogs.html">Blogs by Our Fellows</a><a href="ld-calendar.html">L&D Calendar</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Events<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="city-mixers.html">U-CAN City Mixers</a><a href="annual-forum-2025.html">The U-CAN Annual Forum 2025</a></div></div><a class="ucnav-t" href="our-members.html">Our Members</a><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Media<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="newsletter.html">Newsletter</a><a href="city-champions.html">City Champions</a><a href="policy-webinars.html">Policy Webinars</a></div></div></div></nav>
-    <a class="bar-cta" href="newsletter.html#subscribe">Subscribe</a>
+    <nav class="ucnav-bar" aria-label="Primary"><div class="ucnav"><div class="ucnav-i"><a class="ucnav-t" href="about">About Us<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><div class="ucnav-dd"><a href="about">About U-CAN</a><a href="our-people">Our People</a><a href="impact">Impact</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t on" aria-expanded="false" aria-haspopup="true">Initiatives<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="urban-reforms-collective">Urban Reforms Collective (URC)</a><a href="rfc">Request for Collaboration (RFC)</a><a href="learning-network">Learning Network for Urban Managers</a><a href="fellowship">U-CAN Fellowship</a><p class="ucnav-gh">Fellowship</p><a href="meet-the-fellows">Meet the 2024-25 Fellows</a><a href="fellow-blogs">Blogs by Our Fellows</a><a href="ld-calendar">L&D Calendar</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Events<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="city-mixers">U-CAN City Mixers</a><a href="annual-forum-2025">The U-CAN Annual Forum 2025</a></div></div><a class="ucnav-t" href="our-members">Our Members</a><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Media<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="newsletter">Newsletter</a><a href="city-champions">City Champions</a><a href="policy-webinars">Policy Webinars</a></div></div></div></nav>
+    <a class="bar-cta" href="newsletter#subscribe">Subscribe</a>
     <button class="burger" id="burger" aria-expanded="false" aria-controls="msheet" aria-label="Open navigation menu"><span></span></button>
   </div>
-  <div class="msheet" id="msheet"><div class="wrap"><div class="ucmob"><div class="ucmob-g"><p class="ucmob-h">About Us</p><div class="ucmob-l"><a href="about.html">About U-CAN</a><a href="our-people.html">Our People</a><a href="impact.html">Impact</a></div></div><div class="ucmob-g"><p class="ucmob-h">Initiatives</p><div class="ucmob-l"><a href="urban-reforms-collective.html">Urban Reforms Collective (URC)</a><a href="rfc.html">Request for Collaboration (RFC)</a><a href="learning-network.html">Learning Network for Urban Managers</a><a href="fellowship.html">U-CAN Fellowship</a><p class="ucmob-gh">Fellowship</p><a href="meet-the-fellows.html">Meet the 2024-25 Fellows</a><a href="fellow-blogs.html">Blogs by Our Fellows</a><a href="ld-calendar.html">L&D Calendar</a></div></div><div class="ucmob-g"><p class="ucmob-h">Events</p><div class="ucmob-l"><a href="city-mixers.html">U-CAN City Mixers</a><a href="annual-forum-2025.html">The U-CAN Annual Forum 2025</a></div></div><a class="ucmob-t" href="our-members.html">Our Members</a><div class="ucmob-g"><p class="ucmob-h">Media</p><div class="ucmob-l"><a href="newsletter.html">Newsletter</a><a href="city-champions.html">City Champions</a><a href="policy-webinars.html">Policy Webinars</a></div></div><a class="ucmob-t ucmob-cta" href="newsletter.html#subscribe">Subscribe</a></div></div></div>
+  <div class="msheet" id="msheet"><div class="wrap"><div class="ucmob"><div class="ucmob-g"><p class="ucmob-h">About Us</p><div class="ucmob-l"><a href="about">About U-CAN</a><a href="our-people">Our People</a><a href="impact">Impact</a></div></div><div class="ucmob-g"><p class="ucmob-h">Initiatives</p><div class="ucmob-l"><a href="urban-reforms-collective">Urban Reforms Collective (URC)</a><a href="rfc">Request for Collaboration (RFC)</a><a href="learning-network">Learning Network for Urban Managers</a><a href="fellowship">U-CAN Fellowship</a><p class="ucmob-gh">Fellowship</p><a href="meet-the-fellows">Meet the 2024-25 Fellows</a><a href="fellow-blogs">Blogs by Our Fellows</a><a href="ld-calendar">L&D Calendar</a></div></div><div class="ucmob-g"><p class="ucmob-h">Events</p><div class="ucmob-l"><a href="city-mixers">U-CAN City Mixers</a><a href="annual-forum-2025">The U-CAN Annual Forum 2025</a></div></div><a class="ucmob-t" href="our-members">Our Members</a><div class="ucmob-g"><p class="ucmob-h">Media</p><div class="ucmob-l"><a href="newsletter">Newsletter</a><a href="city-champions">City Champions</a><a href="policy-webinars">Policy Webinars</a></div></div><a class="ucmob-t ucmob-cta" href="newsletter#subscribe">Subscribe</a></div></div></div>
 </header>
 
 <main id="main">
 
 <section class="hero" aria-labelledby="pt">
   <div class="hero-in">
-    <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a> <span aria-hidden="true">/</span> <a href="fellow-blogs.html">Blogs by Our Fellows</a> <span aria-hidden="true">/</span> <span>Post</span></nav>
+    <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> <span aria-hidden="true">/</span> <a href="fellow-blogs">Blogs by Our Fellows</a> <span aria-hidden="true">/</span> <span>Post</span></nav>
     <p class="hero-tag">Fellowship field notes</p>
     <h1 id="pt">This City Isn’t for You – Women, Safety, and Jaipur</h1>
-    <p class="post-byline">By <a href="profile-fellow-aashima-arora.html" style="color:var(--lime);font-weight:600;text-decoration:none">Aashima Arora</a> <span aria-hidden="true">·</span> July 5, 2025</p>
+    <p class="post-byline">By <a href="profile-fellow-aashima-arora" style="color:var(--lime);font-weight:600;text-decoration:none">Aashima Arora</a> <span aria-hidden="true">·</span> July 5, 2025</p>
   </div>
 </section>
 
-<div class="backbar"><div class="wrap"><a href="fellow-blogs.html">← Back to all posts</a></div></div>
+<div class="backbar"><div class="wrap"><a href="fellow-blogs">← Back to all posts</a></div></div>
 
 <section class="sec" aria-labelledby="pb">
   <div class="wrap">
@@ -649,11 +798,11 @@ footer a:hover{color:var(--lime,#CDDE71)}
         <img src="data:image/webp;base64,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" width="260" height="260" alt="Aashima Arora, U-CAN Fellow"
           loading="lazy" decoding="async" style="width:88px;height:88px;border-radius:50%;object-fit:cover;margin-bottom:14px">
         <dl>
-          <dt>Author</dt><dd><a href="profile-fellow-aashima-arora.html" style="color:var(--teal-text);font-weight:600;text-decoration:none">Aashima Arora</a></dd>
+          <dt>Author</dt><dd><a href="profile-fellow-aashima-arora" style="color:var(--teal-text);font-weight:600;text-decoration:none">Aashima Arora</a></dd>
           <dt>U-CAN Fellow at</dt><dd>WRI India &amp; U-CAN</dd>
           <dt>Published</dt><dd>July 5, 2025</dd>
         </dl>
-        <p style="margin-top:16px"><a href="fellow-blogs.html" style="color:var(--teal-text);font-weight:600;font-size:14.5px;text-decoration:none">More posts by our Fellows →</a></p>
+        <p style="margin-top:16px"><a href="fellow-blogs" style="color:var(--teal-text);font-weight:600;font-size:14.5px;text-decoration:none">More posts by our Fellows →</a></p>
       </aside>
     </div>
   </div>
@@ -662,7 +811,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 <section class="ctaband" aria-label="More posts">
   <div class="wrap">
     <p>Keep reading</p>
-    <a class="btn line" href="blog-the-missing-link-why-jaipurs-public-spaces-fail-adolescent.html">← Newer post</a> <a class="btn line" href="fellow-blogs.html">All posts</a> <a class="btn line" href="blog-cities-that-get-it-right-and-what-jaipur-can-learn.html">Older post →</a>
+    <a class="btn line" href="blog-the-missing-link-why-jaipurs-public-spaces-fail-adolescent">← Newer post</a> <a class="btn line" href="fellow-blogs">All posts</a> <a class="btn line" href="blog-cities-that-get-it-right-and-what-jaipur-can-learn">Older post →</a>
   </div>
 </section>
 
@@ -672,7 +821,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
   <div class="wrap">
     <div class="f-grid">
       <div>
-        <a class="brand" href="index.html" aria-label="U-CAN home">
+        <a class="brand" href="/" aria-label="U-CAN home">
           <img src="data:image/webp;base64,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" width="38" height="38" alt="" loading="lazy" decoding="async">
           <span><b>U-CAN</b><small>Urban Collective Action Network</small></span>
         </a>
@@ -681,24 +830,24 @@ footer a:hover{color:var(--lime,#CDDE71)}
       <nav aria-label="Quick links">
         <h4>Explore</h4>
         <ul>
-          <li><a href="about.html">About U-CAN</a></li>
-          <li><a href="our-people.html">Our People</a></li>
-          <li><a href="impact.html">Impact</a></li>
-          <li><a href="our-members.html">Our Members</a></li>
-          <li><a href="city-mixers.html">City Mixers</a></li>
-          <li><a href="annual-forum-2025.html">Annual Forum 2025</a></li>
+          <li><a href="about">About U-CAN</a></li>
+          <li><a href="our-people">Our People</a></li>
+          <li><a href="impact">Impact</a></li>
+          <li><a href="our-members">Our Members</a></li>
+          <li><a href="city-mixers">City Mixers</a></li>
+          <li><a href="annual-forum-2025">Annual Forum 2025</a></li>
         </ul>
       </nav>
       <nav aria-label="Initiatives">
         <h4>Initiatives</h4>
         <ul>
-          <li><a href="urban-reforms-collective.html">Urban Reforms Collective</a></li>
-          <li><a href="rfc.html">Request for Collaboration</a></li>
-          <li><a href="learning-network.html">Learning Network</a></li>
-          <li><a href="fellowship.html">U-CAN Fellowship</a></li>
-          <li><a href="newsletter.html">Newsletter</a></li>
-          <li><a href="policy-webinars.html">Policy Webinars</a></li>
-          <li><a href="city-champions.html">City Champions</a></li>
+          <li><a href="urban-reforms-collective">Urban Reforms Collective</a></li>
+          <li><a href="rfc">Request for Collaboration</a></li>
+          <li><a href="learning-network">Learning Network</a></li>
+          <li><a href="fellowship">U-CAN Fellowship</a></li>
+          <li><a href="newsletter">Newsletter</a></li>
+          <li><a href="policy-webinars">Policy Webinars</a></li>
+          <li><a href="city-champions">City Champions</a></li>
         </ul>
       </nav>
       <div class="f-sub" id="connect">
@@ -716,7 +865,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
           </div>
           <p class="nerr" role="alert">Please enter a valid email address and tick the consent box to continue.</p>
           <p class="nok" role="status">Thanks — you're on the list. We've recorded your consent and the time it was given.</p>
-          <p class="f-legal">U-CAN is the Data Fiduciary for this data under the Digital Personal Data Protection Act, 2023. Request access, correction or erasure at <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>. See our <a href="privacy-policy.html">Privacy Policy</a>.</p>
+          <p class="f-legal">U-CAN is the Data Fiduciary for this data under the Digital Personal Data Protection Act, 2023. Request access, correction or erasure at <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>. See our <a href="privacy-policy">Privacy Policy</a>.</p>
         </form>
         <ul class="f-social">
           <li><a href="https://www.youtube.com/@U-CAN24" target="_blank" rel="noopener noreferrer">YouTube</a></li>
@@ -727,7 +876,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
     <div class="f-bottom">
       <span>© U-CAN 2026. All Rights Reserved</span>
-      <span><a href="terms-of-use.html">Terms of Use</a><a href="privacy-policy.html">Privacy Policy</a><button type="button" class="cookie-link" id="cookie-reopen">Manage cookies</button></span>
+      <span><a href="terms-of-use">Terms of Use</a><a href="privacy-policy">Privacy Policy</a><button type="button" class="cookie-link" id="cookie-reopen">Manage cookies</button></span>
     </div>
   </div>
 </footer>
@@ -1053,7 +1202,9 @@ footer a:hover{color:var(--lime,#CDDE71)}
           return;
         }
         issues.forEach(function (el) {
-          el.classList.toggle("hidden", el.dataset.year !== year);
+          // the newsletter archive keys on year, the blog grid on author
+          var key = el.dataset.year || el.dataset.author;
+          el.classList.toggle("hidden", key !== year);
         });
         if (wrap) wrap.style.display = "none";
       });
@@ -1086,6 +1237,37 @@ footer a:hover{color:var(--lime,#CDDE71)}
           items.forEach(function (o) { if (o !== d) o.open = false; });
         });
       });
+    });
+  })();
+
+  /* ---------- 10. tabs (Fellowship: knowledge / network / funding) ----------
+     Markup is fully usable with JS off — every pane renders, and only the
+     first is hidden once this runs. */
+  (function tabs() {
+    $$("[data-tabs]").forEach(function (root) {
+      var btns = $$('[role="tab"]', root);
+      var panes = $$('[role="tabpanel"]', root);
+      if (btns.length < 2 || btns.length !== panes.length) return;
+
+      var select = function (i, focus) {
+        btns.forEach(function (b, n) {
+          b.setAttribute("aria-selected", n === i ? "true" : "false");
+          b.tabIndex = n === i ? 0 : -1;
+        });
+        panes.forEach(function (p, n) { p.hidden = n !== i; });
+        if (focus) btns[i].focus();
+      };
+
+      btns.forEach(function (b, i) {
+        b.addEventListener("click", function () { select(i); });
+        b.addEventListener("keydown", function (e) {
+          var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+          if (!d) return;
+          e.preventDefault();
+          select((i + d + btns.length) % btns.length, true);
+        });
+      });
+      select(0);
     });
   })();
 })();

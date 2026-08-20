@@ -705,4 +705,74 @@ every shared component (chrome/nav/rhythm/JS/header/footer/cookie banner) is pre
 exactly once on all 148 pages and exits non-zero otherwise.
 
 **Build chain order:** `build_*` → `chrome.py` → `rebuild_nav.py` → `rhythm.py` →
-`inject_js.py` → `relink_all.py` → `checksite.py`.
+`inject_js.py` → `relink_all.py` → **`cleanurls.py`** → `checksite.py`.
+
+---
+
+## 25. Clean URLs, and the shared icon set
+
+### URLs no longer carry `.html`
+`standalone/vercel.json` sets `cleanUrls: true` + `trailingSlash: false`, and
+`cleanurls.py` rewrites every internal `<a href>` to match (`about.html` → `about`,
+`index.html` → `/`, fragments preserved). It **must run last** — `chrome.py`,
+`rebuild_nav.py` and `relink_all.py` all emit `.html` hrefs, so anything run after
+it re-introduces them. It asserts at the end that none survive.
+
+Deliberately untouched: `canonical`, `hreflang`, `og:url` and every JSON-LD `url`
+/ `@id`. Those point at urban.org.in, which is where the pages get published.
+
+**Local verification needs `serve.py`, not `python -m http.server`.** Plain
+http.server 404s on an extensionless path, so every internal link looks broken.
+`serve.py` appends `.html` when resolving, the way Vercel does. Run it on 8099 and
+point `verify.js` / `test_js.js` at it.
+
+### `icons.py` — one inline-SVG set for the whole site
+The live site has no reusable icon vocabulary, so there is a bespoke one: ~29
+24×24 stroke paths, `currentColor`, emitted by `icons.svg(name)` (re-exported as
+`shellkit.icon`). Inline SVG is the right call for the PageSpeed target — no extra
+requests, no icon-font FOIT — and `currentColor` lets one glyph sit on paper and on
+teal-deep, which keeps the lime-on-dark-only rule intact.
+
+`ICON_CSS` is concatenated into `shellkit.PAGE_CSS`, so **every shellkit-built page
+gets it automatically**. Components it defines: `.icb` icon chip (`.on-dark`
+variant), `.icrow`, `.icard`/`.ihead`/`.step` (hover-lift cards), `.stepper` (lime
+numbered circles), `.stiles`/`.stile`, `.soc` (`.on-dark` variant), `.tabs`.
+
+**Legacy unpacked pages do not get it.** `learning-network.html` is not
+shellkit-built, so its stepper styling is an injected `<style data-ucan="ln">`
+block with literal colour fallbacks — the same self-contained discipline as §3c.
+
+### What this round changed
+| Page | Change |
+|---|---|
+| `urban-reforms-collective` | hero chips removed; "Urban reform requires" is an `.icrow`; the 11-FAQ lead line removed |
+| `rfc` | hero chips removed; Core objectives are `.icard`s |
+| `learning-network` | pilot phase renders as a numbered `.stepper`; `~40 officials` → `40 officials` |
+| `fellowship` | 6 Program Highlights are `.icard`s; Knowledge/Network/Funding is an ARIA tablist (`ucan.js` §10) |
+| `meet-the-fellows` | social handles per Fellow, from `fellow_socials.json` |
+| `fellow-blogs` | lead removed; author-filter chips; author + subject tag pills; genuinely date-sorted |
+| `profile-fellow-*` | social row in the hero + that Fellow's own posts, newest first |
+| `ld-calendar` | lead removed; "At a glance" is `.stiles` icon tiles |
+| `annual-forum-2025` | lead removed; quote cards carry portraits/monograms; logo overlap fixed |
+
+**`blogmeta.py` is the single source for blog metadata** — author-name
+normalisation, slug mapping, real date parsing, and the keyword tagger. Both
+`build_ld.py` (the archive) and `build_fellowship.py` (the per-author showcase)
+read it, so the listing and the profiles cannot disagree.
+
+### Traps added this round
+- **The `.fcard` was an `<a>`.** Adding social links inside it would have nested
+  anchors. It is now a `<div class="fcard">` wrapping `<a class="flink">` plus the
+  `.soc` row; hover moved to `.fcard:hover,.fcard:focus-within`.
+- **Two fellows' "handles" on the live site are bare `#` placeholders**, and one
+  JSON key is `Shreya-Krishnan` with a capital S. `SOCIALS` lowercases keys and
+  drops `#`, so those three render no row at all rather than a dead link.
+- **The `.pt .ph` placeholder sat *behind* the logo** at `z-index:0`. A
+  transparent-background logo let the org name show through it — that was the
+  reported "overlap". Fixed with `onload="this.parentNode.classList.add('ok')"`
+  plus `.pt.ok .ph,.gal figure.ok .ph{display:none}`.
+- **The archive filter now keys on `data-year || data-author`** so one handler
+  serves both the newsletter archive and the blog grid.
+- **Heredocs still mangle backslashes** (§18). Every patch containing an escape
+  this round went through the `Edit` tool; `build_rfc.py` failed once through a
+  `python - <<'PY'` heredoc before switching.
