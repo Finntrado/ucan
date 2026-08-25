@@ -293,7 +293,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </style>
 <style data-ucan="rhythm">
 /* ——— vertical rhythm ——— */
-.sec{padding:clamp(52px,5.6vw,80px) 0}
+.crumb{display:none}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.p-role.team{color:var(--ink-soft)!important;font-weight:400!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
 .section{padding:clamp(54px,5.8vw,84px) 0}
 .sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
 .sec-head>*{min-width:0}
@@ -347,18 +347,12 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </section>
 
 <!-- PEOPLE -->
-<section class="sec" id="people" aria-labelledby="people-h">
+<section class="sec" id="people" aria-label="Our People">
   <div class="wrap">
-    <div class="sec-head rv in">
-      <div>
-        <p class="kicker" data-num="—">Who we are</p>
-        <h2 id="people-h">The circle that guides U-CAN</h2>
-      </div>
-    </div>
+    
 
     <div class="grp" id="founding">
-      <div class="grp-head"><h2>Founding Circle</h2><span class="grp-count">12 members</span></div>
-      <p class="grp-desc">The twelve city-focused leaders whose organisations came together in 2022 to form U-CAN.</p>
+      <div class="grp-head"><h2>Founding Circle</h2></div>
       <ul class="people" aria-label="Founding Circle">
       <li class="pcard rv in">
         <a href="profile-gautham-ravichander" aria-label="Gautham Ravichander, eGov Foundation — view profile">
@@ -484,8 +478,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
     <div class="grp" id="steering">
-      <div class="grp-head"><h2>Steering Committee</h2><span class="grp-count">8 members</span></div>
-      <p class="grp-desc">U-CAN's steering committee brings deep, hands-on experience in implementing both programmatic and systemic interventions, collaborating with partners across multiple levels of governance.</p>
+      <div class="grp-head"><h2>Steering Committee</h2></div>
       <ul class="people" aria-label="Steering Committee">
       <li class="pcard rv in">
         <a href="profile-champaka-rajagopal" aria-label="Champaka Rajagopal, Centre for Policy Research — view profile">
@@ -539,7 +532,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
       </li>
       <li class="pcard rv d1 in">
         <a href="profile-meghna-bandelwar-indurkar" aria-label="Meghna Bandelwar Indurkar, Praja Foundation — view profile">
-          <span class="p-ava p-mono" style="--ava:var(--teal-deep)" aria-hidden="true">MI</span>
+          <img class="p-ava" src="data:image/webp;base64,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" width="72" height="72" loading="lazy" decoding="async" alt="Meghna Bandelwar Indurkar">
           <span class="p-info">
             <span class="p-name">Meghna Bandelwar Indurkar</span>
             <span class="p-role">Praja Foundation</span>
@@ -571,8 +564,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
     <div class="grp" id="stewardship">
-      <div class="grp-head"><h2>Stewardship Team</h2><span class="grp-count">4 members</span></div>
-      <p class="grp-desc">Senior member representatives who hold the network accountable to its purpose and long-term direction.</p>
+      <div class="grp-head"><h2>Stewardship Team</h2></div>
       <ul class="people" aria-label="Stewardship Team">
       <li class="pcard rv in">
         <a href="profile-jaya-dhindaw" aria-label="Jaya Dhindaw, WRI India — view profile">
@@ -618,8 +610,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
     <div class="grp" id="team">
-      <div class="grp-head"><h2>Our Team</h2><span class="grp-count">4 members</span></div>
-      <p class="grp-desc">The backbone team running U-CAN's programmes, communications and day-to-day facilitation.</p>
+      <div class="grp-head"><h2>Our Team</h2></div>
       <ul class="people team" aria-label="Our Team">
       <li class="pcard rv in">
         <a href="profile-siddharth-pandit" aria-label="Siddharth Pandit, Chief Executive Officer — view profile">
