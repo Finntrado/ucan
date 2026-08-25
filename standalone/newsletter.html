@@ -349,33 +349,11 @@ footer a:hover{color:var(--lime,#CDDE71)}
   </div>
 
   <div class="wrap">
-    <div class="nl-hero-grid">
+    <div class="nl-hero-grid" style="grid-template-columns:1fr;max-width:70ch">
       <div>
         <div class="eyebrow">Media · Monthly Updates</div>
         <h1>Newsletter</h1>
         <p class="nl-hero-lead">Join our community to receive regular updates on how people are driving change in our cities. We share insights on fostering collaboration, highlight the innovative ideas our fellows are working on, and let you know about opportunities to get involved.</p>
-      </div>
-
-      <div class="subscribe-box" id="subscribe">
-        <h2>Subscribe</h2>
-        <p>Urban governance insights, delivered monthly. No spam.</p>
-        <form action="https://urban.org.in/newsletter/" method="post" aria-label="Newsletter signup" novalidate="">
-          <label>
-            <span style="position:absolute;left:-9999px">Email address</span>
-            <div class="sub-field">
-              <input type="email" name="email" placeholder="your@work-email.in" required="" autocomplete="email">
-              <button type="submit">Subscribe<svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8m0 0L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
-            </div>
-          </label>
-          <div class="consent" style="display:flex;gap:10px;align-items:flex-start;margin-top:14px">
-            <input type="checkbox" id="nl-consent" name="consent" required="" style="margin-top:4px;flex:0 0 auto">
-            <label for="nl-consent" style="font-size:12.5px;line-height:1.55">I agree that U-CAN may use my email address to send its newsletter, event invitations and programme details. My email will be kept until I unsubscribe or ask for it to be deleted. I can withdraw this consent at any time by writing to <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>.</label>
-          </div>
-          <p class="nl-err" id="nl-err" role="alert" style="display:none">Please enter a valid email address and tick the consent box to continue.</p>
-          <p class="nl-ok" id="nl-ok" role="status" style="display:none">Thanks — you're on the list. We've recorded your consent and the time it was given.</p>
-          <p class="sub-hint" style="margin-top:12px">U-CAN is the Data Fiduciary for this data and processes it under the Digital Personal Data Protection Act, 2023. We do not sell your data or share it for advertising. You may request access, correction, erasure or nomination, or raise a grievance, at <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>. See our <a href="privacy-policy">Privacy Policy</a>.</p>
-          <div class="sub-hint">Fellowship stories · policy briefs · city reform updates · unsubscribe anytime</div>
-        </form>
       </div>
     </div>
   </div>
@@ -461,6 +439,32 @@ footer a:hover{color:var(--lime,#CDDE71)}
         <svg viewBox="0 0 10 10" fill="none"><path d="M5 1v8m0 0L1.5 5.5M5 9l3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
       </button>
     </div>
+  </div>
+</section>
+
+<section class="sec alt" id="subscribe-wrap" aria-label="Subscribe">
+  <div class="wrap" style="max-width:640px">
+    <div class="subscribe-box" id="subscribe">
+        <h2>Subscribe</h2>
+        <p>Urban governance insights, delivered monthly. No spam.</p>
+        <form action="https://urban.org.in/newsletter/" method="post" aria-label="Newsletter signup" novalidate="">
+          <label>
+            <span style="position:absolute;left:-9999px">Email address</span>
+            <div class="sub-field">
+              <input type="email" name="email" placeholder="your@work-email.in" required="" autocomplete="email">
+              <button type="submit">Subscribe<svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 6h8m0 0L6.5 2.5M10 6L6.5 9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            </div>
+          </label>
+          <div class="consent" style="display:flex;gap:10px;align-items:flex-start;margin-top:14px">
+            <input type="checkbox" id="nl-consent" name="consent" required="" style="margin-top:4px;flex:0 0 auto">
+            <label for="nl-consent" style="font-size:12.5px;line-height:1.55">I agree that U-CAN may use my email address to send its newsletter, event invitations and programme details. My email will be kept until I unsubscribe or ask for it to be deleted. I can withdraw this consent at any time by writing to <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>.</label>
+          </div>
+          <p class="nl-err" id="nl-err" role="alert" style="display:none">Please enter a valid email address and tick the consent box to continue.</p>
+          <p class="nl-ok" id="nl-ok" role="status" style="display:none">Thanks — you're on the list. We've recorded your consent and the time it was given.</p>
+          <p style="margin-top:12px;font-size:12.5px;line-height:1.6;color:rgba(251,250,246,.72);text-transform:none;letter-spacing:normal;font-weight:400">U-CAN is the Data Fiduciary for this data and processes it under the Digital Personal Data Protection Act, 2023. We do not sell your data or share it for advertising. You may request access, correction, erasure or nomination, or raise a grievance, at <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>. See our <a href="privacy-policy">Privacy Policy</a>.</p>
+          <div class="sub-hint">Fellowship stories · policy briefs · city reform updates · unsubscribe anytime</div>
+        </form>
+      </div>
   </div>
 </section>
 
