@@ -298,7 +298,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </style>
 <style data-ucan="rhythm">
 /* ——— vertical rhythm ——— */
-.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
 .section{padding:clamp(54px,5.8vw,84px) 0}
 .sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
 .sec-head>*{min-width:0}
@@ -389,9 +389,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
       <p>We saw this same spirit play out again at a recent discussion with G. Mathi Vathanan, co-hosted by U-CAN and eGov Foundation on Unlocking India’s Urban Future. He spoke about Odisha’s Sustainable Urban Services in a Jiffy (SUJOG) journey not as a blueprint, but as lived experience, shaped by institutional shifts, political complexity, and quiet turning points. Listening to him, and later to the lively panel led by our member-organisation leaders, was a reminder that learning happens when people share openly, challenge assumptions, and reflect together. It also underscored the impact that a committed public administrator can bring, with imagination, perseverance, and the trust of colleagues and communities.</p>
       <p>Learning and collaboration are social by nature. They grow when people come together to share, reflect, and translate ideas into action. The Forum’s energy doesn’t end in one city or over three days; it lives on in every conversation, report, and gathering where curiosity, engagement, and collective learning take center stage.</p>
       <div class="letter-sign">
+        <div class="sign-photo"><img src="data:image/webp;base64,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" alt="Siddharth Pandit" width="80" height="80" loading="lazy" decoding="async"></div>
         <div class="sign-text">
           <p class="name">Siddharth Pandit</p>
-          <p class="role">On behalf of U-CAN</p>
+          <p class="role">CEO, Urban Collective Action Network · On behalf of U-CAN</p>
         </div>
       </div>
     </div>
@@ -407,6 +408,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
       <div class="letter reveal">
         <h3>Annual Forum 2025: Building Collective Momentum</h3>
+        <figure class="nl-fig"><img src="newsletters/img/september-2025-01.webp" width="1400" height="933" alt="Image from “Annual Forum 2025: Building Collective Momentum”" loading="lazy" decoding="async"></figure>
         <p>The first-ever U-CAN Annual Forum, held in Goa from 21–23 August, brought together 70+ stakeholders in the urban ecosystem from across India. Over three days, the Forum became more than an event - it was a space to explore, exchange, and co-create solutions for India’s cities.</p>
         <p><a class="art-link" href="https://museumofgoa.com/" target="_blank" rel="noopener noreferrer">Grounding Conversations in Place and Story <span aria-hidden="true">&rarr;</span></a></p>
         <p><a class="art-link" href="https://museumofgoa.com/" target="_blank" rel="noopener noreferrer">The Forum took place at the Museum of Goa, a venue that immediately sparked creativity and <span aria-hidden="true">&rarr;</span></a></p>
@@ -427,6 +429,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
         <p>Insights from the Annual Forum, titled, “Collective learning in action: Cities. People. Practice, Together.” and photo galleries are now available on our website, capturing the vibrancy and creativity of the three days. A wrap-up video highlights key moments, conversations, and reflections from participants.</p>
         <p><a class="art-link" href="https://urban.org.in/the-u-can-annual-forum-2025/" target="_blank" rel="noopener noreferrer">Access all resources here! <span aria-hidden="true">&rarr;</span></a></p>
         <h3>RFC spotlight: more than just check-ins</h3>
+        <figure class="nl-fig"><img src="newsletters/img/september-2025-02.webp" width="1400" height="682" alt="Image from “RFC spotlight: more than just check-ins”" loading="lazy" decoding="async"></figure>
         <p>As part of the Requests for Collaboration (RFC) initiative, we’ve been holding regular calls with the collaborative team from eGov Foundation and Praja Foundation. At first, these were meant as simple check-ins. But they’ve quickly grown into something more meaningful.</p>
         <p>Why this matters: These conversations are showing us what’s possible when teams don’t just report progress but pause to reflect together. They’re becoming spaces of peer learning, exchange, and practical problem-solving.</p>
         <h3>This means:</h3>
@@ -482,6 +485,8 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
       <div class="articles">
         <article class="art reveal">
+        <figure class="nl-fig"><img src="newsletters/img/september-2025-04.webp" width="1400" height="847" alt="Image from “Unlocking India’s Urban Future”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig"><img src="newsletters/img/september-2025-03.webp" width="1280" height="1706" alt="Image from “Unlocking India’s Urban Future”" loading="lazy" decoding="async"></figure>
           <h3>Unlocking India’s Urban Future</h3>
           <p>“Real reform is when the law changes, the money moves, and the citizen sees the difference, without knowing what software you used.”</p>
           <p>With that line, G Mathi Vathanan had the room hooked. Co-organized by U-CAN and eGov Foundation, the session Unlocking India’s Urban Future brought together a full house to reflect on how tier 2 and 3 cities can drive inclusive, resilient growth.</p>
@@ -494,6 +499,8 @@ footer a:hover{color:var(--lime,#CDDE71)}
           <p>For U-CAN, partnering with eGov Foundation on this session was a reminder of why we exist: to connect practice, policy, and people into collective action for urban change.</p>
         </article>
         <article class="art reveal reveal-delay-1">
+        <figure class="nl-fig"><img src="newsletters/img/september-2025-06.webp" width="1280" height="851" alt="Image from “SolveCon Patiala: Small Plan, Big Turnout, Lasting Change”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig"><img src="newsletters/img/september-2025-05.webp" width="1400" height="931" alt="Image from “SolveCon Patiala: Small Plan, Big Turnout, Lasting Change”" loading="lazy" decoding="async"></figure>
           <h3>SolveCon Patiala: Small Plan, Big Turnout, Lasting Change</h3>
           <p>At Punjabi University, Patiala, Reap Benefit’s ninth SolveCon turned into something bigger than expected; nearly 600 young people showed up for a day of ideas, collaboration, and action. The event confirmed what earlier SolveCons in Bangalore and Jalandhar had hinted at: youth in emerging cities are not just interested in civic action, they’re ready to lead it.</p>
           <p>The energy played out across three hubs:</p>
@@ -579,6 +586,8 @@ footer a:hover{color:var(--lime,#CDDE71)}
         <p>transport. Legal victories brought low-floor buses to a few routes, but systemic barriers remain, a moving testament to the persistence needed for truly inclusive cities.</p>
         <p>These films don’t just inform; they immerse you in the lived realities of our cities.</p>
         <p><a class="art-link" href="https://www.youtube.com/@nagaritv_ccf" target="_blank" rel="noopener noreferrer">🎥 Watch them, and explore more films from Nagari Short Film Competition, here. <span aria-hidden="true">&rarr;</span></a></p>
+        <figure class="nl-fig"><img src="newsletters/img/september-2025-07.webp" width="1280" height="720" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig"><img src="newsletters/img/september-2025-08.webp" width="1280" height="720" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
       </div>
   </div>
 </section>

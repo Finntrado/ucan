@@ -298,7 +298,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </style>
 <style data-ucan="rhythm">
 /* ——— vertical rhythm ——— */
-.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
 .section{padding:clamp(54px,5.8vw,84px) 0}
 .sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
 .sec-head>*{min-width:0}
@@ -393,9 +393,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
       <p>There’s palpable energy for deeper, more honest learning across this collective. These mixers are now a monthly space, and we’re excited to see where they lead. As always, we’d love to hear from you — what resonated, what you’d like to see more of, and how we can make these gatherings even more meaningful.</p>
       <p>And yes — please stay hydrated, and keep your pets hydrated too!</p>
       <div class="letter-sign">
+        <div class="sign-photo"><img src="data:image/webp;base64,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" alt="Siddharth Pandit" width="80" height="80" loading="lazy" decoding="async"></div>
         <div class="sign-text">
           <p class="name">Siddharth Pandit</p>
-          <p class="role">On behalf of U-CAN</p>
+          <p class="role">CEO, Urban Collective Action Network · On behalf of U-CAN</p>
         </div>
       </div>
     </div>
@@ -412,8 +413,11 @@ footer a:hover{color:var(--lime,#CDDE71)}
       <div class="letter reveal">
         <h3>Masterclass Recap:</h3>
         <p>On April 25, fellows participated in a session titled &quot;Urban Planning in India&quot; led by Dr. Champaka Rajagopal from CPR. The session offered valuable insights into the evolving landscape of urban planning in India and its future challenges.</p>
+        <figure class="nl-fig"><img src="newsletters/img/april-2025-01.webp" width="1400" height="685" alt="Image from “Masterclass Recap:”" loading="lazy" decoding="async"></figure>
         <h3>Fellows’ Blogs</h3>
         <p>Our fellows have been sharing their insights through their blogs! In this edition, we’re featuring two of them:</p>
+        <figure class="nl-fig"><img src="newsletters/img/april-2025-02.webp" width="854" height="317" alt="Image from “Fellows’ Blogs”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig"><img src="newsletters/img/april-2025-03.webp" width="854" height="317" alt="Image from “Fellows’ Blogs”" loading="lazy" decoding="async"></figure>
         <p>Click on the images above to read each blog, and stay tuned for more insights from our fellows in upcoming editions!</p>
       </div>
   </div>
@@ -427,6 +431,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
       <div class="letter reveal">
+        <figure class="nl-fig"><img src="newsletters/img/april-2025-04.webp" width="586" height="802" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
         <h3>With over 1.1 billion people living in</h3>
         <h3>informal settlements globally, it’s clear</h3>
         <p>that addressing informality requires those</p>
@@ -447,8 +452,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
       <div class="articles">
         <article class="art reveal">
+        <figure class="nl-fig"><img src="newsletters/img/april-2025-05.webp" width="1400" height="1303" alt="Image from “Sparking youth civic action with Reap Benefit”" loading="lazy" decoding="async"></figure>
           <h3>Sparking youth civic action with Reap Benefit</h3>
-          <p>Over 300 young people gathered at Bangalore Creative Circus for a phone-free day filled with play, problem-solving, and civic innovation.</p>
+          <p>Over 300 young people gathered at Bangalore</p>
+          <p>Creative Circus for a phone-free day filled with play, problem-solving, and civic innovation.</p>
         </article>
         <article class="art reveal reveal-delay-1">
           <h3>The sixth edition of SolveCon 2025, hosted</h3>
@@ -464,12 +471,14 @@ footer a:hover{color:var(--lime,#CDDE71)}
           <p>🔹They’re already addressing climate, mobility, and governance issues at the neighborhood level.</p>
         </article>
         <article class="art reveal reveal-delay-3">
+        <figure class="nl-fig"><img src="newsletters/img/april-2025-06.webp" width="1280" height="720" alt="Image from “Redefining urban living with Shelter Associates”" loading="lazy" decoding="async"></figure>
           <h3>Redefining urban living with Shelter Associates</h3>
           <p>Shelter Associates, in collaboration with Kolhapur Municipal Corporation and supported by the A.T.E. Chandra Foundation, recently hosted a workshop on Bondre Nagar, a pioneering community-led redevelopment project under PMAY-Urban. This project is the first in Maharashtra to achieve in-situ slum redevelopment under the Beneficiary-Led Construction (BLC) vertical of PMAY-Urban on government land. It’s a powerful example of how communities can lead their own housing transformation.</p>
           <p>Key features of the Bondre Nagar model include:</p>
           <p>🔹 Full slum redevelopment without relocation 🔹 Legal land rights secured for 77 households 🔹 Formation of a Cooperative Housing Society 🔹 Community-led design and decision-making 🔹 Strong partnerships between municipal corporations, NGOs, funders, and communities This innovative approach is already influencing Standard Operating Procedures (SOPs) that could shape future PMAY policy and encourage scalable, replicable housing solutions across India.</p>
         </article>
         <article class="art reveal">
+        <figure class="nl-fig"><img src="newsletters/img/april-2025-07.webp" width="800" height="1326" alt="Image from “Janaagraha on building urban futures”" loading="lazy" decoding="async"></figure>
           <h3>Janaagraha on building urban futures</h3>
           <p>In Mint, Srikanth Viswanathan from Janaagraha argues that India’s cities need a complete governance overhaul. Despite big investments in housing and infrastructure, weak city systems, like delayed local elections and poor devolution of powers, are holding back real progress. He calls for three key reforms:</p>
           <p>🔹 Empower local governments with real authority and resources 🔹 Build capacity in staffing, planning, and finance 🔹 Adopt place-based urban planning Without these changes, he says, India’s urban transformation will remain incomplete.</p>
@@ -498,7 +507,9 @@ footer a:hover{color:var(--lime,#CDDE71)}
       <div class="letter reveal">
         <p>That’s the number of complaints Delhi citizens filed each year with the Municipal Corporation from 2017 to 2023 — more than 1,000 every single day. This figure comes from Praja Foundation’s latest Report on the Status of Wards Committees, which sheds light on functionality, citizen engagement, and accountability across the city’s 12 municipal zones.</p>
         <p>So, what are the biggest concerns?</p>
-        <p>✅ 42% Water supply ✅ 27% sewerage ✅ 26% Other issues ✅ 5% Solid waste management The scale of complaints points to persistent service delivery gaps, and the urgent need for more responsive, ward-level governance.</p>
+        <p>✅ 42% Water supply ✅ 27% sewerage</p>
+        <figure class="nl-fig"><img src="newsletters/img/april-2025-08.webp" width="1400" height="2149" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
+        <p>✅ 26% Other issues ✅ 5% Solid waste management The scale of complaints points to persistent service delivery gaps, and the urgent need for more responsive, ward-level governance.</p>
         <p><a class="art-link" href="https://praja.org/praja_docs/praja_downloads/Ward%20Committee.pdf" target="_blank" rel="noopener noreferrer">Read the full report here <span aria-hidden="true">&rarr;</span></a></p>
       </div>
   </div>

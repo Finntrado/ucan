@@ -298,7 +298,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </style>
 <style data-ucan="rhythm">
 /* ——— vertical rhythm ——— */
-.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
 .section{padding:clamp(54px,5.8vw,84px) 0}
 .sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
 .sec-head>*{min-width:0}
@@ -393,9 +393,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
       <p>Across this issue, that idea of inclusion as capability shows up in different corners of India’s urban landscape. From new research that lays bare how monsoon risks fall hardest on the poorest neighbourhoods in Mumbai, to Dhampur’s experience reminding us that small towns need ecological and governance inclusion just as much as metros; from city action plans that make planning more local and participatory, to mobility dialogues arguing that people, not vehicles, should anchor transport systems, the message is consistent: when more people, more geographies, and more lived experiences shape urban decisions, cities become smarter, fairer, and more resilient.</p>
       <p>As we look ahead, our task is clear; broaden who participates, deepen whose knowledge counts, and build systems that reflect the full diversity of urban life. Inclusive cities aren’t created by accident, they are built through intention, redistribution of voice, and a willingness to imagine the urban future through more than one lens.</p>
       <div class="letter-sign">
+        <div class="sign-photo"><img src="data:image/webp;base64,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" alt="Siddharth Pandit" width="80" height="80" loading="lazy" decoding="async"></div>
         <div class="sign-text">
           <p class="name">Siddharth Pandit</p>
-          <p class="role">On behalf of U-CAN</p>
+          <p class="role">CEO, Urban Collective Action Network · On behalf of U-CAN</p>
         </div>
       </div>
     </div>
@@ -413,6 +414,8 @@ footer a:hover{color:var(--lime,#CDDE71)}
         <h3>Celebrating the First U-CAN Fellowship Cohort</h3>
         <p>On October 31st, we came together to celebrate the convocation of the inaugural U-CAN Fellowship cohort; eight incredible women who spent a year working across India’s cities, learning, experimenting, and leading change from the ground up.</p>
         <p>From our first photo together at the induction to the final one at the convocation, the journey has come full circle, marked by shared laughter, field visits, learning sessions, and moments of quiet reflection.</p>
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-01.webp" width="1152" height="528" alt="Image from “Celebrating the First U-CAN Fellowship Cohort”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-02.webp" width="1280" height="632" alt="Image from “Celebrating the First U-CAN Fellowship Cohort”" loading="lazy" decoding="async"></figure>
         <p>Over the past 12 months, Ramya M.A., Aashima Arora Arya, Sharathappriyaa V, Shubhi Kesarwani, Manisha Bisht, Aanchal Aggarwal, Shreya Krishnan, and Anwesha Bhattacharya explored questions at the heart of India’s urban future, including: how can citizen participation strengthen local governance? What does safety mean for women in public spaces? And, how can design and data bring dignity to urban life, among others.</p>
         <p>Their journeys, from climate action in Bhubaneswar to placemaking in Jaipur and peri-urban transformation near Lucknow, have been about more than projects. They’ve been about growing as leaders, collaborators, and storytellers.</p>
         <p>Host organizations Janaagraha, Artha Global, Shelter Associates, Safetipin, WRI India, and Reap Benefit also joined us and reflected on how each fellow brought curiosity, ownership, and creativity to their work, reminding us that mentorship and learning are always two-way streets.</p>
@@ -450,6 +453,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
       <div class="articles">
         <article class="art reveal">
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-06.webp" width="800" height="1131" alt="Image from “Prajatantra 2025 - Youth reimagining urban governance”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-05.webp" width="1280" height="720" alt="Image from “Prajatantra 2025 - Youth reimagining urban governance”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-04.webp" width="1400" height="933" alt="Image from “Prajatantra 2025 - Youth reimagining urban governance”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-03.webp" width="1400" height="933" alt="Image from “Prajatantra 2025 - Youth reimagining urban governance”" loading="lazy" decoding="async"></figure>
           <h3>Prajatantra 2025 - Youth reimagining urban governance</h3>
           <p>Prajatantra, conceptualised by Praja Foundation in 2019, has steadily grown into a national platform that introduces young people to how city systems work, through dialogue, role-play, and policy design. This year, we were glad to be part of it, seeing firsthand how seriously young participants engage with questions of governance.</p>
           <p>Co-organised by Praja Foundation, the National Institute of Urban Affairs (NIUA), and UN- Habitat India, the 2025 edition brought together 3,800 young citizens from 194 cities across 28 States and 8 Union Territories. With the theme “Artificial Intelligence for Sustainable Cities,” participants explored how technology can strengthen transparency and participation in everyday governance. Their proposals showed a clear understanding of both the opportunities and the constraints of using AI in public systems.</p>
@@ -474,6 +481,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
           <p><a class="art-link" href="http://janaagraha.org/lessons-from-the-acp-any-frontline/" target="_blank" rel="noopener noreferrer">Read more here <span aria-hidden="true">&rarr;</span></a></p>
         </article>
         <article class="art reveal reveal-delay-2">
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-07.webp" width="1400" height="789" alt="Image from “The future of urban mobility is people-first, not vehicle-first”" loading="lazy" decoding="async"></figure>
           <h3>The future of urban mobility is people-first, not vehicle-first</h3>
           <p>What if Indian cities planned mobility around how people actually move, not just how vehicles flow?</p>
           <p>That question anchored WRI India’s recent dialogue on building transport systems that are people- first, data-smart, and institutionally aligned.</p>
@@ -505,6 +513,9 @@ footer a:hover{color:var(--lime,#CDDE71)}
           <p><a class="art-link" href="https://www.livemint.com/opinion/online-views/indian-urban-governance-strengthening-local-governments-mohua-planning-cities-municipal-finance-viksit-infrastructure-11761205035902.html" target="_blank" rel="noopener noreferrer">Read the full article here <span aria-hidden="true">&rarr;</span></a></p>
         </article>
         <article class="art reveal">
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-10.webp" width="1400" height="933" alt="Image from “World Toilet Day in Pune: Sanitation as a shared urban practice”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-09.webp" width="1400" height="933" alt="Image from “World Toilet Day in Pune: Sanitation as a shared urban practice”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-08.webp" width="1400" height="933" alt="Image from “World Toilet Day in Pune: Sanitation as a shared urban practice”" loading="lazy" decoding="async"></figure>
           <h3>World Toilet Day in Pune: Sanitation as a shared urban practice</h3>
           <p>The Public Awareness and Participation team under the PARMM project (Pollution Abatement of River Mula-Mutha) at Shelter Associates marked World Toilet Day across Shivajinagar, Vanaz, and Bopodi with a week of citizen-led activities. School students, residents, civic authorities, and local organisations came together for community toilet clean-ups, neighbourhood clean-up drives, and theatre-based outreach on sanitation and menstrual hygiene. Workshops on the PMC Care App helped residents understand how to report issues and engage directly with civic services.</p>
           <p>What made the campaign notable wasn’t only the range of activities but the shift in who held responsibility. Sanitation didn’t appear as something delivered to communities; it became something residents saw themselves shaping and sustaining alongside municipal systems.</p>
@@ -524,6 +535,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
       <div class="articles">
         <article class="art reveal">
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-11.webp" width="1280" height="720" alt="Image from “🔹Liberalising urban planning and engineering livable cities”" loading="lazy" decoding="async"></figure>
           <h3>🔹Liberalising urban planning and engineering livable cities</h3>
           <p>In the latest episode of The Urban Q, architect and urbanist Bimal Patel joins Jaya Dhindaw to challenge some of the most common assumptions about Indian cities.</p>
           <p>He argues that:</p>
@@ -533,11 +545,13 @@ footer a:hover{color:var(--lime,#CDDE71)}
           <p>Across the conversation, he reflects on the institutional reforms and planning frameworks that could make Indian cities more autonomous, productive, and sustainable.</p>
         </article>
         <article class="art reveal reveal-delay-1">
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-12.webp" width="1280" height="720" alt="Image from “🔹Why cities can’t “decongest” their way out of traffic”" loading="lazy" decoding="async"></figure>
           <h3>🔹Why cities can’t “decongest” their way out of traffic</h3>
           <p>In this episode of the OoruLabs podcast, Sathya Sankaran takes a clear-eyed look at one of India’s most persistent urban myths: that cities can decongest their roads while still prioritizing private vehicles. He argues that true decongestion is impossible without strong penalties for car use, and introduces Jevons Paradox to explain why making roads more efficient often leads to even more traffic.</p>
           <p>The conversation moves beyond infrastructure to the deeper forces that shape how cities move: cultural norms around mobility, the governance reforms needed to plan and manage streets better, and the role the private sector can play in building healthier, more sustainable urban environments.</p>
         </article>
         <article class="art reveal reveal-delay-2">
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-13.webp" width="1280" height="720" alt="Image from “🔹Does the Greater Bengaluru Authority mean a better Bengaluru?”" loading="lazy" decoding="async"></figure>
           <h3>🔹Does the Greater Bengaluru Authority mean a better Bengaluru?</h3>
           <p>In this episode of All Things Policy, hosted by the Takshashila Institution, Suman Joshi and Bharath Reddy speak with urban governance expert Mathew Idiculla about a major shift in the city’s administrative landscape. On September 2, Bengaluru officially entered a new era with the creation of the Greater Bengaluru Authority (GBA).</p>
           <p>The conversation unpacks what this change means for residents: how the GBA alters existing governance structures, what powers it brings together, and how it could reshape planning, service delivery, and accountability in one of India’s fastest-growing metros. It also explores what the reform signals for urban governance more broadly, and the opportunities and tensions that come with centralizing certain functions while hoping to improve coordination.</p>
@@ -586,6 +600,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
       <div class="letter reveal">
+        <figure class="nl-fig"><img src="newsletters/img/november-2025-14.webp" width="637" height="838" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
         <p>What can a city’s film industry reveal about its political, social, and economic evolution? In her new book, Film City Urbanism in India: Hyderabad, from Princely City to Global City, 1890–2000, C.</p>
         <p>Yamini Krishna offers a compelling answer.</p>
         <p>Spanning more than a century, the book traces how cinema and the city shaped each other, turning Hyderabad into a unique site where cultural imagination and urban transformation intersect. From its days as a princely capital to its reinvention as a global tech hub, Hyderabad’s urban story unfolds through the lens of the film industry; its capital, labour, studios, and the worlds it created on and off screen.</p>

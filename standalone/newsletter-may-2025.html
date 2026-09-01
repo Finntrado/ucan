@@ -298,7 +298,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </style>
 <style data-ucan="rhythm">
 /* ——— vertical rhythm ——— */
-.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
 .section{padding:clamp(54px,5.8vw,84px) 0}
 .sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
 .sec-head>*{min-width:0}
@@ -394,9 +394,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
       <p>Meanwhile, our U-CAN Fellows are out there writing fresh reflections from the ground, sharing what they’re learning as they work with partner organisations. These blogs offer a window into the realities of urban practitioners navigating complex city systems, and how their stories can sharpen our collective thinking.</p>
       <p>As always, we’d love to hear what resonates with you, what you’re seeing in your own work, and how we can keep building this space together.</p>
       <div class="letter-sign">
+        <div class="sign-photo"><img src="data:image/webp;base64,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" alt="Siddharth Pandit" width="80" height="80" loading="lazy" decoding="async"></div>
         <div class="sign-text">
           <p class="name">Siddharth Pandit</p>
-          <p class="role">On behalf of U-CAN</p>
+          <p class="role">CEO, Urban Collective Action Network · On behalf of U-CAN</p>
         </div>
       </div>
     </div>
@@ -411,6 +412,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
       <div class="letter reveal">
+        <figure class="nl-fig"><img src="newsletters/img/may-2025-01.webp" width="588" height="835" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
         <h3>Inequities in urban health: A growing crisis</h3>
         <p>A recent study by the Centre for Social and Economic Progress (CSEP) reveals widening health disparities in India’s urban areas - particularly affecting the urban poor. Despite improved national health indicators, the urban poor face significantly worse outcomes compared to both rural populations and the urban non-poor.</p>
         <p>Drawing on data from the National Sample Survey (NSS), National Family Health Survey (NFHS), Longitudinal Ageing Study in India (LASI), and government health statistics, the study finds that urban health outcomes are increasingly shaped by structural determinants, such as inadequate housing, poor sanitation, and limited access to essential public services. Despite higher aggregate availability of health infrastructure in cities, intra-urban inequities persist, with the urban poor often relying on costly private care due to the uneven distribution and perceived quality gaps in public facilities. Finally, initiatives like the National Urban Health Mission (NUHM) have struggled due to underfunding and fragmented governance.</p>
@@ -430,8 +432,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
       <div class="letter reveal">
         <p>Earlier this month, U-CAN’s Steering Committee gathered in Goa for a milestone in our collective journey - our first in-person meeting of 2025. Over two days, we engaged in focused discussions that moved beyond routine updates to tackle fundamental questions about collaboration and collective action.</p>
         <p>The sessions challenged us to rethink what it takes to build meaningful partnerships across cities, especially India’s Tier II and III urban centers. How can we foster environments that encourage experimentation, mutual support, and care, rather than just coordination? What would it look like to centre these cities on their own terms and priorities?</p>
+        <figure class="nl-fig"><img src="newsletters/img/may-2025-02.webp" width="1400" height="1400" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
         <p>Through a mix of facilitated conversations, group reflections, and creative exercises, members surfaced both big-picture aspirations and practical challenges. We revisited U-CAN’s shared vision, examined current initiatives, and laid groundwork for the next phase of our collective work.</p>
         <p>A key focus was planning for U-CAN’s first annual forum and shaping a narrative for tier II and III cities in India that can guide our efforts. The meeting ended on a note of optimism and commitment, with participants energized by new ideas and strengthened connections. Alongside this momentum, we also took time to celebrate the creative spirit of the group - hand-painted magnets were a small but meaningful reminder of the care and collaboration we aim to cultivate moving forward.</p>
+        <figure class="nl-fig"><img src="newsletters/img/may-2025-03.webp" width="1400" height="1400" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
       </div>
   </div>
 </section>
@@ -452,6 +456,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
           <p><a class="art-link" href="https://india.wri.org/perspectives/rethinking-cities-through-eyes-women-caregivers" target="_blank" rel="noopener noreferrer">Read the blog here <span aria-hidden="true">&rarr;</span></a></p>
         </article>
         <article class="art reveal reveal-delay-1">
+        <figure class="nl-fig"><img src="newsletters/img/may-2025-04.webp" width="1152" height="648" alt="Image from “Civic Services in Mumbai: What Praja’s 2025 Report Reveals”" loading="lazy" decoding="async"></figure>
           <h3>Civic Services in Mumbai: What Praja’s 2025 Report Reveals</h3>
           <p>Praja Foundation’s latest annual report, The Status of Civic Issues in Mumbai, offers a sobering assessment of the city’s core public services. Despite Mumbai’s sizable municipal budget, systemic shortfalls persist—especially for slum communities and the urban poor. Here are some key takeaways:</p>
           <p>🔹Water: A 15% shortfall in daily supply; only 8% of residents have 24/7 access. Slum communities are hit hardest.</p>
@@ -472,6 +477,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
           <p>Rooted in MHT’s long-standing work on climate resilience in informal settlements, the initiative highlights how targeted, place-based interventions can help cities adapt to extreme heat.</p>
         </article>
         <article class="art reveal reveal-delay-2">
+        <figure class="nl-fig"><img src="newsletters/img/may-2025-05.webp" width="1280" height="720" alt="Image from “Shelter Associates Turns 30!”" loading="lazy" decoding="async"></figure>
           <h3>Shelter Associates Turns 30!</h3>
           <p>Shelter Associates celebrates 30 years of empowering urban poor communities through data- driven, community-led solutions. From pioneering GIS-based slum mapping and providing digital addresses to 100,000+ households, to improving hygiene for over 200,000 people through the One Home One Toilet model, their work has consistently advanced dignity, inclusion, and public health.</p>
           <p>Their approach, grounded in participatory housing design and evidence-based planning, has helped families access secure housing, shaped national policy, and fostered long-term change.</p>
@@ -534,6 +540,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
       <div class="letter reveal">
+        <figure class="nl-fig"><img src="newsletters/img/may-2025-06.webp" width="355" height="650" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
         <p>What should a city built for working women look like?</p>
         <p>In Feminist City: Claiming Space in the Man- Made World, geographer Leslie Kern challenges us to rethink how urban spaces are designed - and for whom.</p>
         <p>She paints a picture of a city where public transit supports caregivers on the move, streets are safe to walk at all hours, toilets, green spaces, and care infrastructure are priorities - not afterthoughts - and many more!</p>

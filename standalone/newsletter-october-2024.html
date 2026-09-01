@@ -298,7 +298,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </style>
 <style data-ucan="rhythm">
 /* ——— vertical rhythm ——— */
-.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
 .section{padding:clamp(54px,5.8vw,84px) 0}
 .sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
 .sec-head>*{min-width:0}
@@ -392,9 +392,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
     <div class="letter reveal">
       <p>Continuing from the kick-off of the U-CAN Fellowship for mid-career professionals last month, I&#x27;m excited to share that we have expanded the cohort with our social entrepreneurs joining the Fellowship this month. We invited our shortlist of entrepreneurs to make a case for their work and be evaluated by a group comprising all our member organisations, making it a truly collective and collaborative effort! Interestingly, both our social entrepreneur fellows&#x27; work has a strong community engagement component, which is also the theme of this month&#x27;s newsletter. In this edition, we&#x27;ll take a look at how urban residents engage in their cities and the role of technology in enabling it. We highlight some successful initiatives from across the country here. We&#x27;d love to hear from you of any initiatives in your city, as we believe that with every story shared, we move a step closer to encouraging people to engage in their neighbourhoods and cities.</p>
       <div class="letter-sign">
+        <div class="sign-photo"><img src="data:image/webp;base64,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" alt="Siddharth Pandit" width="80" height="80" loading="lazy" decoding="async"></div>
         <div class="sign-text">
           <p class="name">Siddharth Pandit</p>
-          <p class="role">On behalf of U-CAN</p>
+          <p class="role">CEO, Urban Collective Action Network · On behalf of U-CAN</p>
         </div>
       </div>
     </div>
@@ -410,6 +411,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
       <div class="letter reveal">
         <p>U-CAN conducted an Innovation Showcase to evaluate the shortlisted candidates for the U-CAN Fellowship under the social entrepreneurs track, and are thrilled to have our social entrepreneur Fellows join us for our Fellowship! Their ventures tackle urban environment issues and neglect of historical heritage putting community engagement at the front and centre of their work.</p>
+        <figure class="nl-fig"><img src="newsletters/img/october-2024-01.webp" width="1200" height="700" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
       </div>
   </div>
 </section>
@@ -436,7 +438,9 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
       <div class="letter reveal">
-        <p>The piece emphasizes the necessity of integrating e-governance with active citizen engagement to build resilient, inclusive urban environments. With insights from experts, it explores how digital public infrastructure, integrated transport systems, and smart city initiatives can streamline urban management, improve services, and foster sustainable development. The collection highlights the critical role of participatory governance, the challenges of digital divides, and the importance of local government autonomy and institutional reforms Click on the image above to read more.</p>
+        <p>The piece emphasizes the necessity of integrating e-governance with active citizen engagement to build resilient, inclusive urban environments. With insights from experts, it explores how digital public infrastructure, integrated transport systems, and smart city initiatives can streamline urban management, improve services, and foster sustainable development. The collection highlights the critical role of participatory governance, the challenges of digital divides, and the importance of local government autonomy and institutional reforms</p>
+        <figure class="nl-fig"><img src="newsletters/img/october-2024-02.webp" width="393" height="562" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
+        <p>Click on the image above to read more.</p>
       </div>
   </div>
 </section>
@@ -450,6 +454,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
       <div class="letter reveal">
         <p>The guide emphasises the importance of involving stakeholders throughout a project lifecycle. It outlines steps for effective communication, consultation, and collaboration with communities to enhance project success and social inclusion. Key methods include early stakeholder involvement, transparency in decision-making, and mechanisms for addressing community concerns.</p>
+        <figure class="nl-fig"><img src="newsletters/img/october-2024-03.webp" width="397" height="514" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
         <p>Click on the image above to read more.</p>
       </div>
   </div>
@@ -477,8 +482,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
       <div class="letter reveal">
+        <figure class="nl-fig"><img src="newsletters/img/october-2024-04.webp" width="322" height="531" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
         <h3>Reviewing the Physical and Non-Physical Attributes of Collector and Local Streets: A Case Study of Mylapore, Chennai</h3>
         <p>The Mylapore case study in Chennai, India, highlights how urban street design affects community engagement. It examines the role of physical elements (like sidewalks, street width, and tree canopies) and non-physical elements (such as safety, imageability, and accessibility) in fostering social interaction, safety, and neighborhood identity. By creating pedestrian- friendly spaces and preserving heritage buildings, the study illustrates how thoughtful street planning can improve liveability, encouraging more community interaction and shared public space</p>
+        <figure class="nl-fig"><img src="newsletters/img/october-2024-05.webp" width="532" height="672" alt="Image from “Reviewing the Physical and Non-Physical Attributes of Collector and Local Streets: A Case Study of Mylapore, Chennai”" loading="lazy" decoding="async"></figure>
         <p><a class="art-link" href="https://www.researchgate.net/publication/382241336_REVIEWING_THE_PHYSICAL_AND_NON-PHYSICAL_ATTRIBUTES_OF_COLLECTOR_AND_LOCAL_STREETS_A_CASE_STUDY_OF_MYLAPORE_CHENNAI" target="_blank" rel="noopener noreferrer">The Adda Experiment Re-imagines Public <span aria-hidden="true">&rarr;</span></a></p>
         <p><a class="art-link" href="https://worldarchitecture.org/architecture-news/eghec/the-adda-experiment-reimagines-public-spaces-with-elements-of-play.html" target="_blank" rel="noopener noreferrer">Spaces With Elements of Play <span aria-hidden="true">&rarr;</span></a></p>
         <p>The Adda Experiment is a social initiative by architects aiming to revitalize Indian urban spaces by incorporating play and engagement into public areas, especially for underserved communities.</p>
@@ -496,10 +503,12 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
       <div class="letter reveal">
+        <figure class="nl-fig"><img src="newsletters/img/october-2024-06.webp" width="1400" height="266" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
         <p><a class="art-link" href="https://www.linkedin.com/posts/gujarat-mahila-housing-trust_cbvat-training-activity-7246472551789453313-xF0x?utm_source=share&amp;utm_medium=member_desktop" target="_blank" rel="noopener noreferrer">MHT extended a training on the Community- <span aria-hidden="true">&rarr;</span></a></p>
         <p><a class="art-link" href="https://www.linkedin.com/posts/gujarat-mahila-housing-trust_cbvat-training-activity-7246472551789453313-xF0x?utm_source=share&amp;utm_medium=member_desktop" target="_blank" rel="noopener noreferrer">Based Vulnerability Assessment Toolkit <span aria-hidden="true">&rarr;</span></a></p>
         <p><a class="art-link" href="https://www.linkedin.com/posts/gujarat-mahila-housing-trust_cbvat-training-activity-7246472551789453313-xF0x?utm_source=share&amp;utm_medium=member_desktop" target="_blank" rel="noopener noreferrer">(CBVAT) to residents of Visat Nagar, Surat. The <span aria-hidden="true">&rarr;</span></a></p>
         <p>training focused on understanding the science of climate change, its historical impacts, and how climate stresses affect local livelihoods. Through hands-on activities and root cause analysis, participants identified key climate challenges in their area and worked together to find solutions to strengthen their community’s resilience.</p>
+        <figure class="nl-fig"><img src="newsletters/img/october-2024-07.webp" width="528" height="150" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
       </div>
   </div>
 </section>
@@ -539,6 +548,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
     </div>
 
       <div class="letter reveal">
+        <figure class="nl-fig"><img src="newsletters/img/october-2024-08.webp" width="970" height="755" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
         <p><a class="art-link" href="https://urban.org.in/newsletter/" target="_blank" rel="noopener noreferrer">If this newsletter was forwarded to you and you&#x27;d like to subscribe, click here. <span aria-hidden="true">&rarr;</span></a></p>
       </div>
   </div>
