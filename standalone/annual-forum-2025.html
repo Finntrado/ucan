@@ -395,7 +395,7 @@
 .msheet{display:none;border-top:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6)}
 .msheet.open{display:block}
 .msheet>.wrap{max-width:1240px;margin:0 auto;padding:8px clamp(20px,4.5vw,52px) 20px}
-@media(max-width:940px){
+@media(max-width:1100px){
   .bar .ucnav-bar{display:none}
   .burger{display:inline-flex}
 }
@@ -561,6 +561,21 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
 /* the hero already carries generous padding; don't stack another full gap on it */
 .hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
+</style>
+<style data-ucan="type">
+/* One type scale and one bullet, applied last so it settles the differences between the shell pages, the newsletter template and the imported WordPress bodies. Classed paragraphs (kickers, leads, captions) keep their own role sizes. */
+main h1{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(38px,6.4vw,76px)!important;line-height:1.05!important;letter-spacing:-.03em}
+main h2{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em}
+main h3{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(18px,1.9vw,21px)!important;line-height:1.32!important;letter-spacing:-.01em}
+main p:not([class]){font-size:17px!important;line-height:1.62!important}
+/* prose lists had list-style:none with no marker, so bullets were invisible; match the .blist component the rest of the site uses */
+main ul:not([class]){list-style:none;margin:18px 0 0;padding:0}
+main ul:not([class])>li{list-style:none!important;display:grid!important;grid-template-columns:auto 1fr;gap:13px;padding:11px 0;border-top:1px dashed var(--line,#DCEAE6);font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;min-width:0;overflow-wrap:break-word}
+main ul:not([class])>li:first-child{border-top:0}
+main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(--teal,#1F8F7B);border-radius:50%;margin-top:9px}
+main ol:not([class]){margin:18px 0 0;padding-left:22px}
+main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
+main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 </style>
 </head>
 <body>
@@ -1042,18 +1057,18 @@ footer a:hover{color:var(--lime,#CDDE71)}
       </div>
     </div>
     <ul class="ptrow">
-        <li class="pt rv in"><div class="ph" aria-hidden="true"><b>Museum of Goa</b></div>
+        <li class="pt rv in"><a href="https://museumofgoa.com/" target="_blank" rel="noopener noreferrer" aria-label="Museum of Goa — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none"><div class="ph" aria-hidden="true"><b>Museum of Goa</b></div>
           <img src="https://urban.org.in/wp-content/uploads/2025/09/MoG-1.webp" alt="Museum of Goa logo" loading="lazy" decoding="async"
-            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></li>
-        <li class="pt rv in"><div class="ph" aria-hidden="true"><b>Transitions Research</b></div>
+            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
+        <li class="pt rv in"><a href="https://transitionsresearch.org/" target="_blank" rel="noopener noreferrer" aria-label="Transitions Research — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none"><div class="ph" aria-hidden="true"><b>Transitions Research</b></div>
           <img src="https://urban.org.in/wp-content/uploads/2025/09/Untitled-3.png" alt="Transitions Research logo" loading="lazy" decoding="async"
-            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></li>
-        <li class="pt rv in"><div class="ph" aria-hidden="true"><b>Charles Correa Foundation</b></div>
+            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
+        <li class="pt rv in"><a href="https://charlescorreafoundation.org/" target="_blank" rel="noopener noreferrer" aria-label="Charles Correa Foundation — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none"><div class="ph" aria-hidden="true"><b>Charles Correa Foundation</b></div>
           <img src="https://urban.org.in/wp-content/uploads/2025/09/Untitled4.png" alt="Charles Correa Foundation logo" loading="lazy" decoding="async"
-            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></li>
-        <li class="pt rv in"><div class="ph" aria-hidden="true"><b>Nagari Short Films</b></div>
+            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
+        <li class="pt rv in"><a href="https://www.youtube.com/@nagaritv_ccf" target="_blank" rel="noopener noreferrer" aria-label="Nagari Short Films — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none"><div class="ph" aria-hidden="true"><b>Nagari Short Films</b></div>
           <img src="https://urban.org.in/wp-content/uploads/2025/09/Untitled-5.png" alt="Nagari Short Films logo" loading="lazy" decoding="async"
-            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></li>
+            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
     </ul>
   </div>
 </section>

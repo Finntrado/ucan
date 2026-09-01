@@ -562,7 +562,7 @@ a.prow:hover span{color:var(--teal-text)}
 .msheet{display:none;border-top:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6)}
 .msheet.open{display:block}
 .msheet>.wrap{max-width:1240px;margin:0 auto;padding:8px clamp(20px,4.5vw,52px) 20px}
-@media(max-width:940px){
+@media(max-width:1100px){
   .bar .ucnav-bar{display:none}
   .burger{display:inline-flex}
 }
@@ -707,7 +707,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </style>
 <style data-ucan="rhythm">
 /* ——— vertical rhythm ——— */
-.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:auto!important;flex:0 0 auto!important}.bar .brand img{width:240px!important;max-width:240px!important}footer .brand img{width:190px!important;max-width:190px!important}.bar-in{height:112px}.ucnav-t{font-size:16px}.bar-cta{font-size:15px;height:48px;padding:0 24px}html{scroll-padding-top:128px}@media(max-width:1100px){.bar .brand img{width:183px!important;max-width:183px!important}.bar-in{height:88px}html{scroll-padding-top:104px}}@media(max-width:560px){.bar .brand img{width:150px!important;max-width:150px!important}.bar-in{height:76px}}.sec{padding:clamp(52px,5.6vw,80px) 0}
 .section{padding:clamp(54px,5.8vw,84px) 0}
 .sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
 .sec-head>*{min-width:0}
@@ -728,6 +728,21 @@ footer a:hover{color:var(--lime,#CDDE71)}
 
 /* the hero already carries generous padding; don't stack another full gap on it */
 .hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
+</style>
+<style data-ucan="type">
+/* One type scale and one bullet, applied last so it settles the differences between the shell pages, the newsletter template and the imported WordPress bodies. Classed paragraphs (kickers, leads, captions) keep their own role sizes. */
+main h1{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(38px,6.4vw,76px)!important;line-height:1.05!important;letter-spacing:-.03em}
+main h2{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em}
+main h3{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(18px,1.9vw,21px)!important;line-height:1.32!important;letter-spacing:-.01em}
+main p:not([class]){font-size:17px!important;line-height:1.62!important}
+/* prose lists had list-style:none with no marker, so bullets were invisible; match the .blist component the rest of the site uses */
+main ul:not([class]){list-style:none;margin:18px 0 0;padding:0}
+main ul:not([class])>li{list-style:none!important;display:grid!important;grid-template-columns:auto 1fr;gap:13px;padding:11px 0;border-top:1px dashed var(--line,#DCEAE6);font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;min-width:0;overflow-wrap:break-word}
+main ul:not([class])>li:first-child{border-top:0}
+main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(--teal,#1F8F7B);border-radius:50%;margin-top:9px}
+main ol:not([class]){margin:18px 0 0;padding-left:22px}
+main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
+main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 </style>
 </head>
 <body>

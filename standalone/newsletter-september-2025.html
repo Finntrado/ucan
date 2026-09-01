@@ -153,7 +153,7 @@ section.masthead{position:relative;overflow:hidden}
 .msheet{display:none;border-top:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6)}
 .msheet.open{display:block}
 .msheet>.wrap{max-width:1240px;margin:0 auto;padding:8px clamp(20px,4.5vw,52px) 20px}
-@media(max-width:940px){
+@media(max-width:1100px){
   .bar .ucnav-bar{display:none}
   .burger{display:inline-flex}
 }
@@ -298,7 +298,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </style>
 <style data-ucan="rhythm">
 /* ——— vertical rhythm ——— */
-.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:auto!important;flex:0 0 auto!important}.bar .brand img{width:240px!important;max-width:240px!important}footer .brand img{width:190px!important;max-width:190px!important}.bar-in{height:112px}.ucnav-t{font-size:16px}.bar-cta{font-size:15px;height:48px;padding:0 24px}html{scroll-padding-top:128px}@media(max-width:1100px){.bar .brand img{width:183px!important;max-width:183px!important}.bar-in{height:88px}html{scroll-padding-top:104px}}@media(max-width:560px){.bar .brand img{width:150px!important;max-width:150px!important}.bar-in{height:76px}}.sec{padding:clamp(52px,5.6vw,80px) 0}
 .section{padding:clamp(54px,5.8vw,84px) 0}
 .sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
 .sec-head>*{min-width:0}
@@ -320,6 +320,22 @@ footer a:hover{color:var(--lime,#CDDE71)}
 /* the hero already carries generous padding; don't stack another full gap on it */
 .hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
 </style>
+<style data-ucan="share">.nl-share{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:1.75rem}.nl-share .lbl{font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft,#57564F);margin-right:.25rem}.nl-share a,.nl-share button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;height:40px;padding:0 .95rem;border-radius:999px;border:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6);color:var(--ink,#222120);font-family:inherit;font-size:.8125rem;font-weight:600;text-decoration:none;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}.nl-share a:hover,.nl-share button:hover{background:var(--teal-deep,#0E5348);border-color:var(--teal-deep,#0E5348);color:#fff;transform:translateY(-1px)}.nl-share svg{width:15px;height:15px;flex:none}.nl-share button[hidden]{display:none}</style>
+<style data-ucan="type">
+/* One type scale and one bullet, applied last so it settles the differences between the shell pages, the newsletter template and the imported WordPress bodies. Classed paragraphs (kickers, leads, captions) keep their own role sizes. */
+main h1{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(38px,6.4vw,76px)!important;line-height:1.05!important;letter-spacing:-.03em}
+main h2{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em}
+main h3{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(18px,1.9vw,21px)!important;line-height:1.32!important;letter-spacing:-.01em}
+main p:not([class]){font-size:17px!important;line-height:1.62!important}
+/* prose lists had list-style:none with no marker, so bullets were invisible; match the .blist component the rest of the site uses */
+main ul:not([class]){list-style:none;margin:18px 0 0;padding:0}
+main ul:not([class])>li{list-style:none!important;display:grid!important;grid-template-columns:auto 1fr;gap:13px;padding:11px 0;border-top:1px dashed var(--line,#DCEAE6);font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;min-width:0;overflow-wrap:break-word}
+main ul:not([class])>li:first-child{border-top:0}
+main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(--teal,#1F8F7B);border-radius:50%;margin-top:9px}
+main ol:not([class]){margin:18px 0 0;padding-left:22px}
+main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
+main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
+</style>
 </head>
 <body>
 
@@ -601,6 +617,14 @@ footer a:hover{color:var(--lime,#CDDE71)}
         <a class="btn btn-primary" href="newsletters/september-2025.pdf" download>Download the PDF</a>
         <a class="btn btn-ghost" href="newsletter#subscribe">Subscribe</a>
       </p>
+    </div>
+    <div class="nl-share">
+        <span class="lbl">Share this edition</span>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Furban.org.in%2Fnewsletter%2Fseptember-2025%2F" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM.5 8h4V21h-4zM8 8h3.8v1.8h.05c.53-.95 1.83-1.95 3.76-1.95C19.7 7.85 21 10.1 21 13.3V21h-4v-6.9c0-1.65-.03-3.77-2.3-3.77-2.3 0-2.65 1.8-2.65 3.65V21H8z" fill="currentColor"/></svg>LinkedIn</a>
+        <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Furban.org.in%2Fnewsletter%2Fseptember-2025%2F&amp;text=U-CAN%20Newsletter%20%E2%80%94%20September%202025" target="_blank" rel="noopener noreferrer" aria-label="Share on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 2h3.3l-7.2 8.24L22 22h-6.6l-5.18-6.78L4.3 22H1l7.7-8.8L1.4 2H8.2l4.68 6.19L17.5 2zm-1.16 18h1.83L7.75 3.9H5.79z" fill="currentColor"/></svg>X</a>
+        <a href="https://api.whatsapp.com/send?text=U-CAN%20Newsletter%20%E2%80%94%20September%202025%20https%3A%2F%2Furban.org.in%2Fnewsletter%2Fseptember-2025%2F" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.18c-.24.68-1.42 1.31-1.95 1.35-.5.04-.98.22-3.3-.69-2.79-1.1-4.55-3.96-4.69-4.15-.14-.19-1.12-1.49-1.12-2.85s.71-2.02.96-2.3c.25-.27.55-.34.73-.34h.52c.17 0 .4-.06.62.48.24.57.8 1.98.87 2.12.07.14.12.31.02.5-.09.19-.14.31-.28.47l-.42.49c-.14.14-.28.29-.12.57.16.27.72 1.18 1.54 1.91 1.06.94 1.95 1.24 2.22 1.38.27.14.43.12.59-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.61-.13.24.09 1.55.73 1.82.86.27.14.44.2.51.32.06.11.06.67-.18 1.35z" fill="currentColor"/></svg>WhatsApp</a>
+        <a href="mailto:?subject=U-CAN%20Newsletter%20%E2%80%94%20September%202025&amp;body=https%3A%2F%2Furban.org.in%2Fnewsletter%2Fseptember-2025%2F" aria-label="Share on Email"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm9 8.2L4.4 7h15.2z" fill="currentColor"/></svg>Email</a>
+        <button type="button" class="nl-copy" data-url="https://urban.org.in/newsletter/september-2025/" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.6 13.4a4 4 0 0 0 5.66 0l3-3a4 4 0 1 0-5.66-5.66l-1.5 1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13.4 10.6a4 4 0 0 0-5.66 0l-3 3a4 4 0 1 0 5.66 5.66l1.5-1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Copy link</span></button>
     </div>
     <p style="display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem"><a class="btn btn-ghost" href="newsletter-june-2025">&larr; June 2025</a>
         <a class="btn btn-ghost" href="newsletter">All editions</a>
@@ -1088,4 +1112,19 @@ footer a:hover{color:var(--lime,#CDDE71)}
 })();
 </script>
 
+<script data-ucan="share">
+(function () {
+  var b = document.querySelector('.nl-copy');
+  if (!b || !navigator.clipboard) return;
+  b.hidden = false;
+  var label = b.querySelector('span');
+  b.addEventListener('click', function () {
+    navigator.clipboard.writeText(b.dataset.url).then(function () {
+      var old = label.textContent;
+      label.textContent = 'Link copied';
+      setTimeout(function () { label.textContent = old; }, 1800);
+    });
+  });
+})();
+</script>
 </body></html>
