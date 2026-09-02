@@ -320,7 +320,6 @@ footer a:hover{color:var(--lime,#CDDE71)}
 /* the hero already carries generous padding; don't stack another full gap on it */
 .hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
 </style>
-<style data-ucan="share">.nl-share{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:1.75rem}.nl-share .lbl{font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft,#57564F);margin-right:.25rem}.nl-share a,.nl-share button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;height:40px;padding:0 .95rem;border-radius:999px;border:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6);color:var(--ink,#222120);font-family:inherit;font-size:.8125rem;font-weight:600;text-decoration:none;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}.nl-share a:hover,.nl-share button:hover{background:var(--teal-deep,#0E5348);border-color:var(--teal-deep,#0E5348);color:#fff;transform:translateY(-1px)}.nl-share svg{width:15px;height:15px;flex:none}.nl-share button[hidden]{display:none}</style>
 <style data-ucan="type">
 /* One type scale and one bullet, applied last so it settles the differences between the shell pages, the newsletter template and the imported WordPress bodies. Classed paragraphs (kickers, leads, captions) keep their own role sizes. */
 main h1{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(38px,6.4vw,76px)!important;line-height:1.05!important;letter-spacing:-.03em}
@@ -336,6 +335,7 @@ main ol:not([class]){margin:18px 0 0;padding-left:22px}
 main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
 main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 </style>
+<style data-ucan="share">.nl-share{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:1.75rem}.nl-share .lbl{font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft,#57564F);margin-right:.25rem}.nl-share a,.nl-share button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;height:40px;padding:0 .95rem;border-radius:999px;border:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6);color:var(--ink,#222120);font-family:inherit;font-size:.8125rem;font-weight:600;text-decoration:none;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}.nl-share a:hover,.nl-share button:hover{background:var(--teal-deep,#0E5348);border-color:var(--teal-deep,#0E5348);color:#fff;transform:translateY(-1px)}.nl-share svg{width:15px;height:15px;flex:none}.nl-share button[hidden]{display:none}</style>
 </head>
 <body>
 
@@ -475,16 +475,36 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <figure class="nl-fig"><img src="newsletters/img/may-2025-04.webp" width="1152" height="648" alt="Image from “Civic Services in Mumbai: What Praja’s 2025 Report Reveals”" loading="lazy" decoding="async"></figure>
           <h3>Civic Services in Mumbai: What Praja’s 2025 Report Reveals</h3>
           <p>Praja Foundation’s latest annual report, The Status of Civic Issues in Mumbai, offers a sobering assessment of the city’s core public services. Despite Mumbai’s sizable municipal budget, systemic shortfalls persist—especially for slum communities and the urban poor. Here are some key takeaways:</p>
-          <p>🔹Water: A 15% shortfall in daily supply; only 8% of residents have 24/7 access. Slum communities are hit hardest.</p>
-          <p>🔹Sewage: Most sewage treatment plants fail to meet pollution norms. The Mithi River remains dangerously contaminated.</p>
-          <p>🔹Toilets: Just 1 public seat per 1,820 women—many lack access to basic water and power.</p>
-          <p>🔹Waste: The city generated 6,656 MTD of waste in 2024, a 4% increase since 2022.</p>
-          <p>🔹Compliance: 64% of bulk waste generators are not treating wet waste on-site.</p>
-          <p>🔹Costs: Waste transport and processing cost the city ₹1,485 crore in 2024.</p>
-          <p>🔹Landfills: Biomining at Mulund landfill is behind schedule, with a June 2025 deadline looming.</p>
-          <p>🔹 Air Quality: Slight gains—2024 saw four “moderate” AQI months, compared to six in 2023.</p>
-          <p>🔹Citizen Complaints: Over 1.15 lakh grievances filed in 2024—primarily around waste, water, and toilets.</p>
-          <p>🔹Staffing Gaps: 41% of BMC posts remain vacant—highest in Education (59%), Stormwater Drains (57%), and Roads (54%).</p>
+          <ul>
+            <li>Water: A 15% shortfall in daily supply; only 8% of residents have 24/7 access. Slum communities are hit hardest.</li>
+          </ul>
+          <ul>
+            <li>Sewage: Most sewage treatment plants fail to meet pollution norms. The Mithi River remains dangerously contaminated.</li>
+          </ul>
+          <ul>
+            <li>Toilets: Just 1 public seat per 1,820 women—many lack access to basic water and power.</li>
+          </ul>
+          <ul>
+            <li>Waste: The city generated 6,656 MTD of waste in 2024, a 4% increase since 2022.</li>
+          </ul>
+          <ul>
+            <li>Compliance: 64% of bulk waste generators are not treating wet waste on-site.</li>
+          </ul>
+          <ul>
+            <li>Costs: Waste transport and processing cost the city ₹1,485 crore in 2024.</li>
+          </ul>
+          <ul>
+            <li>Landfills: Biomining at Mulund landfill is behind schedule, with a June 2025 deadline looming.</li>
+          </ul>
+          <ul>
+            <li>Air Quality: Slight gains—2024 saw four “moderate” AQI months, compared to six in 2023.</li>
+          </ul>
+          <ul>
+            <li>Citizen Complaints: Over 1.15 lakh grievances filed in 2024—primarily around waste, water, and toilets.</li>
+          </ul>
+          <ul>
+            <li>Staffing Gaps: 41% of BMC posts remain vacant—highest in Education (59%), Stormwater Drains (57%), and Roads (54%).</li>
+          </ul>
           <p>Praja’s findings underscore an urgent need to prioritize infrastructure upgrades, ensure equitable access to services, and address chronic staffing shortages across departments.</p>
           <p><a class="art-link" href="https://praja.org/praja_docs/praja_downloads/Report%20on%20the%20Status%20of%20Civic%20Issues%20in%20Mumbai.pdf" target="_blank" rel="noopener noreferrer">📖 Read the full report here <span aria-hidden="true">&rarr;</span></a></p>
           <p>Jodhpur gets cooler with Mahila Housing Trust&#x27;s climate-responsive pilot.</p>
@@ -497,7 +517,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <h3>Shelter Associates Turns 30!</h3>
           <p>Shelter Associates celebrates 30 years of empowering urban poor communities through data- driven, community-led solutions. From pioneering GIS-based slum mapping and providing digital addresses to 100,000+ households, to improving hygiene for over 200,000 people through the One Home One Toilet model, their work has consistently advanced dignity, inclusion, and public health.</p>
           <p>Their approach, grounded in participatory housing design and evidence-based planning, has helped families access secure housing, shaped national policy, and fostered long-term change.</p>
-          <p>👏 A remarkable milestone for an organisation reimagining urban development, one community at a time.</p>
+          <p>A remarkable milestone for an organisation reimagining urban development, one community at a time.</p>
           <p><a class="art-link" href="https://shelter-associates.org/30-years-journey-2/" target="_blank" rel="noopener noreferrer">Read more about their journey <span aria-hidden="true">&rarr;</span></a></p>
         </article>
       </div>
@@ -515,10 +535,12 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <h3>Building Urban Resilience from the Ground Up</h3>
         <p>What does it take to build cities that are climate-resilient and inclusive? That’s the question U-CAN Fellows explored in the first session of a three-part masterclass with Campaign for ROOH - a global initiative advancing community-led housing and public spaces.</p>
         <p>Two inspiring voices led the session:</p>
-        <p>🔹 Sheela Patel (Founder, SPARC; Co-founder, SDI; currently with ROOH under the UN’s Race to Resilience) challenged prevailing narratives on informal settlements. Her message: These communities are not the problem; they are the solution.</p>
-        <p>💬 Fellows reflected on climate vulnerabilities in their cities, and the urgent need for community-led resilience strategies rooted in lived experience.</p>
-        <p>🔹 Dr. Eleni (Lenio) Myrivili (Global Chief Heat Officer, UN-Habitat) spotlighted urban heat as a growing and unequal threat. Her reminder: “The story of heat is the story of inequality.”</p>
-        <p>💬 Fellows discussed how design, infrastructure, and policy can mitigate heat stress - specially for the most vulnerable.</p>
+        <ul>
+          <li>Sheela Patel (Founder, SPARC; Co-founder, SDI; currently with ROOH under the UN’s Race to Resilience) challenged prevailing narratives on informal settlements. Her message: These communities are not the problem; they are the solution.</li>
+          <li>Fellows reflected on climate vulnerabilities in their cities, and the urgent need for community-led resilience strategies rooted in lived experience.</li>
+          <li>Dr. Eleni (Lenio) Myrivili (Global Chief Heat Officer, UN-Habitat) spotlighted urban heat as a growing and unequal threat. Her reminder: “The story of heat is the story of inequality.”</li>
+          <li>Fellows discussed how design, infrastructure, and policy can mitigate heat stress - specially for the most vulnerable.</li>
+        </ul>
         <p><a class="art-link" href="https://urban.org.in/fellowship-ld/" target="_blank" rel="noopener noreferrer">Explore the full Masterclass series to see what else Fellows are engaging with <span aria-hidden="true">&rarr;</span></a></p>
         <h3>City, Self, and Systems: Reflections from the Fellowship</h3>
         <p>This month, we bring you more blogs from the Fellows — reflections that connect the personal with the political, the local with the systemic.</p>
