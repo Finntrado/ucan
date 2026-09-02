@@ -576,6 +576,26 @@ main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(-
 main ol:not([class]){margin:18px 0 0;padding-left:22px}
 main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
 main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
+
+/* ——— highlights video ——— */
+.forumvid{margin:0;border:1px solid var(--line);background:var(--ink);overflow:hidden}
+.forumvid video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:#000;object-fit:cover}
+.forumvid figcaption{padding:14px 18px;font-size:13px;font-weight:600;
+  color:var(--ink-soft);background:var(--paper)}
+
+/* ——— day tabs over the gallery ——— */
+.daytabs .tablist{margin-bottom:clamp(20px,2.4vw,28px)}
+.daytabs .tab{gap:10px}
+.daycount{display:inline-flex;align-items:center;justify-content:center;min-width:22px;
+  height:22px;padding:0 6px;border-radius:100px;background:var(--paper-alt);
+  font-size:11.5px;font-weight:700;color:var(--teal-deep)}
+.daytabs .tab[aria-selected="true"] .daycount{background:rgba(255,255,255,.16);color:#fff}
+.galpane{display:block;padding:0;background:none;color:inherit}
+.galpane .gal{margin:0}
+
+/* ——— "The Forum in numbers" reads as figures, not a numbered list ——— */
+.numcard ol.plainnum li::before{content:none}
+.numcard ol.plainnum li{grid-template-columns:1fr;gap:0}
 </style>
 </head>
 <body>
@@ -633,7 +653,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       </div>
       <aside class="numcard rv d1 in" aria-labelledby="ov-stats">
         <h3 id="ov-stats">The Forum in numbers</h3>
-        <ol>
+        <ol class="plainnum">
           <li><span><b style="color:#fff;font-size:19px">70+</b><br>practitioners, elected representatives, policymakers, researchers and community leaders</span></li>
           <li><span><b style="color:#fff;font-size:19px">3 days</b><br>of gallery walks, human libraries, film screenings, collaborative problem-solving and field visits</span></li>
           <li><span><b style="color:#fff;font-size:19px">12 → many</b><br>from a founding collaboration of twelve organisations to a wider ecosystem</span></li>
@@ -682,57 +702,86 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       <figure class="qc rv in">
         <span class="qm" aria-hidden="true">“</span>
         <blockquote>What I found most valuable is the opportunity to convene and collaborate with other organisations, as well as the chance to step back and rethink what our work means, while experiencing the sometimes painful, but ultimately rewarding, process of co-creation.</blockquote>
-        <figcaption><span class="qn"><b>Kanupriya Kaikeya</b><span>Senior Manager Communications, C40 Cities</span></span></figcaption>
+        <figcaption><span class="av mono" aria-hidden="true">KK</span><span class="qn"><b>Kanupriya Kaikeya</b><span>Senior Manager Communications, C40 Cities</span></span></figcaption>
       </figure>
       <figure class="qc rv in">
         <span class="qm" aria-hidden="true">“</span>
         <blockquote>It is possibly the only one of its kind initiative, to bring together various voices from different urban geographies across India. The willingness to embrace new approaches and ideas, and making it a collaborative effort, is quite impressive.</blockquote>
-        <figcaption><span class="qn"><b>Shivani Singh</b><span>Editor–Urban Affairs, Hindustan Times</span></span></figcaption>
+        <figcaption><span class="av mono" aria-hidden="true">SS</span><span class="qn"><b>Shivani Singh</b><span>Editor–Urban Affairs, Hindustan Times</span></span></figcaption>
       </figure>
       <figure class="qc rv in">
         <span class="qm" aria-hidden="true">“</span>
         <blockquote>The immersive site visits in Panjim and the direct interactions with local actors stood out as particularly meaningful, since they grounded the discussions in real challenges and opportunities.</blockquote>
-        <figcaption><span class="qn"><b>Pradeep Kumar CM</b><span>Senior Technical Manager, eGov Foundation</span></span></figcaption>
+        <figcaption><span class="av mono" aria-hidden="true">PK</span><span class="qn"><b>Pradeep Kumar CM</b><span>Senior Technical Manager, eGov Foundation</span></span></figcaption>
       </figure>
       <figure class="qc rv in">
         <span class="qm" aria-hidden="true">“</span>
         <blockquote>The Annual Forum was a valuable space for bringing together diverse voices from across the urban ecosystem. It helped us reflect on how national policy priorities connect with the lived realities of cities. The discussions will support our efforts at the Ministry by enhancing the understanding of the work being done by civil society and research institutions.</blockquote>
-        <figcaption><span class="qn"><b>Gurjit Singh Dhillon</b><span>Director, Ministry of Housing and Urban Affairs</span></span></figcaption>
+        <figcaption><span class="av mono" aria-hidden="true">GS</span><span class="qn"><b>Gurjit Singh Dhillon</b><span>Director, Ministry of Housing and Urban Affairs</span></span></figcaption>
       </figure>
       <figure class="qc rv in">
         <span class="qm" aria-hidden="true">“</span>
         <blockquote>The U-CAN meeting in Goa was truly enriching. Connecting with organizations from different states gave us valuable insights, and the films and presentations - especially on community initiatives and employment programs - were particularly inspiring.</blockquote>
-        <figcaption><span class="qn"><b>Bhikaji Vaydande</b><span>Slum Dwellers Community Leader, Kohlapur</span></span></figcaption>
+        <figcaption><span class="av mono" aria-hidden="true">BV</span><span class="qn"><b>Bhikaji Vaydande</b><span>Slum Dwellers Community Leader, Kohlapur</span></span></figcaption>
       </figure>
       <figure class="qc rv in">
         <span class="qm" aria-hidden="true">“</span>
         <blockquote>I thought that it was valuable to bring the 2nd and 3rd tier of participants from the organisations to interact with each other. This gives a better understanding of their work.</blockquote>
-        <figcaption><span class="qn"><b>Pratima Joshi</b><span>Founder and Executive Director, Shelter Associates</span></span></figcaption>
+        <figcaption><span class="av"><img src="data:image/webp;base64,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" width="56" height="56" alt="Pratima Joshi" loading="lazy" decoding="async"></span><span class="qn"><b>Pratima Joshi</b><span>Founder and Executive Director, Shelter Associates</span></span></figcaption>
       </figure>
       <figure class="qc rv in">
         <span class="qm" aria-hidden="true">“</span>
         <blockquote>Each session was thoughtfully structured, run and curated. The respectful and attentive listening principle and inclusive ethos that was built is an example to follow.</blockquote>
-        <figcaption><span class="qn"><b>Neha Lal</b><span>Senior Program Manager, WRI</span></span></figcaption>
+        <figcaption><span class="av"><img src="data:image/webp;base64,UklGRoQEAABXRUJQVlA4IHgEAAAwFACdASo4ADgAPj0YikMiIaEYCwZ8IAPEoAxnQ0yESVLF/g96HM3DH22O5A3pLehp990E+7vajKYTwbJHElpy5oPkY+lfYI/W1FUChHiOzzN9uosBXEXGodf+9hrv1tph1sn+xQJifXWRiVpEOzXZ1I79qNSPOZuGuSiQocIpe2BxQU8qnyvIc0tCYKh259gUSAA25uY32HsU+vwVDE9CaweKffNvhb7RQAD+/zM6fbCa48+dL0q42iybSK5CfZRQK5P+DW/qfXsFdo4XxuYX2Wi+M3Gf/KGf7Fh5mDdoB4aPg3m78ts/dB8SxA9iZeDGugcK6yBOb1yq5r9tDosCjx9vyFt81iwKbS9trCpHZmgn8jXTcrFr0pXhkmTLeqnOmkdEXnf9aLDswl/tocV3QslJR6TJyFsn5m+8tJUYFxhJ5B/e6flWnaQ02N3/1kGw89zcYyv0HrX6/5EBVCrqjR9X8fTkuXJFFLvVBZkBuzs4cjzm4P6rGsKYSp7k7PeZVrJjGEpd+WH6/YTcJ7GYvP/5s1ymDPYBCjLL3cs7P6ewf6u7p3Yj/8RUQl2fju0Tsas+a4zwckO7tCd3+lgbWsGXd36Z5rTcko+vzX7wr5qjBZBQ4lkDlw3QtMhA0Ankf1AqmFTuBkAUNtWC+INRvUfDO8HP+996p3z/jPzX9JVNnmgvETi2G1NQuSy+jCFv/qM8+PbRmY0wuaEbeBNDaOBS/ILqiFWlSpYoP6PQtI83hGEvqHHaq8sfmCEAE5Zjbw7DcR5CW4hwfZCgXveKzqfo/VFj6kYYgfJmsfMkci59ktngclt0oxu2UajWa//cOCw2ue57pymHMkiMENrP/UvsiXELQH9tNIMYBhAkaueVfRawBa4tIC+/5FX6xFntrvUI6sGVKepZLmXmF+77uRsRmAHY7EMEuAlfqQ740O9zfvNYN5NyuQJhcxo0zbDR7MB/7Bmo33zgdkdLXck4LSyrea4YbIQOZJc5E1Si8mOXxz0/pNIu0w94cdfQvhn/nXDKhLDmpJ/0MWIXukC88wsGynWuN++A3csP4Wrz7xrQHvqYslf6PPLzAYS9Wr8UoZ13Y9cDGl9f47ycV4QsuNJh+1bfngXvczcH9cF+F539NU6NYhDLqxkRWCquqj/eJZIALzOgNJHVYA97yBykTse1TyHZhiVwZ/T7wHpeOeedvr6Y0q9Z3gW5UEuYRQeWPNhyA1b7JC3C3W1PuA/3Xumj8G7591p47JZAI42YSrxhmNGQrjxUuZ/c2RIIOUJ5gbk3j1YrV+swdzGLIcXeEJrpHVId9QipXsxYkl4I8Y42z+YFy6a7G0A77/VwEr4vJdabbYPOEIsElk/iLl2vFJ3887ZsS80a8W/BjbQhz4wP9yvF0pkUjn6007Pgy/13UlQd7h3wVIFGEdfV8VX/YsIihorHiqlR7Qn46Hyrt/f6Oz2vN6AIBc81/A2VuNxfXJkysQpIqpLCCxmC5QpXz3rmTYOHBn9H5xue08GRfCJvfBZHSAAA" width="56" height="56" alt="Neha Lal" loading="lazy" decoding="async"></span><span class="qn"><b>Neha Lal</b><span>Senior Program Manager, WRI</span></span></figcaption>
       </figure>
       <figure class="qc rv in">
         <span class="qm" aria-hidden="true">“</span>
         <blockquote>The participatory nature of the Forum was remarkable. Everyone was able to contribute honestly and spontaneously, sharing their perspectives without fear or bias. It created a fair space where diverse voices, from civil society, NGOs, and local leaders, could come together, exchange ideas, and converge on common understanding. This instant, open dialogue was a valuable learning experience for all of us.</blockquote>
-        <figcaption><span class="qn"><b>Sangramjit Nayak</b><span>Former Director of Municipal Administration, Housing and Urban Development Department, Government of Odisha</span></span></figcaption>
+        <figcaption><span class="av mono" aria-hidden="true">SN</span><span class="qn"><b>Sangramjit Nayak</b><span>Former Director of Municipal Administration, Housing and Urban Development Department, Government of Odisha</span></span></figcaption>
       </figure>
     </div>
   </div>
 </section>
 
+<!-- HIGHLIGHTS -->
+<section class="sec" id="highlights" aria-labelledby="hl-h">
+  <div class="wrap">
+    <div class="sec-head rv in">
+      <div>
+        <p class="kicker" data-num="—">Watch</p>
+        <h2 id="hl-h">U-CAN Annual Forum 2025 highlights video</h2>
+      </div>
+    </div>
+    <figure class="forumvid rv in">
+      <video controls preload="none" playsinline
+             poster="https://urban.org.in/wp-content/uploads/2025/09/0B7A7924-Enhanced-NR-scaled.webp"
+             width="1280" height="720">
+        <source src="https://urban.org.in/wp-content/uploads/2025/09/U-Can-Annual-Forum.mp4" type="video/mp4">
+        <p>Your browser cannot play this video.
+          <a href="https://urban.org.in/wp-content/uploads/2025/09/U-Can-Annual-Forum.mp4">Open the highlights video</a>.</p>
+      </video>
+      <figcaption>Highlights from the U-CAN Annual Forum 2025, Panjim, Goa</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- PHOTOS -->
 <!-- PHOTOS -->
 <section class="sec alt" id="photos" aria-labelledby="ph-h">
   <div class="wrap">
     <div class="sec-head rv in">
       <div>
-        <h2 id="ph-h" style="font-size:clamp(27px,3.6vw,40px);letter-spacing:-.02em;max-width:22ch">Photos from the Forum</h2>
+        <h2 id="ph-h" style="font-size:clamp(27px,3.6vw,40px);letter-spacing:-.02em;max-width:22ch">Participants at the U-CAN Annual Forum 2025, Panjim, Goa</h2>
       </div>
     </div>
-    <h3 style="font-size:16px;margin:0 0 14px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;font-weight:700">Day 1</h3>
-    <div class="gal">
+    <div class="tabs daytabs rv" data-tabs>
+      <div class="tablist" role="tablist" aria-label="Photographs by day">
+          <button type="button" class="tab" role="tab" id="tab-day1" aria-controls="pane-day1" aria-selected="true">Day 1<span class="daycount">26</span></button>
+          <button type="button" class="tab" role="tab" id="tab-day2" aria-controls="pane-day2" aria-selected="false">Day 2<span class="daycount">9</span></button>
+          <button type="button" class="tab" role="tab" id="tab-day3" aria-controls="pane-day3" aria-selected="false">Day 3<span class="daycount">26</span></button>
+      </div>
+        <div class="tabpane galpane" role="tabpanel" id="pane-day1" aria-labelledby="tab-day1" tabindex="0">
+<div class="gal">
         <figure class="rv in">
           <div class="ph" aria-hidden="true"><b>Forum 2025</b><span>Photo loads on urban.org.in</span></div>
           <img src="https://urban.org.in/wp-content/uploads/2025/09/0B7A7924-Enhanced-NR-scaled.webp" alt="Participants at the U-CAN Annual Forum 2025, Panjim, Goa" loading="lazy" decoding="async"
@@ -864,8 +913,9 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
             onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'">
         </figure>
     </div>
-    <h3 style="font-size:16px;margin:34px 0 0 0 14px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;font-weight:700">Day 2</h3>
-    <div class="gal">
+        </div>
+        <div class="tabpane galpane" role="tabpanel" id="pane-day2" aria-labelledby="tab-day2" tabindex="0">
+<div class="gal">
         <figure class="rv in">
           <div class="ph" aria-hidden="true"><b>Forum 2025</b><span>Photo loads on urban.org.in</span></div>
           <img src="https://urban.org.in/wp-content/uploads/2025/09/0B7A8252-Enhanced-NR-scaled.jpg" alt="Participants at the U-CAN Annual Forum 2025, Panjim, Goa" loading="lazy" decoding="async"
@@ -912,8 +962,9 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
             onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'">
         </figure>
     </div>
-    <h3 style="font-size:16px;margin:34px 0 0 0 14px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;font-weight:700">Day 3</h3>
-    <div class="gal">
+        </div>
+        <div class="tabpane galpane" role="tabpanel" id="pane-day3" aria-labelledby="tab-day3" tabindex="0">
+<div class="gal">
         <figure class="rv in">
           <div class="ph" aria-hidden="true"><b>Forum 2025</b><span>Photo loads on urban.org.in</span></div>
           <img src="https://urban.org.in/wp-content/uploads/2025/09/0B7A9963-Enhanced-NR-scaled.jpg" alt="Participants at the U-CAN Annual Forum 2025, Panjim, Goa" loading="lazy" decoding="async"
@@ -1045,6 +1096,8 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
             onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'">
         </figure>
     </div>
+        </div>
+    </div>
   </div>
 </section>
 
@@ -1057,16 +1110,16 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       </div>
     </div>
     <ul class="ptrow">
-        <li class="pt rv in"><a href="https://museumofgoa.com/" target="_blank" rel="noopener noreferrer" aria-label="Museum of Goa — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none"><div class="ph" aria-hidden="true"><b>Museum of Goa</b></div>
+        <li class="pt rv in"><a href="https://museumofgoa.com/" target="_blank" rel="noopener noreferrer" aria-label="Museum of Goa — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none">
           <img src="https://urban.org.in/wp-content/uploads/2025/09/MoG-1.webp" alt="Museum of Goa logo" loading="lazy" decoding="async"
             onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
-        <li class="pt rv in"><a href="https://transitionsresearch.org/" target="_blank" rel="noopener noreferrer" aria-label="Transitions Research — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none"><div class="ph" aria-hidden="true"><b>Transitions Research</b></div>
+        <li class="pt rv in"><a href="https://transitionsresearch.org/" target="_blank" rel="noopener noreferrer" aria-label="Transitions Research — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none">
           <img src="https://urban.org.in/wp-content/uploads/2025/09/Untitled-3.png" alt="Transitions Research logo" loading="lazy" decoding="async"
             onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
-        <li class="pt rv in"><a href="https://charlescorreafoundation.org/" target="_blank" rel="noopener noreferrer" aria-label="Charles Correa Foundation — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none"><div class="ph" aria-hidden="true"><b>Charles Correa Foundation</b></div>
+        <li class="pt rv in"><a href="https://charlescorreafoundation.org/" target="_blank" rel="noopener noreferrer" aria-label="Charles Correa Foundation — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none">
           <img src="https://urban.org.in/wp-content/uploads/2025/09/Untitled4.png" alt="Charles Correa Foundation logo" loading="lazy" decoding="async"
             onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
-        <li class="pt rv in"><a href="https://www.youtube.com/@nagaritv_ccf" target="_blank" rel="noopener noreferrer" aria-label="Nagari Short Films — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none"><div class="ph" aria-hidden="true"><b>Nagari Short Films</b></div>
+        <li class="pt rv in"><a href="https://www.youtube.com/@nagaritv_ccf" target="_blank" rel="noopener noreferrer" aria-label="Nagari Short Films — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none">
           <img src="https://urban.org.in/wp-content/uploads/2025/09/Untitled-5.png" alt="Nagari Short Films logo" loading="lazy" decoding="async"
             onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
     </ul>
