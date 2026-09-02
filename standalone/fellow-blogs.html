@@ -706,7 +706,7 @@ main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(-
 main ol:not([class]){margin:18px 0 0;padding-left:22px}
 main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
 main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
-</style>
+.tag[data-tag]{cursor:pointer;transition:background .18s ease,color .18s ease}.tag[data-tag]:hover,.tag[data-tag]:focus-visible{background:var(--teal-deep,#0E5348)!important;color:#fff!important}</style>
 </head>
 <body>
 
@@ -742,6 +742,22 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       <p class="kicker" data-num="—">The archive</p>
       <h2 id="al">All posts</h2>
     </div>
+    <div class="fbar" role="group" aria-label="Browse posts by topic" style="margin-bottom:14px">
+      <span class="lbl" style="font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);align-self:center;margin-right:.35rem">By topic</span>
+      <a class="filter-btn" href="blog-tag-public-space">Public space<span class="c">16</span></a>
+      <a class="filter-btn" href="blog-tag-community">Community<span class="c">11</span></a>
+      <a class="filter-btn" href="blog-tag-citizen-participation">Citizen participation<span class="c">10</span></a>
+      <a class="filter-btn" href="blog-tag-gender-and-safety">Gender &amp; safety<span class="c">10</span></a>
+      <a class="filter-btn" href="blog-tag-governance">Governance<span class="c">8</span></a>
+      <a class="filter-btn" href="blog-tag-data-and-evidence">Data &amp; evidence<span class="c">7</span></a>
+      <a class="filter-btn" href="blog-tag-water-security">Water security<span class="c">7</span></a>
+      <a class="filter-btn" href="blog-tag-air-quality">Air quality<span class="c">6</span></a>
+      <a class="filter-btn" href="blog-tag-climate-action">Climate action<span class="c">6</span></a>
+      <a class="filter-btn" href="blog-tag-urban-practice">Urban practice<span class="c">4</span></a>
+      <a class="filter-btn" href="blog-tag-youth">Youth<span class="c">4</span></a>
+      <a class="filter-btn" href="blog-tag-planning">Planning<span class="c">2</span></a>
+      <a class="filter-btn" href="blog-tag-housing">Housing<span class="c">1</span></a>
+    </div>
     <div class="fbar" role="group" aria-label="Filter posts by Fellow">
       <button type="button" class="filter-btn active" data-filter="all">All Fellows<span class="c">58</span></button>
       <button type="button" class="filter-btn" data-filter="aanchal-aggarwal">Aanchal Aggarwal<span class="c">9</span></button>
@@ -761,7 +777,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>What has Citizen Participation led to? Impact and Outcomes</h3>
           <span class="bx">Open Space Development in an informal settlement in Odisha under Jaga Mission Over the past several months, my journey through …</span>
-          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Housing</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span><span class="tag" data-tag="blog-tag-housing" role="link" tabindex="0" title="See all posts tagged Housing">Housing</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>December 3, 2025</span></span>
         </span>
       </a>
@@ -772,7 +788,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>What the City Taught Me</h3>
           <span class="bx">Showcasing SVHPS project to the community, government stakeholders and urban experts in Yuvascape held in October 2025 Looking Back to …</span>
-          <span class="btags"><span class="tag">Community</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           <span class="bm"><b>Aashima Arora</b><span>December 3, 2025</span></span>
         </span>
       </a>
@@ -783,7 +799,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>“Urban Experiments, Everyday Experts: Lessons from Pelathope”</h3>
           <span class="bx">It was a muggy June afternoon when we found ourselves staring at stagnant water collecting near the entrance of Pelathope …</span>
-          <span class="btags"><span class="tag">Water security</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-water-security" role="link" tabindex="0" title="See all posts tagged Water security">Water security</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>December 3, 2025</span></span>
         </span>
       </a>
@@ -794,7 +810,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Methods and Approaches for sustained Participation</h3>
           <span class="bx">Capacity Building Workshop,Ward Committee, Mangaluru In the previous blog, I discussed how meetings keep dialogue continuous and decisions transparent. But …</span>
-          <span class="btags"><span class="tag">Citizen participation</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>December 2, 2025</span></span>
         </span>
       </a>
@@ -805,7 +821,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Pilots as Proof of Possibility</h3>
           <span class="bx">Source: Coimbatore Creates Case for Tactical Urbanism Why Pilots Matter Ideas can be powerful, but unless they are tested on …</span>
-          <span class="btags"><span class="tag">Urban practice</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-urban-practice" role="link" tabindex="0" title="See all posts tagged Urban practice">Urban practice</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>December 2, 2025</span></span>
         </span>
       </a>
@@ -816,7 +832,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Unpacking the “why” of PULL: my personal journey to social…</h3>
           <span class="bx">Our doors opened at 9 a.m. on a balmy Saturday morning in March — and one and a half hours …</span>
-          <span class="btags"><span class="tag">Urban practice</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-urban-practice" role="link" tabindex="0" title="See all posts tagged Urban practice">Urban practice</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>December 2, 2025</span></span>
         </span>
       </a>
@@ -827,7 +843,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Field notes in building a community around a shared neighbourhood…</h3>
           <span class="bx">From March 21st to 23rd, the historic neighborhood of Mylapore came alive with stories, photographs, and community spirit at the …</span>
-          <span class="btags"><span class="tag">Public space</span><span class="tag">Community</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>December 2, 2025</span></span>
         </span>
       </a>
@@ -838,7 +854,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Pitching Possibility: Turning Youth Designs into City Conversations</h3>
           <span class="bx">Source: Putting quality of life at the heart of planning From Groundwork to Possibility Over the past several months, adolescents …</span>
-          <span class="btags"><span class="tag">Youth</span><span class="tag">Planning</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-youth" role="link" tabindex="0" title="See all posts tagged Youth">Youth</span><span class="tag" data-tag="blog-tag-planning" role="link" tabindex="0" title="See all posts tagged Planning">Planning</span></span>
           <span class="bm"><b>Aashima Arora</b><span>December 1, 2025</span></span>
         </span>
       </a>
@@ -849,7 +865,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Introducing the Pelathope urban living lab</h3>
           <span class="bx">Mylapore is one of Chennai’s oldest and most storied neighborhoods, renowned for its rich cultural, religious, and architectural heritage. Many …</span>
-          <span class="btags"><span class="tag">Public space</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>December 1, 2025</span></span>
         </span>
       </a>
@@ -860,7 +876,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Design of Platform: Meeting Conduct and Quality</h3>
           <span class="bx">A Ward Committee Meeting at a Municipal Park in Bhuj, Gujarat In the previous blog, I explored how the composition …</span>
-          <span class="btags"><span class="tag">Governance</span><span class="tag">Public space</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-governance" role="link" tabindex="0" title="See all posts tagged Governance">Governance</span><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>November 30, 2025</span></span>
         </span>
       </a>
@@ -871,7 +887,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Reclaiming the Past: How Heritage Precincts Can Power the Future…</h3>
           <span class="bx">I visited the historic precincts of Shahjahanabad (Delhi), Chowk (Lucknow), Mylapore (Chennai) and Panchvati in Nashik recently on work expeditions. …</span>
-          <span class="btags"><span class="tag">Public space</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>November 30, 2025</span></span>
         </span>
       </a>
@@ -882,7 +898,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Cohesion and culture: what’s urban development got to do with…</h3>
           <span class="bx">I remember the first community engagement workshop I helped organise as an urban designer twelve years ago for a street …</span>
-          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Public space</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>November 29, 2025</span></span>
         </span>
       </a>
@@ -893,7 +909,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Design of Platform — Composition, Representation and Depth of Participation</h3>
           <span class="bx">A Ward Committee Meeting in Hoodi Ward, Bengaluru In the previous blogs, I explored how laws, institutions, and collaborations create …</span>
-          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Governance</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span><span class="tag" data-tag="blog-tag-governance" role="link" tabindex="0" title="See all posts tagged Governance">Governance</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>November 28, 2025</span></span>
         </span>
       </a>
@@ -904,7 +920,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Drawing Together: Co-Designing Public Spaces with Jaipur’s Adolescents</h3>
           <span class="bx">Source: Research on exploring the role of (co)design by Penny Hagen Designing with, not for, that’s the shift we set …</span>
-          <span class="btags"><span class="tag">Public space</span><span class="tag">Youth</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span><span class="tag" data-tag="blog-tag-youth" role="link" tabindex="0" title="See all posts tagged Youth">Youth</span></span>
           <span class="bm"><b>Aashima Arora</b><span>November 28, 2025</span></span>
         </span>
       </a>
@@ -915,7 +931,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Neighbourhoods as social glue: neglected and overlooked, but essential for…</h3>
           <span class="bx">In my previous reflections, I explored how planning systems often exclude communities from shaping urban futures. Here, I focus on …</span>
-          <span class="btags"><span class="tag">Public space</span><span class="tag">Community</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>November 28, 2025</span></span>
         </span>
       </a>
@@ -926,7 +942,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Collaborative Governance: Partnerships Behind Effective Participation</h3>
           <span class="bx">A Slum Dwellers Association Meeting As a U-CAN fellow with Janaagraha, my study on Participatory Governance has shown that Governance …</span>
-          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Governance</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span><span class="tag" data-tag="blog-tag-governance" role="link" tabindex="0" title="See all posts tagged Governance">Governance</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>November 27, 2025</span></span>
         </span>
       </a>
@@ -937,7 +953,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Building Trust, One Conversation at a Time</h3>
           <span class="bx">Source: UNICEF’s Social and Community listening framework As we move from understanding public space challenges to shaping their solutions, a …</span>
-          <span class="btags"><span class="tag">Public space</span><span class="tag">Community</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           <span class="bm"><b>Aashima Arora</b><span>November 27, 2025</span></span>
         </span>
       </a>
@@ -948,7 +964,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>How can planners empower communities to create more inclusive cities?</h3>
           <span class="bx">When I was in architecture school at the University of Texas at Austin 20 years ago, I was struck by …</span>
-          <span class="btags"><span class="tag">Community</span><span class="tag">Planning</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span><span class="tag" data-tag="blog-tag-planning" role="link" tabindex="0" title="See all posts tagged Planning">Planning</span></span>
           <span class="bm"><b>Shreya Krishnan</b><span>November 27, 2025</span></span>
         </span>
       </a>
@@ -959,7 +975,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Water Security and the Role of a Rainwater Harvesting Calculator</h3>
           <span class="bx">Over the past few months, I have been focusing on water governance—not just as an enabler of growth but as …</span>
-          <span class="btags"><span class="tag">Water security</span><span class="tag">Governance</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-water-security" role="link" tabindex="0" title="See all posts tagged Water security">Water security</span><span class="tag" data-tag="blog-tag-governance" role="link" tabindex="0" title="See all posts tagged Governance">Governance</span></span>
           <span class="bm"><b>Shubhi Kesarwani</b><span>November 9, 2025</span></span>
         </span>
       </a>
@@ -970,7 +986,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Smart Cities, Women, and Safety: When Technology Empowers or Excludes</h3>
           <span class="bx">“Smart cities promise efficiency, but can they also promise safety? For women, technology could be both a shield and a …</span>
-          <span class="btags"><span class="tag">Gender &amp; safety</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-gender-and-safety" role="link" tabindex="0" title="See all posts tagged Gender & safety">Gender &amp; safety</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>November 9, 2025</span></span>
         </span>
       </a>
@@ -981,7 +997,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Harnessing Rainwater to Secure India’s Urban Future: Industry’s Role and…</h3>
           <span class="bx">Harnessing Rainwater to Secure India’s Urban Future: Industry’s Role and a Calculator’s Impact As I stand on my balcony in …</span>
-          <span class="btags"><span class="tag">Water security</span><span class="tag">Data &amp; evidence</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-water-security" role="link" tabindex="0" title="See all posts tagged Water security">Water security</span><span class="tag" data-tag="blog-tag-data-and-evidence" role="link" tabindex="0" title="See all posts tagged Data & evidence">Data &amp; evidence</span></span>
           <span class="bm"><b>Shubhi Kesarwani</b><span>November 5, 2025</span></span>
         </span>
       </a>
@@ -992,7 +1008,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Built by Her: Stories of Women Transforming Indian Cities</h3>
           <span class="bx">Urban planning shapes how people live, yet those who design our cities rarely reflect their full diversity. While women now …</span>
-          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Community</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-gender-and-safety" role="link" tabindex="0" title="See all posts tagged Gender & safety">Gender &amp; safety</span><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>November 5, 2025</span></span>
         </span>
       </a>
@@ -1003,7 +1019,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Beyond Burden: Margins as Makers</h3>
           <span class="bx">What happens when participation isn’t symbolic, but structural? In the climate conversation, we often hear who suffers first or suffers …</span>
-          <span class="btags"><span class="tag">Climate action</span><span class="tag">Citizen participation</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>October 15, 2025</span></span>
         </span>
       </a>
@@ -1014,7 +1030,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>The Other Side of Climate Action: Where Plans Meet People</h3>
           <span class="bx">The signs of climate disruption in cities are no longer abstract. We have seen how Bengaluru experiences this crisis; unevenly, …</span>
-          <span class="btags"><span class="tag">Climate action</span><span class="tag">Community</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>October 15, 2025</span></span>
         </span>
       </a>
@@ -1025,7 +1041,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>From Vision to Will: Leadership and the Long Arc of…</h3>
           <span class="bx">Climate action often begins with urgency. Plans are announced, budgets committed, and pilots launched. But somewhere between the drawing board …</span>
-          <span class="btags"><span class="tag">Climate action</span><span class="tag">Governance</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span><span class="tag" data-tag="blog-tag-governance" role="link" tabindex="0" title="See all posts tagged Governance">Governance</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>October 15, 2025</span></span>
         </span>
       </a>
@@ -1036,7 +1052,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Quantifying the Invisible: How a Simple Tool is Changing Rainwater…</h3>
           <span class="bx">Quantifying the Invisible: How a Simple Tool is Changing Rainwater Harvesting in Cities Over the last year, I’ve been closely …</span>
-          <span class="btags"><span class="tag">Water security</span><span class="tag">Data &amp; evidence</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-water-security" role="link" tabindex="0" title="See all posts tagged Water security">Water security</span><span class="tag" data-tag="blog-tag-data-and-evidence" role="link" tabindex="0" title="See all posts tagged Data & evidence">Data &amp; evidence</span></span>
           <span class="bm"><b>Shubhi Kesarwani</b><span>October 9, 2025</span></span>
         </span>
       </a>
@@ -1047,7 +1063,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Rebuilding the City: How Infrastructure Shapes Safety and Access in…</h3>
           <span class="bx">In earlier blogs, we explored safety through complaints and planning through data. This time, we shift to the roads we …</span>
-          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Data &amp; evidence</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-gender-and-safety" role="link" tabindex="0" title="See all posts tagged Gender & safety">Gender &amp; safety</span><span class="tag" data-tag="blog-tag-data-and-evidence" role="link" tabindex="0" title="See all posts tagged Data & evidence">Data &amp; evidence</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>October 9, 2025</span></span>
         </span>
       </a>
@@ -1058,7 +1074,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Reflections from the Field: Reimagining Urban Water Security in Gurugram</h3>
           <span class="bx">This past month, I’ve found myself revisiting the foundational principles we established back in 2019, when our team at GuruJal …</span>
-          <span class="btags"><span class="tag">Water security</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-water-security" role="link" tabindex="0" title="See all posts tagged Water security">Water security</span></span>
           <span class="bm"><b>Shubhi Kesarwani</b><span>September 9, 2025</span></span>
         </span>
       </a>
@@ -1069,7 +1085,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Beyond the Numbers: The Power of Gender-Disaggregated Data</h3>
           <span class="bx">Urban planning is often seen as a technical field, filled with maps, blueprints, and models. But behind every design decision …</span>
-          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Data &amp; evidence</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-gender-and-safety" role="link" tabindex="0" title="See all posts tagged Gender & safety">Gender &amp; safety</span><span class="tag" data-tag="blog-tag-data-and-evidence" role="link" tabindex="0" title="See all posts tagged Data & evidence">Data &amp; evidence</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>September 9, 2025</span></span>
         </span>
       </a>
@@ -1080,7 +1096,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Reimagining Air Quality Interventions through Clean Air Zones</h3>
           <span class="bx">Nationally, it is seen that the non-attainment cities are working towards improving air quality through various measures targeting several sectors. …</span>
-          <span class="btags"><span class="tag">Air quality</span><span class="tag">Data &amp; evidence</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-air-quality" role="link" tabindex="0" title="See all posts tagged Air quality">Air quality</span><span class="tag" data-tag="blog-tag-data-and-evidence" role="link" tabindex="0" title="See all posts tagged Data & evidence">Data &amp; evidence</span></span>
           <span class="bm"><b>Ramya M A</b><span>July 25, 2025</span></span>
         </span>
       </a>
@@ -1091,7 +1107,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Patterns in Participation – Tracing What Works</h3>
           <span class="bx">Source:https://citizenmatters.in/dehradun-citizens-forum-mayoral-dialogue-local-governance/, 2025 After spending the first few weeks of the fellowship immersed in legal frameworks and state-level policies, I found …</span>
-          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Governance</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span><span class="tag" data-tag="blog-tag-governance" role="link" tabindex="0" title="See all posts tagged Governance">Governance</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1102,7 +1118,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Between Policy and Practice/ The Gap Between Intention and Implementation</h3>
           <span class="bx">The decentralisation of urban governance was envisioned in the 74th Constitutional Amendment Act (CAA) of 1993, marking a significant step …</span>
-          <span class="btags"><span class="tag">Governance</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-governance" role="link" tabindex="0" title="See all posts tagged Governance">Governance</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1113,7 +1129,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Enabling Ecosystem for Citizen Participation</h3>
           <span class="bx">Area Sabha meeting at Ward 183 in Palavakkam, Chennai Source:https://www.thehindu.com/news/cities/chennai/area-sabhas-the-ground-that-remains-to-be-covered/article69443930.ece As my study on Participatory Governance progressed, one thing became …</span>
-          <span class="btags"><span class="tag">Citizen participation</span><span class="tag">Governance</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span><span class="tag" data-tag="blog-tag-governance" role="link" tabindex="0" title="See all posts tagged Governance">Governance</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1124,7 +1140,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>The Missing Link: Why Jaipur’s Public Spaces Fail Adolescents</h3>
           <span class="bx">In my pursuit of understanding the complexities of public spaces in urban settings, the U-CAN Fellowship gave me the opportunity …</span>
-          <span class="btags"><span class="tag">Public space</span><span class="tag">Youth</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span><span class="tag" data-tag="blog-tag-youth" role="link" tabindex="0" title="See all posts tagged Youth">Youth</span></span>
           <span class="bm"><b>Aashima Arora</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1135,7 +1151,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>This City Isn’t for You – Women, Safety, and Jaipur</h3>
           <span class="bx">Listening to Lived Realities Through my fieldwork in Jaipur’s neighbourhoods, I’ve spent time speaking with adolescent girls about their experiences …</span>
-          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Public space</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-gender-and-safety" role="link" tabindex="0" title="See all posts tagged Gender & safety">Gender &amp; safety</span><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span></span>
           <span class="bm"><b>Aashima Arora</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1146,7 +1162,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Cities that get it right and what Jaipur can learn</h3>
           <span class="bx">As Jaipur grapples with creating safe, vibrant public spaces for its youth, looking outward at global and national examples can …</span>
-          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Public space</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-gender-and-safety" role="link" tabindex="0" title="See all posts tagged Gender & safety">Gender &amp; safety</span><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span></span>
           <span class="bm"><b>Aashima Arora</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1157,7 +1173,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>From the Margins to the Map: Women’s Participation in Urban…</h3>
           <span class="bx">Urban planning in cities like Gurgaon has long been shaped by the priorities of a narrow group, often overlooking the …</span>
-          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Citizen participation</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-gender-and-safety" role="link" tabindex="0" title="See all posts tagged Gender & safety">Gender &amp; safety</span><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1168,7 +1184,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Designing for Dignity: Gender, Urban Planning, and the Shape of…</h3>
           <span class="bx">In earlier articles, we examined the range of complaints received by the Gurugram Police—from domestic disputes to street harassment—and how …</span>
-          <span class="btags"><span class="tag">Gender &amp; safety</span><span class="tag">Public space</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-gender-and-safety" role="link" tabindex="0" title="See all posts tagged Gender & safety">Gender &amp; safety</span><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1179,7 +1195,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Understanding Women’s Safety in Gurgaon: A Collaborative Approach</h3>
           <span class="bx">In the last piece, I shared how my journey through India’s evolving cities:, especially Gurgaon, has revealed the deep-rooted cultural …</span>
-          <span class="btags"><span class="tag">Gender &amp; safety</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-gender-and-safety" role="link" tabindex="0" title="See all posts tagged Gender & safety">Gender &amp; safety</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1190,7 +1206,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>A marathon against air pollution</h3>
           <span class="bx">Exploring a little deeper into haze and air pollution, I came across a few articles on people’s day-to-day experiences. There …</span>
-          <span class="btags"><span class="tag">Air quality</span><span class="tag">Community</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-air-quality" role="link" tabindex="0" title="See all posts tagged Air quality">Air quality</span><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           <span class="bm"><b>Ramya M A</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1201,7 +1217,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Global Stance on Air Quality</h3>
           <span class="bx">Having understood the main reasons for the Haze in Mumbai as Air Pollution (while its humid weather and the coastline …</span>
-          <span class="btags"><span class="tag">Air quality</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-air-quality" role="link" tabindex="0" title="See all posts tagged Air quality">Air quality</span></span>
           <span class="bm"><b>Ramya M A</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1212,7 +1228,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Where does India stand on Air Quality?</h3>
           <span class="bx">In addition to the global frameworks, efforts at the national level play a substantial role in managing air quality/ pollution. …</span>
-          <span class="btags"><span class="tag">Air quality</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-air-quality" role="link" tabindex="0" title="See all posts tagged Air quality">Air quality</span></span>
           <span class="bm"><b>Ramya M A</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1223,7 +1239,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>From Paper to Pause: Why Climate Projects Stall?</h3>
           <span class="bx">Climate efforts don’t lack vision or direction. But in between the budgets and broken pavements, execution slips. In Bengaluru, as …</span>
-          <span class="btags"><span class="tag">Climate action</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1234,7 +1250,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Well-Meant Plans, Unkept Promises: When Climate Plans Stall</h3>
           <span class="bx">Bengaluru’s climate realities are no longer future tense. They show up in shrinking green cover, overheated summers, erratic water access, …</span>
-          <span class="btags"><span class="tag">Water security</span><span class="tag">Climate action</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-water-security" role="link" tabindex="0" title="See all posts tagged Water security">Water security</span><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1245,7 +1261,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Living the Heat: Some Feel It First, Some Feel It…</h3>
           <span class="bx">The signs of Bengaluru’s changing climate are no longer subtle. Milder mornings have given way to harsh heat, cool breezes …</span>
-          <span class="btags"><span class="tag">Climate action</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1256,7 +1272,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Planning what matters : Data-Driven</h3>
           <span class="bx">Why do we still see open garbage dumps in our neighbourhoods? Why are drains overflowing right next to newly built …</span>
-          <span class="btags"><span class="tag">Public space</span><span class="tag">Data &amp; evidence</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span><span class="tag" data-tag="blog-tag-data-and-evidence" role="link" tabindex="0" title="See all posts tagged Data & evidence">Data &amp; evidence</span></span>
           <span class="bm"><b>Manisha Bisht</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1267,7 +1283,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Centering People in the Planning Process: Mapping What Matters</h3>
           <span class="bx">As I deepen my understanding of spatial data and how it can illuminate service gaps, I’ve also strengthened my belief …</span>
-          <span class="btags"><span class="tag">Data &amp; evidence</span><span class="tag">Community</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-data-and-evidence" role="link" tabindex="0" title="See all posts tagged Data & evidence">Data &amp; evidence</span><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           <span class="bm"><b>Manisha Bisht</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1278,7 +1294,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>What is the Problem? Peeling the Onion!</h3>
           <span class="bx">“We were given a toilet under the scheme, but the pit is broken, so we don’t use it.” These were …</span>
-          <span class="btags"><span class="tag">Urban practice</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-urban-practice" role="link" tabindex="0" title="See all posts tagged Urban practice">Urban practice</span></span>
           <span class="bm"><b>Manisha Bisht</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1289,7 +1305,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Urban Development: Place-based, people-powered, and future-ready</h3>
           <span class="bx">As I reflect on this journey, from witnessing urban failures to peeling back their layered causes, exploring the potential of …</span>
-          <span class="btags"><span class="tag">Community</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           <span class="bm"><b>Manisha Bisht</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1300,7 +1316,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Dilemma of an Urban Dweller : When problem becomes Daily…</h3>
           <span class="bx">As urban dwellers, we don’t encounter our cities as abstract zones, we live them. Silently and constantly, we experience both …</span>
-          <span class="btags"><span class="tag">Urban practice</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-urban-practice" role="link" tabindex="0" title="See all posts tagged Urban practice">Urban practice</span></span>
           <span class="bm"><b>Manisha Bisht</b><span>July 5, 2025</span></span>
         </span>
       </a>
@@ -1311,7 +1327,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>An approach to addressing Air Quality: How and Why?</h3>
           <span class="bx">Aiming towards accelerating efforts by cities, the central government in September 2022, raised the NCAP goal from aiming for a …</span>
-          <span class="btags"><span class="tag">Air quality</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-air-quality" role="link" tabindex="0" title="See all posts tagged Air quality">Air quality</span></span>
           <span class="bm"><b>Ramya M A</b><span>June 24, 2025</span></span>
         </span>
       </a>
@@ -1322,7 +1338,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>A City I Knew, A Crisis I See</h3>
           <span class="bx">Bengaluru means different things to different people. For me, it’s February mornings in the early 2000s—fog clinging to the window …</span>
-          <span class="btags"><span class="tag">Community</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           <span class="bm"><b>Sharathppriyaa Venkatesan</b><span>May 7, 2025</span></span>
         </span>
       </a>
@@ -1333,7 +1349,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Towards a more democratic city: Reflections on participation</h3>
           <span class="bx">I grew up in Jammu, a small city nestled in the foothills of the Himalayas. Like many others, I left …</span>
-          <span class="btags"><span class="tag">Citizen participation</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span></span>
           <span class="bm"><b>Aanchal Aggarwal</b><span>May 7, 2025</span></span>
         </span>
       </a>
@@ -1344,7 +1360,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Between Heritage and Hangouts: Youth and the Changing Public Life…</h3>
           <span class="bx">Ajmeri Gate- Gateway to Jaipur’s Heritage. Photo credit: Author The beautiful city of Jaipur has always been a major pin …</span>
-          <span class="btags"><span class="tag">Public space</span><span class="tag">Youth</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span><span class="tag" data-tag="blog-tag-youth" role="link" tabindex="0" title="See all posts tagged Youth">Youth</span></span>
           <span class="bm"><b>Aashima Arora</b><span>May 7, 2025</span></span>
         </span>
       </a>
@@ -1355,7 +1371,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>Addressing Women’s Safety Challenges in Gurugram</h3>
           <span class="bx">Since childhood, I’ve been drawn to exploration, not just of places but of the stories and cultures within them. Inspired …</span>
-          <span class="btags"><span class="tag">Gender &amp; safety</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-gender-and-safety" role="link" tabindex="0" title="See all posts tagged Gender & safety">Gender &amp; safety</span></span>
           <span class="bm"><b>Anwesha Bhattacharya</b><span>May 7, 2025</span></span>
         </span>
       </a>
@@ -1366,7 +1382,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>The Urban Haze</h3>
           <span class="bx">As I moved into the city of Mumbai, I started exploring the neighbourhood of my new workplace. I was delighted …</span>
-          <span class="btags"><span class="tag">Air quality</span><span class="tag">Public space</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-air-quality" role="link" tabindex="0" title="See all posts tagged Air quality">Air quality</span><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span></span>
           <span class="bm"><b>Ramya M A</b><span>April 23, 2025</span></span>
         </span>
       </a>
@@ -1377,7 +1393,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>India’s Water Crisis: A Looming Disaster</h3>
           <span class="bx">I grew up in the city of Prayagraj, Uttar Pradesh (formerly known as Allahabad), popularly known for hosting the Kumbh …</span>
-          <span class="btags"><span class="tag">Water security</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-water-security" role="link" tabindex="0" title="See all posts tagged Water security">Water security</span></span>
           <span class="bm"><b>Shubhi Kesarwani</b><span>April 22, 2025</span></span>
         </span>
       </a>
@@ -1388,7 +1404,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <span class="bb">
           <h3>The daily dilemma: Walking Mumbai’s ever-changing streets</h3>
           <span class="bx">While walking home from my office in Mumbai, I am often struck by the diversity of experiences along the way. …</span>
-          <span class="btags"><span class="tag">Public space</span></span>
+          <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span></span>
           <span class="bm"><b>Ramya M A</b><span>January 13, 2025</span></span>
         </span>
       </a>
@@ -1851,6 +1867,25 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         });
       });
       select(0);
+    });
+  })();
+
+  /* ---------- 11. blog topic tags ----------
+     Tags sit inside post cards that are themselves links, so they cannot be
+     anchors. They carry data-tag and behave as links via this handler. */
+  (function tagLinks() {
+    var tags = $$('.tag[data-tag]');
+    if (!tags.length) return;
+    var go = function (el, e) {
+      e.preventDefault();
+      e.stopPropagation();
+      location.href = el.dataset.tag;
+    };
+    tags.forEach(function (el) {
+      el.addEventListener('click', function (e) { go(el, e); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') go(el, e);
+      });
     });
   })();
 })();

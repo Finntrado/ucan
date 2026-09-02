@@ -709,7 +709,7 @@ main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(-
 main ol:not([class]){margin:18px 0 0;padding-left:22px}
 main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
 main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
-</style>
+.tag[data-tag]{cursor:pointer;transition:background .18s ease,color .18s ease}.tag[data-tag]:hover,.tag[data-tag]:focus-visible{background:var(--teal-deep,#0E5348)!important;color:#fff!important}</style>
 </head>
 <body>
 
@@ -780,7 +780,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">July 5, 2025</span>
             <h3>Planning what matters : Data-Driven</h3>
-            <span class="btags"><span class="tag">Public space</span><span class="tag">Data &amp; evidence</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-public-space" role="link" tabindex="0" title="See all posts tagged Public space">Public space</span><span class="tag" data-tag="blog-tag-data-and-evidence" role="link" tabindex="0" title="See all posts tagged Data & evidence">Data &amp; evidence</span></span>
           </span>
         </a></li>
         <li><a class="arow" href="blog-centering-people-in-the-planning-process-mapping-what-matt">
@@ -789,7 +789,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">July 5, 2025</span>
             <h3>Centering People in the Planning Process: Mapping What Matters</h3>
-            <span class="btags"><span class="tag">Data &amp; evidence</span><span class="tag">Community</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-data-and-evidence" role="link" tabindex="0" title="See all posts tagged Data & evidence">Data &amp; evidence</span><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           </span>
         </a></li>
         <li><a class="arow" href="blog-what-is-the-problem-peeling-the-onion">
@@ -798,7 +798,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">July 5, 2025</span>
             <h3>What is the Problem? Peeling the Onion!</h3>
-            <span class="btags"><span class="tag">Urban practice</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-urban-practice" role="link" tabindex="0" title="See all posts tagged Urban practice">Urban practice</span></span>
           </span>
         </a></li>
         <li><a class="arow" href="blog-urban-development-place-based-people-powered-and-future-re">
@@ -807,7 +807,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">July 5, 2025</span>
             <h3>Urban Development: Place-based, people-powered, and future-ready</h3>
-            <span class="btags"><span class="tag">Community</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           </span>
         </a></li>
         <li><a class="arow" href="blog-dilemma-of-an-urban-dweller-when-problem-becomes-daily-lif">
@@ -816,7 +816,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">July 5, 2025</span>
             <h3>Dilemma of an Urban Dweller : When problem becomes Daily…</h3>
-            <span class="btags"><span class="tag">Urban practice</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-urban-practice" role="link" tabindex="0" title="See all posts tagged Urban practice">Urban practice</span></span>
           </span>
         </a></li>
     </ul>
@@ -1286,6 +1286,25 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         });
       });
       select(0);
+    });
+  })();
+
+  /* ---------- 11. blog topic tags ----------
+     Tags sit inside post cards that are themselves links, so they cannot be
+     anchors. They carry data-tag and behave as links via this handler. */
+  (function tagLinks() {
+    var tags = $$('.tag[data-tag]');
+    if (!tags.length) return;
+    var go = function (el, e) {
+      e.preventDefault();
+      e.stopPropagation();
+      location.href = el.dataset.tag;
+    };
+    tags.forEach(function (el) {
+      el.addEventListener('click', function (e) { go(el, e); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') go(el, e);
+      });
     });
   })();
 })();

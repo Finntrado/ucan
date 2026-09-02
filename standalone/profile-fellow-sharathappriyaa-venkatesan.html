@@ -709,7 +709,7 @@ main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(-
 main ol:not([class]){margin:18px 0 0;padding-left:22px}
 main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
 main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
-</style>
+.tag[data-tag]{cursor:pointer;transition:background .18s ease,color .18s ease}.tag[data-tag]:hover,.tag[data-tag]:focus-visible{background:var(--teal-deep,#0E5348)!important;color:#fff!important}</style>
 </head>
 <body>
 
@@ -780,7 +780,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">October 15, 2025</span>
             <h3>Beyond Burden: Margins as Makers</h3>
-            <span class="btags"><span class="tag">Climate action</span><span class="tag">Citizen participation</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span><span class="tag" data-tag="blog-tag-citizen-participation" role="link" tabindex="0" title="See all posts tagged Citizen participation">Citizen participation</span></span>
           </span>
         </a></li>
         <li><a class="arow" href="blog-the-other-side-of-climate-action-where-plans-meet-people">
@@ -789,7 +789,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">October 15, 2025</span>
             <h3>The Other Side of Climate Action: Where Plans Meet People</h3>
-            <span class="btags"><span class="tag">Climate action</span><span class="tag">Community</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           </span>
         </a></li>
         <li><a class="arow" href="blog-from-vision-to-will-leadership-and-the-long-arc-of-climate">
@@ -798,7 +798,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">October 15, 2025</span>
             <h3>From Vision to Will: Leadership and the Long Arc of…</h3>
-            <span class="btags"><span class="tag">Climate action</span><span class="tag">Governance</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span><span class="tag" data-tag="blog-tag-governance" role="link" tabindex="0" title="See all posts tagged Governance">Governance</span></span>
           </span>
         </a></li>
         <li><a class="arow" href="blog-from-paper-to-pause-why-climate-projects-stall">
@@ -807,7 +807,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">July 5, 2025</span>
             <h3>From Paper to Pause: Why Climate Projects Stall?</h3>
-            <span class="btags"><span class="tag">Climate action</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span></span>
           </span>
         </a></li>
         <li><a class="arow" href="blog-well-meant-plans-unkept-promises-when-climate-plans-stall">
@@ -816,7 +816,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">July 5, 2025</span>
             <h3>Well-Meant Plans, Unkept Promises: When Climate Plans Stall</h3>
-            <span class="btags"><span class="tag">Water security</span><span class="tag">Climate action</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-water-security" role="link" tabindex="0" title="See all posts tagged Water security">Water security</span><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span></span>
           </span>
         </a></li>
         <li><a class="arow" href="blog-living-the-heat-some-feel-it-first-some-feel-it-worse">
@@ -825,7 +825,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">July 5, 2025</span>
             <h3>Living the Heat: Some Feel It First, Some Feel It…</h3>
-            <span class="btags"><span class="tag">Climate action</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-climate-action" role="link" tabindex="0" title="See all posts tagged Climate action">Climate action</span></span>
           </span>
         </a></li>
         <li><a class="arow" href="blog-a-city-i-knew-a-crisis-i-see">
@@ -834,7 +834,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <span>
             <span class="ad">May 7, 2025</span>
             <h3>A City I Knew, A Crisis I See</h3>
-            <span class="btags"><span class="tag">Community</span></span>
+            <span class="btags"><span class="tag" data-tag="blog-tag-community" role="link" tabindex="0" title="See all posts tagged Community">Community</span></span>
           </span>
         </a></li>
     </ul>
@@ -1304,6 +1304,25 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         });
       });
       select(0);
+    });
+  })();
+
+  /* ---------- 11. blog topic tags ----------
+     Tags sit inside post cards that are themselves links, so they cannot be
+     anchors. They carry data-tag and behave as links via this handler. */
+  (function tagLinks() {
+    var tags = $$('.tag[data-tag]');
+    if (!tags.length) return;
+    var go = function (el, e) {
+      e.preventDefault();
+      e.stopPropagation();
+      location.href = el.dataset.tag;
+    };
+    tags.forEach(function (el) {
+      el.addEventListener('click', function (e) { go(el, e); });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') go(el, e);
+      });
     });
   })();
 })();
