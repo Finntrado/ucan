@@ -389,6 +389,47 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
   .why-side .why-links{justify-content:flex-start}
 }
 </style>
+<style data-ucan="ln3">
+/* The aims list and the figure each held one column of one row, which left the
+   whole lower right of the section empty. The lead now spans the row and the
+   two elements sit side by side beneath it. */
+.platform{display:grid!important;grid-template-columns:1fr 1fr!important;
+  gap:clamp(24px,3vw,44px)!important;align-items:start!important}
+.platform-lead{grid-column:1/-1!important;margin:0 0 6px!important;max-width:52ch}
+.platform .ladder{grid-column:1!important;grid-row:2!important;margin:0!important;
+  align-self:stretch;display:flex;flex-direction:column}
+.platform .ladder svg{flex:1 1 auto;min-height:0}
+.platform-list{grid-column:2!important;grid-row:2!important;margin:0!important}
+@media(max-width:820px){
+  .platform{grid-template-columns:1fr!important}
+  .platform .ladder,.platform-list{grid-column:1!important;grid-row:auto!important}
+}
+
+/* ——— why this matters: what the Network needs, and what it becomes ——— */
+.wpath{display:flex;flex-direction:column;gap:14px;width:100%}
+.wpath-k{font-family:var(--sans,'Public Sans',sans-serif);font-weight:700;font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--lime,#CDDE71);opacity:.85;
+  margin:0}
+.wp-ins{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.wp-ins li{display:flex;align-items:center;gap:10px;padding:11px 15px;
+  border:1px solid rgba(205,222,113,.35);border-radius:100px;
+  font-family:var(--sans,'Public Sans',sans-serif);font-size:14.5px;font-weight:600;
+  color:#FBFAF6;background:rgba(251,250,246,.05)}
+.wp-ins li b{font-weight:800;color:var(--lime,#CDDE71);font-size:12px;letter-spacing:.06em;
+  font-family:var(--display,Archivo,sans-serif)}
+.wp-arrow{display:block;width:100%;height:26px;overflow:visible}
+.wp-node{border:1px solid var(--lime,#CDDE71);background:rgba(205,222,113,.12);
+  padding:16px 18px;text-align:center}
+.wp-node strong{display:block;font-family:var(--display,Archivo,sans-serif);font-weight:800;
+  font-size:clamp(16px,1.7vw,19px);line-height:1.25;color:#FBFAF6}
+.wp-node span{display:block;margin-top:6px;font-size:12.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--lime,#CDDE71)}
+.wp-out{text-align:center;
+  font-family:var(--sans,'Public Sans',sans-serif);font-size:14.5px;font-weight:600;
+  color:rgba(251,250,246,.88)}
+.wp-out em{font-style:normal;color:var(--lime,#CDDE71);font-weight:800}
+@media(max-width:1000px){.wpath{max-width:520px}}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
@@ -608,15 +649,23 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       <p class="why-statement">The Learning Network demonstrates that collaboration, not just capacity building, is key to improving urban outcomes. With targeted investment and institutional support, the Network has the potential to evolve into a national mechanism for strengthening urban governance and delivering better outcomes for millions of citizens.</p>
       </div>
     <div class="why-side">
-      <div class="why-viz" aria-hidden="true">
-      <svg class="motif" viewBox="0 0 400 300" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
-        <g fill="none" stroke="#4EC6B2" stroke-width="1" opacity=".5">
-          <path d="M200 150 L80 70 M200 150 L320 70 M200 150 L60 180 M200 150 L340 180 M200 150 L130 250 M200 150 L280 250"></path>
-          <path d="M80 70 L320 70 M60 180 L130 250 M340 180 L280 250"></path>
-        </g>
-        <g fill="#CDDE71"><circle cx="200" cy="150" r="5"></circle><circle cx="80" cy="70" r="3.5"></circle><circle cx="320" cy="70" r="3.5"></circle><circle cx="60" cy="180" r="3"></circle><circle cx="340" cy="180" r="3"></circle><circle cx="130" cy="250" r="3"></circle><circle cx="280" cy="250" r="3"></circle></g>
+      <div class="wpath" aria-hidden="true">
+      <p class="wpath-k">What it needs</p>
+      <ul class="wp-ins">
+        <li><b>01</b> Collaboration, not just capacity building</li>
+        <li><b>02</b> Targeted investment</li>
+        <li><b>03</b> Institutional support</li>
+      </ul>
+      <svg class="wp-arrow" viewBox="0 0 300 26" preserveAspectRatio="none">
+        <path d="M40 0 L150 20 M150 0 L150 20 M260 0 L150 20"
+              fill="none" stroke="#CDDE71" stroke-width="1" opacity=".55"/>
+        <path d="M144 14 L150 22 L156 14" fill="none" stroke="#CDDE71" stroke-width="1.4"/>
       </svg>
-
+      <div class="wp-node">
+        <strong>A national mechanism for strengthening urban governance</strong>
+        <span>What the Network can become</span>
+      </div>
+      <p class="wp-out">Better outcomes for&nbsp;<em>millions of citizens</em></p>
     </div>
       <div class="why-links">
       <a class="btn on-photo" href="https://urban.org.in/wp-content/uploads/2026/01/02.12.25-_-Knowledge-Report-_-Urban-Managers-Learning-Network.pdf" target="_blank" rel="noopener noreferrer">Read the full report <span class="ar" aria-hidden="true">→</span></a>
