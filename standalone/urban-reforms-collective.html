@@ -643,6 +643,42 @@ main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(-
 main ol:not([class]){margin:18px 0 0;padding-left:22px}
 main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
 main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
+
+/* ——— aim cards: entrance + hover ——— */
+.aim{transition:border-color .28s var(--e),transform .28s var(--e),box-shadow .28s var(--e)}
+.aim:hover,.aim:focus-within{border-color:var(--teal);transform:translateY(-4px);
+  box-shadow:var(--shadow)}
+.aim .n{transition:color .28s var(--e),letter-spacing .28s var(--e)}
+.aim:hover .n,.aim:focus-within .n{color:var(--teal);letter-spacing:.16em}
+.aim{position:relative;overflow:hidden}
+.aim::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--teal);transform:scaleY(0);transform-origin:top;
+  transition:transform .38s var(--e)}
+.aim:hover::before,.aim:focus-within::before{transform:scaleY(1)}
+@media(prefers-reduced-motion:reduce){
+  .aim,.aim .n,.aim::before{transition:none}
+  .aim:hover,.aim:focus-within{transform:none}
+}
+
+/* ——— the coordination diagram beside "Need for a URC" ——— */
+.coord{align-items:start}
+.coordfig{border:1px solid var(--line);background:var(--paper);
+  padding:clamp(22px,2.4vw,30px)}
+.sec.alt .coordfig{background:#fff}
+.coord-k{font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--teal-text);margin-bottom:16px}
+.coordfig svg{width:100%;height:auto;display:block}
+.coordfig .cf-dots circle{opacity:.55}
+.coord-list{list-style:none;margin:18px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.coord-list li{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;
+  border:1px solid var(--line);background:var(--paper-alt);border-radius:100px;
+  font-size:12.5px;font-weight:600;color:var(--ink-soft)}
+.coord-list li::before{content:"";width:5px;height:5px;border-radius:50%;
+  background:var(--teal-light)}
+.coord-out{margin-top:14px;font-family:var(--display);font-weight:700;font-size:15px;
+  color:var(--teal-deep);display:flex;align-items:center;gap:9px}
+.coord-out::before{content:"";width:22px;height:2px;background:var(--teal-deep)}
+@media(max-width:900px){.coord{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -688,9 +724,36 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <h2 id="need-h">Need for an Urban Reforms Collective</h2>
       </div>
     </div>
-    <div class="body rv in" style="max-width:74ch">
+    <div class="split coord"><div class="body rv in">
         <p>India's urban civil society has no shortage of expertise, but has historically operated in fragments. Organisations working on pieces of the same problem have done so without a coordinated joint agenda, resulting in duplicated efforts, fragmented evidence, and reform asks that sometimes conflict once they reach government on the same issue. The result is that the cumulative weight of civil society's work on urban reform has never landed with the force it should. The Urban Reforms Collective (URC) exists to fix the coordination failure, not to replace the organisations solving the substantive problems.</p>
       </div>
+      <aside class="coordfig rv d1" aria-labelledby="coord-h">
+        <p class="coord-k" id="coord-h">The coordination failure</p>
+        <svg viewBox="0 0 340 150" role="img"
+             aria-label="Separate organisations working on pieces of the same problem, converging into one coordinated agenda">
+          <g class="cf-dots" fill="none" stroke="#1F8F7B" stroke-width="1.6">
+            <circle cx="30" cy="26" r="7"/><circle cx="66" cy="60" r="7"/>
+            <circle cx="26" cy="96" r="7"/><circle cx="72" cy="124" r="7"/>
+            <circle cx="104" cy="40" r="7"/><circle cx="110" cy="104" r="7"/>
+          </g>
+          <g class="cf-rays" stroke="#4EC6B2" stroke-width="1.2" stroke-linecap="round" opacity=".75">
+            <path d="M37 26h150"/><path d="M73 60h114"/><path d="M33 96h154"/>
+            <path d="M79 124h108"/><path d="M111 40h76"/><path d="M117 104h70"/>
+          </g>
+          <circle class="cf-hub" cx="206" cy="75" r="19" fill="#0E5348"/>
+          <path class="cf-arrow" d="M232 75h74" stroke="#0E5348" stroke-width="2.4"
+                stroke-linecap="round"/>
+          <path class="cf-arrow" d="m297 66 10 9-10 9" fill="none" stroke="#0E5348"
+                stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <ul class="coord-list">
+          <li>Duplicated efforts</li>
+          <li>Fragmented evidence</li>
+          <li>Reform asks that conflict</li>
+        </ul>
+        <p class="coord-out">A coordinated joint agenda</p>
+      </aside>
+    </div>
     </div>
 </section>
 
@@ -708,17 +771,17 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       <p>Alongside this, the URC will work to build the infrastructure that collaboration requires, and explore ways to better align resources in support of shared priorities.</p>
     </div>
     <div class="aims">
-      <article class="aim rv in">
+      <article class="aim rv">
         <span class="n">01</span>
         <h3>A shared reform agenda</h3>
         <p>Co-creating a shared and actionable reform agenda for cities.</p>
       </article>
-      <article class="aim rv d1 in">
+      <article class="aim rv d1">
         <span class="n">02</span>
         <h3>A more aligned ecosystem</h3>
         <p>Building a stronger and more aligned ecosystem for sustained urban transformation.</p>
       </article>
-      <article class="aim rv d2 in">
+      <article class="aim rv d2">
         <span class="n">03</span>
         <h3>Greater public salience</h3>
         <p>Amplifying the salience of urban reforms within public and policy discourse.</p>
@@ -738,15 +801,15 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       </div>
     </div>
     <div class="aims">
-      <article class="aim rv in">
+      <article class="aim rv">
         <span class="n">01</span>
         <p>First, building a foundational, shared understanding of the reforms Indian cities need, covering decentralisation and participatory governance, institutional capacity, inclusive planning systems, and service delivery, then translating that into specific, actionable reform suggestions pitched at different levels of government and, where possible, tailored to a state's or city's specific context.</p>
       </article>
-      <article class="aim rv d1 in">
+      <article class="aim rv d1">
         <span class="n">02</span>
         <p>Second, building real buy-in for these ideas through sustained engagement with elected representatives and bureaucrats at the national, state, and local level, as well as constitutional institutions, political influencers, media, and citizens. Buy-in here means something concrete: a change in law or policy, or funds and functionaries actually allocated to make reform possible. That requires identifying the government engagements different organisations are already having, and embedding urban reforms within them.</p>
       </article>
-      <article class="aim rv d2 in">
+      <article class="aim rv d2">
         <span class="n">03</span>
         <p>Third, growing the range of voices URC represents, by bringing in more organisations from more geographies and sectors across urban India.</p>
       </article>
@@ -764,15 +827,15 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       </div>
     </div>
     <div class="aims">
-      <article class="aim rv in">
+      <article class="aim rv">
         <span class="n">01</span>
         <p>Every member organisation's agenda moves faster collectively than individually. The government is more likely to act when it hears the same ask from multiple credible organisations than when it hears competing asks from separate ones.</p>
       </article>
-      <article class="aim rv d1 in">
+      <article class="aim rv d1">
         <span class="n">02</span>
         <p>Members get a platform and collective legitimacy to amplify their own work. Their research reaches more decision-makers, government relationships become part of a larger strategic map, and their voice on urban reform carries more weight when it is visibly part of a coordinated collective.</p>
       </article>
-      <article class="aim rv d2 in">
+      <article class="aim rv d2">
         <span class="n">03</span>
         <p>Finally, members get access to a shared evidence base, political economy intelligence, and peer learning across organisations. These are resources that would cost any single organisation significantly more to build alone.</p>
       </article>
@@ -950,7 +1013,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 <!-- GET INVOLVED -->
 <section class="ctaband" id="involved" aria-label="Get involved">
   <div class="wrap">
-    <p>If this sounds interesting to you, <a href="mailto:reforms@urban.org.in">reach out to us</a> to express your interest in being part of the Urban Reforms Collective.</p>
+    <p>If this sounds interesting to you, <a href="mailto:reforms@urban.org.in">reach out to us at reforms@urban.org.in</a> to express your interest in being part of the Urban Reforms Collective.</p>
   </div>
 </section>
 

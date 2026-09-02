@@ -557,6 +557,36 @@ main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(-
 main ol:not([class]){margin:18px 0 0;padding-left:22px}
 main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
 main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
+
+/* ——— aim cards: entrance + hover ——— */
+.aim{transition:border-color .28s var(--e),transform .28s var(--e),box-shadow .28s var(--e);
+  position:relative;overflow:hidden}
+.aim:hover,.aim:focus-within{border-color:var(--teal);transform:translateY(-4px);
+  box-shadow:var(--shadow)}
+.aim .n{transition:color .28s var(--e),letter-spacing .28s var(--e)}
+.aim:hover .n,.aim:focus-within .n{color:var(--teal);letter-spacing:.16em}
+.aim::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--teal);transform:scaleY(0);transform-origin:top;
+  transition:transform .38s var(--e)}
+.aim:hover::before,.aim:focus-within::before{transform:scaleY(1)}
+
+/* ——— the case: pull quote + combined-strengths figure ——— */
+.whyside{display:flex;flex-direction:column;gap:22px}
+.strengths{border:1px solid var(--line);background:var(--paper);
+  padding:clamp(20px,2.2vw,26px)}
+.sec.alt .strengths{background:#fff}
+.st-k{font-family:var(--sans);font-weight:700;font-size:12px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--teal-text);margin-bottom:14px}
+.strengths svg{width:100%;height:auto;display:block}
+.strengths svg circle{stroke-width:1.4}
+.st-t{font-family:var(--display);font-weight:700;font-size:13px;fill:var(--teal-deep)}
+.st-list{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.st-list li{padding:6px 12px;border:1px solid var(--line);background:var(--paper-alt);
+  border-radius:100px;font-size:12.5px;font-weight:600;color:var(--ink-soft)}
+@media(prefers-reduced-motion:reduce){
+  .aim,.aim .n,.aim::before{transition:none}
+  .aim:hover,.aim:focus-within{transform:none}
+}
 </style>
 </head>
 <body>
@@ -614,8 +644,23 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <li>Limited pathways for field-level learning and joint action</li>
         </ul>
       </div>
-      <aside class="pq rv d1 in">
-        <p>No single organisation, however capable, can fully address the complexity of urban challenges alone.</p>
+      <aside class="whyside rv d1">
+        <div class="pq">
+          <p>No single organisation, however capable, can fully address the complexity of urban challenges alone.</p>
+        </div>
+        <div class="strengths">
+          <p class="st-k">What specialisation leaves on the table</p>
+          <svg viewBox="0 0 300 150" role="img"
+               aria-label="Three organisations working separately, overlapping where their strengths combine">
+            <circle cx="112" cy="70" r="46" fill="#1F8F7B" fill-opacity=".16" stroke="#1F8F7B"/>
+            <circle cx="150" cy="70" r="46" fill="#1F8F7B" fill-opacity=".16" stroke="#1F8F7B"/>
+            <circle cx="188" cy="70" r="46" fill="#1F8F7B" fill-opacity=".16" stroke="#1F8F7B"/>
+            <text x="150" y="140" text-anchor="middle" class="st-t">Combined strengths</text>
+          </svg>
+          <ul class="st-list">
+            <li>Depth</li><li>Credibility</li><li>Structured opportunities</li>
+          </ul>
+        </div>
       </aside>
     </div>
 
@@ -623,15 +668,15 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       <p class="callout" style="max-width:70ch">Most organisations recognise the value of collaboration. But fewer are able to sustain it meaningfully. This is because:</p>
     </div>
     <div class="aims" style="margin-top:clamp(20px,2.6vw,30px)">
-      <article class="aim rv in">
+      <article class="aim rv">
         <span class="n">01</span>
         <p>Funding structures prioritise short-term, project-based outputs</p>
       </article>
-      <article class="aim rv d1 in">
+      <article class="aim rv d1">
         <span class="n">02</span>
         <p>Organisational systems are optimised for individual delivery, not shared work</p>
       </article>
-      <article class="aim rv d2 in">
+      <article class="aim rv d2">
         <span class="n">03</span>
         <p>Collaboration requires time, trust, and flexibility, often without immediate returns</p>
       </article>
@@ -651,15 +696,15 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
     </div>
     <p class="kicker" style="margin-bottom:6px">Core objectives</p>
     <div class="aims">
-      <article class="aim icard rv in">
+      <article class="aim icard rv">
         <div class="ihead"><span class="icb"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 21v-7.4"/><path d="M12 13.6C12 10 9.4 7.4 5.8 7.4c0 3.6 2.6 6.2 6.2 6.2z"/><path d="M12 12.4c0-3.3 2.4-5.7 5.7-5.7 0 3.3-2.4 5.7-5.7 5.7z"/><path d="M8 21h8"/></svg></span><h3>Enable early-stage collaboration</h3></div>
         <p>Support organisations to jointly explore ideas without rigid deliverables</p>
       </article>
-      <article class="aim icard rv d1 in">
+      <article class="aim icard rv d1">
         <div class="ihead"><span class="icb"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9.6 3.2v5.5L4.9 17a2.4 2.4 0 0 0 2.1 3.6h10a2.4 2.4 0 0 0 2.1-3.6l-4.7-8.3V3.2"/><path d="M8.4 3.2h7.2"/><path d="M7 14.4h10"/></svg></span><h3>Support experimentation and learning</h3></div>
         <p>Allow teams to iterate and adapt as insights emerge</p>
       </article>
-      <article class="aim icard rv d2 in">
+      <article class="aim icard rv d2">
         <div class="ihead"><span class="icb"><svg class="ic" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="5.5" cy="5.8" r="2.4"/><circle cx="18.5" cy="18.2" r="2.4"/><path d="M8 5.8h5.5a3.6 3.6 0 0 1 0 7.2h-3a3.6 3.6 0 0 0 0 7.2H16"/></svg></span><h3>Build collaborative capacity</h3></div>
         <p>Help organisations learn how to work across boundaries</p>
       </article>
