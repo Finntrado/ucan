@@ -337,6 +337,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 </style>
 <style data-ucan="share">.nl-share{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:1.75rem}.nl-share .lbl{font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft,#57564F);margin-right:.25rem}.nl-share a,.nl-share button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;height:40px;padding:0 .95rem;border-radius:999px;border:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6);color:var(--ink,#222120);font-family:inherit;font-size:.8125rem;font-weight:600;text-decoration:none;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}.nl-share a:hover,.nl-share button:hover{background:var(--teal-deep,#0E5348);border-color:var(--teal-deep,#0E5348);color:#fff;transform:translateY(-1px)}.nl-share svg{width:15px;height:15px;flex:none}.nl-share button[hidden]{display:none}</style>
 <style data-ucan="share">.nl-share{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:1.75rem}.nl-share .lbl{font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft,#57564F);margin-right:.25rem}.nl-share a,.nl-share button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;height:40px;padding:0 .95rem;border-radius:999px;border:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6);color:var(--ink,#222120);font-family:inherit;font-size:.8125rem;font-weight:600;text-decoration:none;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}.nl-share a:hover,.nl-share button:hover{background:var(--teal-deep,#0E5348);border-color:var(--teal-deep,#0E5348);color:#fff;transform:translateY(-1px)}.nl-share svg{width:15px;height:15px;flex:none}.nl-share button[hidden]{display:none}</style>
+<style data-ucan="yt">.nl-video{position:relative}.nl-video .ytlite{position:relative;display:block;cursor:pointer;text-decoration:none;background:#000}.nl-video .ytlite img{display:block;width:100%;height:auto;transition:opacity .25s ease}.nl-video .ytlite:hover img{opacity:.86}.ytplay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:68px;height:48px;pointer-events:none}.ytplay svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 10px rgba(0,0,0,.35))}.ytplay .ytp-bg{fill:#212121;fill-opacity:.85;transition:fill-opacity .2s ease,fill .2s ease}.nl-video .ytlite:hover .ytp-bg,.nl-video .ytlite:focus-visible .ytp-bg{fill:#f00;fill-opacity:1}.nl-video iframe{display:block;width:100%;aspect-ratio:16/9;height:auto;border:0}@media(prefers-reduced-motion:reduce){.nl-video .ytlite img,.ytplay .ytp-bg{transition:none}}</style>
 </head>
 <body>
 
@@ -514,7 +515,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           <p>Rooted in MHT’s long-standing work on climate resilience in informal settlements, the initiative highlights how targeted, place-based interventions can help cities adapt to extreme heat.</p>
         </article>
         <article class="art reveal reveal-delay-2">
-        <figure class="nl-fig"><img src="newsletters/img/may-2025-05.webp" width="1280" height="720" alt="Image from “Shelter Associates Turns 30!”" loading="lazy" decoding="async"></figure>
+        <figure class="nl-fig nl-video"><a class="ytlite" href="https://www.youtube.com/watch?v=5ozv3l3c1l0" data-yt="5ozv3l3c1l0" aria-label="Play video: this video" target="_blank" rel="noopener noreferrer"><img src="newsletters/img/may-2025-05.webp" width="1280" height="720" alt="Image from “Shelter Associates Turns 30!”" loading="lazy" decoding="async"><span class="ytplay" aria-hidden="true"><svg viewBox="0 0 68 48"><path class="ytp-bg" d="M66.5 7.7a8.6 8.6 0 0 0-6-6C55.2 0 34 0 34 0S12.8 0 7.5 1.6a8.6 8.6 0 0 0-6 6A90 90 0 0 0 0 24a90 90 0 0 0 1.5 16.3 8.6 8.6 0 0 0 6 6C12.8 48 34 48 34 48s21.2 0 26.5-1.6a8.6 8.6 0 0 0 6-6A90 90 0 0 0 68 24a90 90 0 0 0-1.5-16.3z"/><path d="M27 34V14l18 10z" fill="#fff"/></svg></span></a></figure>
           <h3>Shelter Associates Turns 30!</h3>
           <p>Shelter Associates celebrates 30 years of empowering urban poor communities through data- driven, community-led solutions. From pioneering GIS-based slum mapping and providing digital addresses to 100,000+ households, to improving hygiene for over 200,000 people through the One Home One Toilet model, their work has consistently advanced dignity, inclusion, and public health.</p>
           <p>Their approach, grounded in participatory housing design and evidence-based planning, has helped families access secure housing, shaped national policy, and fostered long-term change.</p>
@@ -1118,6 +1119,30 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       var old = label.textContent;
       label.textContent = 'Link copied';
       setTimeout(function () { label.textContent = old; }, 1800);
+    });
+  });
+})();
+</script>
+<script data-ucan="yt">
+/* Click-to-load YouTube: the still is already on the page, so nothing is
+   requested from YouTube until someone actually presses play. Without JS the
+   thumbnail stays an ordinary link to the video. */
+(function () {
+  var links = document.querySelectorAll('.nl-video .ytlite[data-yt]');
+  Array.prototype.forEach.call(links, function (a) {
+    a.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      e.preventDefault();
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + a.dataset.yt +
+              '?autoplay=1&rel=0';
+      f.title = a.getAttribute('aria-label') || 'Video';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; ' +
+                'gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      f.setAttribute('loading', 'lazy');
+      a.replaceWith(f);
+      f.focus();
     });
   });
 })();
