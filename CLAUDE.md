@@ -334,7 +334,7 @@ git push origin main
 ## 8. Pre-launch checklist (all pages)
 
 - Confirm the canonical domain/URLs are live and correct. **`our-people.html` now claims `https://urban.org.in/our-people/`, which does not exist yet** — it previously claimed `/our-members/`, but that URL genuinely serves the member *organisations* page, so two local pages were asserting one canonical. Either create `/our-people/` on WordPress or pick the real URL and re-run `fix_canonical.py`. URC is at `/urban-reforms-collective/`; RFC at `/requests-for-collaboration/`.
-- **The "Shaping Urban Futures" Fellowship report has no URL yet.** `build_fellowship.py` has `REPORT_URL = None`; the section renders without its CTA. Set the constant and re-run once the report is published.
+- ~~The "Shaping Urban Futures" Fellowship report has no URL yet.~~ **Published** at `https://urban.org.in/u-can-fellowship-report-2025`. `fellowship.html` now carries the cover (`assets/fellowship-report-2025-cover.webp`, downloaded rather than hotlinked) beside the "Inside this publication" card, both linking to it, plus a "Download full report" button.
 - Confirm mailboxes are live: `privacy@urban.org.in`, `connect@urban.org.in`, `reforms@urban.org.in`.
 - **Schema image URLs must resolve for crawlers** — base64-inline images don't satisfy JSON-LD `image` fields. Point those at real hosted URLs before launch.
 - Optional: split base64 assets into an `/assets` folder to shrink HTML and improve caching (currently everything is inline for portability).
