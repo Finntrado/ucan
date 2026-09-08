@@ -782,7 +782,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </style>
 <style data-ucan="rhythm">
 /* ——— vertical rhythm ——— */
-.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:auto!important;flex:0 0 auto!important}.vm-card{display:flex;flex-direction:column}.vm-card .brochure-btn{margin-top:auto;align-self:flex-start;padding-top:14px}.vm-card .vm-text+.brochure-btn,.vm-card .brochure-btn{margin-top:auto}@media(min-width:1001px){.vm-card .brochure-btn{margin-top:auto}.vm-card{min-height:100%}}.bar .brand img{width:240px!important;max-width:240px!important}footer .brand img{width:190px!important;max-width:190px!important}.bar-in{height:112px}.ucnav-t{font-size:16px}.bar-cta{font-size:15px;height:48px;padding:0 24px}html{scroll-padding-top:128px}@media(max-width:1100px){.bar .brand img{width:183px!important;max-width:183px!important}.bar-in{height:88px}html{scroll-padding-top:104px}}@media(max-width:560px){.bar .brand img{width:150px!important;max-width:150px!important}.bar-in{height:76px}}.sec{padding:clamp(52px,5.6vw,80px) 0}
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:auto!important;flex:0 0 auto!important}.vm-card{display:flex;flex-direction:column}.vm-card .brochure-btn{margin-top:auto;align-self:flex-start;padding-top:14px}.vm-card .vm-text+.brochure-btn,.vm-card .brochure-btn{margin-top:auto}@media(min-width:1001px){.vm-card .brochure-btn{margin-top:auto}.vm-card{min-height:100%}}.bar .brand img{width:168px!important;max-width:168px!important}footer .brand img{width:178px!important;max-width:178px!important}.bar-in{height:92px}.ucnav-t{font-size:16px}.bar-cta{font-size:15px;height:46px;padding:0 22px}html{scroll-padding-top:108px}@media(max-width:1100px){.bar .brand img{width:148px!important;max-width:148px!important}.bar-in{height:80px}html{scroll-padding-top:96px}}@media(max-width:560px){.bar .brand img{width:130px!important;max-width:130px!important}.bar-in{height:70px}}.sec{padding:clamp(52px,5.6vw,80px) 0}
 .section{padding:clamp(54px,5.8vw,84px) 0}
 .sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
 .sec-head>*{min-width:0}
@@ -805,6 +805,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
 .hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
 </style>
 <style data-ucan="type">
+/* kickers inside a .body column lost their styling to `.body p` */
+main p.kicker{font-family:var(--sans,'Public Sans',sans-serif)!important;font-size:12.5px!important;line-height:1.62!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:uppercase!important;color:var(--teal-text,#177A69)!important}
+main .on-dark.kicker,main .kicker.on-dark{color:var(--lime,#CDDE71)!important}
+
 /* One type scale and one bullet, applied last so it settles the differences between the shell pages, the newsletter template and the imported WordPress bodies. Classed paragraphs (kickers, leads, captions) keep their own role sizes. */
 main h1{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(38px,6.4vw,76px)!important;line-height:1.05!important;letter-spacing:-.03em}
 main h2{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em}
@@ -818,6 +822,57 @@ main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(-
 main ol:not([class]){margin:18px 0 0;padding-left:22px}
 main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
 main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
+</style>
+<style data-ucan="lbx">
+/* Photo tiles announce themselves as openable: a soft wash plus a badge that
+   grows in on hover. Same treatment on the Forum gallery and the City Mixers
+   rows, so a photo behaves the same way wherever it appears. */
+.galx figure,.mx-img{cursor:zoom-in}
+.galx figure::after,.mx-img::after{content:"";position:absolute;inset:0;z-index:2;
+  pointer-events:none;background:linear-gradient(180deg,rgba(14,83,72,0) 45%,rgba(14,83,72,.5) 100%);
+  opacity:0;transition:opacity .35s var(--e,ease)}
+.zoomdot{position:absolute;z-index:3;right:14px;bottom:14px;width:42px;height:42px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:var(--teal-deep,#0E5348);color:var(--lime,#CDDE71);pointer-events:none;
+  opacity:0;transform:scale(.6) translateY(6px);
+  transition:opacity .3s var(--e,ease),transform .38s cubic-bezier(.2,.8,.3,1.4);
+  box-shadow:0 6px 18px rgba(14,83,72,.4)}
+.zoomdot::before,.zoomdot::after{content:"";position:absolute;background:currentColor;
+  border-radius:2px}
+.zoomdot::before{width:16px;height:2px}
+.zoomdot::after{width:2px;height:16px}
+.galx figure:hover::after,.galx figure:focus-visible::after,
+.mx-img:hover::after,.mx-img:focus-visible::after{opacity:1}
+.galx figure:hover .zoomdot,.galx figure:focus-visible .zoomdot,
+.mx-img:hover .zoomdot,.mx-img:focus-visible .zoomdot{opacity:1;transform:scale(1) translateY(0)}
+.galx figure:focus-visible,.mx-img:focus-visible{outline:2px solid var(--teal,#1F8F7B);
+  outline-offset:3px}
+.mx-img img{transition:transform .5s var(--e,ease)}
+.mx-img:hover img{transform:scale(1.05)}
+
+.lbx{position:fixed;inset:0;z-index:200;display:flex;align-items:center;
+  justify-content:center;padding:clamp(16px,4vw,56px);
+  background:rgba(34,33,32,.94);opacity:0;transition:opacity .28s ease}
+.lbx.on{opacity:1}
+.lbx[hidden]{display:none}
+.lbx img{max-width:100%;max-height:100%;width:auto;height:auto;display:block;
+  box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lbx-btn{position:absolute;display:inline-flex;align-items:center;justify-content:center;
+  width:50px;height:50px;border:1px solid rgba(251,250,246,.3);background:rgba(251,250,246,.08);
+  color:#FBFAF6;font-size:22px;line-height:1;cursor:pointer;border-radius:50%;
+  transition:background .2s ease,border-color .2s ease}
+.lbx-btn:hover,.lbx-btn:focus-visible{background:var(--teal,#1F8F7B);
+  border-color:var(--teal,#1F8F7B)}
+.lbx-prev{left:clamp(10px,2vw,26px);top:50%;transform:translateY(-50%)}
+.lbx-next{right:clamp(10px,2vw,26px);top:50%;transform:translateY(-50%)}
+.lbx-close{top:clamp(10px,2vw,26px);right:clamp(10px,2vw,26px)}
+.lbx-cap{position:absolute;left:0;right:0;bottom:clamp(12px,2vw,26px);text-align:center;
+  padding:0 70px;font-family:var(--sans,'Public Sans',sans-serif);font-size:13px;
+  font-weight:600;color:rgba(251,250,246,.9);line-height:1.5}
+.lbx-cap b{display:block;color:var(--lime,#CDDE71);font-weight:700;letter-spacing:.08em;
+  margin-top:5px;font-size:12px}
+@media(prefers-reduced-motion:reduce){
+  .lbx,.galx figure::after,.mx-img::after,.zoomdot,.mx-img img{transition:none}}
 </style>
 </head>
 <body>
@@ -997,7 +1052,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       <div class="f-sub" id="connect">
         <h4>Stay connected</h4>
         <p class="f-subtext">One email a month on urban governance, our programmes and ways to get involved.</p>
-        <form class="fnform" id="fnform" novalidate="">
+        <form class="fnform" id="fnform" method="post" action="https://urban.org.in/newsletter/" novalidate="">
           <div class="fnrow">
             <label class="vh" for="f-email">Your email address</label>
             <input id="f-email" name="email" type="email" autocomplete="email" required="" placeholder="Your email address">
@@ -1417,4 +1472,89 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 })();
 </script>
 
+<script data-ucan="lbx">
+/* Click a photo to see it full size. Built from the tiles already on the page,
+   so with JS off the grids stay ordinary images. */
+(function () {
+  var tiles = [].slice.call(document.querySelectorAll('.galx figure, .mx-img'))
+    .filter(function (t) { return t.querySelector('img'); });
+  if (!tiles.length) return;
+
+  var box = document.createElement('div');
+  box.className = 'lbx';
+  box.hidden = true;
+  box.setAttribute('role', 'dialog');
+  box.setAttribute('aria-modal', 'true');
+  box.setAttribute('aria-label', 'Photograph');
+  box.innerHTML =
+    '<img alt="">' +
+    '<button type="button" class="lbx-btn lbx-prev" aria-label="Previous photograph">&#8249;</button>' +
+    '<button type="button" class="lbx-btn lbx-next" aria-label="Next photograph">&#8250;</button>' +
+    '<button type="button" class="lbx-btn lbx-close" aria-label="Close">&#10005;</button>' +
+    '<p class="lbx-cap"></p>';
+  document.body.appendChild(box);
+
+  var pic = box.querySelector('img');
+  var cap = box.querySelector('.lbx-cap');
+  var last = null, i = 0, pool = tiles;
+
+  function live() {
+    return tiles.filter(function (t) { return !t.closest('[hidden]'); });
+  }
+
+  function show(n) {
+    if (!pool.length) return;
+    i = (n + pool.length) % pool.length;
+    var src = pool[i].querySelector('img');
+    pic.src = src.currentSrc || src.src;
+    pic.alt = src.alt || '';
+    cap.innerHTML = (src.alt || '') + '<b>' + (i + 1) + ' / ' + pool.length + '</b>';
+  }
+
+  function open(tile) {
+    last = document.activeElement;
+    pool = live();
+    show(pool.indexOf(tile));
+    box.hidden = false;
+    requestAnimationFrame(function () { box.classList.add('on'); });
+    box.querySelector('.lbx-close').focus();
+    document.documentElement.style.overflow = 'hidden';
+  }
+
+  function close() {
+    box.classList.remove('on');
+    box.hidden = true;
+    document.documentElement.style.overflow = '';
+    if (last) last.focus();
+  }
+
+  tiles.forEach(function (t) {
+    var im = t.querySelector('img');
+    t.setAttribute('role', 'button');
+    t.setAttribute('tabindex', '0');
+    t.setAttribute('aria-label', 'View photograph' + (im.alt ? ': ' + im.alt : ''));
+    if (!t.querySelector('.zoomdot')) {
+      var dot = document.createElement('span');
+      dot.className = 'zoomdot';
+      dot.setAttribute('aria-hidden', 'true');
+      t.appendChild(dot);
+    }
+    t.addEventListener('click', function () { open(t); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(t); }
+    });
+  });
+
+  box.querySelector('.lbx-prev').addEventListener('click', function () { show(i - 1); });
+  box.querySelector('.lbx-next').addEventListener('click', function () { show(i + 1); });
+  box.querySelector('.lbx-close').addEventListener('click', close);
+  box.addEventListener('click', function (e) { if (e.target === box) close(); });
+  document.addEventListener('keydown', function (e) {
+    if (box.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') show(i - 1);
+    else if (e.key === 'ArrowRight') show(i + 1);
+  });
+})();
+</script>
 </body></html>

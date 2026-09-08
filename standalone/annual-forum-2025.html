@@ -540,7 +540,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 </style>
 <style data-ucan="rhythm">
 /* ——— vertical rhythm ——— */
-.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:36px!important;flex:0 0 auto!important;max-width:150px!important}.sec{padding:clamp(52px,5.6vw,80px) 0}
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:auto!important;flex:0 0 auto!important}.bar .brand img{width:168px!important;max-width:168px!important}footer .brand img{width:178px!important;max-width:178px!important}.bar-in{height:92px}.ucnav-t{font-size:16px}.bar-cta{font-size:15px;height:46px;padding:0 22px}html{scroll-padding-top:108px}@media(max-width:1100px){.bar .brand img{width:148px!important;max-width:148px!important}.bar-in{height:80px}html{scroll-padding-top:96px}}@media(max-width:560px){.bar .brand img{width:130px!important;max-width:130px!important}.bar-in{height:70px}}.sec{padding:clamp(52px,5.6vw,80px) 0}
 .section{padding:clamp(54px,5.8vw,84px) 0}
 .sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
 .sec-head>*{min-width:0}
@@ -563,6 +563,10 @@ footer a:hover{color:var(--lime,#CDDE71)}
 .hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
 </style>
 <style data-ucan="type">
+/* kickers inside a .body column lost their styling to `.body p` */
+main p.kicker{font-family:var(--sans,'Public Sans',sans-serif)!important;font-size:12.5px!important;line-height:1.62!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:uppercase!important;color:var(--teal-text,#177A69)!important}
+main .on-dark.kicker,main .kicker.on-dark{color:var(--lime,#CDDE71)!important}
+
 /* One type scale and one bullet, applied last so it settles the differences between the shell pages, the newsletter template and the imported WordPress bodies. Classed paragraphs (kickers, leads, captions) keep their own role sizes. */
 main h1{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(38px,6.4vw,76px)!important;line-height:1.05!important;letter-spacing:-.03em}
 main h2{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em}
@@ -598,6 +602,45 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 .numcard ol.plainnum li{grid-template-columns:1fr;gap:0}
 </style>
 <style data-ucan="af2">
+/* ——— report band: the live page's orange-on-navy, in U-CAN colours ——— */
+.repband{background:var(--teal-deep,#0E5348);color:#FBFAF6;
+  padding:clamp(56px,6vw,88px) 0;overflow:hidden}
+.repband-in{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.62fr);
+  gap:clamp(28px,4vw,64px);align-items:center}
+.repband h2{color:#FBFAF6!important;max-width:20ch;margin:0 0 18px}
+.repband p{color:#DCEAE6!important;margin:0 0 14px}
+.repband p:last-of-type{margin-bottom:0}
+.repband .kicker{margin-bottom:14px}
+.repband .repdl{background:var(--lime,#CDDE71);border-color:var(--lime,#CDDE71);
+  color:var(--ink,#222120)}
+.repband .repdl:hover,.repband .repdl:focus-visible{background:#FBFAF6;
+  border-color:#FBFAF6;color:var(--ink,#222120)}
+.repcover{display:block;justify-self:center;max-width:340px;width:100%;
+  transition:transform .4s cubic-bezier(.2,.7,.3,1)}
+.repcover img{display:block;width:100%;height:auto;
+  filter:drop-shadow(0 26px 46px rgba(0,0,0,.42))}
+.repcover:hover,.repcover:focus-visible{transform:translateY(-8px) rotate(-1deg)}
+.repcover:focus-visible{outline:2px solid var(--lime,#CDDE71);outline-offset:8px}
+@media(max-width:860px){.repband-in{grid-template-columns:1fr}
+  .repcover{max-width:250px;justify-self:start;order:-1;margin-bottom:6px}}
+@media(prefers-reduced-motion:reduce){.repcover{transition:none}
+  .repcover:hover,.repcover:focus-visible{transform:none}}
+
+/* the video keeps a partner column so the row carries content on both sides */
+.vidrow{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,.55fr);
+  gap:clamp(22px,3vw,40px);align-items:stretch}
+.vidfacts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.vidfacts li{flex:1 1 auto;display:flex;flex-direction:column;justify-content:center;
+  padding:16px 20px;border:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6)}
+.vidfacts b{font-family:var(--display,Archivo,sans-serif);font-weight:800;
+  font-size:clamp(19px,2.1vw,24px);line-height:1.1;color:var(--teal-deep,#0E5348);
+  letter-spacing:-.01em}
+.vidfacts span{margin-top:5px;font-family:var(--sans,'Public Sans',sans-serif);
+  font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ink-soft,#57564F)}
+@media(max-width:860px){.vidrow{grid-template-columns:1fr}
+  .vidfacts{flex-direction:row;flex-wrap:wrap}.vidfacts li{flex:1 1 160px}}
+
 /* The highlights video now sits under the report cover, so the right column of
    the report section is a stack rather than a single image. */
 #report .split{align-items:center}
@@ -628,11 +671,9 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 .galx figure{aspect-ratio:16/9!important;grid-column:span 1;grid-row:span 1;
   cursor:zoom-in;border-color:transparent}
 .galx figure:nth-child(7n+1){aspect-ratio:32/9!important;grid-column:span 2;height:100%}
-.galx figure::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:linear-gradient(180deg,rgba(14,83,72,0) 55%,rgba(14,83,72,.55) 100%);
-  opacity:0;transition:opacity .35s var(--e,ease)}
-.galx figure:hover::after,.galx figure:focus-visible::after{opacity:1}
-.galx figure:focus-visible{outline:2px solid var(--teal,#1F8F7B);outline-offset:3px}
+
+
+
 @media(max-width:820px){.galx{grid-template-columns:repeat(2,1fr);gap:10px}
   .galx figure:nth-child(7n+1){aspect-ratio:32/9!important;grid-column:span 2;height:100%}}
 @media(max-width:520px){.galx{grid-template-columns:1fr}
@@ -659,7 +700,58 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
   font-family:var(--sans,'Public Sans',sans-serif);font-size:13px;font-weight:600;
   letter-spacing:.08em;color:var(--lime,#CDDE71)}
 @media(prefers-reduced-motion:reduce){
-  .lbx,.galx figure::after{transition:none}}
+  .lbx,}
+</style>
+<style data-ucan="lbx">
+/* Photo tiles announce themselves as openable: a soft wash plus a badge that
+   grows in on hover. Same treatment on the Forum gallery and the City Mixers
+   rows, so a photo behaves the same way wherever it appears. */
+.galx figure,.mx-img{cursor:zoom-in}
+.galx figure::after,.mx-img::after{content:"";position:absolute;inset:0;z-index:2;
+  pointer-events:none;background:linear-gradient(180deg,rgba(14,83,72,0) 45%,rgba(14,83,72,.5) 100%);
+  opacity:0;transition:opacity .35s var(--e,ease)}
+.zoomdot{position:absolute;z-index:3;right:14px;bottom:14px;width:42px;height:42px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:var(--teal-deep,#0E5348);color:var(--lime,#CDDE71);pointer-events:none;
+  opacity:0;transform:scale(.6) translateY(6px);
+  transition:opacity .3s var(--e,ease),transform .38s cubic-bezier(.2,.8,.3,1.4);
+  box-shadow:0 6px 18px rgba(14,83,72,.4)}
+.zoomdot::before,.zoomdot::after{content:"";position:absolute;background:currentColor;
+  border-radius:2px}
+.zoomdot::before{width:16px;height:2px}
+.zoomdot::after{width:2px;height:16px}
+.galx figure:hover::after,.galx figure:focus-visible::after,
+.mx-img:hover::after,.mx-img:focus-visible::after{opacity:1}
+.galx figure:hover .zoomdot,.galx figure:focus-visible .zoomdot,
+.mx-img:hover .zoomdot,.mx-img:focus-visible .zoomdot{opacity:1;transform:scale(1) translateY(0)}
+.galx figure:focus-visible,.mx-img:focus-visible{outline:2px solid var(--teal,#1F8F7B);
+  outline-offset:3px}
+.mx-img img{transition:transform .5s var(--e,ease)}
+.mx-img:hover img{transform:scale(1.05)}
+
+.lbx{position:fixed;inset:0;z-index:200;display:flex;align-items:center;
+  justify-content:center;padding:clamp(16px,4vw,56px);
+  background:rgba(34,33,32,.94);opacity:0;transition:opacity .28s ease}
+.lbx.on{opacity:1}
+.lbx[hidden]{display:none}
+.lbx img{max-width:100%;max-height:100%;width:auto;height:auto;display:block;
+  box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.lbx-btn{position:absolute;display:inline-flex;align-items:center;justify-content:center;
+  width:50px;height:50px;border:1px solid rgba(251,250,246,.3);background:rgba(251,250,246,.08);
+  color:#FBFAF6;font-size:22px;line-height:1;cursor:pointer;border-radius:50%;
+  transition:background .2s ease,border-color .2s ease}
+.lbx-btn:hover,.lbx-btn:focus-visible{background:var(--teal,#1F8F7B);
+  border-color:var(--teal,#1F8F7B)}
+.lbx-prev{left:clamp(10px,2vw,26px);top:50%;transform:translateY(-50%)}
+.lbx-next{right:clamp(10px,2vw,26px);top:50%;transform:translateY(-50%)}
+.lbx-close{top:clamp(10px,2vw,26px);right:clamp(10px,2vw,26px)}
+.lbx-cap{position:absolute;left:0;right:0;bottom:clamp(12px,2vw,26px);text-align:center;
+  padding:0 70px;font-family:var(--sans,'Public Sans',sans-serif);font-size:13px;
+  font-weight:600;color:rgba(251,250,246,.9);line-height:1.5}
+.lbx-cap b{display:block;color:var(--lime,#CDDE71);font-weight:700;letter-spacing:.08em;
+  margin-top:5px;font-size:12px}
+@media(prefers-reduced-motion:reduce){
+  .lbx,.galx figure::after,.mx-img::after,.zoomdot,.mx-img img{transition:none}}
 </style>
 </head>
 <body>
@@ -728,35 +820,51 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 </section>
 
 <!-- REPORT -->
-<section class="sec alt" id="report" aria-labelledby="rp-h">
+<section class="repband" id="report" aria-labelledby="rp-h">
+  <div class="wrap repband-in">
+    <div class="repband-copy rv in">
+      <p class="kicker on-dark" data-num="—">The report</p>
+      <h2 id="rp-h">Collective Action in Learning: Cities. People. Practice. Together.</h2>
+      <p>Inside the Forum report, you'll find session highlights, participant reflections, and stories of how alternative formats – gallery walks, human libraries, film screenings, collaborative problem-solving, and field visits – reshaped the way we learn and connect.</p>
+      <p>The document captures takeaways from across the urban ecosystem: what organisations discovered about themselves, how partnerships are forged in practice, and what seeds were planted for future collaborations.</p>
+      <p>It's more than a record; it's a resource for anyone interested in how collective action can be designed and sustained in India's emerging cities.</p>
+      <div class="hero-actions" style="margin-top:28px">
+        <a class="btn repdl" href="https://urban.org.in/wp-content/uploads/2025/10/U-CAN-Annual-Forum-Report-1.pdf" target="_blank" rel="noopener noreferrer">Download the report <span class="ar" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+    <a class="repcover rv d1 in" href="https://urban.org.in/wp-content/uploads/2025/10/U-CAN-Annual-Forum-Report-1.pdf" target="_blank" rel="noopener noreferrer"
+       aria-label="Download Collective Action in Learning: Cities. People. Practice. Together., the U-CAN Annual Forum 2025 report">
+      <img src="assets/annual-forum-2025-report-cover.webp" width="388" height="592" loading="lazy" decoding="async"
+           alt="Cover of the U-CAN Annual Forum 2025 report, Collective Learning in Action: Cities. People. Practice. Together.">
+    </a>
+  </div>
+</section>
+
+<!-- HIGHLIGHTS VIDEO -->
+<section class="sec alt" id="highlights" aria-labelledby="hl-h">
   <div class="wrap">
     <div class="sec-head rv in">
       <div>
-        <p class="kicker" data-num="—">The report</p>
-        <h2 id="rp-h">Collective Action in Learning: Cities. People. Practice. Together.</h2>
+        <p class="kicker" data-num="—">Watch</p>
+        <h2 id="hl-h">U-CAN Annual Forum 2025 highlights video</h2>
       </div>
     </div>
-    <div class="split">
-      <div class="body rv in">
-        <p>Inside the Forum report, you'll find session highlights, participant reflections, and stories of how alternative formats – gallery walks, human libraries, film screenings, collaborative problem-solving, and field visits – reshaped the way we learn and connect.</p>
-        <p>The document captures takeaways from across the urban ecosystem: what organisations discovered about themselves, how partnerships are forged in practice, and what seeds were planted for future collaborations.</p>
-        <p>It's more than a record; it's a resource for anyone interested in how collective action can be designed and sustained in India's emerging cities.</p>
-        <div class="hero-actions" style="margin-top:26px">
-          <a class="btn" href="https://urban.org.in/wp-content/uploads/2025/10/U-CAN-Annual-Forum-Report-1.pdf" target="_blank" rel="noopener noreferrer">Download <span class="ar" aria-hidden="true">→</span></a>
-        </div>
-      </div>
-      <div class="repside">
-<figure class="forumvid rv in">
-      <video controls preload="none" playsinline
-             poster="https://urban.org.in/wp-content/uploads/2025/09/0B7A7924-Enhanced-NR-scaled.webp"
-             width="1280" height="720">
-        <source src="https://urban.org.in/wp-content/uploads/2025/09/U-Can-Annual-Forum.mp4" type="video/mp4">
-        <p>Your browser cannot play this video.
-          <a href="https://urban.org.in/wp-content/uploads/2025/09/U-Can-Annual-Forum.mp4">Open the highlights video</a>.</p>
-      </video>
-      <figcaption><b>U-CAN Annual Forum 2025 highlights video</b>Highlights from the Forum in Panjim, Goa</figcaption>
-    </figure>
-      </div>
+    <div class="vidrow">
+      <figure class="forumvid rv in">
+        <video controls preload="none" playsinline
+               poster="https://urban.org.in/wp-content/uploads/2025/09/0B7A7924-Enhanced-NR-scaled.webp"
+               width="1280" height="720">
+          <source src="https://urban.org.in/wp-content/uploads/2025/09/U-Can-Annual-Forum.mp4" type="video/mp4">
+          <p>Your browser cannot play this video.
+            <a href="https://urban.org.in/wp-content/uploads/2025/09/U-Can-Annual-Forum.mp4">Open the highlights video</a>.</p>
+        </video>
+        <figcaption>Highlights from the Forum in Panjim, Goa</figcaption>
+      </figure>
+      <ul class="vidfacts rv d1 in">
+        <li><b>21–23 Aug 2025</b><span>When</span></li>
+        <li><b>Panjim, Goa</b><span>Where</span></li>
+        <li><b>3:14</b><span>Runtime</span></li>
+      </ul>
     </div>
   </div>
 </section>
@@ -1213,7 +1321,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       <div class="f-sub" id="connect">
         <h4>Stay connected</h4>
         <p class="f-subtext">One email a month on urban governance, our programmes and ways to get involved.</p>
-        <form class="fnform" id="fnform" novalidate="">
+        <form class="fnform" id="fnform" method="post" action="https://urban.org.in/newsletter/" novalidate="">
           <div class="fnrow">
             <label class="vh" for="f-email">Your email address</label>
             <input id="f-email" name="email" type="email" autocomplete="email" required="" placeholder="Your email address">
@@ -1633,49 +1741,50 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 })();
 </script>
 
-<script data-ucan="afgal">
-/* Gallery tiles open full screen. Built from the figures already on the page, so
-   the grid stays a plain list of images when this never runs. */
+
+<script data-ucan="lbx">
+/* Click a photo to see it full size. Built from the tiles already on the page,
+   so with JS off the grids stay ordinary images. */
 (function () {
-  var figs = [].slice.call(document.querySelectorAll('.galx figure'));
-  if (!figs.length) return;
+  var tiles = [].slice.call(document.querySelectorAll('.galx figure, .mx-img'))
+    .filter(function (t) { return t.querySelector('img'); });
+  if (!tiles.length) return;
 
   var box = document.createElement('div');
   box.className = 'lbx';
   box.hidden = true;
   box.setAttribute('role', 'dialog');
   box.setAttribute('aria-modal', 'true');
-  box.setAttribute('aria-label', 'Forum photograph');
+  box.setAttribute('aria-label', 'Photograph');
   box.innerHTML =
     '<img alt="">' +
     '<button type="button" class="lbx-btn lbx-prev" aria-label="Previous photograph">&#8249;</button>' +
     '<button type="button" class="lbx-btn lbx-next" aria-label="Next photograph">&#8250;</button>' +
     '<button type="button" class="lbx-btn lbx-close" aria-label="Close">&#10005;</button>' +
-    '<p class="lbx-count"></p>';
+    '<p class="lbx-cap"></p>';
   document.body.appendChild(box);
 
   var pic = box.querySelector('img');
-  var count = box.querySelector('.lbx-count');
-  var last = null;
-  var i = 0;
-  var pool = figs;
+  var cap = box.querySelector('.lbx-cap');
+  var last = null, i = 0, pool = tiles;
+
+  function live() {
+    return tiles.filter(function (t) { return !t.closest('[hidden]'); });
+  }
 
   function show(n) {
-    pool = figs.filter(function (f) {
-      return !f.closest('[hidden]');
-    });
     if (!pool.length) return;
     i = (n + pool.length) % pool.length;
     var src = pool[i].querySelector('img');
     pic.src = src.currentSrc || src.src;
     pic.alt = src.alt || '';
-    count.textContent = (i + 1) + ' / ' + pool.length;
+    cap.innerHTML = (src.alt || '') + '<b>' + (i + 1) + ' / ' + pool.length + '</b>';
   }
 
-  function open(fig) {
+  function open(tile) {
     last = document.activeElement;
-    pool = figs.filter(function (f) { return !f.closest('[hidden]'); });
-    show(pool.indexOf(fig));
+    pool = live();
+    show(pool.indexOf(tile));
     box.hidden = false;
     requestAnimationFrame(function () { box.classList.add('on'); });
     box.querySelector('.lbx-close').focus();
@@ -1689,14 +1798,20 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
     if (last) last.focus();
   }
 
-  figs.forEach(function (f) {
-    f.setAttribute('role', 'button');
-    f.setAttribute('tabindex', '0');
-    var im = f.querySelector('img');
-    f.setAttribute('aria-label', 'View photograph: ' + (im ? im.alt : ''));
-    f.addEventListener('click', function () { open(f); });
-    f.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(f); }
+  tiles.forEach(function (t) {
+    var im = t.querySelector('img');
+    t.setAttribute('role', 'button');
+    t.setAttribute('tabindex', '0');
+    t.setAttribute('aria-label', 'View photograph' + (im.alt ? ': ' + im.alt : ''));
+    if (!t.querySelector('.zoomdot')) {
+      var dot = document.createElement('span');
+      dot.className = 'zoomdot';
+      dot.setAttribute('aria-hidden', 'true');
+      t.appendChild(dot);
+    }
+    t.addEventListener('click', function () { open(t); });
+    t.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(t); }
     });
   });
 
