@@ -695,6 +695,11 @@ footer a:hover{color:var(--lime,#CDDE71)}
 .hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
 </style>
 <style data-ucan="type">
+/* form controls don't inherit font-family from the page; without this a
+   <button class="btn"> falls back to the UA default (Arial) while the
+   same class on an <a> renders in Public Sans */
+button,input,select,textarea{font-family:inherit}
+
 /* kickers inside a .body column lost their styling to `.body p` */
 main p.kicker{font-family:var(--sans,'Public Sans',sans-serif)!important;font-size:12.5px!important;line-height:1.62!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:uppercase!important;color:var(--teal-text,#177A69)!important}
 main .on-dark.kicker,main .kicker.on-dark{color:var(--lime,#CDDE71)!important}
