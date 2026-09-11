@@ -832,3 +832,63 @@ field posting nowhere is the phishing-heuristic shape). Built by
   homepage footer looked like its newsletter column hung off the page.
 - Prose list items are blocks with a positioned bullet, not grids (a grid
   split `<li><strong>Label:</strong> text</li>` into separate cells).
+
+---
+
+## 27. Full asset audit — nothing left pointing at the old site
+
+The old urban.org.in is going down, so anything the pages still fetched from
+it would 404 the day it does, whether or not it had been noticed yet. Audited
+every page for `src=`/`poster=`/`href=`/JSON-LD `"image"` pointing at
+urban.org.in and localized what remained: 117 blog card thumbnails and
+in-article images (the per-post hero from §26 didn't cover images used a
+second time as a card thumbnail, or images inside the article body), RFC's
+framework diagram, URC's 6 gallery photos, 8 PDFs (four webinar decks, the
+Forum report, the two Learning Network PDFs), and the 39 MB Annual Forum
+highlights video. `_scripts/localize_remaining.py`, cache in
+`_scripts/localize_remaining_cache.json`. New folders: `assets/img/wp/`,
+`assets/docs/`, `assets/video/`.
+
+**og:image / twitter:image were already broken** — `u-can-about.jpg` and
+`u-can-annual-forum.jpg` 404 on the live site today, not just after it goes
+down. Replaced with two cards rendered from the site's own logo
+(`_scripts/qa/ogcard.js`, a Playwright screenshot — no external fetch),
+`assets/img/og-default.jpg` and `assets/img/og-annual-forum.jpg`.
+
+**Convention for the two remaining categories of urban.org.in reference:**
+- `src=`/`poster=`/`href=` to a file → localized, referenced by a **relative**
+  path (`assets/img/wp/...`), like every other asset on the site.
+- `og:image`, `twitter:image`, JSON-LD `"image"` → the file is local, but
+  referenced by an **absolute** `https://urban.org.in/assets/...` URL,
+  because crawlers fetch these independently of the page and need an absolute
+  URL — the same convention `canonical`/`hreflang`/JSON-LD `@id` already use,
+  since that domain is where this build replaces the old site. Verified this
+  intentionally-absolute form doesn't get treated as a fetch target on a
+  re-run: `localize_remaining.py` skips any URL containing `/assets/`.
+
+**vercel.json**: `media-src` and `img-src` tightened now that no image or
+video is fetched cross-origin (`media-src 'self'`, `img-src 'self' data:`);
+year-long immutable caching added for `/assets/docs/` and `/assets/video/`.
+
+**Repo size**: `standalone/` is now ~300 MB (video 40 MB, PDFs 47 MB, WP
+images 33 MB). Large but a deliberate trade for zero dependency on the old
+site — flagged to the user; a CDN would be the next step if repo size becomes
+a problem.
+
+Verification: `verify.js` 176/176, `linkaudit.js` 0 broken, a full `<img>`
+sweep across every page found 0 actually-broken images (naturalWidth 0) once
+the fellow-blogs "Show all" reveal-button timing is accounted for (§21's
+known gotcha, not a new one), `csptest.js` clean on every page checked one at
+a time. Confirmed no remaining `src=`/`poster=`/`href=` to any external host
+except `www.youtube-nocookie.com` (the click-to-play facades, which are
+correctly external by design) — every other external host in the page text
+is an outbound citation/partner link, not an asset the page depends on.
+
+**Trap found while testing, not a site bug:** `_scripts/qa/csptest.js`'s
+Playwright `route.fetch()` proxy occasionally drops a connection to
+`serve.py`'s threading server under the burst of ~30 concurrent image
+requests `our-people.html` makes, throwing `ECONNREFUSED` and aborting the
+whole script even though the server is still up and every other check
+(`verify.js`, `linkaudit.js`, a direct `curl`) passes against it at the same
+time. Wrapped the per-page loop in try/catch so one flaky page can't hide a
+real result on the rest; check pages individually if it happens again.

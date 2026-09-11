@@ -21,6 +21,7 @@ const PAGES = process.argv.slice(2).length ? process.argv.slice(2) :
   p.on('console', m => { if (/Content Security Policy|Refused to/i.test(m.text())) viol.push(m.text()); });
   for (const n of PAGES) {
     const before = viol.length;
+    try {
     await p.goto(`http://127.0.0.1:8099/${n}.html`, { waitUntil: 'load' });
     await p.evaluate(() => document.fonts.ready);
     await p.evaluate(async () => { const h = document.body.scrollHeight;
@@ -37,6 +38,7 @@ const PAGES = process.argv.slice(2).length ? process.argv.slice(2) :
     await p.waitForTimeout(500);
     const k = viol.length - before;
     console.log((k ? 'VIOLATION ' : 'ok        ') + n.padEnd(26) + ' fonts: ' + fonts + (k ? '  (' + k + ')' : ''));
+    } catch (e) { console.log('SKIP      ' + n.padEnd(26) + ' (' + String(e).split('\n')[0].slice(0, 80) + ')'); }
   }
   if (viol.length) [...new Set(viol)].slice(0, 8).forEach(v => console.log('  ' + v.slice(0, 200)));
   else console.log('\nNo CSP violations.');

@@ -1,3 +1,4 @@
 node_modules/
 _scripts/qa/out/
 __pycache__/
+_scripts/qa/serve.log
