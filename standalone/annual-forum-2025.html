@@ -562,7 +562,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 /* the hero already carries generous padding; don't stack another full gap on it */
 .hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
 </style>
-<style data-ucan="type">
+<style data-ucan="fallback">@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:500;size-adjust:93.4%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:600;size-adjust:95.5%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:700;size-adjust:99%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:800;size-adjust:104.3%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial"),local("ArialMT"),local("Helvetica Neue");font-weight:400;size-adjust:105.3%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial"),local("ArialMT"),local("Helvetica Neue");font-weight:500;size-adjust:106.1%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:600;size-adjust:98.9%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:700;size-adjust:100.3%;ascent-override:92%;descent-override:24%;line-gap-override:0%}.hero-lede{max-width:39.2em}.sec-head h2{max-width:13.1em}.section-head{max-width:45.3em}.post-hero img{aspect-ratio:16/9;height:auto}</style><style data-ucan="type">
 /* form controls don't inherit font-family from the page; without this a
    <button class="btn"> falls back to the UA default (Arial) while the
    same class on an <a> renders in Public Sans */
@@ -757,6 +757,23 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
   margin-top:5px;font-size:12px}
 @media(prefers-reduced-motion:reduce){
   .lbx,.galx figure::after,.mx-img::after,.zoomdot,.mx-img img{transition:none}}
+</style>
+<style data-ucan="logos">
+/* One tile size for Member Organisations, Friends of U-CAN and Forum partners */
+.logo-grid,.logo-grid.friends,.mgrid,.ptrow{display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;max-width:none!important}
+.logo-grid>li,.mgrid>li,.ptrow>li{min-width:0}
+.chip,.ptrow .pt{padding:0!important;min-height:150px!important}
+.chip a,.mgrid a,.ptrow .pt a{display:flex!important;align-items:center;justify-content:center;
+  width:100%;height:100%;min-height:150px!important;padding:22px!important;box-sizing:border-box}
+.chip img,.mgrid img,.ptrow .pt img{max-height:88px!important;max-width:82%!important;
+  width:auto!important;height:auto!important;object-fit:contain}
+@media(max-width:980px){.logo-grid,.logo-grid.friends,.mgrid,.ptrow{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:680px){.logo-grid,.logo-grid.friends,.mgrid,.ptrow{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .chip,.ptrow .pt,.chip a,.mgrid a,.ptrow .pt a{min-height:120px!important}
+  .chip img,.mgrid img,.ptrow .pt img{max-height:68px!important}}
 </style>
 </head>
 <body>
@@ -1269,17 +1286,13 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
     </div>
     <ul class="ptrow">
         <li class="pt rv in"><a href="https://museumofgoa.com/" target="_blank" rel="noopener noreferrer" aria-label="Museum of Goa — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none">
-          <img src="https://urban.org.in/wp-content/uploads/2025/09/MoG-1.webp" alt="Museum of Goa logo" loading="lazy" decoding="async"
-            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
+          <img src="assets/partner-museum-of-goa.webp" alt="Museum of Goa logo" loading="lazy" decoding="async"></a></li>
         <li class="pt rv in"><a href="https://transitionsresearch.org/" target="_blank" rel="noopener noreferrer" aria-label="Transitions Research — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none">
-          <img src="https://urban.org.in/wp-content/uploads/2025/09/Untitled-3.png" alt="Transitions Research logo" loading="lazy" decoding="async"
-            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
+          <img src="assets/partner-transitions-research.webp" alt="Transitions Research logo" loading="lazy" decoding="async"></a></li>
         <li class="pt rv in"><a href="https://charlescorreafoundation.org/" target="_blank" rel="noopener noreferrer" aria-label="Charles Correa Foundation — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none">
-          <img src="https://urban.org.in/wp-content/uploads/2025/09/Untitled4.png" alt="Charles Correa Foundation logo" loading="lazy" decoding="async"
-            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
+          <img src="assets/partner-charles-correa-foundation.webp" alt="Charles Correa Foundation logo" loading="lazy" decoding="async"></a></li>
         <li class="pt rv in"><a href="https://www.youtube.com/@nagaritv_ccf" target="_blank" rel="noopener noreferrer" aria-label="Nagari Short Films — visit website" style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;text-decoration:none">
-          <img src="https://urban.org.in/wp-content/uploads/2025/09/Untitled-5.png" alt="Nagari Short Films logo" loading="lazy" decoding="async"
-            onload="this.parentNode.classList.add('ok')" onerror="this.style.display='none'"></a></li>
+          <img src="assets/partner-nagari-short-films.webp" alt="Nagari Short Films logo" loading="lazy" decoding="async"></a></li>
     </ul>
   </div>
 </section>

@@ -1,0 +1,3 @@
+node_modules/
+_scripts/qa/out/
+__pycache__/

@@ -692,7 +692,7 @@ footer a:hover{color:var(--lime,#CDDE71)}
 /* the hero already carries generous padding; don't stack another full gap on it */
 .hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
 </style>
-<style data-ucan="type">
+<style data-ucan="fallback">@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:500;size-adjust:93.4%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:600;size-adjust:95.5%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:700;size-adjust:99%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:800;size-adjust:104.3%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial"),local("ArialMT"),local("Helvetica Neue");font-weight:400;size-adjust:105.3%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial"),local("ArialMT"),local("Helvetica Neue");font-weight:500;size-adjust:106.1%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:600;size-adjust:98.9%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:700;size-adjust:100.3%;ascent-override:92%;descent-override:24%;line-gap-override:0%}.hero-lede{max-width:39.2em}.sec-head h2{max-width:13.1em}.section-head{max-width:45.3em}.post-hero img{aspect-ratio:16/9;height:auto}</style><style data-ucan="type">
 /* form controls don't inherit font-family from the page; without this a
    <button class="btn"> falls back to the UA default (Arial) while the
    same class on an <a> renders in Public Sans */
@@ -715,6 +715,23 @@ main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(-
 main ol:not([class]){margin:18px 0 0;padding-left:22px}
 main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
 main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
+</style>
+<style data-ucan="logos">
+/* One tile size for Member Organisations, Friends of U-CAN and Forum partners */
+.logo-grid,.logo-grid.friends,.mgrid,.ptrow{display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;max-width:none!important}
+.logo-grid>li,.mgrid>li,.ptrow>li{min-width:0}
+.chip,.ptrow .pt{padding:0!important;min-height:150px!important}
+.chip a,.mgrid a,.ptrow .pt a{display:flex!important;align-items:center;justify-content:center;
+  width:100%;height:100%;min-height:150px!important;padding:22px!important;box-sizing:border-box}
+.chip img,.mgrid img,.ptrow .pt img{max-height:88px!important;max-width:82%!important;
+  width:auto!important;height:auto!important;object-fit:contain}
+@media(max-width:980px){.logo-grid,.logo-grid.friends,.mgrid,.ptrow{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:680px){.logo-grid,.logo-grid.friends,.mgrid,.ptrow{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .chip,.ptrow .pt,.chip a,.mgrid a,.ptrow .pt a{min-height:120px!important}
+  .chip img,.mgrid img,.ptrow .pt img{max-height:68px!important}}
 </style>
 </head>
 <body>
