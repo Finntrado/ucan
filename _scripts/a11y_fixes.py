@@ -26,6 +26,11 @@ FOOT_CSS = ('<style data-ucan="a11y">'
             # About's principle numbers were --line on paper (1.2:1); brand teal is 3.8:1
             '.pr-num{color:var(--teal,#1F8F7B)!important}'
             '.pr:hover .pr-num,.pr:focus-within .pr-num{color:var(--teal-deep,#0E5348)!important}'
+            # footer legal links: at least 24px targets with room between rows when they wrap
+            '.f-bottom>span:last-child{display:inline-flex;flex-wrap:wrap;align-items:center;'
+            'column-gap:20px;row-gap:8px}'
+            '.f-bottom>span:last-child a,.f-bottom .cookie-link{display:inline-flex;align-items:center;'
+            'min-height:24px;margin:0!important}'
             '</style>')
 HOME_CSS = ('<style data-ucan="a11y-home">'
             'footer{content-visibility:visible!important;contain-intrinsic-size:none!important}'

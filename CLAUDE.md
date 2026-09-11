@@ -776,3 +776,59 @@ read it, so the listing and the profiles cannot disagree.
 - **Heredocs still mangle backslashes** (§18). Every patch containing an escape
   this round went through the `Edit` tool; `build_rfc.py` failed once through a
   `python - <<'PY'` heredoc before switching.
+
+---
+
+## 26. Performance round (PageSpeed 70 -> 100), and where things live now
+
+**Pages are no longer fully self-contained.** Images, fonts and photos are real
+files under `standalone/assets/` (cacheable, served once). Everything else
+(CSS, JS) is still inline.
+
+| What | Where | Script |
+|---|---|---|
+| Former base64 images (84 unique) | `assets/img/<slug>-<hash>.<ext>` | `_scripts/extract_images.py` |
+| Fonts, self-hosted (variable, latin + latin-ext) | `assets/fonts/` | `_scripts/fonts_selfhost.py` |
+| Blog hero photos (58), 640/1024 WebP | `assets/img/blog/` | `_scripts/localize_blog_heroes.py` |
+| City Mixers + Forum gallery photos | `assets/img/mixers/`, `assets/img/forum/` | `_scripts/localize_photos.py` |
+| YouTube thumbnails for click-to-play | `assets/img/yt/` | `_scripts/yt_facades.py` |
+
+- **No live YouTube iframes anywhere** - facades only (City Champions was
+  scoring 71 on 2.3 s of YouTube JS). The lightbox reads `data-full` for the
+  large copy.
+- **Fallback fonts are tuned per weight** (`_scripts/fallback_fonts.py`,
+  measured with `qa/fm2.js`). Width limits that sit above the fold use `em`,
+  not `ch` - `ch` changes size when the webfont swaps in and re-wraps text.
+  The homepage headline has pinned desktop line breaks for the same reason.
+- **Archivo italic is deliberately not shipped** - the browser synthesises it.
+- `vercel.json` gives `/assets/img/` and `/assets/fonts/` year-long immutable
+  caching: never change a file's content without changing its name.
+
+### Test harness: `_scripts/qa/` (moved out of the scratchpad - it was wiped twice)
+`npm install` there, run `python serve.py` (cleanUrls + gzip, like Vercel), then:
+`verify.js` (all pages x 13 widths), `linkaudit.js` (also fails on control
+bytes), `lh.js [--detail] page...` (mobile Lighthouse), `a11y.js`, `csptest.js`,
+`clsmany.js`. Lighthouse drives Playwright's Chromium on a debug port because
+`chrome.exe` cannot be spawned directly on this machine.
+
+### Switchable homepage block
+`python _scripts/why_ucan.py classic|new` swaps the "Why U-CAN?" block. The
+original is saved byte-for-byte in `_scripts/snippets/why-ucan-classic.html`.
+
+### New page
+`data-rights.html` - DPDP Act rights, retention (up to 10 years or until
+withdrawal/erasure), and a request form that composes an email to
+privacy@urban.org.in. It asks for **no email address on purpose** (an email
+field posting nowhere is the phishing-heuristic shape). Built by
+`_scripts/build_dpdp.py`, which also adds "Your Data Rights" to every footer.
+
+### Traps this round
+- **Heredocs turned `\1` back-references into literal 0x01 bytes twice** and
+  once deleted two words from the homepage headline. Use the Write/Edit tools
+  for any code with backslashes; `linkaudit.js` now fails on control bytes.
+- **Line-ending sniffs that read only the first 4,000 chars now guess wrong** -
+  those chars are one long inlined stylesheet. Match with `\r*\n` instead.
+- **`content-visibility:auto` makes audits read placeholder geometry** - the
+  homepage footer looked like its newsletter column hung off the page.
+- Prose list items are blocks with a positioned bullet, not grids (a grid
+  split `<li><strong>Label:</strong> text</li>` into separate cells).

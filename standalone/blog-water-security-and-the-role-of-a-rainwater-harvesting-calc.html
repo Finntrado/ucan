@@ -1149,14 +1149,14 @@ main h3{font-family:var(--display,Archivo)!important;font-weight:700!important;f
 main p:not([class]){font-size:17px!important;line-height:1.62!important}
 /* prose lists had list-style:none with no marker, so bullets were invisible; match the .blist component the rest of the site uses */
 main ul:not([class]){list-style:none;margin:18px 0 0;padding:0}
-main ul:not([class])>li{list-style:none!important;display:grid!important;grid-template-columns:auto 1fr;gap:13px;padding:11px 0;border-top:1px dashed var(--line,#DCEAE6);font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;min-width:0;overflow-wrap:break-word}
+main ul:not([class])>li{list-style:none!important;display:block!important;position:relative;padding:11px 0 11px 20px;border-top:1px dashed var(--line,#DCEAE6);font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;min-width:0;overflow-wrap:break-word}
 main ul:not([class])>li:first-child{border-top:0}
-main ul:not([class])>li::before{content:"";width:7px;height:7px;background:var(--teal,#1F8F7B);border-radius:50%;margin-top:9px}
+main ul:not([class])>li::before{content:"";position:absolute;left:0;top:calc(11px + .81em - 3.5px);width:7px;height:7px;background:var(--teal,#1F8F7B);border-radius:50%}
 main ol:not([class]){margin:18px 0 0;padding-left:22px}
 main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
 main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 </style>
-<style data-ucan="heads">.sec-head:has(>.kicker:first-child){row-gap:0!important}.sec-head>.kicker:first-child+:is(h2,h3){margin-top:2px!important}.sec-head>:is(h2,h3)+.lead{margin-top:16px!important}main h3.fx-h3-lg{font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em!important}</style><style data-ucan="a11y">footer .f-h{font-family:var(--sans,'Public Sans',sans-serif)!important;font-weight:700;font-size:12.5px!important;line-height:1.4;letter-spacing:.1em;text-transform:uppercase;color:var(--paper,#FBFAF6);margin:0 0 18px}.f-legal,.f-legal a{color:#8CA098!important}#fnform a{text-decoration:underline!important;text-underline-offset:2px}.pr-num{color:var(--teal,#1F8F7B)!important}.pr:hover .pr-num,.pr:focus-within .pr-num{color:var(--teal-deep,#0E5348)!important}</style></head>
+<style data-ucan="heads">.sec-head:has(>.kicker:first-child){row-gap:0!important}.sec-head>.kicker:first-child+:is(h2,h3){margin-top:2px!important}.sec-head>:is(h2,h3)+.lead{margin-top:16px!important}main h3.fx-h3-lg{font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em!important}</style><style data-ucan="a11y">footer .f-h{font-family:var(--sans,'Public Sans',sans-serif)!important;font-weight:700;font-size:12.5px!important;line-height:1.4;letter-spacing:.1em;text-transform:uppercase;color:var(--paper,#FBFAF6);margin:0 0 18px}.f-legal,.f-legal a{color:#8CA098!important}#fnform a{text-decoration:underline!important;text-underline-offset:2px}.pr-num{color:var(--teal,#1F8F7B)!important}.pr:hover .pr-num,.pr:focus-within .pr-num{color:var(--teal-deep,#0E5348)!important}.f-bottom>span:last-child{display:inline-flex;flex-wrap:wrap;align-items:center;column-gap:20px;row-gap:8px}.f-bottom>span:last-child a,.f-bottom .cookie-link{display:inline-flex;align-items:center;min-height:24px;margin:0!important}</style></head>
 <body>
 
 <a class="skip" href="#main">Skip to main content</a>
@@ -1291,7 +1291,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
     </div>
     <div class="f-bottom">
       <span>© U-CAN 2026. All Rights Reserved</span>
-      <span><a href="terms-of-use">Terms of Use</a><a href="privacy-policy">Privacy Policy</a><button type="button" class="cookie-link" id="cookie-reopen">Manage cookies</button></span>
+      <span><a href="terms-of-use">Terms of Use</a><a href="privacy-policy">Privacy Policy</a><a href="data-rights">Your Data Rights</a><button type="button" class="cookie-link" id="cookie-reopen">Manage cookies</button></span>
     </div>
   </div>
 </footer>
