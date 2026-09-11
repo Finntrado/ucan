@@ -68,18 +68,27 @@ CSS = N('''<style data-ucan="hero">
 .hero-proof div{text-align:center}
 
 /* words arrive from where they were, and settle into one line of thought */
-.hero h1 .hw{display:inline-block;animation:hwin .9s cubic-bezier(.2,.75,.25,1) both;
-  animation-delay:calc(var(--i) * 55ms + 80ms)}
-@keyframes hwin{from{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r))}
-  to{opacity:1;transform:none}}
-.hero h1 .accent{animation-delay:1.05s!important}
+/* Transform only: the words are legible from the very first paint (so the
+   headline counts as painted at once - it is the page's LCP), they just
+   travel the last few pixels into place. Composited, no main-thread work. */
+.hero h1 .hw{display:inline-block;animation:hwin .8s cubic-bezier(.2,.75,.25,1) both;
+  animation-delay:calc(var(--i) * 45ms)}
+@keyframes hwin{from{transform:translate(calc(var(--dx) * .45),calc(var(--dy) * .45)) rotate(calc(var(--r) * .6))}
+  to{transform:none}}
+/* the orange underline draws with scaleX rather than background-size, which
+   the browser can't hand to the compositor */
+.hero h1 .accent{position:relative;background:none!important;animation:none!important}
+.hero h1 .accent::after{content:"";position:absolute;left:0;right:0;bottom:.02em;height:.16em;
+  background:var(--orange,#FEAE00);z-index:-1;transform:scaleX(0);transform-origin:left center;
+  animation:swashx .9s .75s cubic-bezier(.22,.61,.36,1) forwards}
+@keyframes swashx{to{transform:scaleX(1)}}
 
 /* the field: individuals drifting, linking up when they come close */
 .hero-field{position:absolute;inset:0 0 auto 0;z-index:0;width:100%;display:block;
   pointer-events:none;
   -webkit-mask-image:radial-gradient(ellipse 46% 52% at 50% 46%,rgba(0,0,0,.18) 0%,rgba(0,0,0,.55) 55%,#000 100%);
           mask-image:radial-gradient(ellipse 46% 52% at 50% 46%,rgba(0,0,0,.18) 0%,rgba(0,0,0,.55) 55%,#000 100%)}
-@media(prefers-reduced-motion:reduce){.hero h1 .hw{animation:none}}
+@media(prefers-reduced-motion:reduce){.hero h1 .hw{animation:none}.hero h1 .accent::after{animation:none;transform:none}}
 </style>
 ''')
 s = re.sub(r'<style data-ucan="hero">.*?</style>\s*', '', s, flags=re.S)

@@ -2,5 +2,8 @@
   "name": "ucan-qa",
   "private": true,
   "description": "Verification harness for standalone/. Run: python serve.py, then node verify.js",
-  "dependencies": { "playwright": "^1.55.0" }
+  "dependencies": {
+    "lighthouse": "^12.8.2",
+    "playwright": "^1.55.0"
+  }
 }
