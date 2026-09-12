@@ -63,13 +63,23 @@ add_action( 'wp_enqueue_scripts', 'ucan_enqueue_assets' );
  * later phases and should be additive to, not a replacement for, this hook.
  */
 function ucan_document_head() {
-	$description = '';
-	if ( is_singular() ) {
-		global $post;
-		$custom = get_post_meta( $post->ID, 'meta_description', true );
-		$description = $custom ? $custom : wp_strip_all_tags( get_the_excerpt( $post ) );
-	} elseif ( is_front_page() ) {
-		$description = get_bloginfo( 'description' );
+	// Page templates (page-about.php etc., phase 2 onward) set these two
+	// globals before calling get_header(), so their extracted-verbatim
+	// meta description and full JSON-LD graph (already carrying correct
+	// absolute urban.org.in canonical URLs) take priority over anything
+	// generated generically below.
+	$page_meta   = isset( $GLOBALS['ucan_page_meta'] ) ? $GLOBALS['ucan_page_meta'] : array();
+	$page_jsonld = isset( $GLOBALS['ucan_page_jsonld'] ) ? $GLOBALS['ucan_page_jsonld'] : '';
+
+	$description = isset( $page_meta['description'] ) ? $page_meta['description'] : '';
+	if ( ! $description ) {
+		if ( is_singular() ) {
+			global $post;
+			$custom = get_post_meta( $post->ID, 'meta_description', true );
+			$description = $custom ? $custom : wp_strip_all_tags( get_the_excerpt( $post ) );
+		} elseif ( is_front_page() ) {
+			$description = get_bloginfo( 'description' );
+		}
 	}
 	$title = wp_get_document_title();
 	$url   = is_singular() ? get_permalink() : home_url( add_query_arg( array(), $GLOBALS['wp']->request ) );
@@ -97,6 +107,16 @@ function ucan_document_head() {
 	printf( '<meta property="og:image" content="%s">' . "\n", esc_url( $image ) );
 	echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
 
+	if ( $page_jsonld ) {
+		// Already a complete, verified @graph (Organization + WebPage +
+		// BreadcrumbList, +FAQPage on URC) - re-emit exactly as extracted.
+		printf( '<script type="application/ld+json">%s</script>' . "\n", $page_jsonld );
+		return;
+	}
+
+	// Fallback for any page/post type that doesn't supply its own graph yet
+	// (CPT archives/singles land in phases 3-6) - at minimum, say who the
+	// site is.
 	$graph = array(
 		'@type'       => 'Organization',
 		'@id'         => 'https://urban.org.in/#org',

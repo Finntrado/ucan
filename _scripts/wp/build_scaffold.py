@@ -200,6 +200,16 @@ FOOTER_PHP = '''</main>
 ''' % dict(footer=footer_block)
 
 # ------------------------------------------------------------- home --------
+m = re.search(r'<meta name="description" content="([^"]*)">', INDEX)
+home_description = m.group(1) if m else ''
+home_ld = INDEX[INDEX.index('<script type="application/ld+json"'):INDEX.index('</script>', INDEX.index('<script type="application/ld+json"')) + len('</script>')]
+home_ld_json = re.sub(r'^<script[^>]*>', '', home_ld)[:-len('</script>')].strip()
+
+
+def php_string(s):
+    return "'" + s.replace('\\', '\\\\').replace("'", "\\'") + "'"
+
+
 home_main = INDEX[INDEX.index('<main'):INDEX.index('</main>') + len('</main>')]
 # same slug rewrite as the footer, plus the mailto/external links are left as-is
 for slug in FOOTER_LINK_SLUGS:
@@ -222,19 +232,32 @@ home_main = re.sub(r'srcset="([^"]*)"', srcset_sub, home_main)
 
 FRONT_PAGE_PHP = '''<?php
 /**
- * Phase 0/2: Home. Content lifted verbatim from standalone/index.html's
+ * Phase 0: Home. Content lifted verbatim from standalone/index.html's
  * <main> (see CLAUDE.md - content stays verbatim unless a named fix is
  * requested); only asset paths and internal links were rewritten to WP
- * functions. get_header() / get_footer() pull in header.php / footer.php,
- * which is where the actual <main id="main"> open/close tags live, so this
- * file supplies only what goes inside them.
+ * functions. The page's own JSON-LD (Organization + WebSite + WebPage +
+ * BreadcrumbList, already carrying correct absolute urban.org.in canonical
+ * URLs) is re-emitted unchanged via functions.php's wp_head hook. get_header()
+ * / get_footer() pull in header.php / footer.php, which is where the actual
+ * <main id="main"> open/close tags live, so this file supplies only what
+ * goes inside them.
  */
+
+$ucan_page_meta = array(
+	'description' => %(description_php)s,
+);
+$ucan_page_jsonld = %(jsonld_php)s;
+
 get_header();
 ?>
 %(home_main_inner)s
 <?php
 get_footer();
-''' % dict(home_main_inner=re.sub(r'^<main[^>]*>', '', home_main)[:-len('</main>')])
+''' % dict(
+    description_php=php_string(home_description),
+    jsonld_php=php_string(home_ld_json),
+    home_main_inner=re.sub(r'^<main[^>]*>', '', home_main)[:-len('</main>')],
+)
 
 
 def write(path, content):

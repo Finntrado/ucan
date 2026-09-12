@@ -1,12 +1,139 @@
 <?php
 /**
- * Phase 0/2: Home. Content lifted verbatim from standalone/index.html's
+ * Phase 0: Home. Content lifted verbatim from standalone/index.html's
  * <main> (see CLAUDE.md - content stays verbatim unless a named fix is
  * requested); only asset paths and internal links were rewritten to WP
- * functions. get_header() / get_footer() pull in header.php / footer.php,
- * which is where the actual <main id="main"> open/close tags live, so this
- * file supplies only what goes inside them.
+ * functions. The page's own JSON-LD (Organization + WebSite + WebPage +
+ * BreadcrumbList, already carrying correct absolute urban.org.in canonical
+ * URLs) is re-emitted unchanged via functions.php's wp_head hook. get_header()
+ * / get_footer() pull in header.php / footer.php, which is where the actual
+ * <main id="main"> open/close tags live, so this file supplies only what
+ * goes inside them.
  */
+
+$ucan_page_meta = array(
+	'description' => 'U-CAN unites urban practitioners, government and philanthropies to build liveable Indian cities. See how we are driving change.',
+);
+$ucan_page_jsonld = '{
+
+  "@context": "https://schema.org",
+
+  "@graph": [
+
+    {
+
+      "@type": "Organization",
+
+      "@id": "https://urban.org.in/#org",
+
+      "name": "Urban Collective Action Network (U-CAN)",
+
+      "alternateName": "U-CAN",
+
+      "url": "https://urban.org.in/",
+
+      "email": "connect@urban.org.in",
+
+      "description": "U-CAN is a network of organisations working together to strengthen urban problem-solving in India\'s Tier II and Tier III cities.",
+
+      "foundingDate": "2022",
+
+      "areaServed": "IN",
+
+      "sameAs": [
+
+        "https://www.linkedin.com/company/urban-collective-action-network-u-can/",
+
+        "https://www.youtube.com/@U-CAN24"
+
+      ]
+
+    },
+
+    {
+
+      "@type": "WebSite",
+
+      "@id": "https://urban.org.in/#website",
+
+      "url": "https://urban.org.in/",
+
+      "name": "Urban Collective Action Network (U-CAN)",
+
+      "publisher": {
+
+        "@id": "https://urban.org.in/#org"
+
+      },
+
+      "inLanguage": "en-IN"
+
+    },
+
+    {
+
+      "@type": "WebPage",
+
+      "@id": "https://urban.org.in/#page",
+
+      "url": "https://urban.org.in/",
+
+      "name": "Urban Collective Action Network for India\'s cities | U-CAN",
+
+      "description": "U-CAN unites urban practitioners, government and philanthropies to build liveable Indian cities. See how we are driving change.",
+
+      "isPartOf": {
+
+        "@id": "https://urban.org.in/#org"
+
+      },
+
+      "inLanguage": "en-IN",
+
+      "speakable": {
+
+        "@type": "SpeakableSpecification",
+
+        "cssSelector": [
+
+          "h1",
+
+          ".hero-lede",
+
+          ".lede"
+
+        ]
+
+      }
+
+    },
+
+    {
+
+      "@type": "BreadcrumbList",
+
+      "itemListElement": [
+
+        {
+
+          "@type": "ListItem",
+
+          "position": 1,
+
+          "name": "Home",
+
+          "item": "https://urban.org.in/"
+
+        }
+
+      ]
+
+    }
+
+  ]
+
+}';
+
 get_header();
 ?>
 

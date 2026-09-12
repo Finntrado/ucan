@@ -4,6 +4,7 @@ Working guide for continuing the **urban.org.in** (Urban Collective Action Netwo
 
 ---
 
+
 ## 1. What this project is
 
 Redesigning the live urban.org.in site, one page at a time, as **brand-compliant, single-file, responsive HTML pages** in a fresh "editorial civic" design language. Each page is a self-contained `.html` file (inline CSS + JS + base64 assets) that can be dropped straight into WordPress/Elementor or served statically.
@@ -900,9 +901,9 @@ real result on the rest; check pages individually if it happens again.
 The client's original ask was a WordPress site; `standalone/` is the finished
 design/content, built static for fast iteration. This section starts turning
 it into a real installable WP theme so the client gets an actual CMS. Full
-plan: `.claude/plans/greedy-moseying-magpie.md`. **Phase 0 (scaffold) is
-done; phases 1–7 (page templates, CPTs, importer, legal-page mail handler)
-are not started.**
+plan: `.claude/plans/greedy-moseying-magpie.md`. **Phase 0 (scaffold) and
+phase 2 (the 7 one-off hub pages) are done; phases 3–7 (CPTs, importer,
+legal-page mail handler) are not started.**
 
 **No PHP/MySQL/WP-CLI in this sandbox** (checked — none on PATH). Every file
 here is hand-reviewed code, never executed or clicked through locally.
@@ -957,9 +958,47 @@ conversion — editing nav no longer needs a script re-run.
   Navigation" menu already exists, so it's safe if the theme is
   reactivated later.
 
+### Phase 2 — the 7 one-off hub pages
+`_scripts/wp/build_pages.py` extends the same byte-offset extraction to
+About, Impact, Our People, Our Members, Learning Network, URC and RFC,
+writing `page-<slug>.php` for each — WordPress auto-applies a page template
+named `page-<slug>.php` to any Page whose slug matches, so once the phase-7
+importer creates these Pages (with matching slugs), no manual "assign
+template" step in wp-admin is needed.
+
+Each template also carries its **exact original JSON-LD block**, extracted
+and re-emitted verbatim rather than regenerated (URC's 11-question `FAQPage`
+included) — that block already has correct absolute urban.org.in canonical
+URLs baked in from the static build, so it needs zero rewriting, only
+verbatim carry-over (same "content stays verbatim" rule as everything else).
+`functions.php`'s `ucan_document_head()` now checks two globals a template
+can set *before* calling `get_header()` — `$ucan_page_meta['description']`
+and `$ucan_page_jsonld` — and prefers them over its own generated versions;
+if a template supplies `$ucan_page_jsonld`, the generic Organization-only
+fallback graph is skipped entirely (so the node never appears twice on one
+page). `front-page.php` (phase 0) was retrofitted with the same mechanism —
+it was shipped without its own meta description/JSON-LD, a real gap, now
+fixed the same way.
+
+**Internal link convention decided here, worth flagging before launch:**
+every internal `href` to a bare slug becomes `home_url('/slug/')`, using
+*this build's own* slugs (`about`, `rfc`, `urban-reforms-collective`, …) —
+**not** necessarily the old site's real canonical paths (e.g. `about-us`,
+`requests-for-collaboration` — see §8's already-open canonical-mismatch
+item). If preserving the old site's exact URLs/SEO equity matters, the WP
+Page slugs should be chosen to match those canonical paths instead before
+the phase-7 importer creates them — not yet decided, flagged here rather
+than silently picked.
+
+**Verification, same caveat as phase 0:** no PHP/MySQL here, so this is
+static verification only — every template checked for leftover raw
+`assets/`/`.html`/bare-slug hrefs (none), PHP `<?php`/`?>` tag balance,
+brace balance, and (since JSON-LD is now hand-assembled into PHP string
+literals) a byte-level walk of every extracted JSON-LD block confirming
+zero unescaped `'` and that the underlying JSON still parses — all 8 pages
+(home + 7 hubs) pass. Real rendering still needs a real WP install.
+
 ### What's deliberately not done yet (see the plan for the full phase list)
-- No page templates beyond the homepage — About/Impact/Our People/Our
-  Members/Learning Network/URC/RFC are phase 1.
 - No custom post types (`ucan_member`, `ucan_fellow`, `ucan_ld_session`,
   `ucan_mixer`, `ucan_webinar`, `ucan_newsletter`) — phases 3–6. Decided
   against ACF (a licensed plugin dependency for repeater/flexible-content
