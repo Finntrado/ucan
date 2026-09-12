@@ -5,9 +5,11 @@
  * convention - page-fellowship-ld.php).
  *
  * Hero extracted verbatim from standalone/ld-calendar.html; the 12-row
- * session list is now a live ucan_ld_session CPT query, newest first
- * (CLAUDE.md §28) - renders nothing until those posts exist (phase 7's
- * importer). The page's own JSON-LD (already carrying correct absolute
+ * session list is now a live ucan_etn_event CPT query (event_kind=
+ * ld_session - phase 5 generalised the CPT phase 4 built as
+ * ucan_ld_session, see functions.php), newest first (CLAUDE.md §28) -
+ * renders nothing until those posts exist (phase 7's importer). The page's
+ * own JSON-LD (already carrying correct absolute
  * urban.org.in canonical URLs) is re-emitted unchanged, so functions.php's
  * generic wp_head hook skips its own Organization node for this page.
  */
@@ -62,16 +64,21 @@ get_header();
 
 <?php
 /**
- * Phase 4: dynamic replacement for the static 12-row session list -
- * queries the ucan_ld_session CPT ordered by post_date, newest first
- * (matches the source's own ordering, June 2025 down to December 2024).
+ * Phase 4/5: dynamic replacement for the static 12-row session list -
+ * queries the ucan_etn_event CPT (event_kind=ld_session; see functions.php's
+ * ucan_register_etn_event_cpt() for why L&D sessions/Policy Webinars/one
+ * City Mixer note all share this one post type) ordered by post_date,
+ * newest first (matches the source's own ordering, June 2025 down to
+ * December 2024).
  */
 $sessions = new WP_Query(
 	array(
-		'post_type'      => 'ucan_ld_session',
+		'post_type'      => 'ucan_etn_event',
 		'posts_per_page' => -1,
 		'orderby'        => 'date',
 		'order'          => 'DESC',
+		'meta_key'       => 'event_kind',
+		'meta_value'     => 'ld_session',
 	)
 );
 ?>
@@ -82,7 +89,7 @@ $sessions = new WP_Query(
       <h2 id="ps">Past sessions</h2>
     </div>
     <ul class="slist" aria-label="Fellowship L&amp;D sessions">
-	<?php while ( $sessions->have_posts() ) : $sessions->the_post(); $f = ucan_ld_session_display_fields( get_post() ); ?>
+	<?php while ( $sessions->have_posts() ) : $sessions->the_post(); $f = ucan_etn_event_display_fields( get_post() ); ?>
       <li class="rv"><a class="srow" href="<?php the_permalink(); ?>">
         <span class="sdate"><?php echo esc_html( $f['date_display'] ); ?></span>
         <span><h3><?php the_title(); ?></h3><?php if ( $f['lead_name'] ) : ?><span class="sw">Session lead: <?php echo esc_html( $f['lead_name'] ); ?></span><?php endif; ?></span>

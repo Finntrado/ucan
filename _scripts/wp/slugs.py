@@ -19,6 +19,8 @@ CANONICAL_SLUG = {
     'meet-the-fellows': 'meet-our-fellows',
     'fellow-blogs': 'blogs-by-our-fellows',
     'ld-calendar': 'fellowship-ld',
+    'city-mixers': 'u-can-city-mixers',
+    'annual-forum-2025': 'the-u-can-annual-forum-2025',
 }
 
 

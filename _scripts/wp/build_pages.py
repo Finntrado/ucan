@@ -58,6 +58,8 @@ PAGES = [
     ('learning-network.html', 'learning-network', 'Learning Network'),
     ('urban-reforms-collective.html', 'urban-reforms-collective', 'Urban Reforms Collective'),
     ('rfc.html', 'rfc', 'Request for Collaboration'),
+    ('city-champions.html', 'city-champions', 'City Champions'),
+    ('annual-forum-2025.html', 'annual-forum-2025', 'Annual Forum 2025'),
 ]
 
 ASSET_URI = "<?php echo esc_url( get_template_directory_uri() ); ?>/assets/"

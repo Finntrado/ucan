@@ -32,9 +32,9 @@
 
           <li><a href="<?php echo esc_url( home_url( '/our-members/' ) ); ?>">Our Members</a></li>
 
-          <li><a href="<?php echo esc_url( home_url( '/city-mixers/' ) ); ?>">City Mixers</a></li>
+          <li><a href="<?php echo esc_url( home_url( '/u-can-city-mixers/' ) ); ?>">City Mixers</a></li>
 
-          <li><a href="<?php echo esc_url( home_url( '/annual-forum-2025/' ) ); ?>">Annual Forum 2025</a></li>
+          <li><a href="<?php echo esc_url( home_url( '/the-u-can-annual-forum-2025/' ) ); ?>">Annual Forum 2025</a></li>
 
         </ul>
 

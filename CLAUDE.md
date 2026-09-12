@@ -901,10 +901,10 @@ real result on the rest; check pages individually if it happens again.
 The client's original ask was a WordPress site; `standalone/` is the finished
 design/content, built static for fast iteration. This section starts turning
 it into a real installable WP theme so the client gets an actual CMS. Full
-plan: `.claude/plans/greedy-moseying-magpie.md`. **Phases 0, 2, 3 and 4 are
+plan: `.claude/plans/greedy-moseying-magpie.md`. **Phases 0, 2, 3, 4 and 5 are
 done (scaffold, the 7 hub pages, the member CPT, fellows/L&D
-sessions/fellow blogs); phases 5–7 (remaining CPTs, importer, legal-page
-mail handler) are not started.**
+sessions/fellow blogs, city mixers/webinars/city champions); phases 6–7
+(newsletters, importer, legal-page mail handler) are not started.**
 
 **No PHP/MySQL/WP-CLI in this sandbox** (checked — none on PATH). Every file
 here is hand-reviewed code, never executed or clicked through locally.
@@ -1143,10 +1143,70 @@ pages, plus all three new single templates, renders empty until real
 `ucan_fellow`/`ucan_ld_session`/`ucan_blog` posts exist (phase 7's
 importer) — not a bug.
 
+### Phase 5 — City Mixers, Policy Webinars/recaps, City Champions
+**A real WordPress-modeling problem surfaced here, not just another CPT.**
+Checking canonicals the same way every phase has — before writing any
+code — found the 9 `webinar-policy-webinar-*.html` pages live at
+`/etn/<slug>/`, the *same* rewrite base `ucan_ld_session` (phase 4)
+already owns. Two post types cannot both cleanly own one rewrite slug in
+WordPress, and inventing a different slug for Policy Webinars to dodge
+the collision would break the very thing phase 2 fixed (SEO parity —
+their real URL genuinely is `/etn/…/`). The old site's own answer was
+simpler than mine: it has *one* generic Events/Training post type serving
+several purposes. Matched that — **renamed `ucan_ld_session` to
+`ucan_etn_event`**, added an `event_kind` meta field
+(`ld_session` | `policy_webinar` | `mixer_note`), and generalised
+`single-ucan_etn_event.php` (renamed from `single-ucan_ld_session.php`) to
+branch its display per kind — checked line-by-line against
+`ld-thinking-better-alone-together.html` and
+`webinar-policy-webinar-affordable-urban-housing.html` to confirm the
+only real differences are the optional "session lead" block and a
+Type-vs-Format sidebar row. Safe to rename now, before phase 7's importer
+ties any real data to the old name. `ucan_etn_event_kinds()` in
+`functions.php` is the one place hero copy/hub link/facts label/nav
+wording differ per kind, read by both the meta box and the template.
+
+**The third `event_kind`, `mixer_note`, exists for exactly one post**:
+`event-hosted-by-artha-global.html`, which — per §22's own earlier
+finding — content-wise belongs to City Mixers but happens to carry a real
+`/etn/…/` canonical of its own, unlike the other 10 mixers.
+
+**`ucan_mixer`** (11 write-ups, was rows inside `city-mixers.html`'s
+`.mxlist`) — confirmed by checking the source that **none of the 11 rows
+link anywhere**; the old site shows them all inline on one page, with no
+individual permalinks at all (the Artha Global exception above is the
+one write-up that also happens to duplicate as a real page, handled as a
+`ucan_etn_event` post instead). `ucan_mixer` stays `public` only so each
+entry has an edit screen; nothing on the site ever links to a mixer's own
+URL, matching the source.
+
+**`ucan_webinar_recap`** (4 articles, was `webinar-recap-<slug>.html`) — a
+separate, simpler CPT (rewrite slug `webinars`, matching all 4 real
+canonicals) from the policy-webinar session pages themselves, per §22's
+own note that recaps are "separate recap articles." No facts sidebar, no
+author — checked the source, it genuinely has neither.
+
+**Hub pages**, same phase-2/4-style treatment: `page-u-can-city-mixers.php`
+(the whole `.mxlist` swapped for a live `ucan_mixer` query),
+`page-policy-webinars.php` (the 9-row list swapped for a
+`ucan_etn_event`/`event_kind=policy_webinar` query). `page-city-champions.php`
+and `page-the-u-can-annual-forum-2025.php` stay **fully static**, phase-2
+style, on purpose — both are one-time, PDF-sourced content (§18, §24)
+with nothing genuinely repeating for a client to manage, unlike every
+other phase-4/5 hub. Real canonicals for `city-mixers`→`u-can-city-mixers`
+and `annual-forum-2025`→`the-u-can-annual-forum-2025` differed from their
+file slugs — added to `slugs.py` and the nav seeder, same fix as before;
+`policy-webinars` and `city-champions` already matched.
+
+**Same expected gap as phases 3–4:** both dynamic hub sections and every
+`ucan_etn_event`/`ucan_mixer`/`ucan_webinar_recap` single template render
+empty until real posts exist (phase 7's importer) — not a bug.
+
 ### What's deliberately not done yet (see the plan for the full phase list)
-- `ucan_member`, `ucan_fellow`, `ucan_ld_session` and `ucan_blog` are built
-  (phases 3–4, above). `ucan_mixer`, `ucan_webinar`, `ucan_newsletter` are
-  phase 5–6, same pattern (plain `register_post_meta()` + `add_meta_box()`,
+- `ucan_member`, `ucan_fellow`, `ucan_etn_event` (L&D sessions + Policy
+  Webinars + one City Mixer note), `ucan_blog`, `ucan_mixer` and
+  `ucan_webinar_recap` are all built (phases 3–5, above). `ucan_newsletter`
+  is phase 6, same pattern (plain `register_post_meta()` + `add_meta_box()`,
   not ACF, so a nonprofit client isn't left maintaining a plugin license).
 - No content importer yet — the plan is a one-time PHP script reusing the
   same field-extraction approach already proven four times in this repo

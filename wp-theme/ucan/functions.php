@@ -358,8 +358,8 @@ function ucan_seed_primary_menu() {
 	$add( 'L&D Calendar', home_url( '/fellowship-ld/' ), $init );
 
 	$events = $add( 'Events', '#' );
-	$add( 'U-CAN City Mixers', home_url( '/city-mixers/' ), $events );
-	$add( 'The U-CAN Annual Forum 2025', home_url( '/annual-forum-2025/' ), $events );
+	$add( 'U-CAN City Mixers', home_url( '/u-can-city-mixers/' ), $events );
+	$add( 'The U-CAN Annual Forum 2025', home_url( '/the-u-can-annual-forum-2025/' ), $events );
 
 	$add( 'Our Members', home_url( '/our-members/' ) );
 
@@ -692,32 +692,44 @@ function ucan_social_row( $urls, $name ) {
 	return $links;
 }
 
-// ----------------------------------------------------- ucan_ld_session ---
+// ------------------------------------------------------ ucan_etn_event ---
 /**
- * Phase 4: the 12 Fellowship L&D sessions (was ld-<slug>.html). Real
- * canonical is /etn/<slug>/ on all 12 pages ("etn" = the old site's own
- * Events/Training custom post type slug) - checked each session's own
- * <link rel="canonical">, hence rewrite slug 'etn' below. post_title is
- * the full session title exactly as shown (e.g. "Thinking Better, Alone
- * Together by Manali Shah") - kept as one string rather than reconstructed
- * from a separate lead-name field, matching the source verbatim. Ordering
- * (for the prev/next "Later session"/"Earlier session" nav and the
- * calendar listing) uses the post's own post_date - set it to the actual
- * session date on import so WP's native adjacent-post functions and
- * date ordering just work, no extra meta needed for that part.
+ * Phase 4 built this as `ucan_ld_session` for the 12 Fellowship L&D
+ * sessions alone. Phase 5 found the old site's "etn" custom post type
+ * (Events/Training) is NOT L&D-only - checking canonicals turned up the
+ * 9 Policy Webinars (webinar-policy-webinar-*.html, /etn/<slug>/) and one
+ * City Mixers write-up (event-hosted-by-artha-global.html, also /etn/)
+ * sharing the exact same rewrite base. Two post types cannot both cleanly
+ * own the same rewrite slug in WordPress, and inventing a different slug
+ * for Policy Webinars to dodge the collision would break the SEO-parity
+ * goal (the client confirmed real canonical paths matter - CLAUDE.md §28)
+ * since their real URLs genuinely are /etn/<slug>/. The correct fix is
+ * the one the old site itself used: ONE post type for all "etn" content,
+ * distinguished by an `event_kind` meta field
+ * ('ld_session' | 'policy_webinar' | 'mixer_note'), each with its own
+ * display branch in single-ucan_etn_event.php. Renamed from
+ * `ucan_ld_session` to `ucan_etn_event` accordingly - safe to do now,
+ * before phase 7's importer creates any real data tied to the old name.
+ *
+ * post_title stays the full title exactly as shown (e.g. "Thinking
+ * Better, Alone Together by Manali Shah") for ld_session posts, matching
+ * the source verbatim; ordering (prev/next nav, calendar/webinar listing)
+ * uses the post's own post_date - set it to the real session/webinar date
+ * on import and WP's native adjacent-post functions and date ordering
+ * just work, no extra ordering meta needed.
  */
-function ucan_register_ld_session_cpt() {
+function ucan_register_etn_event_cpt() {
 	register_post_type(
-		'ucan_ld_session',
+		'ucan_etn_event',
 		array(
 			'labels'       => array(
-				'name'          => 'L&D Sessions',
-				'singular_name' => 'L&D Session',
-				'add_new_item'  => 'Add New L&D Session',
-				'edit_item'     => 'Edit L&D Session',
+				'name'          => 'Etn Events (L&D / Webinars)',
+				'singular_name' => 'Etn Event',
+				'add_new_item'  => 'Add New Etn Event',
+				'edit_item'     => 'Edit Etn Event',
 			),
 			'public'       => true,
-			'has_archive'  => false, // page-fellowship-ld.php is the listing
+			'has_archive'  => false, // page-fellowship-ld.php / page-policy-webinars.php are the listings
 			'show_in_rest' => true,
 			'menu_icon'    => 'dashicons-welcome-learn-more',
 			'supports'     => array( 'title', 'editor' ),
@@ -725,21 +737,62 @@ function ucan_register_ld_session_cpt() {
 		)
 	);
 }
-add_action( 'init', 'ucan_register_ld_session_cpt' );
+add_action( 'init', 'ucan_register_etn_event_cpt' );
 
-function ucan_ld_session_meta_box() {
-	add_meta_box( 'ucan_ld_session_details', 'Session Details', 'ucan_render_ld_session_meta_box', 'ucan_ld_session', 'side' );
+/** event_kind -> [hero-tag prefix, breadcrumb label + hub slug, "Series" facts row, prev/next nav word]. Single source both the meta box and the template read from. */
+function ucan_etn_event_kinds() {
+	return array(
+		'ld_session'     => array(
+			'label'     => 'L&D Session',
+			'hero_tag'  => 'Fellowship L&D · Past session',
+			'hub_label' => 'L&D Calendar',
+			'hub_slug'  => 'fellowship-ld',
+			'series'    => 'U-CAN Fellowship L&D',
+			'nav_word'  => 'session',
+		),
+		'policy_webinar' => array(
+			'label'     => 'Policy Webinar',
+			'hero_tag'  => 'Policy Webinars · Past event',
+			'hub_label' => 'Policy Webinars',
+			'hub_slug'  => 'policy-webinars',
+			'series'    => 'U-CAN Policy Webinars',
+			'nav_word'  => 'webinar',
+		),
+		'mixer_note'     => array(
+			'label'     => 'City Mixer note',
+			'hero_tag'  => 'U-CAN City Mixers · Past event',
+			'hub_label' => 'U-CAN City Mixers',
+			'hub_slug'  => 'u-can-city-mixers',
+			'series'    => 'U-CAN City Mixers',
+			'nav_word'  => 'session',
+		),
+	);
 }
-add_action( 'add_meta_boxes', 'ucan_ld_session_meta_box' );
 
-function ucan_render_ld_session_meta_box( $post ) {
-	wp_nonce_field( 'ucan_ld_session_save', 'ucan_ld_session_nonce' );
+function ucan_etn_event_meta_box() {
+	add_meta_box( 'ucan_etn_event_details', 'Event Details', 'ucan_render_etn_event_meta_box', 'ucan_etn_event', 'side' );
+}
+add_action( 'add_meta_boxes', 'ucan_etn_event_meta_box' );
+
+function ucan_render_etn_event_meta_box( $post ) {
+	wp_nonce_field( 'ucan_etn_event_save', 'ucan_etn_event_nonce' );
+	$kind = get_post_meta( $post->ID, 'event_kind', true );
+	if ( ! $kind ) {
+		$kind = 'ld_session';
+	}
+	echo '<p><label for="ucan_event_kind"><strong>Kind</strong></label><br><select id="ucan_event_kind" name="ucan_event_kind" class="widefat">';
+	foreach ( ucan_etn_event_kinds() as $k => $spec ) {
+		printf( '<option value="%1$s"%2$s>%3$s</option>', esc_attr( $k ), selected( $kind, $k, false ), esc_html( $spec['label'] ) );
+	}
+	echo '</select></p>';
+
 	$fields = array(
-		'ucan_lead_name'  => array( 'lead_name', 'Session lead name' ),
-		'ucan_lead_bio'   => array( 'lead_bio', 'Session lead bio (one paragraph)' ),
-		'ucan_time_range' => array( 'time_range', 'Time (e.g. "10:00 am - 12:00 pm")' ),
-		'ucan_timezone'   => array( 'timezone', 'Timezone label (defaults to "Asia/Calcutta")' ),
-		'ucan_session_type' => array( 'session_type', 'Session type (e.g. "Masterclass Session")' ),
+		'ucan_lead_name'    => array( 'lead_name', 'Session lead name (L&D only)' ),
+		'ucan_lead_bio'     => array( 'lead_bio', 'Session lead bio, one paragraph (L&D only)' ),
+		'ucan_time_range'   => array( 'time_range', 'Time (e.g. "10:00 am - 12:00 pm")' ),
+		'ucan_timezone'     => array( 'timezone', 'Timezone label (defaults to "Asia/Calcutta")' ),
+		'ucan_session_type' => array( 'session_type', 'Type (L&D, e.g. "Masterclass Session")' ),
+		'ucan_format'       => array( 'format', 'Format (Policy Webinars, e.g. "Online")' ),
 	);
 	foreach ( $fields as $field => $spec ) {
 		list( $meta_key, $label ) = $spec;
@@ -758,12 +811,15 @@ function ucan_render_ld_session_meta_box( $post ) {
 	}
 }
 
-function ucan_save_ld_session_meta( $post_id ) {
-	if ( ! isset( $_POST['ucan_ld_session_nonce'] ) || ! wp_verify_nonce( $_POST['ucan_ld_session_nonce'], 'ucan_ld_session_save' ) ) {
+function ucan_save_etn_event_meta( $post_id ) {
+	if ( ! isset( $_POST['ucan_etn_event_nonce'] ) || ! wp_verify_nonce( $_POST['ucan_etn_event_nonce'], 'ucan_etn_event_save' ) ) {
 		return;
 	}
 	if ( ! current_user_can( 'edit_post', $post_id ) ) {
 		return;
+	}
+	if ( isset( $_POST['ucan_event_kind'] ) && array_key_exists( $_POST['ucan_event_kind'], ucan_etn_event_kinds() ) ) {
+		update_post_meta( $post_id, 'event_kind', sanitize_key( wp_unslash( $_POST['ucan_event_kind'] ) ) );
 	}
 	$map = array(
 		'ucan_lead_name'    => 'lead_name',
@@ -771,6 +827,7 @@ function ucan_save_ld_session_meta( $post_id ) {
 		'ucan_time_range'   => 'time_range',
 		'ucan_timezone'     => 'timezone',
 		'ucan_session_type' => 'session_type',
+		'ucan_format'       => 'format',
 	);
 	foreach ( $map as $field => $meta_key ) {
 		if ( isset( $_POST[ $field ] ) ) {
@@ -779,17 +836,26 @@ function ucan_save_ld_session_meta( $post_id ) {
 		}
 	}
 }
-add_action( 'save_post_ucan_ld_session', 'ucan_save_ld_session_meta' );
+add_action( 'save_post_ucan_etn_event', 'ucan_save_etn_event_meta' );
 
-function ucan_ld_session_display_fields( $post ) {
-	$tz = get_post_meta( $post->ID, 'timezone', true );
-	return array(
-		'lead_name'    => get_post_meta( $post->ID, 'lead_name', true ),
-		'lead_bio'     => get_post_meta( $post->ID, 'lead_bio', true ),
-		'time_range'   => get_post_meta( $post->ID, 'time_range', true ),
-		'timezone'     => $tz ? $tz : 'Asia/Calcutta',
-		'session_type' => get_post_meta( $post->ID, 'session_type', true ),
-		'date_display' => get_the_date( 'F j, Y', $post ),
+function ucan_etn_event_display_fields( $post ) {
+	$tz   = get_post_meta( $post->ID, 'timezone', true );
+	$kind = get_post_meta( $post->ID, 'event_kind', true );
+	if ( ! $kind || ! array_key_exists( $kind, ucan_etn_event_kinds() ) ) {
+		$kind = 'ld_session';
+	}
+	return array_merge(
+		ucan_etn_event_kinds()[ $kind ],
+		array(
+			'kind'         => $kind,
+			'lead_name'    => get_post_meta( $post->ID, 'lead_name', true ),
+			'lead_bio'     => get_post_meta( $post->ID, 'lead_bio', true ),
+			'time_range'   => get_post_meta( $post->ID, 'time_range', true ),
+			'timezone'     => $tz ? $tz : 'Asia/Calcutta',
+			'session_type' => get_post_meta( $post->ID, 'session_type', true ),
+			'format'       => get_post_meta( $post->ID, 'format', true ),
+			'date_display' => get_the_date( 'F j, Y', $post ),
+		)
 	);
 }
 
@@ -889,3 +955,114 @@ function ucan_post_tags( $post_id ) {
 	$terms = get_the_terms( $post_id, 'fellow_blog_tag' );
 	return is_array( $terms ) ? $terms : array();
 }
+
+// ---------------------------------------------------------- ucan_mixer ---
+/**
+ * Phase 5: the 11 City Mixer write-ups (was rows inside city-mixers.html's
+ * .mxlist, not separate pages - checked: none of the 11 <article class="mx">
+ * entries link anywhere, matching the old site's own behaviour of showing
+ * them all inline on one page). No individual permalink is ever linked
+ * to from anywhere on the site, so `public` stays true only so the CPT
+ * has an edit screen and *a* permalink exists if anyone needs to preview
+ * one directly - it is never surfaced in nav/content. (The one exception,
+ * "Hosted by Artha Global" / Mumbai, April 2026, genuinely has its own
+ * live URL on the old site under /etn/ - that one entry is a
+ * ucan_etn_event post with event_kind=mixer_note instead of a ucan_mixer
+ * post; see that CPT above.)
+ */
+function ucan_register_mixer_cpt() {
+	register_post_type(
+		'ucan_mixer',
+		array(
+			'labels'       => array(
+				'name'          => 'City Mixers',
+				'singular_name' => 'City Mixer',
+				'add_new_item'  => 'Add New City Mixer',
+				'edit_item'     => 'Edit City Mixer',
+			),
+			'public'       => true,
+			'has_archive'  => false, // page-u-can-city-mixers.php is the listing
+			'show_in_rest' => true,
+			'menu_icon'    => 'dashicons-groups',
+			'supports'     => array( 'title', 'editor', 'thumbnail' ),
+			'rewrite'      => array( 'slug' => 'city-mixer', 'with_front' => false ),
+		)
+	);
+}
+add_action( 'init', 'ucan_register_mixer_cpt' );
+
+function ucan_mixer_meta_box() {
+	add_meta_box( 'ucan_mixer_details', 'Mixer Details', 'ucan_render_mixer_meta_box', 'ucan_mixer', 'side' );
+}
+add_action( 'add_meta_boxes', 'ucan_mixer_meta_box' );
+
+function ucan_render_mixer_meta_box( $post ) {
+	wp_nonce_field( 'ucan_mixer_save', 'ucan_mixer_nonce' );
+	$fields = array(
+		'ucan_host_organisation' => array( 'host_organisation', 'Hosted by (organisation)' ),
+		'ucan_city'              => array( 'city', 'City' ),
+	);
+	foreach ( $fields as $field => $spec ) {
+		list( $meta_key, $label ) = $spec;
+		$value = get_post_meta( $post->ID, $meta_key, true );
+		printf(
+			'<p><label for="%1$s"><strong>%2$s</strong></label><br><input type="text" id="%1$s" name="%1$s" class="widefat" value="%3$s"></p>',
+			esc_attr( $field ), esc_html( $label ), esc_attr( $value )
+		);
+	}
+}
+
+function ucan_save_mixer_meta( $post_id ) {
+	if ( ! isset( $_POST['ucan_mixer_nonce'] ) || ! wp_verify_nonce( $_POST['ucan_mixer_nonce'], 'ucan_mixer_save' ) ) {
+		return;
+	}
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+	$map = array( 'ucan_host_organisation' => 'host_organisation', 'ucan_city' => 'city' );
+	foreach ( $map as $field => $meta_key ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			update_post_meta( $post_id, $meta_key, sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) );
+		}
+	}
+}
+add_action( 'save_post_ucan_mixer', 'ucan_save_mixer_meta' );
+
+function ucan_mixer_display_fields( $post ) {
+	return array(
+		'host_organisation' => get_post_meta( $post->ID, 'host_organisation', true ),
+		'city'               => get_post_meta( $post->ID, 'city', true ),
+		'date_display'       => get_the_date( 'F j, Y', $post ),
+	);
+}
+
+// --------------------------------------------------- ucan_webinar_recap --
+/**
+ * Phase 5: the 4 standalone webinar recap articles (was
+ * webinar-recap-<slug>.html) - a distinct content family from the 9
+ * ucan_etn_event policy_webinar posts (§22's own finding: these are
+ * "separate recap articles", not the webinar session pages themselves).
+ * Real canonical is /webinars/<slug>/ on all 4 - checked each one's own
+ * <link rel="canonical"> - hence rewrite slug 'webinars' below. Simple:
+ * just a hero + rich-text body, no facts sidebar, no author.
+ */
+function ucan_register_webinar_recap_cpt() {
+	register_post_type(
+		'ucan_webinar_recap',
+		array(
+			'labels'       => array(
+				'name'          => 'Webinar Recaps',
+				'singular_name' => 'Webinar Recap',
+				'add_new_item'  => 'Add New Webinar Recap',
+				'edit_item'     => 'Edit Webinar Recap',
+			),
+			'public'       => true,
+			'has_archive'  => false,
+			'show_in_rest' => true,
+			'menu_icon'    => 'dashicons-media-document',
+			'supports'     => array( 'title', 'editor' ),
+			'rewrite'      => array( 'slug' => 'webinars', 'with_front' => false ),
+		)
+	);
+}
+add_action( 'init', 'ucan_register_webinar_recap_cpt' );
