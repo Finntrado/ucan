@@ -901,9 +901,9 @@ real result on the rest; check pages individually if it happens again.
 The client's original ask was a WordPress site; `standalone/` is the finished
 design/content, built static for fast iteration. This section starts turning
 it into a real installable WP theme so the client gets an actual CMS. Full
-plan: `.claude/plans/greedy-moseying-magpie.md`. **Phase 0 (scaffold) and
-phase 2 (the 7 one-off hub pages) are done; phases 3–7 (CPTs, importer,
-legal-page mail handler) are not started.**
+plan: `.claude/plans/greedy-moseying-magpie.md`. **Phases 0, 2 and 3 are
+done (scaffold, the 7 hub pages, the member CPT); phases 4–7 (remaining
+CPTs, importer, legal-page mail handler) are not started.**
 
 **No PHP/MySQL/WP-CLI in this sandbox** (checked — none on PATH). Every file
 here is hand-reviewed code, never executed or clicked through locally.
@@ -1018,12 +1018,57 @@ literals) a byte-level walk of every extracted JSON-LD block confirming
 zero unescaped `'` and that the underlying JSON still parses — all 8 pages
 (home + 7 hubs) pass. Real rendering still needs a real WP install.
 
+### Phase 3 — the `ucan_member` CPT (23 profiles)
+Registered in `functions.php` (`ucan_register_member_cpt()`): CPT
+`ucan_member` with rewrite slug **`member`** (real canonical checked on
+all 23 `profile-*.html` pages — all agree on `/member/<slug>/`, so no
+remap needed here, unlike the 3 hub-page slugs above), plus a
+non-hierarchical taxonomy `ucan_member_group` for the 4 groups (Founding
+Circle, Steering Committee, Stewardship Team, Our Team) so a person in two
+groups is one post with two terms, not two posts — reproducing the static
+build's "same person, two `<li>` cards" behaviour (§14) via one
+`WP_Query` per group instead of duplicate HTML.
+
+**Field design deliberately cleaner than the source markup:** the static
+build overloaded one "role" string to mean a job title for Our Team
+members and an organisation name for everyone else (§14's own note). This
+CPT stores them as two explicit `register_post_meta` fields instead —
+`job_title` and `organisation` — plus `linkedin`, edited via a plain
+`add_meta_box()` (no ACF). `ucan_member_display_fields( $post )` is the
+one function both `single-ucan_member.php` and `page-our-people.php`'s
+card loop call to reproduce the original's two display branches
+identically (checked against both `profile-siddharth-pandit.html`, Our
+Team, and `profile-gautham-ravichander.html`, Founding Circle, line by
+line): `role`/`affiliation` swap meaning depending on whether the person
+holds the "Our Team" term, and "primary group" (the hero badge) is the
+first match in a fixed group order, matching how the static build picked
+one group to badge a person who's in two.
+
+**Nav-fidelity bug caught applying this same "verbatim, line by line"
+check to Our People's cards:** the aria-label paired each name with the
+person's *role* ("Siddharth Pandit, Chief Executive Officer"), not their
+organisation — an earlier draft of the card loop used `organisation`
+there, which would've been right for everyone except Our Team members.
+Fixed by comparing against the actual source markup rather than assuming.
+
+`single-ucan_member.php` (new) is the profile template; `page-our-people.php`
+(phase 2) had its static 28-card PEOPLE section replaced with the live
+loop — the hero above it is untouched. A branded SVG placeholder
+(`assets/img/monogram-placeholder.svg`) was added for a member with no
+photo, since the static build never had to actually render that path (all
+23 people currently have real photos).
+
+**This page necessarily shows nothing under "Our People" until real
+`ucan_member` posts exist** (phase 7's importer) — a real, expected
+regression from phase 2's version, which had the 28 cards baked into the
+template as static HTML. Worth remembering if anyone previews the site
+between now and phase 7 and wonders why the People section looks empty.
+
 ### What's deliberately not done yet (see the plan for the full phase list)
-- No custom post types (`ucan_member`, `ucan_fellow`, `ucan_ld_session`,
-  `ucan_mixer`, `ucan_webinar`, `ucan_newsletter`) — phases 3–6. Decided
-  against ACF (a licensed plugin dependency for repeater/flexible-content
-  fields) in favour of plain `register_post_meta()` + `add_meta_box()`, so
-  a nonprofit client isn't left maintaining a plugin license.
+- `ucan_member` is the only CPT built so far (phase 3, above). `ucan_fellow`,
+  `ucan_ld_session`, `ucan_mixer`, `ucan_webinar`, `ucan_newsletter` are
+  phases 4–6, same pattern (plain `register_post_meta()` + `add_meta_box()`,
+  not ACF, so a nonprofit client isn't left maintaining a plugin license).
 - No content importer yet — the plan is a one-time PHP script reusing the
   same field-extraction approach already proven four times in this repo
   (`build_members.py`, `build_fellowship.py`, `build_ld.py`,

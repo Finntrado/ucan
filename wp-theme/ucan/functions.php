@@ -373,3 +373,174 @@ function ucan_seed_primary_menu() {
 	set_theme_mod( 'nav_menu_locations', $locations );
 }
 add_action( 'after_switch_theme', 'ucan_seed_primary_menu' );
+
+// -------------------------------------------------------- ucan_member ----
+/**
+ * Phase 3: the 23 individual profiles (CLAUDE.md §14), previously
+ * profile-<slug>.html. Real canonical is /member/<slug>/ (checked each
+ * profile's own <link rel="canonical"> - all 23 agree), hence rewrite
+ * slug 'member' below.
+ *
+ * Field design note: the static build overloaded one "role" string to mean
+ * either a job title (Our Team members) or an organisation name (everyone
+ * else) - correct on the page, confusing to store. This CPT keeps them as
+ * two explicit fields instead:
+ *   - job_title    (post meta) - only meaningful for Our Team members
+ *   - organisation (post meta) - always the org name ("U-CAN" for the team)
+ *   - linkedin     (post meta) - optional personal profile URL
+ *   - ucan_member_group (taxonomy) - one or more of the 4 groups a person
+ *     can belong to; a person in two groups gets one post with two terms,
+ *     reproducing the original's "same person, two <li> cards" behaviour
+ *     via one query per group instead of duplicate posts.
+ * single-ucan_member.php derives the original's "Our Team" display branch
+ * from whether the "Our Team" term is present, and picks the person's
+ * "primary" group (the hero badge) as the first match in GROUP_ORDER below
+ * - the same order the groups appear on Our People, which is how the
+ * static build effectively chose one when a person had two.
+ */
+define( 'UCAN_MEMBER_GROUP_ORDER', array(
+	'founding-circle'    => 'Founding Circle',
+	'steering-committee' => 'Steering Committee',
+	'stewardship-team'   => 'Stewardship Team',
+	'our-team'           => 'Our Team',
+) );
+
+function ucan_register_member_cpt() {
+	register_post_type(
+		'ucan_member',
+		array(
+			'labels'       => array(
+				'name'          => 'Members',
+				'singular_name' => 'Member',
+				'add_new_item'  => 'Add New Member',
+				'edit_item'     => 'Edit Member',
+			),
+			'public'       => true,
+			'has_archive'  => false, // page-our-people.php is the listing
+			'show_in_rest' => true,
+			'menu_icon'    => 'dashicons-groups',
+			'supports'     => array( 'title', 'editor', 'thumbnail' ),
+			'rewrite'      => array( 'slug' => 'member', 'with_front' => false ),
+		)
+	);
+
+	register_taxonomy(
+		'ucan_member_group',
+		'ucan_member',
+		array(
+			'labels'       => array( 'name' => 'Groups', 'singular_name' => 'Group' ),
+			'public'       => true,
+			'hierarchical' => false, // a person can hold more than one
+			'show_in_rest' => true,
+			'rewrite'      => false, // groups aren't their own archive page
+		)
+	);
+}
+add_action( 'init', 'ucan_register_member_cpt' );
+
+/**
+ * Creates the 4 fixed group terms once, in display order, on theme
+ * activation - same "seed it, then it's just wp-admin from here" pattern
+ * as ucan_seed_primary_menu(). Safe to re-run: wp_insert_term() is a
+ * no-op (WP_Error, caught) if the term already exists.
+ */
+function ucan_seed_member_groups() {
+	foreach ( UCAN_MEMBER_GROUP_ORDER as $slug => $name ) {
+		if ( ! term_exists( $slug, 'ucan_member_group' ) ) {
+			wp_insert_term( $name, 'ucan_member_group', array( 'slug' => $slug ) );
+		}
+	}
+}
+add_action( 'after_switch_theme', 'ucan_seed_member_groups' );
+
+function ucan_member_meta_box() {
+	add_meta_box(
+		'ucan_member_details',
+		'Member Details',
+		'ucan_render_member_meta_box',
+		'ucan_member',
+		'side'
+	);
+}
+add_action( 'add_meta_boxes', 'ucan_member_meta_box' );
+
+function ucan_render_member_meta_box( $post ) {
+	wp_nonce_field( 'ucan_member_save', 'ucan_member_nonce' );
+	$job_title    = get_post_meta( $post->ID, 'job_title', true );
+	$organisation = get_post_meta( $post->ID, 'organisation', true );
+	$linkedin     = get_post_meta( $post->ID, 'linkedin', true );
+	?>
+	<p>
+		<label for="ucan_organisation"><strong>Organisation</strong> (required - the org name for everyone, "U-CAN" for Our Team)</label><br>
+		<input type="text" id="ucan_organisation" name="ucan_organisation" class="widefat" value="<?php echo esc_attr( $organisation ); ?>">
+	</p>
+	<p>
+		<label for="ucan_job_title"><strong>Job title</strong> (Our Team members only - leave blank otherwise)</label><br>
+		<input type="text" id="ucan_job_title" name="ucan_job_title" class="widefat" value="<?php echo esc_attr( $job_title ); ?>">
+	</p>
+	<p>
+		<label for="ucan_linkedin"><strong>LinkedIn URL</strong> (optional)</label><br>
+		<input type="url" id="ucan_linkedin" name="ucan_linkedin" class="widefat" value="<?php echo esc_attr( $linkedin ); ?>" placeholder="https://www.linkedin.com/in/…">
+	</p>
+	<p class="description">Set the person's group(s) in the "Groups" box elsewhere on this screen.</p>
+	<?php
+}
+
+function ucan_save_member_meta( $post_id ) {
+	if ( ! isset( $_POST['ucan_member_nonce'] ) || ! wp_verify_nonce( $_POST['ucan_member_nonce'], 'ucan_member_save' ) ) {
+		return;
+	}
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+		return;
+	}
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+	foreach ( array( 'organisation' => 'ucan_organisation', 'job_title' => 'ucan_job_title' ) as $meta_key => $field ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			update_post_meta( $post_id, $meta_key, sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) );
+		}
+	}
+	if ( isset( $_POST['ucan_linkedin'] ) ) {
+		update_post_meta( $post_id, 'linkedin', esc_url_raw( wp_unslash( $_POST['ucan_linkedin'] ) ) );
+	}
+}
+add_action( 'save_post_ucan_member', 'ucan_save_member_meta' );
+
+/**
+ * Shared by single-ucan_member.php and page-our-people.php's card loop:
+ * given a WP_Post for a ucan_member, returns the display fields the
+ * original static build computed per person (see the field-design note
+ * above) - $r['is_team'], $r['primary_group'], $r['all_groups'] (display
+ * string, "A · B"), $r['role'] and $r['affiliation'] (already branched the
+ * same way profile-siddharth-pandit.html vs profile-gautham-ravichander.html
+ * differ).
+ */
+function ucan_member_display_fields( $post ) {
+	$terms = wp_get_post_terms( $post->ID, 'ucan_member_group' );
+	$slugs = wp_list_pluck( $terms, 'slug' );
+	$names = array();
+	$primary_group = '';
+	foreach ( UCAN_MEMBER_GROUP_ORDER as $slug => $name ) {
+		if ( in_array( $slug, $slugs, true ) ) {
+			$names[] = $name;
+			if ( ! $primary_group ) {
+				$primary_group = $name;
+			}
+		}
+	}
+	$is_team      = in_array( 'our-team', $slugs, true );
+	$job_title    = get_post_meta( $post->ID, 'job_title', true );
+	$organisation = get_post_meta( $post->ID, 'organisation', true );
+	$linkedin     = get_post_meta( $post->ID, 'linkedin', true );
+
+	return array(
+		'is_team'       => $is_team,
+		'primary_group' => $primary_group ? $primary_group : 'Our People',
+		'all_groups'    => implode( ' · ', $names ),
+		'role'          => $is_team && $job_title ? $job_title : $organisation,
+		'affiliation'   => $is_team ? 'U-CAN · Urban Collective Action Network' : implode( ' · ', $names ),
+		'organisation'  => $organisation,
+		'linkedin'      => $linkedin,
+	);
+}
