@@ -52,7 +52,7 @@
 
           <li><a href="<?php echo esc_url( home_url( '/learning-network-for-urban-managers/' ) ); ?>">Learning Network</a></li>
 
-          <li><a href="<?php echo esc_url( home_url( '/fellowship/' ) ); ?>">U-CAN Fellowship</a></li>
+          <li><a href="<?php echo esc_url( home_url( '/u-can-fellowship/' ) ); ?>">U-CAN Fellowship</a></li>
 
           <li><a href="<?php echo esc_url( home_url( '/newsletter/' ) ); ?>">Newsletter</a></li>
 

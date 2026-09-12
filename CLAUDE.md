@@ -901,9 +901,10 @@ real result on the rest; check pages individually if it happens again.
 The client's original ask was a WordPress site; `standalone/` is the finished
 design/content, built static for fast iteration. This section starts turning
 it into a real installable WP theme so the client gets an actual CMS. Full
-plan: `.claude/plans/greedy-moseying-magpie.md`. **Phases 0, 2 and 3 are
-done (scaffold, the 7 hub pages, the member CPT); phases 4–7 (remaining
-CPTs, importer, legal-page mail handler) are not started.**
+plan: `.claude/plans/greedy-moseying-magpie.md`. **Phases 0, 2, 3 and 4 are
+done (scaffold, the 7 hub pages, the member CPT, fellows/L&D
+sessions/fellow blogs); phases 5–7 (remaining CPTs, importer, legal-page
+mail handler) are not started.**
 
 **No PHP/MySQL/WP-CLI in this sandbox** (checked — none on PATH). Every file
 here is hand-reviewed code, never executed or clicked through locally.
@@ -1064,10 +1065,88 @@ regression from phase 2's version, which had the 28 cards baked into the
 template as static HTML. Worth remembering if anyone previews the site
 between now and phase 7 and wonders why the People section looks empty.
 
+### Phase 4 — Fellows, L&D sessions, fellow blogs + their topic tags
+Three more CPTs, all following phase 3's pattern (plain `register_post_meta()`
++ `add_meta_box()`, no ACF):
+
+- **`ucan_fellow`** (8 profiles, was `profile-fellow-<slug>.html`). Rewrite
+  slug is **empty** — checked all 8 canonicals, every one is a bare
+  root-level slug (`/aanchal-aggarwal/`), matching the old site's real
+  structure. Meta: `host_organisation`, `joining_location`, `education`,
+  `cohort_label` (defaults to "U-CAN Fellow · 2024-25"), and
+  `social_links` — see the fidelity check below for why that one isn't a
+  single URL field.
+- **`ucan_ld_session`** (12 sessions, was `ld-<slug>.html`). Rewrite slug
+  **`etn`**, matching the old site's own Events/Training custom-post-type
+  slug (checked all 12 canonicals: `/etn/<slug>/`). `post_title` stays the
+  full session title verbatim (e.g. "Thinking Better, Alone Together by
+  Manali Shah") rather than reconstructed from a separate lead-name field.
+  Ordering (calendar listing + the "Later/Earlier session" prev/next nav)
+  rides on the post's own `post_date` — set it to the real session date on
+  import and WP's native adjacent-post functions just work, no extra
+  ordering meta needed.
+- **`ucan_blog`** (58 posts, was `blog-<slug>.html`) — **a dedicated CPT,
+  deliberately not native `post`.** Real canonical is `/fellow-blogs/<slug>/`;
+  forcing that onto native posts would mean changing the site's *global*
+  permalink structure (a wp-admin setting, not something a theme should
+  silently override) for every post on the site, not just these. Its
+  `fellow_blog_tag` taxonomy shares the same `fellow-blogs` rewrite base,
+  matching each topic's real canonical (`/fellow-blogs/air-quality/`) —
+  one generic `taxonomy-fellow_blog_tag.php` (WP's own template-hierarchy
+  convention) now serves what used to be **13 separate
+  `blog-tag-<slug>.html` files**. A post's author is a `fellow_id` meta
+  field pointing at the `ucan_fellow` post ID, not a WP user account —
+  fellows are subjects, not people who log into wp-admin, so a real WP
+  User per fellow would be the wrong tool.
+
+**Fidelity check caught a real design gap before it shipped:** the plan's
+first pass gave `ucan_fellow` a single `linkedin` URL field, mirroring
+`ucan_member`'s single LinkedIn button. Comparing every one of the 8
+fellow profiles' actual social markup line-by-line (not just one) found
+Ramya M A links **Facebook, X *and* LinkedIn** — three platforms, not
+one — while 3 of the 8 fellows have no social link at all. Replaced with
+a `social_links` meta field (newline-separated URLs) plus
+`ucan_social_platform_from_url()`/`ucan_social_row()` in `functions.php`,
+which detect the platform from each URL's host and render the right icon
+(icons lifted verbatim from the source SVGs — linkedin/facebook/x seen in
+practice, instagram/generic added for headroom). Reusable wherever a
+social row appears: fellow hero, Meet the Fellows cards, a blog post's
+"About the author" aside.
+
+**Hub pages, phase-2-style verbatim extraction with one live section
+swapped in:** `page-u-can-fellowship.php` (the "01-08 cohort" list only —
+everything else on the Fellowship page is still static, PDF-sourced copy,
+§18), `page-meet-our-fellows.php` (the 8-card grid), `page-fellowship-ld.php`
+(the 12-row session list), `page-blogs-by-our-fellows.php` (both filter
+bars + the full grid — the biggest swap, ~72KB of static markup replaced
+by one query each). All four's real canonicals differ from their file
+slugs (`fellowship`→`u-can-fellowship`, `meet-the-fellows`→`meet-our-fellows`,
+`fellow-blogs`→`blogs-by-our-fellows`, `ld-calendar`→`fellowship-ld`) —
+added to `_scripts/wp/slugs.py`'s `CANONICAL_SLUG` map and the nav
+seeder, same as phase 2's fix.
+
+**Trap hit and fixed while building this phase:** re-running
+`build_pages.py` to extract these four new hub pages **silently
+overwrote phase 3's hand-patched `page-our-people.php`** back to its
+original all-static form, because `our-people` was still sitting in
+`build_pages.py`'s `PAGES` list from phase 2 and the script always
+regenerates everything it's given. Recovered with `git checkout --` on
+the one file (nothing else was touched). Fixed properly by turning
+`PAGES` into a one-shot list with an explicit comment: the moment a
+generated `page-<slug>.php` gets hand-patched into a live query, **it
+comes out of `PAGES` immediately** — `our-people`, `u-can-fellowship`,
+`meet-our-fellows`, `blogs-by-our-fellows` and `fellowship-ld` are all
+out now. Anything still in the list is genuinely still 100% verbatim.
+
+**Same expected gap as phase 3:** every dynamic section on all four hub
+pages, plus all three new single templates, renders empty until real
+`ucan_fellow`/`ucan_ld_session`/`ucan_blog` posts exist (phase 7's
+importer) — not a bug.
+
 ### What's deliberately not done yet (see the plan for the full phase list)
-- `ucan_member` is the only CPT built so far (phase 3, above). `ucan_fellow`,
-  `ucan_ld_session`, `ucan_mixer`, `ucan_webinar`, `ucan_newsletter` are
-  phases 4–6, same pattern (plain `register_post_meta()` + `add_meta_box()`,
+- `ucan_member`, `ucan_fellow`, `ucan_ld_session` and `ucan_blog` are built
+  (phases 3–4, above). `ucan_mixer`, `ucan_webinar`, `ucan_newsletter` are
+  phase 5–6, same pattern (plain `register_post_meta()` + `add_meta_box()`,
   not ACF, so a nonprofit client isn't left maintaining a plugin license).
 - No content importer yet — the plan is a one-time PHP script reusing the
   same field-extraction approach already proven four times in this repo

@@ -15,6 +15,10 @@ CANONICAL_SLUG = {
     'about': 'about-us',
     'rfc': 'requests-for-collaboration',
     'learning-network': 'learning-network-for-urban-managers',
+    'fellowship': 'u-can-fellowship',
+    'meet-the-fellows': 'meet-our-fellows',
+    'fellow-blogs': 'blogs-by-our-fellows',
+    'ld-calendar': 'fellowship-ld',
 }
 
 

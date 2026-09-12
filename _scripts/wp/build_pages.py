@@ -42,9 +42,18 @@ PAGES = [
     # (standalone file, file slug, template comment label) - the file
     # slug is remapped through wp_slug() for anything actually written
     # (template filename, internal links, doc comments)
+    #
+    # IMPORTANT: this list is a one-shot starting point per page, not a
+    # thing to keep re-running forever. Once a generated page-<slug>.php
+    # has been hand-patched to swap a static section for a live CPT/query
+    # loop (our-people already is; fellowship/meet-the-fellows/fellow-blogs/
+    # ld-calendar are next), remove it from PAGES immediately - a later
+    # run would silently overwrite the hand-patched version with the
+    # original all-static extraction and destroy the loop (this happened
+    # once already building phase 4; fixed with `git checkout --` on the
+    # clobbered file). Only list pages here that are still fully verbatim.
     ('about.html', 'about', 'About Us'),
     ('impact.html', 'impact', 'Impact'),
-    ('our-people.html', 'our-people', 'Our People'),
     ('our-members.html', 'our-members', 'Our Members'),
     ('learning-network.html', 'learning-network', 'Learning Network'),
     ('urban-reforms-collective.html', 'urban-reforms-collective', 'Urban Reforms Collective'),
