@@ -188,12 +188,29 @@ class UCAN_Nav_Walker_Desktop extends Walker_Nav_Menu {
 
 		$has_children = ! empty( $item->has_children );
 		$is_on        = ucan_item_is_current( $item );
+		// A top-level item can both have a dropdown AND be its own
+		// destination (e.g. "About Us" links to /about-us/ as well as
+		// opening its submenu) - only render the plain toggle <button>
+		// when the item has no real URL of its own ("#", the convention
+		// ucan_seed_primary_menu() uses for pure category headers like
+		// "Initiatives"/"Events"/"Media").
+		$has_own_url = $has_children && '#' !== $item->url && '' !== trim( (string) $item->url );
 
-		if ( $has_children ) {
+		if ( $has_children && ! $has_own_url ) {
 			$output .= '<div class="ucnav-i">';
 			$output .= sprintf(
 				'<button type="button" class="ucnav-t%s" aria-expanded="false" aria-haspopup="true">%s%s</button>',
 				$is_on ? ' on' : '',
+				esc_html( $title ),
+				ucan_caret_svg()
+			);
+		} elseif ( $has_children && $has_own_url ) {
+			$output .= '<div class="ucnav-i">';
+			$output .= sprintf(
+				'<a class="ucnav-t%s" href="%s"%s>%s%s</a>',
+				$is_on ? ' on' : '',
+				esc_url( $item->url ),
+				$is_on ? ' aria-current="page"' : '',
 				esc_html( $title ),
 				ucan_caret_svg()
 			);
@@ -322,15 +339,18 @@ function ucan_seed_primary_menu() {
 		);
 	};
 
-	$about = $add( 'About Us', home_url( '/about/' ) );
-	$add( 'About U-CAN', home_url( '/about/' ), $about );
+	$about = $add( 'About Us', home_url( '/about-us/' ) );
+	$add( 'About U-CAN', home_url( '/about-us/' ), $about );
 	$add( 'Our People', home_url( '/our-people/' ), $about );
 	$add( 'Impact', home_url( '/impact/' ), $about );
 
 	$init = $add( 'Initiatives', '#' );
 	$add( 'Urban Reforms Collective (URC)', home_url( '/urban-reforms-collective/' ), $init );
-	$add( 'Request for Collaboration (RFC)', home_url( '/rfc/' ), $init );
-	$add( 'Learning Network for Urban Managers', home_url( '/learning-network/' ), $init );
+	// URLs match the old site's real canonical paths, not this build's
+	// shorter internal file-slugs (SEO decision - CLAUDE.md §28) - keep
+	// these in sync with _scripts/wp/slugs.py's CANONICAL_SLUG map.
+	$add( 'Request for Collaboration (RFC)', home_url( '/requests-for-collaboration/' ), $init );
+	$add( 'Learning Network for Urban Managers', home_url( '/learning-network-for-urban-managers/' ), $init );
 	$add( 'U-CAN Fellowship', home_url( '/fellowship/' ), $init );
 	$add( 'Fellowship', '#', $init, array( 'menu-group-heading' ) );
 	$add( 'Meet the 2024-25 Fellows', home_url( '/meet-the-fellows/' ), $init );

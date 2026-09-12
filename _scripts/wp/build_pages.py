@@ -19,24 +19,29 @@ Per page this pulls, verbatim:
     and needs no rewriting at all. functions.php's generic wp_head hook
     skips its own Organization node whenever a template supplies this.
 
-Any internal href to a bare slug (no protocol, not mailto/anchor-only)
-is rewritten to home_url('/slug/'), whether or not that target page
-exists in WP yet - this is a *convention* choice (this build's own
-slugs, e.g. "rfc"/"about"), not the old site's real canonical paths
-(e.g. "/requests-for-collaboration/"), matching the internal-link
-convention already used by front-page.php in phase 0. Un-built targets
-will 404 until their own phase lands, which is expected.
+Any internal href to a bare slug (no protocol, not mailto/anchor-only) is
+rewritten to home_url('/<canonical-slug>/'), whether or not that target
+page exists in WP yet - un-built targets will 404 until their own phase
+lands, which is expected. The canonical slug is this build's own file
+slug UNLESS slugs.CANONICAL_SLUG remaps it to match the old site's real
+URL (SEO decision, CLAUDE.md §28) - e.g. "rfc" -> "requests-for-collaboration".
 """
 import io
 import os
 import re
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from slugs import wp_slug  # noqa: E402
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 STANDALONE = os.path.join(ROOT, 'standalone')
 THEME = os.path.join(ROOT, 'wp-theme', 'ucan')
 
 PAGES = [
-    # (standalone file, wp slug, template comment label)
+    # (standalone file, file slug, template comment label) - the file
+    # slug is remapped through wp_slug() for anything actually written
+    # (template filename, internal links, doc comments)
     ('about.html', 'about', 'About Us'),
     ('impact.html', 'impact', 'Impact'),
     ('our-people.html', 'our-people', 'Our People'),
@@ -57,6 +62,7 @@ LINK_ATTR_RE = re.compile(r'(href|src|poster)="([a-z][a-z0-9-]*)((?:#[a-zA-Z0-9_
 def rewrite_links_and_assets(html):
     def sub(m):
         attr, slug, frag = m.group(1), m.group(2), m.group(3)
+        slug = wp_slug(slug)
         if frag:
             return '%s="<?php echo esc_url( home_url( \'/%s/%s\' ) ); ?>"' % (attr, slug, frag)
         return '%s="<?php echo esc_url( home_url( \'/%s/\' ) ); ?>"' % (attr, slug)
@@ -129,7 +135,8 @@ def write(path, content):
     print('wrote', path, len(content), 'chars')
 
 
-for fname, slug, label in PAGES:
+for fname, file_slug, label in PAGES:
+    slug = wp_slug(file_slug)
     main, description, ld_json = extract(fname)
     out = TEMPLATE % dict(
         label=label, slug=slug, file=fname,

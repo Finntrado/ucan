@@ -24,7 +24,7 @@
 
         <ul>
 
-          <li><a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About U-CAN</a></li>
+          <li><a href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>">About U-CAN</a></li>
 
           <li><a href="<?php echo esc_url( home_url( '/our-people/' ) ); ?>">Our People</a></li>
 
@@ -48,9 +48,9 @@
 
           <li><a href="<?php echo esc_url( home_url( '/urban-reforms-collective/' ) ); ?>">Urban Reforms Collective</a></li>
 
-          <li><a href="<?php echo esc_url( home_url( '/rfc/' ) ); ?>">Request for Collaboration</a></li>
+          <li><a href="<?php echo esc_url( home_url( '/requests-for-collaboration/' ) ); ?>">Request for Collaboration</a></li>
 
-          <li><a href="<?php echo esc_url( home_url( '/learning-network/' ) ); ?>">Learning Network</a></li>
+          <li><a href="<?php echo esc_url( home_url( '/learning-network-for-urban-managers/' ) ); ?>">Learning Network</a></li>
 
           <li><a href="<?php echo esc_url( home_url( '/fellowship/' ) ); ?>">U-CAN Fellowship</a></li>
 

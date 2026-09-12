@@ -980,15 +980,35 @@ page). `front-page.php` (phase 0) was retrofitted with the same mechanism —
 it was shipped without its own meta description/JSON-LD, a real gap, now
 fixed the same way.
 
-**Internal link convention decided here, worth flagging before launch:**
-every internal `href` to a bare slug becomes `home_url('/slug/')`, using
-*this build's own* slugs (`about`, `rfc`, `urban-reforms-collective`, …) —
-**not** necessarily the old site's real canonical paths (e.g. `about-us`,
-`requests-for-collaboration` — see §8's already-open canonical-mismatch
-item). If preserving the old site's exact URLs/SEO equity matters, the WP
-Page slugs should be chosen to match those canonical paths instead before
-the phase-7 importer creates them — not yet decided, flagged here rather
-than silently picked.
+**Internal link convention — resolved: preserve the old site's real
+canonical URLs, not this build's own file-slug shorthand** (SEO matters to
+the client). Checked every hub page's `<link rel="canonical">` in
+`standalone/*.html` against its file slug: 5 of 7 already matched
+(`about` → actually `about-us` — differs; `impact`, `our-people`,
+`our-members`, `urban-reforms-collective` all matched their own slug
+already). Two didn't: `rfc.html`'s real canonical is
+`/requests-for-collaboration/`, and `learning-network.html`'s is
+`/learning-network-for-urban-managers/`. `_scripts/wp/slugs.py` is now the
+single source of truth (`CANONICAL_SLUG` dict) both builders import — the
+template filenames are `page-requests-for-collaboration.php` and
+`page-learning-network-for-urban-managers.php` accordingly, every internal
+link site-wide (nav seeder, footer, homepage body, hub-page bodies) routes
+through `wp_slug()`, and `ucan_seed_primary_menu()` in `functions.php` was updated to match —
+**including `about` → `about-us`**, the third mismatch (found the same
+way, checking `about.html`'s own canonical), so all three are now
+resolved: `page-about-us.php`, `page-requests-for-collaboration.php`,
+`page-learning-network-for-urban-managers.php`.
+
+**Nav-fidelity bug caught while wiring About's real URL back in:** the
+desktop walker (`UCAN_Nav_Walker_Desktop`) rendered every top-level item
+with a dropdown as a `<button>`, but the original static nav (§3a) makes
+**"About Us" a real `<a href="…">` to its own page** *and* a dropdown
+trigger — only "Initiatives"/"Events"/"Media" are pure category buttons
+with no destination of their own. Fixed: a top-level item with children
+now renders as `<a>` when its own URL is real (not empty/`#`), `<button>`
+only when it isn't — checked against `ucan.js`'s dropdown-toggle logic
+first, which already branches on `tagName === 'BUTTON'` for exactly this
+reason, so no JS change was needed, only the walker's markup choice.
 
 **Verification, same caveat as phase 0:** no PHP/MySQL here, so this is
 static verification only — every template checked for leftover raw

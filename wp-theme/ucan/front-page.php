@@ -157,7 +157,7 @@ get_header();
 
       <div class="hero-actions">
 
-        <a class="btn" href="<?php echo esc_url( home_url( '/about/' ) ); ?>">Explore our work <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn" href="<?php echo esc_url( home_url( '/about-us/' ) ); ?>">Explore our work <span class="arrow" aria-hidden="true">→</span></a>
 
         <a class="btn ghost" href="<?php echo esc_url( home_url( '/our-members/' ) ); ?>">Meet our members</a>
 

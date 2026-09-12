@@ -1,8 +1,8 @@
 <?php
 /**
  * Template Name: About Us
- * Auto-applies to a WP Page whose slug is "about" (file-name
- * convention - page-about.php). Content lifted verbatim from
+ * Auto-applies to a WP Page whose slug is "about-us" (file-name
+ * convention - page-about-us.php). Content lifted verbatim from
  * standalone/about.html's <main> (CLAUDE.md: content stays verbatim unless a
  * named fix is requested); only asset paths and internal links were
  * rewritten to WP functions. The page's own JSON-LD (already carrying

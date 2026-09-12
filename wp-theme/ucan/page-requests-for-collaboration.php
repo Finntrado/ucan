@@ -1,8 +1,8 @@
 <?php
 /**
  * Template Name: Request for Collaboration
- * Auto-applies to a WP Page whose slug is "rfc" (file-name
- * convention - page-rfc.php). Content lifted verbatim from
+ * Auto-applies to a WP Page whose slug is "requests-for-collaboration" (file-name
+ * convention - page-requests-for-collaboration.php). Content lifted verbatim from
  * standalone/rfc.html's <main> (CLAUDE.md: content stays verbatim unless a
  * named fix is requested); only asset paths and internal links were
  * rewritten to WP functions. The page's own JSON-LD (already carrying

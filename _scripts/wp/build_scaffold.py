@@ -18,6 +18,10 @@ see the plan file) - this only ever writes into wp-theme/ucan/.
 import io
 import os
 import re
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from slugs import wp_slug  # noqa: E402
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 STANDALONE = os.path.join(ROOT, 'standalone')
@@ -169,7 +173,7 @@ FOOTER_LINK_SLUGS = [
 for slug in FOOTER_LINK_SLUGS:
     footer_block = footer_block.replace(
         'href="%s"' % slug,
-        "href=\"<?php echo esc_url( home_url( '/%s/' ) ); ?>\"" % slug,
+        "href=\"<?php echo esc_url( home_url( '/%s/' ) ); ?>\"" % wp_slug(slug),
     )
 footer_block = footer_block.replace(
     'src="assets/img/u-can-urban-collective-action-network-08e2484273.svg"',
@@ -211,10 +215,20 @@ def php_string(s):
 
 
 home_main = INDEX[INDEX.index('<main'):INDEX.index('</main>') + len('</main>')]
-# same slug rewrite as the footer, plus the mailto/external links are left as-is
-for slug in FOOTER_LINK_SLUGS:
-    home_main = home_main.replace('href="%s"' % slug, "href=\"<?php echo esc_url( home_url( '/%s/' ) ); ?>\"" % slug)
-    home_main = home_main.replace('href="%s#' % slug, "href=\"<?php echo esc_url( home_url( '/%s/#" % slug + '\' ) ); ?>"'.replace('"\'', "'").replace('\'"', '\''))
+# same slug rewrite as the footer (remapped through wp_slug for SEO-aligned
+# canonical paths - CLAUDE.md §28), plus any #fragment is preserved; mailto/
+# external links are left as-is
+HOME_LINK_RE = re.compile(
+    r'href="(%s)((?:#[a-zA-Z0-9_-]+)?)"' % '|'.join(re.escape(s) for s in FOOTER_LINK_SLUGS)
+)
+
+
+def _home_link_sub(m):
+    slug, frag = m.group(1), m.group(2)
+    return 'href="<?php echo esc_url( home_url( \'/%s/%s\' ) ); ?>"' % (wp_slug(slug), frag)
+
+
+home_main = HOME_LINK_RE.sub(_home_link_sub, home_main)
 ASSET_URI = "<?php echo esc_url( get_template_directory_uri() ); ?>/assets/"
 home_main = (home_main
              .replace('src="assets/', 'src="%s' % ASSET_URI)
