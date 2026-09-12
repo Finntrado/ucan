@@ -892,3 +892,87 @@ whole script even though the server is still up and every other check
 (`verify.js`, `linkaudit.js`, a direct `curl`) passes against it at the same
 time. Wrapped the per-page loop in try/catch so one flaky page can't hide a
 real result on the rest; check pages individually if it happens again.
+
+---
+
+## 28. WordPress conversion (in progress) — `wp-theme/ucan/`
+
+The client's original ask was a WordPress site; `standalone/` is the finished
+design/content, built static for fast iteration. This section starts turning
+it into a real installable WP theme so the client gets an actual CMS. Full
+plan: `.claude/plans/greedy-moseying-magpie.md`. **Phase 0 (scaffold) is
+done; phases 1–7 (page templates, CPTs, importer, legal-page mail handler)
+are not started.**
+
+**No PHP/MySQL/WP-CLI in this sandbox** (checked — none on PATH). Every file
+here is hand-reviewed code, never executed or clicked through locally.
+Real verification needs a real WP install (LocalWP, Docker, or a host's
+staging site) — do that before treating any phase as "done," not just this one.
+
+### What phase 0 built
+`_scripts/wp/build_scaffold.py` extracts the chrome that's already
+byte-identical across all 176 `standalone/*.html` pages (§3c/§23/§26) by byte
+offset out of `about.html`/`index.html` — never retyped by hand, same
+discipline as every other build script in this repo — and writes:
+- `header.php` / `footer.php` — the shared `<style data-ucan="…">` blocks,
+  favicon/preload/viewport tags, and the `<header class="bar">`/`<footer>`
+  markup, with `src=`/`href=`/`poster=` asset paths rewritten to
+  `get_template_directory_uri()` and internal links to `home_url()`.
+- `front-page.php` — the homepage's real `<main>`, same treatment. Proves
+  the design actually renders once a real WP install exists.
+- `functions.php` (hand-written, not extracted) — theme setup, asset
+  enqueue (`ucan.js` deferred, not inlined — one cached request instead of
+  it being re-sent inline on every page), and the meta/OG/Organization-JSON-LD
+  `wp_head` hook (canonical + `<title>` are WP core's own job, not
+  duplicated here).
+- `style.css` — theme header comment only. **Page CSS stays inlined in
+  `header.php`**, not enqueued separately — deliberate, matches the static
+  build's performance profile (§26) and carries zero risk of a cache/enqueue
+  ordering regression versus what's already shipping.
+- `wp-theme/ucan/assets/` — a straight copy of `standalone/assets/`, no
+  re-encoding needed (post-§26 these are already real files, not base64).
+
+### The nav is now a real, editable wp-admin menu
+`rebuild_nav.py`'s hand-generated `.ucnav`/`.ucmob` markup (§3a) is replaced
+by two `Walker_Nav_Menu` subclasses (`UCAN_Nav_Walker_Desktop`/`…Mobile` in
+`functions.php`) driving one "Primary Navigation" `wp_nav_menu()`. This is
+the single highest-value "client can self-serve" win of the whole
+conversion — editing nav no longer needs a script re-run.
+- A menu item with **no children** → plain link.
+- A menu item **with children** → a dropdown (relies on `$item->has_children`,
+  which WP core's base `Walker::display_element()` sets before calling
+  `start_el` — not something `Walker_Nav_Menu` exposes by default, easy to
+  miss).
+- The `__GROUP__<label>` pseudo-item pattern from `rebuild_nav.py` (the
+  "Fellowship" divider inside Initiatives' dropdown) becomes: give a child
+  menu item the CSS class **`menu-group-heading`** in wp-admin (Screen
+  Options → CSS Classes) → renders as a bare `<p class="ucnav-gh">`, never
+  a link, never its own dropdown.
+- Current-page highlighting reuses WP core's own
+  `current-menu-item`/`current-menu-parent`/`current-menu-ancestor` item
+  classes instead of the static build's hardcoded per-page `ids` array.
+- `ucan_seed_primary_menu()` builds the real 5-item menu once, on theme
+  activation (`after_switch_theme`), so the site isn't navless until
+  someone hand-builds 15 menu items — bails out immediately if a "Primary
+  Navigation" menu already exists, so it's safe if the theme is
+  reactivated later.
+
+### What's deliberately not done yet (see the plan for the full phase list)
+- No page templates beyond the homepage — About/Impact/Our People/Our
+  Members/Learning Network/URC/RFC are phase 1.
+- No custom post types (`ucan_member`, `ucan_fellow`, `ucan_ld_session`,
+  `ucan_mixer`, `ucan_webinar`, `ucan_newsletter`) — phases 3–6. Decided
+  against ACF (a licensed plugin dependency for repeater/flexible-content
+  fields) in favour of plain `register_post_meta()` + `add_meta_box()`, so
+  a nonprofit client isn't left maintaining a plugin license.
+- No content importer yet — the plan is a one-time PHP script reusing the
+  same field-extraction approach already proven four times in this repo
+  (`build_members.py`, `build_fellowship.py`, `build_ld.py`,
+  `build_events.py`), just pointed at the finished local HTML instead of
+  scraping the live site.
+- The Data Rights page's mail-composing link is not yet replaced with a
+  real `wp_mail()` form handler (phase 7) — trivial in WP, impossible in
+  the static build, but not done.
+- Per-type JSON-LD (`Person`, `Article`, `ProfilePage`, `FAQPage`) isn't
+  emitted yet — only the site-wide `Organization` node, added per type as
+  each CPT phase lands.
