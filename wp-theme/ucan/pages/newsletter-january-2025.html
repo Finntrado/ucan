@@ -1,0 +1,1290 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style data-ucan="base">*, ::before, ::after { box-sizing: border-box; }
+
+html { text-size-adjust: 100%; scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, ::before, ::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+:root { --paper: #FBFAF6; --paper-warm: #F7F3EB; --mint: #E9F5F2; --mint-strong: #D4EDE8; --ink: #1B1B19; --ink-2: #3A3A36; --ink-soft: #57564F; --ink-light: #7A7974; --teal: #1F8F7B; --teal-text: #177A69; --teal-deep: #0E5348; --teal-mid: #145F50; --teal-light: #4EC6B2; --teal-glow: rgba(31,143,123,.08); --lime: #CDDE71; --lime-strong: #B8CC55; --lime-glow: rgba(205,222,113,.15); --orange: #FEAE00; --orange-glow: rgba(254,174,0,.1); --line: #DCEAE6; --line-strong: #B4CFC8; --sans: 'Public Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; --display: 'Archivo','Public Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; --w: 760px; --w-wide: 900px; --gutter: clamp(1.25rem,4vw,2rem); --section: clamp(3.5rem,7vw,5rem); --radius: 3px; --ease: cubic-bezier(.4,0,.2,1); }
+
+body { margin: 0px; background: var(--paper); color: var(--ink-2); font-family: var(--sans); font-size: 1.0625rem; line-height: 1.75; -webkit-font-smoothing: antialiased; text-rendering: optimizelegibility; }
+
+img, svg { display: block; max-width: 100%; height: auto; }
+
+a { color: var(--teal-text); text-decoration: underline 1px; text-underline-offset: 0.2em; font-weight: 600; transition: color 0.18s, text-decoration-color 0.18s; }
+
+a:hover { color: var(--teal-deep); text-decoration-color: var(--lime); }
+
+button { font: inherit; cursor: pointer; background: none; border: 0px; }
+
+:focus-visible { outline: 2px solid var(--teal-text); outline-offset: 3px; border-radius: 2px; }
+
+.skip { position: absolute; left: -9999px; top: 0px; background: var(--teal-deep); color: var(--paper); padding: 0.75rem 1rem; z-index: 100; text-decoration: none; font-weight: 600; }
+
+.skip:focus { left: 0.5rem; top: 0.5rem; }
+
+.wrap { max-width: var(--w); margin: 0px auto; padding: 0 var(--gutter); }
+
+.wrap-wide { max-width: var(--w-wide); margin: 0px auto; padding: 0 var(--gutter); }
+
+.progress { position: fixed; top: 0px; left: 0px; right: 0px; height: 3px; z-index: 100; background: transparent; }
+
+.progress-fill { height: 100%; width: 0px; background: linear-gradient(90deg,var(--teal),var(--lime)); transition: width 0.1s linear; }
+
+.topbar { background: var(--teal-deep); color: var(--paper); padding: 0px; position: sticky; top: 0px; z-index: 90; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+
+.topbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 56px; max-width: var(--w-wide); margin: 0px auto; padding: 0 var(--gutter); }
+
+.topbar .logo { display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--paper); font-family: var(--display); font-weight: 700; font-size: 0.9375rem; }
+
+.topbar .logo-mark { width: 28px; height: 28px; background: rgba(255, 255, 255, 0.12); border-radius: 5px; display: grid; place-items: center; font-weight: 800; font-size: 0.8125rem; line-height: 1; position: relative; }
+
+.topbar .logo-mark::after { content: ""; position: absolute; top: -2px; right: -2px; width: 6px; height: 6px; background: var(--orange); border-radius: 50%; }
+
+.topbar .logo small { font-family: var(--sans); font-size: 7px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); display: block; margin-top: 1px; }
+
+.topbar-links { display: flex; gap: 1.25rem; font-size: 0.8125rem; font-weight: 600; }
+
+.topbar-links a { color: rgba(255, 255, 255, 0.65); text-decoration: none; transition: color 0.15s; }
+
+.topbar-links a:hover { color: var(--lime); }
+
+.topbar-edition { font-family: var(--display); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lime); display: none; }
+
+@media (min-width: 700px) {
+  .topbar-edition { display: block; }
+}
+
+@media (max-width: 500px) {
+  .topbar-links { gap: 0.75rem; }
+  .topbar-links a:nth-child(3) { display: none; }
+}
+
+.masthead { padding: clamp(4rem, 9vw, 7rem) 0px clamp(3rem, 6vw, 5rem); text-align: center; position: relative; overflow: hidden; background: linear-gradient(175deg,var(--paper) 0%,var(--mint) 100%); }
+
+.mast-bg { position: absolute; inset: 0px; pointer-events: none; }
+
+.mast-bg svg { width: 100%; height: 100%; }
+
+.mast-content { position: relative; z-index: 1; }
+
+.mast-badge { display: inline-flex; align-items: center; gap: 0.6em; font-family: var(--sans); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal-deep); background: rgba(14, 83, 72, 0.06); border: 1px solid rgba(14, 83, 72, 0.12); padding: 8px 18px; border-radius: 20px; margin-bottom: 2rem; }
+
+.mast-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
+
+.mast-title { font-family: var(--display); font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 800; line-height: 0.95; letter-spacing: -0.04em; color: var(--ink); margin: 0px; }
+
+.mast-title span { display: block; background-image: ; background-position-x: ; background-position-y: ; background-size: ; background-repeat: ; background-attachment: ; background-origin: ; background-color: ; -webkit-text-fill-color: transparent; background-clip: text; }
+
+.mast-sub { font-family: var(--display); font-size: clamp(1rem, 2vw, 1.375rem); font-weight: 600; color: var(--ink-soft); letter-spacing: -0.01em; margin: 1.5rem auto 0px; max-width: 36ch; line-height: 1.35; }
+
+.mast-date { font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal-text); margin: 2rem 0px 0px; }
+
+.mast-rule { width: 48px; height: 4px; background: var(--lime); border: 0px; margin: 2rem auto 0px; border-radius: 2px; }
+
+.toc { padding: 2rem 0px; border-bottom: 1px solid var(--line); background: var(--paper); }
+
+.toc-label { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-light); margin: 0px 0px 1rem; }
+
+.toc-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.toc-link { display: inline-flex; align-items: center; gap: 0.4em; padding: 10px 18px; font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.02em; text-decoration: none; color: var(--teal-deep); background: var(--teal-glow); border: 1px solid rgba(14, 83, 72, 0.1); border-radius: 20px; transition: all .22s var(--ease); }
+
+.toc-link:hover { background: var(--teal-deep); color: var(--paper); border-color: var(--teal-deep); transform: translateY(-1px); text-decoration: none; }
+
+.toc-link svg { width: 8px; height: 8px; opacity: 0.5; }
+
+.sec { padding: var(--section) 0; border-bottom: 1px solid var(--line); }
+
+.sec:last-of-type { border-bottom: 0px; }
+
+.sec-header { display: flex; align-items: center; gap: 1.25rem; margin-bottom: clamp(2rem, 4vw, 3rem); }
+
+.sec-icon { width: 44px; height: 44px; background: var(--lime-glow); border: 1px solid rgba(205, 222, 113, 0.25); border-radius: 10px; display: grid; place-items: center; flex-shrink: 0; }
+
+.sec-icon svg { width: 20px; height: 20px; color: var(--teal); }
+
+.sec-header h2 { font-family: var(--display); font-size: clamp(1.5rem, 3vw, 1.875rem); font-weight: 800; letter-spacing: -0.02em; color: var(--ink); margin: 0px; line-height: 1.15; }
+
+.sec-header::after { content: ""; flex: 1 1 0%; height: 1px; background: linear-gradient(90deg,var(--line) 0%,transparent 100%); }
+
+.letter p { margin: 0px 0px 1.25rem; color: var(--ink-2); }
+
+.letter p:last-child { margin-bottom: 0px; }
+
+.letter-sign { margin-top: 2.5rem; padding: 1.75rem; background: var(--teal-glow); border: 1px solid rgba(14, 83, 72, 0.08); border-radius: var(--radius); display: flex; align-items: center; gap: 1.25rem; }
+
+.sign-photo { width: 64px; height: 64px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 2px solid var(--lime); box-shadow: rgba(14, 83, 72, 0.15) 0px 4px 12px; }
+
+.sign-photo img, .sign-photo svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.sign-text .name { font-family: var(--display); font-weight: 700; font-size: 1.0625rem; color: var(--ink); margin: 0px; }
+
+.sign-text .role { font-size: 0.875rem; color: var(--ink-soft); margin: 0.15rem 0px 0px; }
+
+.feature { background: linear-gradient(135deg,var(--mint) 0%,var(--mint-strong) 100%); border: 1px solid var(--line); border-radius: 8px; padding: clamp(2rem, 4vw, 2.75rem); position: relative; overflow: hidden; transition: box-shadow .28s var(--ease),transform .28s var(--ease); }
+
+.feature:hover { box-shadow: rgba(14, 83, 72, 0.18) 0px 20px 60px -24px; transform: translateY(-2px); }
+
+.feature::before { content: ""; position: absolute; top: 0px; left: 0px; right: 0px; height: 4px; background: linear-gradient(90deg,var(--teal),var(--lime)); }
+
+.feature-title { font-family: var(--display); font-size: clamp(1.25rem, 2.5vw, 1.5rem); font-weight: 800; line-height: 1.2; letter-spacing: -0.015em; color: var(--ink); margin: 0px 0px 1.5rem; max-width: 36ch; }
+
+.feature p { margin: 0px 0px 1.25rem; color: var(--ink-soft); line-height: 1.75; }
+
+.feature p:last-of-type { margin-bottom: 0px; }
+
+.articles { display: grid; gap: 1.25rem; }
+
+.art { padding: clamp(1.5rem, 3vw, 2rem); background: var(--paper); border-top-color: ; border-top-style: ; border-top-width: ; border-right-color: ; border-right-style: ; border-right-width: ; border-bottom-color: ; border-bottom-style: ; border-bottom-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-left: 4px solid var(--line); border-radius: var(--radius); transition: all .28s var(--ease); position: relative; }
+
+.art:hover { border-left-color: var(--teal); background: var(--paper-warm); box-shadow: rgba(14, 83, 72, 0.14) 0px 8px 32px -16px; transform: translateX(4px); }
+
+.art-source { display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); background: var(--teal); padding: 4px 12px; border-radius: 20px; margin-bottom: 1rem; }
+
+.art h3 { font-family: var(--display); font-size: clamp(1.125rem, 2vw, 1.3125rem); font-weight: 700; line-height: 1.25; letter-spacing: -0.01em; color: var(--ink); margin: 0px 0px 1rem; max-width: 42ch; }
+
+.art p { margin: 0px 0px 1rem; color: var(--ink-soft); line-height: 1.75; font-size: 1rem; }
+
+.art p:last-of-type { margin-bottom: 0px; }
+
+.art-link { display: inline-flex; align-items: center; gap: 0.5em; font-size: 0.875rem; font-weight: 700; margin-top: 1.25rem; text-decoration: none; color: var(--teal-text); padding: 8px 16px; background: var(--teal-glow); border-radius: 20px; transition: 0.18s; }
+
+.art-link:hover { background: var(--teal-deep); color: var(--paper); text-decoration: none; }
+
+.art-link svg { width: 10px; height: 10px; transition: transform 0.18s; }
+
+.art-link:hover svg { transform: translateX(3px); }
+
+.stat-card { border-radius: 12px; padding: clamp(2.5rem, 5vw, 4rem) clamp(2rem, 4vw, 3rem); text-align: center; position: relative; overflow: hidden; background: linear-gradient(135deg,var(--teal-deep) 0%,var(--teal-mid) 50%,var(--teal) 100%); color: var(--paper); margin-bottom: 2.5rem; }
+
+.stat-bg { position: absolute; inset: 0px; pointer-events: none; opacity: 0.15; }
+
+.stat-bg svg { width: 100%; height: 100%; }
+
+.stat-num { font-family: var(--display); font-size: clamp(4rem, 10vw, 7rem); font-weight: 800; line-height: 0.9; letter-spacing: -0.05em; margin: 0px; position: relative; z-index: 1; background-image: ; background-position-x: ; background-position-y: ; background-size: ; background-repeat: ; background-attachment: ; background-origin: ; background-color: ; -webkit-text-fill-color: transparent; background-clip: text; }
+
+.stat-unit { font-family: var(--display); font-size: clamp(1rem, 2vw, 1.375rem); font-weight: 700; letter-spacing: -0.01em; color: var(--lime); margin: 0.75rem 0px 0px; position: relative; z-index: 1; }
+
+.stat-desc { font-size: clamp(0.9375rem, 1.3vw, 1.0625rem); line-height: 1.6; color: rgba(251, 250, 246, 0.75); margin: 1.5rem auto 0px; max-width: 40ch; position: relative; z-index: 1; }
+
+.stat-source { font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(251, 250, 246, 0.4); margin-top: 2rem; position: relative; z-index: 1; }
+
+.quote { margin: 2rem 0px; padding: 2rem 2rem 2rem 2.5rem; position: relative; background: var(--lime-glow); border-radius: var(--radius); border: 1px solid rgba(205, 222, 113, 0.2); }
+
+.quote::before { content: ""; position: absolute; left: 0px; top: 0px; bottom: 0px; width: 4px; background: linear-gradient(180deg,var(--lime) 0%,var(--teal) 100%); border-radius: 4px 0px 0px 4px; }
+
+.quote p { font-family: var(--display); font-style: italic; font-weight: 600; font-size: clamp(1.0625rem, 1.5vw, 1.1875rem); line-height: 1.55; color: var(--ink); margin: 0px; }
+
+.cities-highlight { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 2rem; }
+
+@media (min-width: 600px) {
+  .cities-highlight { grid-template-columns: 1fr 1fr; }
+}
+
+.cities-stat { padding: 1.5rem; background: var(--paper-warm); border: 1px solid var(--line); border-radius: 8px; text-align: center; transition: transform .22s var(--ease),border-color .22s var(--ease); }
+
+.cities-stat:hover { transform: translateY(-2px); border-color: var(--lime); }
+
+.cities-num { font-family: var(--display); font-size: 2.5rem; font-weight: 800; line-height: 1; letter-spacing: -0.03em; color: var(--teal); margin: 0px; }
+
+.cities-label { font-size: 0.8125rem; font-weight: 600; color: var(--ink-soft); margin: 0.5rem 0px 0px; line-height: 1.4; }
+
+.btn { display: inline-flex; align-items: center; gap: 0.5em; padding: 14px 24px; font-family: var(--sans); font-size: 0.9375rem; font-weight: 700; border-radius: var(--radius); text-decoration: none; transition: all .22s var(--ease); line-height: 1; border: 1px solid transparent; }
+
+.btn-primary { background: var(--teal-deep); color: var(--paper); border-color: var(--teal-deep); }
+
+.btn-primary:hover { background: var(--ink); border-color: var(--ink); transform: translateY(-1px); text-decoration: none; }
+
+.btn-ghost { color: var(--teal-deep); border-color: var(--line-strong); background: var(--paper); }
+
+.btn-ghost:hover { border-color: var(--teal-deep); background: var(--teal-glow); text-decoration: none; }
+
+.btn svg { width: 12px; height: 12px; flex-shrink: 0; transition: transform 0.18s; }
+
+.btn:hover svg { transform: translateX(3px); }
+
+.btt { position: fixed; bottom: 2rem; right: 2rem; z-index: 80; width: 44px; height: 44px; background: var(--teal-deep); color: var(--paper); border-radius: 50%; display: grid; place-items: center; box-shadow: rgba(14, 83, 72, 0.3) 0px 4px 16px; opacity: 0; transform: translateY(12px); transition: opacity .28s var(--ease),transform .28s var(--ease),background .18s ease; pointer-events: none; }
+
+.btt.show { opacity: 1; transform: translateY(0px); pointer-events: auto; }
+
+.btt:hover { background: var(--ink); }
+
+.btt svg { width: 16px; height: 16px; }
+
+.nl-footer { padding: var(--section) 0 2rem; background: var(--ink); color: rgb(140, 160, 152); text-align: center; font-size: 0.875rem; line-height: 1.6; }
+
+.nl-footer .logo { display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none; color: var(--paper); font-family: var(--display); font-weight: 700; font-size: 1rem; margin-bottom: 1rem; }
+
+.nl-footer .logo-mark { width: 28px; height: 28px; background: var(--teal); border-radius: 5px; display: grid; place-items: center; font-weight: 800; font-size: 0.8125rem; line-height: 1; color: var(--paper); }
+
+.nl-footer .logo small { font-family: var(--sans); font-size: 7px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgb(140, 160, 152); display: block; margin-top: 1px; }
+
+.nl-footer p { margin: 0.5rem auto; max-width: 48ch; }
+
+.social { display: flex; justify-content: center; gap: 0.75rem; margin: 1.5rem 0px; }
+
+.social a { width: 36px; height: 36px; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 50%; display: grid; place-items: center; text-decoration: none; transition: border-color 0.18s, background 0.18s; }
+
+.social a:hover { border-color: var(--lime); background: rgba(255, 255, 255, 0.06); }
+
+.social a svg { width: 16px; height: 16px; color: rgb(140, 160, 152); }
+
+.social a:hover svg { color: var(--lime); }
+
+.nl-footer-links { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.06); font-size: 0.8125rem; }
+
+.nl-footer-links a { color: rgb(140, 160, 152); text-decoration: none; font-weight: 500; }
+
+.nl-footer-links a:hover { color: var(--lime); }
+
+.sec-img { width: 100%; aspect-ratio: 16 / 7; border-radius: 8px; overflow: hidden; margin-bottom: 2rem; position: relative; }
+
+.sec-img img, .sec-img svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.sec-img figcaption { position: absolute; bottom: 0px; left: 0px; right: 0px; padding: 1rem 1.25rem; background: linear-gradient(0deg, rgba(14, 83, 72, 0.85) 0%, transparent 100%); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; color: rgba(251, 250, 246, 0.8); }
+
+.illus { background: var(--mint); position: relative; overflow: hidden; }
+
+.illus svg { position: absolute; inset: 0px; width: 100%; height: 100%; }
+
+.illus-label { position: absolute; bottom: 1rem; left: 1.25rem; font-family: var(--display); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal-deep); opacity: 0.6; }
+
+.art-img { width: 100%; aspect-ratio: 16 / 8; border-radius: 6px; overflow: hidden; margin-bottom: 1.25rem; position: relative; }
+
+.art-img img, .art-img svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.art-img figcaption { position: absolute; bottom: 0px; left: 0px; right: 0px; padding: 0.65rem 1rem; background: linear-gradient(0deg, rgba(0, 0, 0, 0.6) 0%, transparent 100%); font-size: 0.6875rem; font-weight: 600; color: rgba(255, 255, 255, 0.8); }
+
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s var(--ease),transform .6s var(--ease); }
+
+.reveal.visible { opacity: 1; transform: translateY(0px); }
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+
+.reveal-delay-2 { transition-delay: 0.2s; }
+
+.reveal-delay-3 { transition-delay: 0.25s; }</style>
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="preload" href="%%UCAN_THEME%%/assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="%%UCAN_THEME%%/assets/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin><style data-ucan="fonts">@font-face{font-family:'Archivo';font-style:normal;font-weight:500 800;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/archivo-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face{font-family:'Archivo';font-style:normal;font-weight:500 800;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/archivo-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face{font-family:'Public Sans';font-style:italic;font-weight:400;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/public-sans-italic-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face{font-family:'Public Sans';font-style:italic;font-weight:400;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/public-sans-italic-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 700;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/public-sans-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 700;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/public-sans-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}</style>
+<meta name="theme-color" content="#0E5348">
+<meta name="robots" content="index,follow">
+
+<title>U-CAN Newsletter — January 2025 | U-CAN</title>
+<meta name="description" content="Hello and welcome to the first edition of this newsletter in 2025!">
+
+<link rel="canonical" href="https://urban.org.in/newsletter/january-2025/">
+<link rel="icon" href="%%UCAN_THEME%%/assets/img/favicon-78b77e29b1.png">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="U-CAN Newsletter — January 2025 | U-CAN">
+<meta property="og:description" content="Hello and welcome to the first edition of this newsletter in 2025!">
+<meta property="og:url" content="https://urban.org.in/newsletter/january-2025/">
+
+
+
+
+<style>
+/* pre-existing narrow-width overflow: .sec-img carried 40px side margins inside a padded wrap */
+@media (max-width:900px){
+  .sec-img{margin-left:0;margin-right:0}
+}
+</style>
+<script type="application/ld+json" data-ucan="schema">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://urban.org.in/#org",
+      "name": "Urban Collective Action Network (U-CAN)",
+      "alternateName": "U-CAN",
+      "url": "https://urban.org.in/",
+      "email": "connect@urban.org.in",
+      "description": "Hello and welcome to the first edition of this newsletter in 2025!",
+      "foundingDate": "2022",
+      "areaServed": "IN",
+      "sameAs": [
+        "https://www.linkedin.com/company/urban-collective-action-network-u-can/",
+        "https://www.youtube.com/@U-CAN24"
+      ]
+    },
+    {
+      "@type": "Article",
+      "@id": "https://urban.org.in/newsletter/urban-brief-june-2026/#article",
+      "headline": "U-CAN Newsletter \u2014 January 2025 | U-CAN",
+      "description": "Hello and welcome to the first edition of this newsletter in 2025!",
+      "datePublished": "2025-01-01",
+      "inLanguage": "en-IN",
+      "isPartOf": {
+        "@id": "https://urban.org.in/newsletter/#page"
+      },
+      "publisher": {
+        "@id": "https://urban.org.in/#org"
+      },
+      "author": {
+        "@id": "https://urban.org.in/#org"
+      },
+      "mainEntityOfPage": "https://urban.org.in/newsletter/urban-brief-june-2026/"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://urban.org.in/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Newsletter",
+          "item": "https://urban.org.in/newsletter/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "U-CAN Newsletter \u2014 January 2025 | U-CAN",
+          "item": "https://urban.org.in/newsletter/urban-brief-june-2026/"
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style data-ucan="brief">
+.crumb-brief{margin-bottom:18px;font-size:13.5px;color:var(--ink-soft,#57564F)}
+.crumb-brief a{color:var(--teal-text,#177A69);font-weight:600;text-decoration:none}
+.crumb-brief a:hover{text-decoration:underline}
+.crumb-brief span[aria-hidden]{opacity:.5;margin:0 6px}
+section.masthead{position:relative;overflow:hidden}
+
+/* Pre-existing bug from the original mhtml unpack: the serialiser wrote
+   `background-image: ;` for the two gradient-text rules, so both elements
+   render with a transparent fill and no gradient behind it — i.e. invisible.
+   Restore the brand gradient. */
+.mast-title span,.stat-num{
+  background-image:linear-gradient(120deg,var(--teal-deep,#0E5348) 0%,var(--teal,#1F8F7B) 55%,var(--teal-light,#4EC6B2) 100%);
+  background-clip:text;-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;color:var(--teal-deep,#0E5348)}
+@supports not ((background-clip:text) or (-webkit-background-clip:text)){
+  .mast-title span,.stat-num{background-image:none;-webkit-text-fill-color:currentColor}
+}
+</style>
+<style data-ucan="chrome">
+/* ——— site chrome: one header + one footer on every page ———
+   Self-contained on purpose: three different base64 stylesheets exist across
+   the site, so nothing here may depend on page-specific custom properties. */
+.bar{position:sticky;top:0;z-index:90;background:rgba(251,250,246,.92);
+  -webkit-backdrop-filter:saturate(180%) blur(12px);backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid var(--line,#DCEAE6);transition:box-shadow .25s cubic-bezier(.22,.61,.36,1)}
+.bar.scrolled{box-shadow:0 1px 22px -10px rgba(14,83,72,.4)}
+.bar-in{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4.5vw,52px);height:78px;
+  display:flex;align-items:center;justify-content:space-between;gap:24px}
+.bar .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink,#222120)}
+.bar .brand img{width:38px;height:38px;object-fit:contain;flex:0 0 38px}
+.bar .brand b{font-family:var(--display,'Archivo',Arial,sans-serif);font-weight:800;font-size:21px;
+  letter-spacing:-.02em;line-height:1;display:block}
+.bar .brand small{display:block;font-weight:600;font-size:8.4px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-soft,#57564F);margin-top:3px}
+.bar-cta{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans,'Public Sans',sans-serif);
+  font-size:14px;font-weight:700;text-decoration:none;color:var(--paper,#FBFAF6);
+  background:var(--teal-deep,#0E5348);padding:11px 20px;border-radius:2px;white-space:nowrap;
+  border:1.5px solid var(--teal-deep,#0E5348);transition:background .2s,transform .2s}
+.bar-cta:hover{background:var(--ink,#222120);border-color:var(--ink,#222120);transform:translateY(-2px)}
+/* Neutralise anything the page's own stylesheet says about these elements —
+   three different base64 stylesheets are in play and two of them still carry
+   rules from when .nav / .header WAS that page's header. */
+.bar .ucnav-bar{margin:0;padding:0;border:0;background:none;box-shadow:none;
+  height:auto;line-height:normal;position:static;display:block}
+.bar .brand span{line-height:1}
+.bar-cta{line-height:1;height:44px;letter-spacing:0}
+.burger{display:none;width:46px;height:46px;border:1px solid var(--line,#DCEAE6);background:transparent;
+  border-radius:2px;cursor:pointer;padding:0;align-items:center;justify-content:center;flex:0 0 46px}
+.burger span,.burger span::before,.burger span::after{display:block;width:19px;height:1.7px;
+  background:var(--ink,#222120);transition:transform .25s cubic-bezier(.22,.61,.36,1),background .2s}
+.burger span{position:relative}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0}
+.burger span::before{top:-6px}
+.burger span::after{top:6px}
+.burger[aria-expanded="true"] span{background:transparent}
+.burger[aria-expanded="true"] span::before{transform:translateY(6px) rotate(45deg)}
+.burger[aria-expanded="true"] span::after{transform:translateY(-6px) rotate(-45deg)}
+.msheet{display:none;border-top:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6)}
+.msheet.open{display:block}
+.msheet>.wrap{max-width:1240px;margin:0 auto;padding:8px clamp(20px,4.5vw,52px) 20px}
+@media(max-width:1100px){
+  .bar .ucnav-bar{display:none}
+  .burger{display:inline-flex}
+}
+@media(max-width:420px){
+  .bar-cta{display:none}
+}
+
+/* ——— cookie banner ———
+   Bottom-of-viewport popup. Defined here (not in a page stylesheet) so it
+   behaves identically on all 148 pages. */
+.cc{position:fixed;left:0;right:0;bottom:0;z-index:120;
+  background:var(--paper,#FBFAF6);border-top:3px solid var(--teal-deep,#0E5348);
+  box-shadow:0 -8px 40px -18px rgba(14,83,72,.5);
+  transform:translateY(110%);visibility:hidden;
+  transition:transform .45s cubic-bezier(.22,.61,.36,1),visibility .45s;
+  font-family:var(--sans,'Public Sans',sans-serif)}
+.cc.show{transform:none;visibility:visible}
+.cc-in{max-width:1240px;margin:0 auto;padding:20px clamp(20px,4.5vw,52px);
+  display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.cc-in>*{min-width:0}
+.cc-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--teal-text,#177A69);margin-bottom:7px}
+.cc-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--teal,#1F8F7B)}
+.cc h2{font-family:var(--display,'Archivo',Arial,sans-serif);font-size:16px;margin:0 0 6px;
+  color:var(--ink,#222120);line-height:1.3}
+.cc p{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-soft,#57564F);max-width:82ch}
+.cc p a{color:var(--teal-text,#177A69);font-weight:600}
+.cc-act{display:flex;gap:10px;flex-wrap:wrap}
+.cc-btn{padding:11px 20px;font-family:inherit;font-size:14px;font-weight:700;line-height:1;
+  border-radius:2px;cursor:pointer;border:1.5px solid var(--teal-deep,#0E5348);
+  background:var(--teal-deep,#0E5348);color:var(--paper,#FBFAF6);white-space:nowrap;
+  transition:transform .2s,background .2s}
+.cc-btn:hover{transform:translateY(-2px)}
+.cc-btn.alt{background:transparent;color:var(--teal-deep,#0E5348);border-color:var(--line,#DCEAE6)}
+.cc-btn.alt:hover{border-color:var(--teal,#1F8F7B)}
+@media(max-width:720px){
+  .cc-in{grid-template-columns:1fr;gap:14px}
+  .cc-act{width:100%}
+  .cc-btn{flex:1 1 auto}
+}
+
+/* ——— footer ——— */
+footer{background:var(--ink,#222120);color:#B9C4BF;padding:clamp(52px,6vw,72px) 0 26px;
+  border-top:1px solid rgba(255,255,255,.08);font-family:var(--sans,'Public Sans',sans-serif)}
+footer>.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4.5vw,52px)}
+.f-grid{display:grid;grid-template-columns:1.35fr .85fr .85fr 1.5fr;gap:clamp(26px,3.4vw,46px);
+  padding-bottom:42px;border-bottom:1px solid rgba(255,255,255,.1)}
+.f-grid>*{min-width:0}
+footer .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+footer .brand img{width:38px;height:38px;object-fit:contain;flex:0 0 38px}
+footer .brand b{font-family:var(--display,'Archivo',Arial,sans-serif);font-weight:800;font-size:21px;
+  letter-spacing:-.02em;line-height:1;display:block;color:#fff}
+footer .brand small{display:block;font-weight:600;font-size:8.4px;letter-spacing:.13em;
+  text-transform:uppercase;color:#8CA098;margin-top:3px}
+footer .blurb{max-width:300px;margin:20px 0 0;font-size:14.5px;color:#8CA098;line-height:1.6}
+footer h4{font-family:var(--sans,'Public Sans',sans-serif);font-weight:700;font-size:12.5px;
+  letter-spacing:.1em;text-transform:uppercase;color:#fff;margin:0 0 18px}
+footer ul{margin:0;padding:0;list-style:none}
+footer li{margin-bottom:11px;list-style:none}
+footer a{text-decoration:none;font-size:14.5px;color:#B9C4BF;transition:color .18s}
+footer a:hover{color:var(--lime,#CDDE71)}
+.f-subtext{margin:0 0 16px;font-size:14px;line-height:1.6;color:#8CA098}
+.fnrow{display:flex;gap:8px;flex-wrap:wrap}
+.fnrow input{flex:1 1 150px;min-width:0;padding:11px 13px;font-family:inherit;font-size:14.5px;
+  color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);border-radius:2px}
+.fnrow input::placeholder{color:#8CA098}
+.fnrow input:focus{outline:2px solid var(--lime,#CDDE71);outline-offset:1px}
+.fnrow button{padding:11px 20px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;
+  color:var(--ink,#222120);background:var(--lime,#CDDE71);border:1.5px solid var(--lime,#CDDE71);
+  border-radius:2px;white-space:nowrap;transition:transform .2s}
+.fnrow button:hover{transform:translateY(-2px)}
+.fconsent{display:grid;grid-template-columns:auto 1fr;gap:10px;margin-top:13px;align-items:start}
+.fconsent input{margin-top:3px;width:16px;height:16px;flex:0 0 16px;accent-color:var(--teal,#1F8F7B)}
+.fconsent label{font-size:12.5px;line-height:1.55;color:#8CA098;min-width:0}
+.fconsent label a{font-size:12.5px;color:var(--lime,#CDDE71)}
+.f-sub .nerr,.f-sub .nok{display:none;margin:12px 0 0;font-size:13px;line-height:1.5;font-weight:600}
+.f-sub .nerr{color:#FFC9B0}
+.f-sub .nok{color:var(--lime,#CDDE71)}
+.f-legal{margin:13px 0 0;font-size:11.5px;line-height:1.55;color:#75857E}
+.f-legal a{font-size:11.5px;color:#8CA098}
+.f-social{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:20px !important}
+.f-social li{margin-bottom:0}
+.f-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:24px;
+  font-size:13px;color:#7C8B85}
+.f-bottom a{color:#7C8B85;margin-left:18px;font-size:13px}
+.cookie-link{margin-left:18px;background:none;border:0;padding:0;font-family:inherit;font-size:13px;
+  color:#7C8B85;cursor:pointer;text-decoration:underline}
+.cookie-link:hover{color:var(--lime,#CDDE71)}
+@media(max-width:1040px){
+  .f-grid{grid-template-columns:1fr 1fr;row-gap:36px}
+  .f-sub{grid-column:1/-1}
+}
+@media(max-width:560px){
+  .f-grid{grid-template-columns:1fr}
+  .f-bottom{flex-direction:column;gap:8px}
+  .f-bottom a,.cookie-link{margin-left:0;margin-right:16px}
+}
+</style>
+<style data-ucan="nav">
+/* ——— site nav: 5 top-level items with dropdowns (mirrors urban.org.in IA) ——— */
+.ucnav-bar{display:block}
+.ucnav{display:flex;align-items:center;gap:clamp(2px,1.1vw,14px);flex-wrap:nowrap}
+.ucnav-i{position:relative;display:flex;align-items:center}
+.ucnav-t{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+  font-family:var(--sans);font-size:14.5px;font-weight:600;line-height:1;
+  color:var(--ink);text-decoration:none;background:none;border:0;cursor:pointer;
+  padding:10px 10px;border-radius:2px;transition:color .18s ease,background .18s ease}
+.ucnav-t:hover,.ucnav-i:hover>.ucnav-t{color:var(--teal-deep);background:rgba(31,143,123,.07)}
+.ucnav-t.on{color:var(--teal-deep)}
+.ucnav-t.on::after{content:"";position:absolute;left:10px;right:10px;bottom:2px;height:2px;background:var(--teal)}
+.ucnav-i>.ucnav-t.on::after{left:10px;right:22px}
+.ucnav-cv{width:9px;height:6px;flex:0 0 9px;transition:transform .2s ease;opacity:.75}
+.ucnav-i:hover .ucnav-cv,.ucnav-i.open .ucnav-cv{transform:rotate(180deg)}
+.ucnav-dd{position:absolute;top:100%;left:0;min-width:246px;padding:8px;
+  background:var(--paper,#FBFAF6);border:1px solid var(--line);
+  box-shadow:0 18px 44px -22px rgba(14,83,72,.55);
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+  transition:opacity .18s ease,transform .18s ease,visibility .18s;z-index:80}
+.ucnav-i:hover .ucnav-dd,.ucnav-i.open .ucnav-dd,.ucnav-i:focus-within .ucnav-dd{opacity:1;visibility:visible;transform:translateY(0)}
+.ucnav-dd a{display:block;padding:10px 12px;font-family:var(--sans);font-size:14px;font-weight:500;
+  line-height:1.35;color:var(--ink-soft);text-decoration:none;border-radius:2px}
+.ucnav-dd a:hover,.ucnav-dd a:focus-visible{background:var(--paper-alt,#E9F5F2);color:var(--teal-deep)}
+.ucnav-i:last-child .ucnav-dd{left:auto;right:0}
+.ucnav-gh{margin:8px 12px 4px;padding-top:9px;border-top:1px solid var(--line);
+  font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-soft);opacity:.8}
+.ucnav-dd .ucnav-gh+a{padding-left:12px}
+
+/* mobile sheet */
+.ucmob{display:flex;flex-direction:column;gap:2px}
+.ucmob-t{display:block;padding:13px 0;font-family:var(--display);font-weight:700;
+  font-size:19px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.ucmob-g{border-bottom:1px solid var(--line);padding:13px 0}
+.ucmob-h{font-family:var(--display);font-weight:700;font-size:19px;color:var(--ink);margin:0 0 6px}
+.ucmob-l{display:flex;flex-direction:column}
+.ucmob-l a{padding:8px 0 8px 14px;font-family:var(--sans);font-size:15px;font-weight:500;
+  color:var(--ink-soft);text-decoration:none;border-left:2px solid var(--line)}
+.ucmob-l a:hover{color:var(--teal-deep);border-left-color:var(--teal)}
+.ucmob-gh{margin:12px 0 4px;font-family:var(--sans);font-weight:700;font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);opacity:.8}
+.ucmob-cta{color:var(--teal-deep)}
+</style>
+<style data-ucan="rhythm">
+/* ——— vertical rhythm ——— */
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:auto!important;flex:0 0 auto!important}.vm-card{display:flex;flex-direction:column}.vm-card .brochure-btn{margin-top:auto;align-self:flex-start;padding-top:14px}.vm-card .vm-text+.brochure-btn,.vm-card .brochure-btn{margin-top:auto}@media(min-width:1001px){.vm-card .brochure-btn{margin-top:auto}.vm-card{min-height:100%}}.bar .brand img{width:168px!important;max-width:168px!important}footer .brand img{width:178px!important;max-width:178px!important}.bar-in{height:92px}.ucnav-t{font-size:16px}.bar-cta{font-size:15px;height:46px;padding:0 22px}html{scroll-padding-top:108px}@media(max-width:1100px){.bar .brand img{width:148px!important;max-width:148px!important}.bar-in{height:80px}html{scroll-padding-top:96px}}@media(max-width:560px){.bar .brand img{width:130px!important;max-width:130px!important}.bar-in{height:70px}}.sec{padding:clamp(52px,5.6vw,80px) 0}
+.section{padding:clamp(54px,5.8vw,84px) 0}
+.sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
+.sec-head>*{min-width:0}
+.section-head{max-width:74ch}
+
+/* a heading sitting directly on a full-bleed band needs far less air below it */
+.sec:has(+.impact-band),.sec[style*="padding-bottom:0"]{padding-bottom:0}
+.sec[style*="padding-bottom:0"] .sec-head{margin-bottom:clamp(20px,2.4vw,30px)}
+.impact-band,.stat-band{padding:clamp(34px,4vw,52px) 0}
+
+/* a text column next to a tall diagram: centre it rather than leaving the
+   diagram's lower half beside empty space */
+.split-mid{align-items:center}
+.split-mid .fw{min-height:0}
+
+/* session dates wrapped onto two lines ("February 21, 2025") */
+@media(min-width:901px){.sdate{width:11.5em;white-space:nowrap}}
+
+/* the hero already carries generous padding; don't stack another full gap on it */
+.hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
+</style>
+<style data-ucan="fallback">@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:500;size-adjust:93.4%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:600;size-adjust:95.5%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:700;size-adjust:99%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:800;size-adjust:104.3%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial"),local("ArialMT"),local("Helvetica Neue");font-weight:400;size-adjust:105.3%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial"),local("ArialMT"),local("Helvetica Neue");font-weight:500;size-adjust:106.1%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:600;size-adjust:98.9%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:700;size-adjust:100.3%;ascent-override:92%;descent-override:24%;line-gap-override:0%}.hero-lede{max-width:39.2em}.sec-head h2{max-width:13.1em}.section-head{max-width:45.3em}.post-hero img{aspect-ratio:16/9;height:auto}</style><style data-ucan="type">
+/* form controls don't inherit font-family from the page; without this a
+   <button class="btn"> falls back to the UA default (Arial) while the
+   same class on an <a> renders in Public Sans */
+button,input,select,textarea{font-family:inherit}
+
+/* kickers inside a .body column lost their styling to `.body p` */
+main p.kicker{font-family:var(--sans,'Public Sans',sans-serif)!important;font-size:12.5px!important;line-height:1.62!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:uppercase!important;color:var(--teal-text,#177A69)!important}
+main .on-dark.kicker,main .kicker.on-dark{color:var(--lime,#CDDE71)!important}
+
+/* One type scale and one bullet, applied last so it settles the differences between the shell pages, the newsletter template and the imported WordPress bodies. Classed paragraphs (kickers, leads, captions) keep their own role sizes. */
+main h1{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(38px,6.4vw,76px)!important;line-height:1.05!important;letter-spacing:-.03em}
+main h2{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em}
+main h3{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(18px,1.9vw,21px)!important;line-height:1.32!important;letter-spacing:-.01em}
+main p:not([class]){font-size:17px!important;line-height:1.62!important}
+/* prose lists had list-style:none with no marker, so bullets were invisible; match the .blist component the rest of the site uses */
+main ul:not([class]){list-style:none;margin:18px 0 0;padding:0}
+main ul:not([class])>li{list-style:none!important;display:block!important;position:relative;padding:11px 0 11px 20px;border-top:1px dashed var(--line,#DCEAE6);font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;min-width:0;overflow-wrap:break-word}
+main ul:not([class])>li:first-child{border-top:0}
+main ul:not([class])>li::before{content:"";position:absolute;left:0;top:calc(11px + .81em - 3.5px);width:7px;height:7px;background:var(--teal,#1F8F7B);border-radius:50%}
+main ol:not([class]){margin:18px 0 0;padding-left:22px}
+main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
+main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
+</style>
+<style data-ucan="share">.nl-share{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:1.75rem}.nl-share .lbl{font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft,#57564F);margin-right:.25rem}.nl-share a,.nl-share button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;height:40px;padding:0 .95rem;border-radius:999px;border:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6);color:var(--ink,#222120);font-family:inherit;font-size:.8125rem;font-weight:600;text-decoration:none;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}.nl-share a:hover,.nl-share button:hover{background:var(--teal-deep,#0E5348);border-color:var(--teal-deep,#0E5348);color:#fff;transform:translateY(-1px)}.nl-share svg{width:15px;height:15px;flex:none}.nl-share button[hidden]{display:none}</style>
+<style data-ucan="share">.nl-share{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:1.75rem}.nl-share .lbl{font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft,#57564F);margin-right:.25rem}.nl-share a,.nl-share button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;height:40px;padding:0 .95rem;border-radius:999px;border:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6);color:var(--ink,#222120);font-family:inherit;font-size:.8125rem;font-weight:600;text-decoration:none;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}.nl-share a:hover,.nl-share button:hover{background:var(--teal-deep,#0E5348);border-color:var(--teal-deep,#0E5348);color:#fff;transform:translateY(-1px)}.nl-share svg{width:15px;height:15px;flex:none}.nl-share button[hidden]{display:none}</style>
+<style data-ucan="heads">.sec-head:has(>.kicker:first-child){row-gap:0!important}.sec-head>.kicker:first-child+:is(h2,h3){margin-top:2px!important}.sec-head>:is(h2,h3)+.lead{margin-top:16px!important}main h3.fx-h3-lg{font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em!important}</style><style data-ucan="a11y">footer .f-h{font-family:var(--sans,'Public Sans',sans-serif)!important;font-weight:700;font-size:12.5px!important;line-height:1.4;letter-spacing:.1em;text-transform:uppercase;color:var(--paper,#FBFAF6);margin:0 0 18px}.f-legal,.f-legal a{color:#8CA098!important}#fnform a{text-decoration:underline!important;text-underline-offset:2px}.pr-num{color:var(--teal,#1F8F7B)!important}.pr:hover .pr-num,.pr:focus-within .pr-num{color:var(--teal-deep,#0E5348)!important}.f-bottom>span:last-child{display:inline-flex;flex-wrap:wrap;align-items:center;column-gap:20px;row-gap:8px}.f-bottom>span:last-child a,.f-bottom .cookie-link{display:inline-flex;align-items:center;min-height:24px;margin:0!important}</style></head>
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<!-- Progress bar -->
+<div class="progress" aria-hidden="true"><div class="progress-fill" id="progressFill" style="width: 99.9981%;"></div></div>
+</div>
+
+<header class="bar" id="bar">
+  <div class="bar-in">
+    <a class="brand" href="%%UCAN_HOME%%/" aria-label="U-CAN — Urban Collective Action Network, home">
+      <img src="%%UCAN_THEME%%/assets/img/u-can-urban-collective-action-network-08e2484273.svg" width="107" height="40" alt="U-CAN — Urban Collective Action Network" fetchpriority="high" decoding="async">
+    </a>
+    <nav class="ucnav-bar" aria-label="Primary"><div class="ucnav"><div class="ucnav-i"><a class="ucnav-t" href="%%UCAN_HOME%%/about">About Us<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><div class="ucnav-dd"><a href="%%UCAN_HOME%%/about">About U-CAN</a><a href="%%UCAN_HOME%%/our-people">Our People</a><a href="%%UCAN_HOME%%/impact">Impact</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Initiatives<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="%%UCAN_HOME%%/urban-reforms-collective">Urban Reforms Collective (URC)</a><a href="%%UCAN_HOME%%/rfc">Request for Collaboration (RFC)</a><a href="%%UCAN_HOME%%/learning-network">Learning Network for Urban Managers</a><a href="%%UCAN_HOME%%/fellowship">U-CAN Fellowship</a><p class="ucnav-gh">Fellowship</p><a href="%%UCAN_HOME%%/meet-the-fellows">Meet the 2024-25 Fellows</a><a href="%%UCAN_HOME%%/fellow-blogs">Blogs by Our Fellows</a><a href="%%UCAN_HOME%%/ld-calendar">L&D Calendar</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Events<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="%%UCAN_HOME%%/city-mixers">U-CAN City Mixers</a><a href="%%UCAN_HOME%%/annual-forum-2025">The U-CAN Annual Forum 2025</a></div></div><a class="ucnav-t" href="%%UCAN_HOME%%/our-members">Our Members</a><div class="ucnav-i"><button type="button" class="ucnav-t on" aria-expanded="false" aria-haspopup="true">Media<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="%%UCAN_HOME%%/newsletter">Newsletter</a><a href="%%UCAN_HOME%%/city-champions">City Champions</a><a href="%%UCAN_HOME%%/policy-webinars">Policy Webinars</a></div></div></div></nav>
+    <a class="bar-cta" href="%%UCAN_HOME%%/newsletter#subscribe">Subscribe</a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="msheet" aria-label="Open navigation menu"><span></span></button>
+  </div>
+  <div class="msheet" id="msheet"><div class="wrap"><div class="ucmob"><div class="ucmob-g"><p class="ucmob-h">About Us</p><div class="ucmob-l"><a href="%%UCAN_HOME%%/about">About U-CAN</a><a href="%%UCAN_HOME%%/our-people">Our People</a><a href="%%UCAN_HOME%%/impact">Impact</a></div></div><div class="ucmob-g"><p class="ucmob-h">Initiatives</p><div class="ucmob-l"><a href="%%UCAN_HOME%%/urban-reforms-collective">Urban Reforms Collective (URC)</a><a href="%%UCAN_HOME%%/rfc">Request for Collaboration (RFC)</a><a href="%%UCAN_HOME%%/learning-network">Learning Network for Urban Managers</a><a href="%%UCAN_HOME%%/fellowship">U-CAN Fellowship</a><p class="ucmob-gh">Fellowship</p><a href="%%UCAN_HOME%%/meet-the-fellows">Meet the 2024-25 Fellows</a><a href="%%UCAN_HOME%%/fellow-blogs">Blogs by Our Fellows</a><a href="%%UCAN_HOME%%/ld-calendar">L&D Calendar</a></div></div><div class="ucmob-g"><p class="ucmob-h">Events</p><div class="ucmob-l"><a href="%%UCAN_HOME%%/city-mixers">U-CAN City Mixers</a><a href="%%UCAN_HOME%%/annual-forum-2025">The U-CAN Annual Forum 2025</a></div></div><a class="ucmob-t" href="%%UCAN_HOME%%/our-members">Our Members</a><div class="ucmob-g"><p class="ucmob-h">Media</p><div class="ucmob-l"><a href="%%UCAN_HOME%%/newsletter">Newsletter</a><a href="%%UCAN_HOME%%/city-champions">City Champions</a><a href="%%UCAN_HOME%%/policy-webinars">Policy Webinars</a></div></div><a class="ucmob-t ucmob-cta" href="%%UCAN_HOME%%/newsletter#subscribe">Subscribe</a></div></div></div>
+</header>
+
+<main id="main">
+
+<section class="masthead" aria-labelledby="mast-h">
+  <div class="mast-bg" aria-hidden="true">
+    <svg viewBox="0 0 900 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="80" cy="50" r="220" fill="#1F8F7B" opacity=".07"></circle>
+      <circle cx="820" cy="350" r="200" fill="#CDDE71" opacity=".1"></circle>
+      <circle cx="450" cy="200" r="300" fill="#4EC6B2" opacity=".04"></circle>
+      <line x1="0" y1="320" x2="900" y2="320" stroke="#B4CFC8" stroke-width="1" stroke-dasharray="6 12" opacity=".2"></line>
+      <line x1="0" y1="80" x2="900" y2="80" stroke="#B4CFC8" stroke-width="1" stroke-dasharray="6 12" opacity=".12"></line>
+    </svg>
+  </div>
+  <div class="wrap mast-content">
+    <nav class="crumb-brief" aria-label="Breadcrumb"><a href="%%UCAN_HOME%%/">Home</a> <span aria-hidden="true">/</span> <a href="%%UCAN_HOME%%/newsletter">Newsletter</a> <span aria-hidden="true">/</span> <span>January 2025</span></nav>
+    <div class="mast-badge"><span class="dot"></span>Monthly Newsletter</div>
+    <h1 id="mast-h" class="mast-title"><span>U-CAN Newsletter</span></h1>
+    <p class="mast-sub">Hello and welcome to the first edition of this newsletter in 2025!</p>
+    <p class="mast-date">January 2025</p>
+    <hr class="mast-rule">
+  </div>
+</section>
+
+<nav class="toc" aria-label="In this edition">
+  <div class="wrap">
+    <p class="toc-label">In this edition</p>
+    <div class="toc-links">
+      <a class="toc-link" href="#letter">Editor's note <svg viewBox="0 0 8 8" fill="none"><path d="M1 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></a>
+      <a class="toc-link" href="#state-of-our-cities">State of our Cities <svg viewBox="0 0 8 8" fill="none"><path d="M1 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></a>
+      <a class="toc-link" href="#member-highlight-1">Member Highlight <svg viewBox="0 0 8 8" fill="none"><path d="M1 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></a>
+      <a class="toc-link" href="#metro-metrics-2">Metro Metrics! <svg viewBox="0 0 8 8" fill="none"><path d="M1 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></a>
+      <a class="toc-link" href="#library-3">Library <svg viewBox="0 0 8 8" fill="none"><path d="M1 3.5l3 3 3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></a>
+    </div>
+  </div>
+</nav>
+
+<section class="sec" id="letter">
+  <div class="wrap">
+    <div class="sec-header">
+      <div class="sec-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2>Editor's Note</h2>
+    </div>
+
+    <div class="letter reveal">
+      <p>Hello and welcome to the first edition of this newsletter in 2025! This year, we’re scaling up our initiatives—from the fellowship to our webinar series—while driving forward key program priorities.</p>
+      <p>It’s been a busy but exciting start, fueled by persistence and a renewed commitment to building something meaningful for the urban sector.</p>
+      <p>So, what are we looking forward to in 2025? Our first program priority is our Small Grants Initiative which we have intentionally named Request for Collaboration. At U-CAN, we’ve spent and we continue to spend a considerable amount of time thinking about the big C - collaboration. What does it mean for organisations working within the urban sector to collaborate? What form does this collaboration take? What drives organisations to want to collaborate with others? These and many more questions are those we have thought of, reflected upon and discussed with others within our network. What we have also seen is that collaborations between organisations have immense potential to view urban challenges through a multi-sectoral and intersectional lens, especially when the people involved bring complementary skills and perspectives to the table. Keeping this in mind and after many months of work on designing our Small Grants Initiative, we’ll be launching it for our member organisations in February. Our goal under this initiative is to experiment with and learn from bold and radical ideas that push the boundaries of traditional partnerships and work being done in the urban sector.</p>
+      <p>Second, our core mission is to bring organisations together and spark collaboration. We plan to organise in-person convenings in three cities - Delhi, Bangalore and Mumbai, as well as online convenings which will involve innovative ways of problem-solving for urban challenges. We will be spending the next few weeks in building these convenings with our members, and we&#x27;d love to hear from you if you have any ideas!</p>
+      <p>Given the scaling of our programs and operations, we are also thinking about how we can reach out to more audiences through our communications, including this newsletter. As you may have noticed, we have reimagined the content and design of this newsletter, with the aim of providing a roundup of what&#x27;s happening in our cities, highlighting the incredible work of our members, and including interesting and engaging factoids and resources about urban India. This is a learning journey for us, and as always, feel free to write back to us with your feedback, suggestions and recommendations!</p>
+      <div class="letter-sign">
+        <div class="sign-photo"><img src="%%UCAN_THEME%%/assets/img/siddharth-pandit-5a4e5ac413.webp" alt="Siddharth Pandit" width="80" height="80" loading="lazy" decoding="async"></div>
+        <div class="sign-text">
+          <p class="name">Siddharth Pandit</p>
+          <p class="role">CEO, Urban Collective Action Network · On behalf of U-CAN</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="state-of-our-cities">
+  <div class="wrap">
+    <div class="sec-header">
+      <div class="sec-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M3 21h18M5 21V7l7-4 7 4v14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2>State of our Cities</h2>
+    </div>
+
+      <div class="letter reveal">
+        <p>India’s urban landscape is complex, and understanding it requires access to diverse knowledge resources. Fortunately, several platforms offer rich insights - from NITI Aayog&#x27;s Urbanisation</p>
+        <p><a class="art-link" href="https://www.nitiforstates.gov.in/sector?sector=Urbanization" target="_blank" rel="noopener noreferrer">Knowledge Hub, the many reports by organisations like Janaagraha, Praja and WRI. These <span aria-hidden="true">&rarr;</span></a></p>
+        <p>resources help us analyse urban challenges and drive informed action. Explore these sections to know more!</p>
+        <figure class="nl-fig"><img src="%%UCAN_THEME%%/newsletters/img/january-2025-01.webp" width="1400" height="510" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
+      </div>
+  </div>
+</section>
+
+<section class="sec" id="member-highlight-1">
+  <div class="wrap">
+    <div class="sec-header">
+      <div class="sec-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/><path d="M23 21v-2a4 4 0 00-3-3.87" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+      <h2>Member Highlight</h2>
+    </div>
+
+      <div class="letter reveal">
+        <p>As part of their work on heat action in cities, Mahila Housing Trust is extending its greening efforts under Jodhpur’s Heat Action Plan. They’ve planted 1700+ saplings of native trees including Kaner, Khari Badam and Gulmohar - chosen due to their adaptability to the local context of Jodhpur.</p>
+        <p><a class="art-link" href="https://egov.org.in/articles/from-systems-to-ecosystems-a-shared-journey-to-build-digital-public-goods/" target="_blank" rel="noopener noreferrer">eGov Foundation’s Viraj Tyagi shares his thoughts on why solving complex wicked problems <span aria-hidden="true">&rarr;</span></a></p>
+        <p><a class="art-link" href="https://egov.org.in/articles/from-systems-to-ecosystems-a-shared-journey-to-build-digital-public-goods/" target="_blank" rel="noopener noreferrer">requires investing time in co-creating ecosystems where collaboration drives impact. <span aria-hidden="true">&rarr;</span></a></p>
+        <p><a class="art-link" href="https://www.linkedin.com/posts/reap-benefit-foundation_cmf-phase-2-activity-7288066326214909952-anNO?utm_source=share&amp;utm_medium=member_desktop" target="_blank" rel="noopener noreferrer">The second cohort of Reap Benefit’s Changemaker Fundees - young guns making a serious dent <span aria-hidden="true">&rarr;</span></a></p>
+        <p>in civic and climate challenges across India - was announced. Funding is a common challenge across the change-making ecosystem. The Changemaker Fund bridges this gap, supporting young people who are ready to tackle challenges in their communities, but need a boost to turn their bold ideas into action.</p>
+      </div>
+  </div>
+</section>
+
+<section class="sec" id="metro-metrics-2">
+  <div class="wrap">
+    <div class="sec-header">
+      <div class="sec-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M3 3v18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 14l4-4 3 3 5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2>Metro Metrics!</h2>
+    </div>
+
+      <div class="letter reveal">
+        <p>The number of digital payments users from urban areas in India is 64% according to a report by TransUnion CIBIL and endorsed by the Reserve Bank of India’s Currency and Finance Report in 2024. While the share of rural users is witnessing a faster uptake in terms of new unique users, the market is currently dominated by users in urban and peri-urban areas.</p>
+        <p>India’s digital payments infrastructure, led by the Unified Payments Interface, has also expanded to countries beyond India, while the Indian government is working with many other governments to expand this list even further. India’s rapidly expanding digital payment ecosystem is an example of how Digital Public Infrastructure can rapidly transform a sector. To understand how DPI systems</p>
+        <p><a class="art-link" href="https://urban.org.in/etn/reimagining-problem-solving-in-urban-governance-through-digital-public-infrastructure/" target="_blank" rel="noopener noreferrer">work, watch our most recent webinar with Gautham Ravichander from eGov Foundation and <span aria-hidden="true">&rarr;</span></a></p>
+        <p><a class="art-link" href="https://urban.org.in/etn/reimagining-problem-solving-in-urban-governance-through-digital-public-infrastructure/" target="_blank" rel="noopener noreferrer">Sridhar Ganapathy from Artha Global. <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+  </div>
+</section>
+
+<section class="sec" id="library-3">
+  <div class="wrap">
+    <div class="sec-header">
+      <div class="sec-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19.5A2.5 2.5 0 016.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h2>Library</h2>
+    </div>
+
+      <div class="letter reveal">
+        <p>In this section, we&#x27;ll bring you our recommendations of books or movies every month!</p>
+        <p>If you love mysteries with a strong sense of place, Harini Nagendra’s Bangalore Detectives Club series brings 1920s Bangalore to life through the sharp-witted sleuth Kaveri Murthy. Across three books, Kaveri unravels crimes in a city teeming with colonial-era intrigue—be it a glamorous theater, a bustling market, or the tranquil but deceptive lakesides. Each mystery is richly woven with history, culture, and social change, offering a vivid portrait of Bangalore’s past. Whether you’re a history enthusiast or a detective fiction fan, this series is a captivating journey into the city’s hidden stories!</p>
+        <figure class="nl-fig"><img src="%%UCAN_THEME%%/newsletters/img/january-2025-02.webp" width="1400" height="665" alt="Image from “newsletter”" loading="lazy" decoding="async"></figure>
+      </div>
+  </div>
+</section>
+
+<section class="sec" id="download">
+  <div class="wrap">
+    <div class="feature reveal">
+      <p class="feature-title">Read or share the original edition</p>
+      <p>This edition was sent to U-CAN subscribers in January 2025. Download the PDF, or subscribe to get the next one in your inbox.</p>
+      <p style="display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.5rem">
+        <a class="btn btn-primary" href="%%UCAN_THEME%%/newsletters/january-2025.pdf" download>Download the PDF</a>
+        <a class="btn btn-ghost" href="%%UCAN_HOME%%/newsletter#subscribe">Subscribe</a>
+      </p>
+    </div>
+    <div class="nl-share">
+        <span class="lbl">Share this edition</span>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Furban.org.in%2Fnewsletter%2Fjanuary-2025%2F" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM.5 8h4V21h-4zM8 8h3.8v1.8h.05c.53-.95 1.83-1.95 3.76-1.95C19.7 7.85 21 10.1 21 13.3V21h-4v-6.9c0-1.65-.03-3.77-2.3-3.77-2.3 0-2.65 1.8-2.65 3.65V21H8z" fill="currentColor"/></svg>LinkedIn</a>
+        <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Furban.org.in%2Fnewsletter%2Fjanuary-2025%2F&amp;text=U-CAN%20Newsletter%20%E2%80%94%20January%202025" target="_blank" rel="noopener noreferrer" aria-label="Share on X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 2h3.3l-7.2 8.24L22 22h-6.6l-5.18-6.78L4.3 22H1l7.7-8.8L1.4 2H8.2l4.68 6.19L17.5 2zm-1.16 18h1.83L7.75 3.9H5.79z" fill="currentColor"/></svg>X</a>
+        <a href="https://api.whatsapp.com/send?text=U-CAN%20Newsletter%20%E2%80%94%20January%202025%20https%3A%2F%2Furban.org.in%2Fnewsletter%2Fjanuary-2025%2F" target="_blank" rel="noopener noreferrer" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.18c-.24.68-1.42 1.31-1.95 1.35-.5.04-.98.22-3.3-.69-2.79-1.1-4.55-3.96-4.69-4.15-.14-.19-1.12-1.49-1.12-2.85s.71-2.02.96-2.3c.25-.27.55-.34.73-.34h.52c.17 0 .4-.06.62.48.24.57.8 1.98.87 2.12.07.14.12.31.02.5-.09.19-.14.31-.28.47l-.42.49c-.14.14-.28.29-.12.57.16.27.72 1.18 1.54 1.91 1.06.94 1.95 1.24 2.22 1.38.27.14.43.12.59-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.61-.13.24.09 1.55.73 1.82.86.27.14.44.2.51.32.06.11.06.67-.18 1.35z" fill="currentColor"/></svg>WhatsApp</a>
+        <a href="mailto:?subject=U-CAN%20Newsletter%20%E2%80%94%20January%202025&amp;body=https%3A%2F%2Furban.org.in%2Fnewsletter%2Fjanuary-2025%2F" aria-label="Share on Email"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm9 8.2L4.4 7h15.2z" fill="currentColor"/></svg>Email</a>
+        <button type="button" class="nl-copy" data-url="https://urban.org.in/newsletter/january-2025/" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.6 13.4a4 4 0 0 0 5.66 0l3-3a4 4 0 1 0-5.66-5.66l-1.5 1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13.4 10.6a4 4 0 0 0-5.66 0l-3 3a4 4 0 1 0 5.66 5.66l1.5-1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span>Copy link</span></button>
+    </div>
+    <p style="display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem"><a class="btn btn-ghost" href="%%UCAN_HOME%%/newsletter-november-2024">&larr; November 2024</a>
+        <a class="btn btn-ghost" href="%%UCAN_HOME%%/newsletter">All editions</a>
+        <a class="btn btn-ghost" href="%%UCAN_HOME%%/newsletter-february-2025">February 2025 &rarr;</a></p>
+  </div>
+</section>
+
+</main>
+
+<!-- Back to top -->
+<button class="btt show" id="btt" aria-label="Back to top">
+  <svg viewBox="0 0 16 16" fill="none"><path d="M8 13V3m0 0L3.5 7.5M8 3l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+</button>
+
+<!-- ————— FOOTER ————— -->
+<footer>
+  <div class="wrap">
+    <div class="f-grid">
+      <div>
+        <a class="brand" href="%%UCAN_HOME%%/" aria-label="U-CAN home">
+          <img src="%%UCAN_THEME%%/assets/img/u-can-urban-collective-action-network-08e2484273.svg" width="107" height="40" alt="U-CAN — Urban Collective Action Network" loading="lazy" decoding="async">
+        </a>
+        <p class="blurb">Uniting diverse urban voices to collectively shape our cities.</p>
+      </div>
+      <nav aria-label="Quick links">
+        <h2 class="f-h">Explore</h2>
+        <ul>
+          <li><a href="%%UCAN_HOME%%/about">About U-CAN</a></li>
+          <li><a href="%%UCAN_HOME%%/our-people">Our People</a></li>
+          <li><a href="%%UCAN_HOME%%/impact">Impact</a></li>
+          <li><a href="%%UCAN_HOME%%/our-members">Our Members</a></li>
+          <li><a href="%%UCAN_HOME%%/city-mixers">City Mixers</a></li>
+          <li><a href="%%UCAN_HOME%%/annual-forum-2025">Annual Forum 2025</a></li>
+        </ul>
+      </nav>
+      <nav aria-label="Initiatives">
+        <h2 class="f-h">Initiatives</h2>
+        <ul>
+          <li><a href="%%UCAN_HOME%%/urban-reforms-collective">Urban Reforms Collective</a></li>
+          <li><a href="%%UCAN_HOME%%/rfc">Request for Collaboration</a></li>
+          <li><a href="%%UCAN_HOME%%/learning-network">Learning Network</a></li>
+          <li><a href="%%UCAN_HOME%%/fellowship">U-CAN Fellowship</a></li>
+          <li><a href="%%UCAN_HOME%%/newsletter">Newsletter</a></li>
+          <li><a href="%%UCAN_HOME%%/policy-webinars">Policy Webinars</a></li>
+          <li><a href="%%UCAN_HOME%%/city-champions">City Champions</a></li>
+        </ul>
+      </nav>
+      <div class="f-sub" id="connect">
+        <h2 class="f-h">Stay connected</h2>
+        <p class="f-subtext">One email a month on urban governance, our programmes and ways to get involved.</p>
+        <form class="fnform" id="fnform" method="post" action="https://urban.org.in/newsletter/" novalidate="">
+          <div class="fnrow">
+            <label class="vh" for="f-email">Your email address</label>
+            <input id="f-email" name="email" type="email" autocomplete="email" required="" placeholder="Your email address">
+            <button type="submit">Subscribe</button>
+          </div>
+          <div class="fconsent">
+            <input type="checkbox" id="f-consent" name="consent" required="">
+            <label for="f-consent">I agree that U-CAN may use my email address to send its newsletter, event invitations and programme details. I can withdraw this consent at any time by writing to <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>.</label>
+          </div>
+          <p class="nerr" role="alert">Please enter a valid email address and tick the consent box to continue.</p>
+          <p class="nok" role="status">Thanks — you're on the list. We've recorded your consent and the time it was given.</p>
+          <p class="f-legal">U-CAN is the Data Fiduciary for this data under the Digital Personal Data Protection Act, 2023. Request access, correction or erasure at <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>. See our <a href="%%UCAN_HOME%%/privacy-policy">Privacy Policy</a>.</p>
+        </form>
+        <ul class="f-social">
+          <li><a href="https://www.youtube.com/@U-CAN24" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+          <li><a href="https://www.linkedin.com/company/urban-collective-action-network-u-can/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="mailto:connect@urban.org.in">connect@urban.org.in</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <span>© U-CAN 2026. All Rights Reserved</span>
+      <span><a href="%%UCAN_HOME%%/terms-of-use">Terms of Use</a><a href="%%UCAN_HOME%%/privacy-policy">Privacy Policy</a><a href="%%UCAN_HOME%%/data-rights">Your Data Rights</a><button type="button" class="cookie-link" id="cookie-reopen">Manage cookies</button></span>
+    </div>
+  </div>
+</footer>
+
+
+
+
+
+<!-- COOKIE BANNER -->
+<div class="cc" id="cc" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+  <div class="cc-in">
+    <div>
+      <span class="cc-badge">Your privacy</span>
+      <p>We use only essential cookies to make this site work. With your consent we would also measure anonymous usage to improve it. You can change this at any time from &ldquo;Manage cookies&rdquo; in the footer.</p>
+    </div>
+    <div class="cc-act">
+      <button type="button" class="cc-btn alt" id="cc-reject">Essential only</button>
+      <button type="button" class="cc-btn" id="cc-accept">Accept analytics</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script data-ucan="behaviour">
+/* U-CAN shared behaviour — inlined into every page in standalone/.
+   Defensive by design: every feature no-ops if its markup is absent, so the
+   same block can be dropped into all page variants (.bar shell, index's .nav,
+   the newsletter masthead). Keep it dependency-free and idempotent. */
+(function () {
+  "use strict";
+
+  var reduced = false;
+  try {
+    reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  } catch (e) {}
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* ---------- 1. sticky header shadow ---------- */
+  (function stickyBar() {
+    var bar = $("#bar") || $("#nav") || $(".header");
+    if (!bar) return;
+    var onScroll = function () {
+      if (window.scrollY > 8) bar.classList.add("scrolled");
+      else bar.classList.remove("scrolled");
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  })();
+
+  /* ---------- 2. mobile menu ----------
+     three markup variants across the site:
+       shell pages : #burger  -> #msheet        (.open)
+       index.html  : #burger  -> #mobile-menu   (.open)
+       newsletter  : #menuBtn -> #mob-nav       (.open) + #closeBtn        */
+  (function mobileMenu() {
+    var pairs = [
+      { btn: "#burger", panel: "#msheet" },
+      { btn: "#burger", panel: "#mobile-menu" },
+      { btn: "#menuBtn", panel: "#mob-nav" }
+    ];
+    pairs.forEach(function (p) {
+      var btn = $(p.btn), panel = $(p.panel);
+      if (!btn || !panel || btn.dataset.ucanBound) return;
+      btn.dataset.ucanBound = "1";
+
+      var setOpen = function (open) {
+        panel.classList.toggle("open", open);
+        btn.classList.toggle("open", open);
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+        panel.setAttribute("aria-hidden", open ? "false" : "true");
+        document.documentElement.style.overflow = open ? "hidden" : "";
+      };
+      setOpen(false);
+
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        setOpen(!panel.classList.contains("open"));
+      });
+
+      var close = $("#closeBtn");
+      if (close) close.addEventListener("click", function () { setOpen(false); });
+
+      // close on link click and on Escape
+      $$("a", panel).forEach(function (a) {
+        a.addEventListener("click", function () { setOpen(false); });
+      });
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && panel.classList.contains("open")) {
+          setOpen(false);
+          btn.focus();
+        }
+      });
+    });
+  })();
+
+  /* ---------- 2b. desktop nav dropdowns ----------
+     Hover is pure CSS; this adds click + keyboard so the menus are usable
+     without a pointer, and closes them on Escape / outside click. */
+  (function navDropdowns() {
+    var items = $$(".ucnav-i");
+    if (!items.length) return;
+
+    var closeAll = function (except) {
+      items.forEach(function (it) {
+        if (it === except) return;
+        it.classList.remove("open");
+        var t = $(".ucnav-t", it);
+        if (t && t.tagName === "BUTTON") t.setAttribute("aria-expanded", "false");
+      });
+    };
+
+    items.forEach(function (it) {
+      var trigger = $(".ucnav-t", it);
+      if (!trigger) return;
+
+      trigger.addEventListener("click", function (e) {
+        // a real link (About Us) still navigates on click; only buttons toggle
+        if (trigger.tagName !== "BUTTON") return;
+        e.preventDefault();
+        var open = it.classList.toggle("open");
+        trigger.setAttribute("aria-expanded", open ? "true" : "false");
+        closeAll(it);
+      });
+
+      it.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && it.classList.contains("open")) {
+          it.classList.remove("open");
+          if (trigger.tagName === "BUTTON") trigger.setAttribute("aria-expanded", "false");
+          trigger.focus();
+        }
+      });
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest || !e.target.closest(".ucnav-i")) closeAll(null);
+    });
+  })();
+
+  /* ---------- 3. scroll reveal ---------- */
+  (function reveal() {
+    var els = $$(".rv, .reveal");
+    if (!els.length) return;
+    var show = function (el) { el.classList.add("in", "visible"); };
+    if (reduced || !("IntersectionObserver" in window)) {
+      els.forEach(show);
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { show(en.target); io.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+    els.forEach(function (el) {
+      // already-visible markup stays visible; just observe the rest
+      if (el.classList.contains("in") || el.classList.contains("visible")) { io.observe(el); }
+      else io.observe(el);
+    });
+  })();
+
+  /* ---------- 4. stat count-ups ----------
+     <span data-to="15000" data-suffix="+" data-comma>  */
+  (function countUps() {
+    var nums = $$("[data-to]");
+    if (!nums.length) return;
+
+    var render = function (el, val) {
+      var comma = el.hasAttribute("data-comma");
+      var suffix = el.getAttribute("data-suffix") || "";
+      var out = comma ? Math.round(val).toLocaleString("en-IN") : String(Math.round(val));
+      el.textContent = out + suffix;
+    };
+
+    var run = function (el) {
+      if (el.dataset.ucanDone) return;
+      el.dataset.ucanDone = "1";
+      var to = parseFloat(el.getAttribute("data-to")) || 0;
+      if (reduced) { render(el, to); return; }
+      var dur = 1100, start = null;
+      var step = function (ts) {
+        if (start === null) start = ts;
+        var p = Math.min((ts - start) / dur, 1);
+        var eased = 1 - Math.pow(1 - p, 3);
+        render(el, to * eased);
+        if (p < 1) requestAnimationFrame(step);
+        else { render(el, to); el.classList.add("pop"); }
+      };
+      requestAnimationFrame(step);
+    };
+
+    if (reduced || !("IntersectionObserver" in window)) { nums.forEach(run); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { run(en.target); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.4 });
+    nums.forEach(function (el) { io.observe(el); });
+  })();
+
+  /* ---------- 5. DPDP newsletter consent gate ----------
+     Hard requirement: submit is blocked unless a valid email AND the consent
+     checkbox are both present, and an auditable consent record is produced. */
+  (function newsletterGate() {
+    var NOTICE_VERSION = "ucan-newsletter-notice-2026-01";
+    // three form variants exist across the site
+    var forms = $$("#nform, #nl-form, #fnform, form[aria-label='Newsletter signup']");
+    if (!forms.length) return;
+
+    forms.forEach(function (form) {
+      if (form.dataset.ucanBound) return;
+      form.dataset.ucanBound = "1";
+
+      var email = $("input[type=email]", form);
+      var consent = $("input[type=checkbox]", form);
+      // message elements may sit just outside the <form>
+      var scope = form.closest("section, .subscribe-box, div") || document;
+      var err = $("#nerr", scope) || $("#nl-err", scope) || $(".nerr, .nl-err", scope);
+      var ok = $("#nok", scope) || $("#nl-ok", scope) || $(".nok, .nl-ok", scope);
+
+      // these are display:none in CSS with no .show rule, so drive them inline
+      var toggle = function (el, on) {
+        if (!el) return;
+        el.classList.toggle("show", on);
+        el.style.display = on ? "block" : "none";
+      };
+      toggle(err, false); toggle(ok, false);
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        toggle(err, false); toggle(ok, false);
+
+        var value = (email && email.value || "").trim();
+        var validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+        var agreed = !consent || consent.checked; // gate only if a box exists
+
+        if (!validEmail || !agreed) {
+          toggle(err, true);
+          if (!validEmail && email) email.focus();
+          else if (consent) consent.focus();
+          return;
+        }
+
+        // auditable consent record (DPDP Act 2023)
+        var record = {
+          email: value,
+          consent: true,
+          purpose: "U-CAN newsletter, event invitations and programme details",
+          noticeVersion: NOTICE_VERSION,
+          timestamp: new Date().toISOString(),
+          page: location.pathname
+        };
+        try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
+
+        form.reset();
+        toggle(ok, true);
+      });
+
+      // Clear the error only on a genuine correction. Deliberately NOT on the
+      // email's `change`: that fires when focus moves to the checkbox, which
+      // would wipe the error the submit handler had just shown.
+      if (email) email.addEventListener("input", function () { toggle(err, false); });
+      if (consent) consent.addEventListener("change", function () { toggle(err, false); });
+    });
+  })();
+
+  /* ---------- 6. cookie banner (most-privacy-preserving default) ---------- */
+  (function cookieBanner() {
+    var KEY = "ucan_consent_v1";
+    var cc = $("#cc");
+    var reopen = $("#cookie-reopen");
+    if (!cc && !reopen) return;
+
+    var save = function (choice) {
+      try {
+        localStorage.setItem(KEY, JSON.stringify({
+          analytics: choice === "accept",
+          ts: new Date().toISOString()
+        }));
+      } catch (e) {}
+    };
+    var stored = function () {
+      try { return localStorage.getItem(KEY); } catch (e) { return null; }
+    };
+    var show = function () { if (cc) cc.classList.add("show"); };
+    var hide = function () { if (cc) cc.classList.remove("show"); };
+
+    if (cc && !stored()) {
+      setTimeout(show, 10000); // surfaces after 10s
+    }
+    var accept = $("#cc-accept"), reject = $("#cc-reject");
+    if (accept) accept.addEventListener("click", function () { save("accept"); hide(); });
+    if (reject) reject.addEventListener("click", function () { save("reject"); hide(); });
+    if (reopen) reopen.addEventListener("click", function (e) { e.preventDefault(); show(); });
+  })();
+
+  /* ---------- 7. archive: load more + year filter ----------
+     Two listings use this: the newsletter archive (.issue tiles, which also
+     get the year filter) and the Fellows' blog grid (.bcard). */
+  (function archive() {
+    var btn = $("#loadBtn"), wrap = $("#loadMore");
+    var issues = $$(".issue, .bcard");
+    var filters = $$(".filter-btn");
+    if (!issues.length) return;
+
+    // remember which tiles start collapsed so "All" can restore that view
+    issues.forEach(function (el) {
+      if (el.classList.contains("hidden")) el.dataset.collapsed = "1";
+    });
+
+    var showAll = function () {
+      issues.forEach(function (el) { el.classList.remove("hidden"); });
+      if (wrap) wrap.style.display = "none";
+    };
+
+    if (btn) btn.addEventListener("click", showAll);
+
+    filters.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var year = b.dataset.filter;
+        filters.forEach(function (o) { o.classList.toggle("active", o === b); });
+        if (year === "all") {
+          // back to the collapsed default
+          issues.forEach(function (el) {
+            el.classList.toggle("hidden", el.dataset.collapsed === "1");
+          });
+          if (wrap) wrap.style.display = "";
+          return;
+        }
+        issues.forEach(function (el) {
+          // the newsletter archive keys on year, the blog grid on author
+          var key = el.dataset.year || el.dataset.author;
+          el.classList.toggle("hidden", key !== year);
+        });
+        if (wrap) wrap.style.display = "none";
+      });
+    });
+  })();
+
+  /* ---------- 8. back to top (newsletter article) ---------- */
+  (function backToTop() {
+    var btt = $("#btt");
+    if (!btt) return;
+    var onScroll = function () { btt.classList.toggle("show", window.scrollY > 600); };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    btt.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+    });
+  })();
+
+  /* ---------- 9. FAQ accordion ----------
+     URC uses native <details>, which needs no JS. This only adds the
+     one-open-at-a-time behaviour when several sit in the same .faq group. */
+  (function faq() {
+    var groups = $$(".faq");
+    groups.forEach(function (g) {
+      var items = $$("details", g);
+      if (items.length < 2) return;
+      items.forEach(function (d) {
+        d.addEventListener("toggle", function () {
+          if (!d.open) return;
+          items.forEach(function (o) { if (o !== d) o.open = false; });
+        });
+      });
+    });
+  })();
+
+  /* ---------- 10. tabs (Fellowship: knowledge / network / funding) ----------
+     Markup is fully usable with JS off — every pane renders, and only the
+     first is hidden once this runs. */
+  (function tabs() {
+    $$("[data-tabs]").forEach(function (root) {
+      var btns = $$('[role="tab"]', root);
+      var panes = $$('[role="tabpanel"]', root);
+      if (btns.length < 2 || btns.length !== panes.length) return;
+
+      var select = function (i, focus) {
+        btns.forEach(function (b, n) {
+          b.setAttribute("aria-selected", n === i ? "true" : "false");
+          b.tabIndex = n === i ? 0 : -1;
+        });
+        panes.forEach(function (p, n) { p.hidden = n !== i; });
+        if (focus) btns[i].focus();
+      };
+
+      btns.forEach(function (b, i) {
+        b.addEventListener("click", function () { select(i); });
+        b.addEventListener("keydown", function (e) {
+          var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+          if (!d) return;
+          e.preventDefault();
+          select((i + d + btns.length) % btns.length, true);
+        });
+      });
+      select(0);
+    });
+  })();
+})();
+</script>
+
+<script data-ucan="share">
+(function () {
+  var b = document.querySelector('.nl-copy');
+  if (!b || !navigator.clipboard) return;
+  b.hidden = false;
+  var label = b.querySelector('span');
+  b.addEventListener('click', function () {
+    navigator.clipboard.writeText(b.dataset.url).then(function () {
+      var old = label.textContent;
+      label.textContent = 'Link copied';
+      setTimeout(function () { label.textContent = old; }, 1800);
+    });
+  });
+})();
+</script>
+<script data-ucan="share">
+(function () {
+  var b = document.querySelector('.nl-copy');
+  if (!b || !navigator.clipboard) return;
+  b.hidden = false;
+  var label = b.querySelector('span');
+  b.addEventListener('click', function () {
+    navigator.clipboard.writeText(b.dataset.url).then(function () {
+      var old = label.textContent;
+      label.textContent = 'Link copied';
+      setTimeout(function () { label.textContent = old; }, 1800);
+    });
+  });
+})();
+</script>
+</body></html>

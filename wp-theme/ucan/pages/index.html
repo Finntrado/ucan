@@ -1,0 +1,2825 @@
+<!DOCTYPE html><html lang="en-IN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style data-ucan="base">@font-face { font-family: "PS Fallback"; src: local("Helvetica Neue"), local("Arial"); size-adjust: 99%; ascent-override: 92%; descent-override: 24%; line-gap-override: 0%; }
+
+@font-face { font-family: "Arch Fallback"; src: local("Arial Bold"), local("Helvetica Neue Bold"), local("Arial"); size-adjust: 104%; ascent-override: 90%; descent-override: 22%; line-gap-override: 0%; }
+
+:root { --paper: #FBFAF6; --paper-alt: #E9F5F2; --ink: #222120; --ink-soft: #57564F; --teal: #1F8F7B; --teal-text: #177A69; --teal-deep: #0E5348; --teal-light: #4EC6B2; --lime: #CDDE71; --orange: #FEAE00; --line: #DCEAE6; --radius: 2px; --wrap: 1180px; --sans: 'Public Sans','PS Fallback',system-ui,-apple-system,Segoe UI,Roboto,sans-serif; --display: 'Archivo','Arch Fallback',system-ui,-apple-system,Segoe UI,Arial,sans-serif; --shadow: 0 1px 2px rgba(14,83,72,.04),0 8px 28px -14px rgba(14,83,72,.22); --ease: cubic-bezier(.22,.61,.36,1); }
+
+*, ::before, ::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; text-size-adjust: 100%; scroll-padding-top: 88px; }
+
+body { margin: 0px; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 17px; line-height: 1.62; -webkit-font-smoothing: antialiased; text-rendering: optimizelegibility; overflow-x: hidden; }
+
+h1, h2, h3, h4, .display { font-family: var(--display); font-weight: 700; letter-spacing: -0.012em; margin: 0px; line-height: 1.18; }
+
+p { margin: 0px; }
+
+a { color: inherit; }
+
+img, svg { display: block; max-width: 100%; }
+
+ul { margin: 0px; padding: 0px; list-style: none; }
+
+:focus-visible { outline: 2.5px solid var(--teal-deep); outline-offset: 3px; border-radius: var(--radius); }
+
+::selection { background: var(--lime); color: var(--ink); }
+
+.wrap { max-width: var(--wrap); margin: 0px auto; padding: 0px clamp(20px, 4vw, 32px); }
+
+.skip { position: absolute; left: -9999px; top: 0px; background: var(--teal-deep); color: var(--paper); padding: 12px 20px; z-index: 200; font-weight: 600; }
+
+.skip:focus { left: 12px; top: 12px; }
+
+.eyebrow { font-family: var(--sans); font-weight: 700; font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal-text); display: inline-flex; align-items: center; gap: 11px; margin: 0px; }
+
+.eyebrow::before { content: ""; width: 24px; height: 1.5px; background: currentcolor; flex: 0 0 24px; }
+
+.eyebrow.on-dark { color: var(--lime); }
+
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 28px; background: var(--teal-deep); color: var(--paper); font-weight: 600; font-size: 15px; letter-spacing: 0.01em; text-decoration: none; border: 1.5px solid var(--teal-deep); border-radius: var(--radius); transition: background .22s var(--ease),border-color .22s var(--ease),transform .22s var(--ease),box-shadow .22s var(--ease); will-change: transform; }
+
+.btn:hover { background: var(--ink); border-color: var(--ink); transform: translateY(-2px); box-shadow: var(--shadow); }
+
+.btn .arrow { transition: transform .22s var(--ease); }
+
+.btn:hover .arrow { transform: translateX(5px); }
+
+.btn.ghost { background: transparent; color: var(--teal-deep); border-color: var(--line); }
+
+.btn.ghost:hover { background: transparent; color: var(--teal-deep); border-color: var(--teal); transform: translateY(-2px); }
+
+.section { padding: clamp(72px, 9vw, 116px) 0px; position: relative; }
+
+.section#members, .newsletter, footer { content-visibility: auto; contain-intrinsic-size: auto 720px; }
+
+.section.alt { background: var(--paper-alt); }
+
+.section-head { max-width: 660px; }
+
+.section-head h2 { font-size: clamp(27px, 3.5vw, 36px); margin-top: 18px; }
+
+.section-head p.sub { font-size: 17.5px; color: var(--ink-soft); margin-top: 16px; }
+
+.nav { position: sticky; top: 0px; z-index: 80; background: rgba(251, 250, 246, 0.88); backdrop-filter: saturate(180%) blur(10px); border-bottom: 1px solid var(--line); transition: box-shadow .25s var(--ease); }
+
+.nav.scrolled { box-shadow: rgba(14, 83, 72, 0.28) 0px 1px 20px -8px; }
+
+.nav-inner { max-width: var(--wrap); margin: 0px auto; padding: 0px clamp(20px, 4vw, 32px); display: flex; align-items: center; justify-content: space-between; gap: 24px; height: 76px; }
+
+.brand { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+
+.brand img { width: 36px; height: 36px; object-fit: contain; flex: 0 0 36px; }
+
+.brand b { font-family: var(--display); font-weight: 700; font-size: 20px; letter-spacing: -0.01em; display: block; line-height: 1.1; }
+
+.brand small { display: block; font-family: var(--sans); font-weight: 600; font-size: 8.6px; letter-spacing: 0.1em; color: var(--ink-soft); text-transform: uppercase; margin-top: 2px; }
+
+.links { display: flex; gap: 30px; align-items: center; }
+
+.links a { font-size: 14.5px; font-weight: 600; letter-spacing: 0.01em; text-decoration: none; color: var(--ink-soft); position: relative; padding: 6px 0px; transition: color .18s var(--ease); }
+
+.links a::after { content: ""; position: absolute; left: 0px; right: 100%; bottom: 0px; height: 2px; background: var(--teal); transition: right .28s var(--ease); }
+
+.links a:hover, .links a.active { color: var(--ink); }
+
+.links a:hover::after, .links a.active::after { right: 0px; }
+
+.nav-cta { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; text-decoration: none; color: var(--teal-deep); border: 1.5px solid var(--line); padding: 9px 17px; border-radius: var(--radius); transition: border-color .2s var(--ease),background .2s var(--ease); }
+
+.nav-cta:hover { border-color: var(--teal); background: var(--paper-alt); }
+
+.burger { display: none; width: 44px; height: 44px; border: 1px solid var(--line); background: transparent; border-radius: var(--radius); cursor: pointer; padding: 0px; align-items: center; justify-content: center; }
+
+.burger span { display: block; width: 18px; height: 1.6px; background: var(--ink); position: relative; transition: background 0.2s; }
+
+.burger span::before, .burger span::after { content: ""; position: absolute; left: 0px; width: 18px; height: 1.6px; background: var(--ink); transition: transform .25s var(--ease); }
+
+.burger span::before { top: -6px; }
+
+.burger span::after { top: 6px; }
+
+.burger[aria-expanded="true"] span { background: transparent; }
+
+.burger[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
+
+.burger[aria-expanded="true"] span::after { transform: translateY(-6px) rotate(-45deg); }
+
+.mobile-menu { display: none; border-top: 1px solid var(--line); background: var(--paper); }
+
+.mobile-menu.open { display: block; }
+
+.mobile-menu a { display: block; padding: 15px 0px; border-bottom: 1px solid var(--line); text-decoration: none; font-weight: 600; font-size: 16px; color: var(--ink); }
+
+.mobile-menu a:last-child { border-bottom: 0px; }
+
+.hero { position: relative; padding: clamp(56px, 7vw, 84px) 0px 0px; overflow: hidden; }
+
+.hero-grid { display: grid; grid-template-columns: 1.06fr 0.94fr; gap: clamp(32px, 5vw, 68px); align-items: center; }
+
+.hero h1 { font-size: clamp(36px, 5.1vw, 58px); line-height: 1.06; letter-spacing: -0.024em; margin: 22px 0px 24px; max-width: 15ch; }
+
+.hero h1 .accent { white-space: nowrap; background-image: linear-gradient(var(--orange),var(--orange)); background-repeat: no-repeat; background-position: 0px 88%; background-size: 0% 0.16em; animation: swash .9s .4s var(--ease) forwards; padding-bottom: 0.02em; }
+
+@keyframes swash { 
+  100% { background-size: 100% 0.16em; }
+}
+
+.hero .lede { font-size: clamp(17px, 1.5vw, 19px); color: var(--ink-soft); max-width: 52ch; }
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+
+.hero-proof { display: flex; flex-wrap: wrap; gap: 0px; margin-top: 40px; border-top: 1px solid var(--line); padding-top: 22px; }
+
+.hero-proof div { padding-right: 26px; margin-right: 26px; border-right: 1px solid var(--line); }
+
+.hero-proof div:last-child { border-right: 0px; margin-right: 0px; padding-right: 0px; }
+
+.hero-proof b { font-family: var(--display); font-size: 22px; font-weight: 700; color: var(--teal-deep); display: block; line-height: 1.1; font-variant-numeric: tabular-nums; }
+
+.hero-proof div.pop b { animation: statpop .5s var(--ease); }
+
+.hero-proof span { font-size: 12.5px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; color: var(--ink-soft); }
+
+.net { position: relative; aspect-ratio: 520 / 440; width: 100%; max-width: 540px; margin-inline: auto; }
+
+.net svg { width: 100%; height: 100%; overflow: visible; }
+
+.net .ln { fill: none; stroke: var(--teal); stroke-width: 1; opacity: 0; stroke-dasharray: 400; stroke-dashoffset: 400; animation: strand 1.1s var(--ease) forwards; }
+
+.net .ln.out { stroke: var(--teal-deep); stroke-width: 1.3; }
+
+@keyframes strand { 
+  0% { opacity: 0; stroke-dashoffset: 400; }
+  20% { opacity: 0.5; }
+  100% { opacity: 0.5; stroke-dashoffset: 0; }
+}
+
+.net .nd { fill: var(--paper); stroke: var(--teal); stroke-width: 1.5; opacity: 0; animation: appear .5s var(--ease) forwards; }
+
+@keyframes appear { 
+  100% { opacity: 1; }
+}
+
+.net .hub { fill: var(--teal-deep); }
+
+.net .ring { fill: none; stroke: var(--teal-light); stroke-width: 1.2; opacity: 0; transform-origin: 268px 220px; animation: 3.6s ease-out 1.4s infinite normal none running ripple; }
+
+.net .ring.r2 { animation-delay: 3.2s; }
+
+@keyframes ripple { 
+  0% { opacity: 0.6; transform: scale(0.78); }
+  70%, 100% { opacity: 0; transform: scale(1.9); }
+}
+
+.net .town { fill: var(--teal-deep); opacity: 0; animation: appear .55s var(--ease) forwards; }
+
+.net .town rect:nth-child(2) { fill: var(--teal); }
+
+.photo-band { position: relative; margin-top: clamp(48px, 6vw, 76px); }
+
+.photo-band .shot { position: relative; width: 100%; aspect-ratio: 1400 / 612; overflow: hidden; background: var(--paper-alt); }
+
+.photo-band img { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
+
+.photo-band .cap { position: absolute; left: 50%; transform: translateX(-50%); top: clamp(16px, 3vw, 22px); z-index: 2; display: inline-flex; align-items: center; gap: 9px; text-align: center; white-space: nowrap; font-size: 12.5px; color: rgb(255, 255, 255); background: rgba(14, 83, 72, 0.62); backdrop-filter: blur(6px); padding: 9px 18px; border-radius: 100px; letter-spacing: 0.03em; font-weight: 600; max-width: min(92%, 560px); box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 14px -6px; }
+
+.photo-band .cap::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); flex: 0 0 6px; }
+
+@media (max-width: 560px) {
+  .photo-band .cap { white-space: normal; font-size: 11.5px; padding: 8px 14px; }
+}
+
+.capsule { max-width: 900px; margin: -56px auto 0px; position: relative; z-index: 3; background: var(--paper); border-right-color: ; border-right-style: ; border-right-width: ; border-bottom-color: ; border-bottom-style: ; border-bottom-width: ; border-left-color: ; border-left-style: ; border-left-width: ; border-image-source: ; border-image-slice: ; border-image-width: ; border-image-outset: ; border-image-repeat: ; border-top: 3px solid var(--teal-deep); padding: clamp(24px, 3.4vw, 38px); box-shadow: var(--shadow); }
+
+.capsule p { font-size: clamp(15.5px, 1.4vw, 17.5px); color: var(--ink); line-height: 1.66; }
+
+.capsule .eyebrow { margin-bottom: 14px; }
+
+.two-col { display: grid; grid-template-columns: 0.72fr 1.28fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+
+.two-col .rail { position: sticky; top: 110px; }
+
+.two-col h2 { font-size: clamp(24px, 2.9vw, 33px); line-height: 1.25; letter-spacing: -0.018em; }
+
+.two-col .body-text { font-size: 17.5px; color: var(--ink-soft); max-width: 62ch; margin-top: 26px; }
+
+.two-col .body-text p + p { margin-top: 18px; }
+
+.quote { margin-top: 32px; background: var(--paper-alt); border-left: 3px solid var(--teal); padding: clamp(22px, 2.6vw, 30px); border-radius: 0 var(--radius) var(--radius) 0; }
+
+.quote p { font-family: var(--display); font-style: italic; font-weight: 500; font-size: clamp(16px, 1.5vw, 18px); color: var(--ink); line-height: 1.58; }
+
+.quote footer { display: flex; align-items: center; gap: 13px; margin-top: 20px; }
+
+.quote .avatar { width: 42px; height: 42px; flex: 0 0 42px; border-radius: 50%; background: var(--teal-deep); color: var(--lime); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: 0.02em; }
+
+.quote cite { font-style: normal; font-size: 13.5px; font-weight: 600; color: var(--teal-deep); line-height: 1.45; }
+
+.cs-head { margin: clamp(64px, 8vw, 92px) 0px 8px; }
+
+.cs-head h2 { font-size: clamp(23px, 2.7vw, 30px); margin-top: 14px; }
+
+.cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; position: relative; margin-top: 0px; }
+
+.cards-3 { margin-top: 8px; }
+
+.c-card { position: relative; z-index: 1; background: var(--paper); border: 1px solid var(--line); padding: clamp(30px, 3.2vw, 40px) clamp(24px, 2.8vw, 32px) clamp(28px, 3vw, 36px); transition: transform .35s var(--ease),box-shadow .35s var(--ease),border-color .35s var(--ease); overflow: hidden; display: flex; flex-direction: column; }
+
+.c-card::before { content: ""; position: absolute; top: 0px; left: 0px; bottom: 0px; width: 3px; background: var(--accent); transform: scaleY(0); transform-origin: center top; transition: transform .42s var(--ease); }
+
+.c-card::after { content: ""; position: absolute; left: 0px; right: 0px; bottom: 0px; height: 0px; background: var(--wash); transition: height .42s var(--ease); z-index: -1; }
+
+.c-card:hover, .c-card:focus-within { transform: translateY(-8px); box-shadow: var(--shadow); border-color: var(--accent); }
+
+.c-card:hover::before, .c-card:focus-within::before { transform: scaleY(1); }
+
+.c-card:hover::after, .c-card:focus-within::after { height: 100%; }
+
+.c-index { position: absolute; top: clamp(18px, 2.4vw, 26px); right: clamp(20px, 2.6vw, 30px); font-family: var(--display); font-weight: 700; font-size: clamp(40px, 5vw, 58px); line-height: 0.8; color: var(--line); letter-spacing: -0.03em; transition: color .35s var(--ease),transform .35s var(--ease); pointer-events: none; }
+
+.c-card:hover .c-index, .c-card:focus-within .c-index { color: var(--accent); opacity: 0.22; transform: scale(1.06); }
+
+.c-ico { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--wash); margin-bottom: 22px; transition: background .35s var(--ease),transform .35s var(--ease); }
+
+.c-ico svg { width: 34px; height: 34px; fill: none; stroke: var(--accent); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; transition: stroke .35s var(--ease); }
+
+.c-card:hover .c-ico, .c-card:focus-within .c-ico { background: var(--accent); transform: translateY(-2px); }
+
+.c-card:hover .c-ico svg, .c-card:focus-within .c-ico svg { stroke: var(--paper); }
+
+.c-card h3 { font-size: 19px; line-height: 1.3; margin-bottom: 13px; color: var(--ink); }
+
+.c-word { display: block; font-family: var(--display); font-weight: 700; font-size: clamp(24px, 2.4vw, 29px); letter-spacing: -0.01em; text-transform: none; color: var(--accent); margin-bottom: 6px; line-height: 1.08; transition: color .35s var(--ease); }
+
+.c-word::after { content: ""; display: block; width: 34px; height: 3px; background: var(--accent); margin-top: 12px; border-radius: 2px; transform-origin: left center; transform: scaleX(1); transition: width .35s var(--ease); }
+
+.c-card:hover .c-word::after, .c-card:focus-within .c-word::after { width: 52px; }
+
+.c-card p { font-size: 15px; color: var(--ink-soft); margin-top: auto; }
+
+.stats { background: var(--teal-deep); color: var(--paper); padding: clamp(48px, 6vw, 64px) 0px; margin-top: clamp(40px, 5vw, 60px); }
+
+.stats .lab { text-align: center; font-size: 12.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--lime); margin-bottom: 40px; }
+
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); max-width: 980px; margin: 0px auto; }
+
+.stat { padding: 0px 18px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+
+.stat + .stat { border-left: 1px solid rgba(255, 255, 255, 0.16); }
+
+.stat b { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 4.2vw, 52px); color: var(--lime); line-height: 1; display: block; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+.stat.pop b { animation: statpop .5s var(--ease); }
+
+@keyframes statpop { 
+  0% { transform: scale(0.8); opacity: 0.4; }
+  60% { transform: scale(1.06); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.impact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: clamp(44px, 5vw, 60px); }
+
+.i-card { background: var(--paper); border: 1px solid var(--line); padding: clamp(24px, 2.6vw, 30px) clamp(20px, 2.4vw, 26px); display: flex; flex-direction: column; gap: 11px; position: relative; transition: transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease); }
+
+.i-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: var(--teal-light); }
+
+.i-card .n { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; color: var(--teal-text); display: flex; align-items: center; gap: 8px; }
+
+.i-card .n::after { content: ""; height: 1px; flex: 1 1 0%; background: var(--line); }
+
+.i-card h3 { font-size: 18.5px; line-height: 1.32; }
+
+.i-card p { font-size: 15px; color: var(--ink-soft); }
+
+.members-cols { display: grid; grid-template-columns: 0.72fr 1.28fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+
+.logo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+.logo-grid.friends { grid-template-columns: repeat(3, 1fr); max-width: 640px; }
+
+.chip { position: relative; border: 1px solid var(--line); background: var(--paper); min-height: 112px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; padding: 14px 12px; overflow: hidden; transition: border-color .28s var(--ease),transform .28s var(--ease),box-shadow .28s var(--ease),background .28s var(--ease); }
+
+.chip .mono { width: 34px; height: 34px; border-radius: 50%; flex: 0 0 34px; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-weight: 700; font-size: 12.5px; letter-spacing: 0.02em; background: var(--paper-alt); color: var(--teal-deep); transition: background .28s var(--ease),color .28s var(--ease),transform .28s var(--ease); }
+
+.chip strong { font-weight: 700; font-size: 14px; line-height: 1.25; color: var(--ink); max-width: 15ch; }
+
+.chip em { font-style: normal; display: block; font-weight: 500; font-size: 10.5px; letter-spacing: 0.04em; color: var(--ink-soft); margin-top: 3px; }
+
+.chip:hover { border-color: var(--teal); transform: translateY(-4px); box-shadow: var(--shadow); background: var(--paper); }
+
+.chip:hover .mono { background: var(--teal-deep); color: var(--lime); transform: scale(1.08); }
+
+.vh { width: 1px; height: 1px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border: 0px; position: absolute !important; }
+
+.rail-note { margin-top: 18px; font-size: 15.5px; color: var(--ink-soft); max-width: 30ch; }
+
+.tier { font-size: 12.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); margin: 44px 0px 18px; display: flex; align-items: center; gap: 12px; }
+
+.tier::after { content: ""; height: 1px; flex: 1 1 0%; background: var(--line); }
+
+.newsletter { background: var(--teal-deep); color: var(--paper); padding: clamp(60px, 7vw, 88px) 0px; }
+
+.nl-inner { display: grid; grid-template-columns: 1fr auto; gap: clamp(28px, 4vw, 56px); align-items: center; }
+
+.newsletter h2 { color: var(--paper); font-size: clamp(24px, 2.9vw, 33px); max-width: 20ch; margin-top: 18px; line-height: 1.25; }
+
+.nl-form { display: flex; gap: 10px; align-items: stretch; }
+
+#nl-form { max-width: 560px; }
+
+.nl-form input { padding: 15px 17px; border: 1.5px solid rgba(255, 255, 255, 0.28); background: rgba(255, 255, 255, 0.07); color: var(--paper); font-family: var(--sans); font-size: 15px; border-radius: var(--radius); width: 258px; transition: border-color .2s var(--ease),background .2s var(--ease); }
+
+.nl-form input::placeholder { color: rgb(174, 203, 195); }
+
+.nl-form input:focus { border-color: var(--lime); background: rgba(255, 255, 255, 0.12); outline: none; }
+
+.nl-form button { padding: 15px 26px; background: var(--lime); border: 1.5px solid var(--lime); color: var(--ink); font-family: var(--sans); font-weight: 700; font-size: 15px; border-radius: var(--radius); cursor: pointer; transition: transform .2s var(--ease),filter .2s var(--ease); }
+
+.nl-form button:hover { transform: translateY(-2px); filter: brightness(1.06); }
+
+.nl-note { margin-top: 14px; font-size: 13px; color: rgb(174, 203, 195); }
+
+.nl-ok { margin-top: 14px; font-size: 14px; font-weight: 600; color: var(--lime); display: none; }
+
+footer { background: var(--ink); color: rgb(185, 196, 191); padding: clamp(52px, 6vw, 68px) 0px 26px; }
+
+.f-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: clamp(28px, 4vw, 48px); padding-bottom: 40px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+
+footer .brand b { color: var(--paper); }
+
+footer .brand small { color: rgb(140, 160, 152); }
+
+footer .blurb { max-width: 290px; margin-top: 18px; font-size: 14.5px; color: rgb(140, 160, 152); }
+
+footer h4 { font-family: var(--sans); font-weight: 700; font-size: 12.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--paper); margin-bottom: 18px; }
+
+footer li { margin-bottom: 11px; }
+
+footer a { text-decoration: none; font-size: 14.5px; color: rgb(185, 196, 191); transition: color .18s var(--ease); }
+
+footer a:hover { color: var(--lime); }
+
+.f-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-top: 24px; font-size: 13px; color: rgb(124, 139, 133); }
+
+.f-bottom a { color: rgb(124, 139, 133); margin-left: 18px; font-size: 13px; }
+
+.two-col > *, .members-cols > *, .hero-grid > *, .nl-inner > *, .capsule > *, .cc-inner > *, .f-grid > *, .quote > * { min-width: 0px; }
+
+.towns svg { max-width: 100%; }
+
+.capsule { padding: clamp(28px, 3.6vw, 44px) clamp(24px, 4vw, 56px); text-align: center; }
+
+.capsule .eyebrow { justify-content: center; }
+
+.capsule .eyebrow::after { content: ""; width: 24px; height: 1.5px; background: currentcolor; flex: 0 0 24px; }
+
+.capsule p.txt { font-size: clamp(15.5px, 1.4vw, 17.5px); color: var(--ink); line-height: 1.68; margin: 16px auto 0px; max-width: 70ch; }
+
+.towns { margin-top: 26px; border: 1px solid var(--line); background: var(--paper); padding: 22px 22px 18px; }
+
+.towns svg { width: 100%; height: auto; display: block; }
+
+.towns figcaption { margin-top: 16px; font-size: 12.5px; line-height: 1.5; color: var(--ink-soft); letter-spacing: 0.02em; }
+
+.towns .key { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+
+.towns .key span { display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink-soft); }
+
+.towns .key i { width: 9px; height: 9px; display: inline-block; border-radius: 1px; }
+
+.quote { display: grid; grid-template-columns: 168px 1fr; gap: 30px; align-items: start; background: var(--paper-alt); }
+
+.q-media { margin: 0px; text-align: center; }
+
+.q-media img { width: 132px; height: 132px; object-fit: cover; object-position: center 18%; border-radius: 50%; background: var(--paper); border: 3px solid var(--paper); box-shadow: 0 0 0 1.5px var(--teal-light); margin: 0px auto; }
+
+.q-media figcaption { margin-top: 16px; padding-top: 14px; border-top: 2px solid var(--teal); display: inline-block; }
+
+.q-mark { font-family: var(--display); font-size: 44px; line-height: 0.6; color: var(--teal-light); display: block; margin-bottom: 6px; }
+
+.quote .q-name { display: block; font-family: var(--display); font-weight: 700; font-size: 15px; color: var(--teal-deep); font-style: normal; }
+
+.quote .q-role { display: block; font-size: 12.5px; font-weight: 500; color: var(--ink-soft); margin-top: 5px; line-height: 1.5; font-style: normal; }
+
+.stat .s-ico { display: flex; align-items: center; justify-content: center; width: 66px; height: 66px; margin: 0px auto 20px; border-radius: 50%; background: rgba(205, 222, 113, 0.12); border: 1px solid rgba(205, 222, 113, 0.3); transition: background .35s var(--ease),transform .35s var(--ease),border-color .35s var(--ease); }
+
+.stat .s-ico svg { width: 36px; height: 36px; fill: var(--lime); stroke: var(--lime); stroke-linecap: round; stroke-linejoin: round; }
+
+.stat .s-ico svg [fill="none"] { fill: none; }
+
+.stat .s-ico svg [fill="var(--teal-deep)"] { fill: var(--teal-deep); stroke: none; }
+
+.stat:hover .s-ico { background: var(--lime); transform: translateY(-4px); border-color: var(--lime); }
+
+.stat:hover .s-ico svg { fill: var(--teal-deep); stroke: var(--teal-deep); }
+
+.stat:hover .s-ico svg [fill="var(--teal-deep)"] { fill: var(--lime); }
+
+.s-kick { display: block; font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lime); margin-bottom: 8px; }
+
+.s-cap { display: block; margin-top: 10px; font-size: 13.5px; font-weight: 500; color: rgb(207, 224, 218); max-width: 180px; margin-inline: auto; min-height: 38px; }
+
+.i-card { padding-top: clamp(26px, 2.8vw, 32px); }
+
+.i-card.no-ico { padding-top: clamp(26px, 2.8vw, 32px); }
+
+.i-card:nth-child(1) .i-card:nth-child(2) .i-card:nth-child(3) .i-card:nth-child(4) .i-card:hover .i-card:hover .i-card .n { margin-top: 2px; }
+
+.logo-grid { gap: 16px; }
+
+.chip { padding: 0px; }
+
+.chip a { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 116px; padding: 18px 20px; text-decoration: none; position: relative; }
+
+.chip img { max-height: 56px; max-width: 82%; width: auto; height: auto; object-fit: contain; filter: grayscale(1); opacity: 0.72; transition: filter .3s var(--ease),opacity .3s var(--ease),transform .3s var(--ease); }
+
+.chip:hover img { filter: grayscale(0); opacity: 1; transform: scale(1.04); }
+
+.chip .go { position: absolute; top: 9px; right: 11px; font-size: 13px; line-height: 1; color: var(--teal); opacity: 0; transform: translate(-3px, 3px); transition: opacity .25s var(--ease),transform .25s var(--ease); }
+
+.chip:hover .go, .chip a:focus-visible .go { opacity: 1; transform: none; }
+
+.consent { display: flex; gap: 11px; align-items: flex-start; margin-top: 16px; max-width: 520px; }
+
+.consent input[type="checkbox"] { appearance: none; flex: 0 0 18px; width: 18px; height: 18px; margin-top: 2px; border: 1.5px solid rgba(255, 255, 255, 0.5); border-radius: 2px; background: rgba(255, 255, 255, 0.06); cursor: pointer; display: grid; place-content: center; transition: background 0.18s, border-color 0.18s; }
+
+.consent input[type="checkbox"]::before { content: ""; width: 10px; height: 10px; transform: scale(0); transition: transform .15s var(--ease); box-shadow: inset 1em 1em var(--teal-deep); clip-path: polygon(14% 44%, 0px 65%, 50% 100%, 100% 16%, 80% 0px, 43% 62%); }
+
+.consent input[type="checkbox"]:checked { background: var(--lime); border-color: var(--lime); }
+
+.consent input[type="checkbox"]:checked::before { transform: scale(1); }
+
+.consent label { font-size: 13px; line-height: 1.55; color: rgb(207, 224, 218); cursor: pointer; }
+
+.consent a { color: var(--lime); text-underline-offset: 2px; }
+
+.nl-legal { margin-top: 12px; font-size: 12px; line-height: 1.55; color: rgb(156, 189, 180); max-width: 520px; }
+
+.nl-err { display: none; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--orange); }
+
+.cc { position: fixed; left: 0px; right: 0px; bottom: 0px; z-index: 120; background: var(--paper); border-top: 3px solid var(--teal-deep); box-shadow: rgba(14, 83, 72, 0.5) 0px -8px 40px -18px; transform: translateY(110%); transition: transform .5s var(--ease); }
+
+.cc.show { transform: none; }
+
+.cc-inner { max-width: var(--wrap); margin: 0px auto; padding: 22px clamp(20px, 4vw, 32px); display: grid; grid-template-columns: 1fr auto; gap: 26px; align-items: center; }
+
+.cc h2 { font-size: 17px; margin-bottom: 7px; }
+
+.cc p { font-size: 13.5px; line-height: 1.6; color: var(--ink-soft); max-width: 74ch; }
+
+.cc p a { color: var(--teal-text); font-weight: 600; }
+
+.cc-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.cc-btn { padding: 12px 20px; font-family: var(--sans); font-size: 14px; font-weight: 700; border-radius: var(--radius); cursor: pointer; border: 1.5px solid var(--teal-deep); background: var(--teal-deep); color: var(--paper); transition: transform .2s var(--ease),background .2s var(--ease),color .2s var(--ease); white-space: nowrap; }
+
+.cc-btn:hover { transform: translateY(-2px); }
+
+.cc-btn.alt { background: transparent; color: var(--teal-deep); border-color: var(--line); }
+
+.cc-btn.alt:hover { border-color: var(--teal); }
+
+.cc-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal-text); margin-bottom: 9px; }
+
+.cc-badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--teal); }
+
+.cookie-link { background: none; border: 0px; padding: 0px; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; line-height: inherit; font-family: inherit; font-optical-sizing: inherit; font-size-adjust: inherit; font-kerning: inherit; font-feature-settings: inherit; font-variation-settings: inherit; font-language-override: inherit; font-size: 13px; color: rgb(124, 139, 133); cursor: pointer; margin-left: 18px; }
+
+.cookie-link:hover { color: var(--lime); }
+
+@media (max-width: 880px) {
+  .cc-inner { grid-template-columns: 1fr; gap: 16px; }
+}
+
+@media (max-width: 560px) {
+  .quote { grid-template-columns: 1fr; gap: 22px; }
+  .q-media { text-align: left; }
+  .q-media img { width: 104px; height: 104px; margin: 0px; }
+  .logo-grid, .logo-grid.friends { grid-template-columns: repeat(2, 1fr); }
+  .chip a { min-height: 98px; padding: 14px; }
+  .cc-actions { flex-direction: column; }
+  .cc-btn { width: 100%; }
+}
+
+.rv { opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease),transform .6s var(--ease); }
+
+.rv.in { opacity: 1; transform: none; }
+
+.rv.d1 { transition-delay: 0.07s; }
+
+.rv.d2 { transition-delay: 0.14s; }
+
+.rv.d3 { transition-delay: 0.21s; }
+
+@media (max-width: 1020px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .net { max-width: 400px; }
+  .hero h1 { max-width: 18ch; }
+  .impact-grid { grid-template-columns: repeat(2, 1fr); }
+  .two-col, .members-cols { grid-template-columns: 1fr; }
+  .two-col .rail { position: static; }
+}
+
+@media (max-width: 880px) {
+  .links, .nav-cta { display: none; }
+  .burger { display: flex; }
+  .cards-3 { grid-template-columns: 1fr; }
+  .cards-3 { margin-top: 0px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); gap: 32px 0px; }
+  .stat + .stat { border-left-width: medium; border-left-style: none; border-left-color: currentcolor; }
+  .stat:nth-child(2n) { border-left: 1px solid rgba(255, 255, 255, 0.16); }
+  .nl-inner { grid-template-columns: 1fr; }
+  .f-grid { grid-template-columns: 1fr; }
+  .capsule { margin-top: -28px; }
+}
+
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .net { display: none; }
+  .hero-grid { gap: 0px; }
+  .impact-grid { grid-template-columns: 1fr; }
+  .logo-grid, .logo-grid.friends { grid-template-columns: repeat(2, 1fr); }
+  .hero-proof div { padding-right: 16px; margin-right: 16px; }
+  .hero-proof b { font-size: 19px; }
+  .nl-form { flex-direction: column; }
+  .nl-form input { width: 100%; }
+  .capsule { margin-top: 0px; border-top-width: 3px; }
+  .photo-band .shot { aspect-ratio: 16 / 11; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, ::before, ::after { animation: auto ease 0s 1 normal none running none !important; transition: none !important; }
+  .rv { opacity: 1; transform: none; }
+  .hero h1 .accent { background-size: 100% 0.16em; }
+  .net .edge { stroke-dashoffset: 0; }
+  .net .node { opacity: 1; }
+}
+
+@media print {
+  .nav, .newsletter, .net { display: none; }
+  body { font-size: 12pt; }
+}</style>
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="preload" href="%%UCAN_THEME%%/assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="%%UCAN_THEME%%/assets/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin><style data-ucan="fonts">@font-face{font-family:'Archivo';font-style:normal;font-weight:500 800;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/archivo-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face{font-family:'Archivo';font-style:normal;font-weight:500 800;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/archivo-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face{font-family:'Public Sans';font-style:italic;font-weight:400;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/public-sans-italic-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face{font-family:'Public Sans';font-style:italic;font-weight:400;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/public-sans-italic-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 700;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/public-sans-latin-ext.woff2) format('woff2');unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF}@font-face{font-family:'Public Sans';font-style:normal;font-weight:400 700;font-display:swap;src:url(%%UCAN_THEME%%/assets/fonts/public-sans-latin.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD}</style>
+
+<title>Urban Collective Action Network for India's cities | U-CAN</title>
+
+<meta name="description" content="U-CAN unites urban practitioners, government and philanthropies to build liveable Indian cities. See how we are driving change.">
+
+<link rel="canonical" href="https://www.urban.org.in/">
+
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+<meta name="theme-color" content="#0E5348">
+
+<meta name="color-scheme" content="light">
+
+
+
+<!-- Geographic / regional signals (GEO) -->
+
+<meta name="geo.region" content="IN">
+
+<meta name="geo.placename" content="India">
+
+<meta name="language" content="English">
+
+<meta name="author" content="Urban Collective Action Network (U-CAN)">
+
+<link rel="alternate" hreflang="en-in" href="https://www.urban.org.in/">
+
+<link rel="alternate" hreflang="x-default" href="https://www.urban.org.in/">
+
+
+
+<!-- Open Graph -->
+
+<meta property="og:type" content="website">
+
+<meta property="og:site_name" content="U-CAN — Urban Collective Action Network">
+
+<meta property="og:locale" content="en_IN">
+
+<meta property="og:title" content="Urban Collective Action Network for India's cities | U-CAN">
+
+<meta property="og:description" content="U-CAN unites urban practitioners, government and philanthropies to build liveable Indian cities. See how we are driving change.">
+
+<meta property="og:url" content="https://www.urban.org.in/">
+
+<meta property="og:image" content="https://urban.org.in/assets/img/og-annual-forum.jpg">
+
+<meta property="og:image:width" content="1400">
+
+<meta property="og:image:height" content="612">
+
+<meta property="og:image:alt" content="Practitioners, researchers, media and government officials at U-CAN's first Annual Forum">
+
+
+
+<!-- Twitter / X -->
+
+<meta name="twitter:card" content="summary_large_image">
+
+<meta name="twitter:title" content="Urban Collective Action Network for India's cities | U-CAN">
+
+<meta name="twitter:description" content="U-CAN unites urban practitioners, government and philanthropies to build liveable Indian cities. See how we are driving change.">
+
+<meta name="twitter:image" content="https://urban.org.in/assets/img/og-annual-forum.jpg">
+
+<meta name="twitter:image:alt" content="Practitioners, researchers, media and government officials at U-CAN's first Annual Forum">
+
+
+
+<link rel="icon" href="%%UCAN_THEME%%/assets/img/favicon-78b77e29b1.png">
+
+
+
+<!-- Fonts: non-blocking, swap, with metric fallbacks to prevent CLS -->
+
+<link rel="preconnect" href="https://urban.org.in/">
+
+<!-- ============ STRUCTURED DATA (Organization • WebSite • WebPage • FAQ-free, fact-safe) ============ -->
+
+
+
+<style>
+
+/* 7-item nav needs more room than the original 880px breakpoint allowed */
+
+@media (max-width:940px){.nav .links,.nav .nav-cta{display:none}.nav .burger{display:flex}}
+
+</style>
+
+<script type="application/ld+json" data-ucan="schema">
+
+{
+
+  "@context": "https://schema.org",
+
+  "@graph": [
+
+    {
+
+      "@type": "Organization",
+
+      "@id": "https://urban.org.in/#org",
+
+      "name": "Urban Collective Action Network (U-CAN)",
+
+      "alternateName": "U-CAN",
+
+      "url": "https://urban.org.in/",
+
+      "email": "connect@urban.org.in",
+
+      "description": "U-CAN is a network of organisations working together to strengthen urban problem-solving in India's Tier II and Tier III cities.",
+
+      "foundingDate": "2022",
+
+      "areaServed": "IN",
+
+      "sameAs": [
+
+        "https://www.linkedin.com/company/urban-collective-action-network-u-can/",
+
+        "https://www.youtube.com/@U-CAN24"
+
+      ]
+
+    },
+
+    {
+
+      "@type": "WebSite",
+
+      "@id": "https://urban.org.in/#website",
+
+      "url": "https://urban.org.in/",
+
+      "name": "Urban Collective Action Network (U-CAN)",
+
+      "publisher": {
+
+        "@id": "https://urban.org.in/#org"
+
+      },
+
+      "inLanguage": "en-IN"
+
+    },
+
+    {
+
+      "@type": "WebPage",
+
+      "@id": "https://urban.org.in/#page",
+
+      "url": "https://urban.org.in/",
+
+      "name": "Urban Collective Action Network for India's cities | U-CAN",
+
+      "description": "U-CAN unites urban practitioners, government and philanthropies to build liveable Indian cities. See how we are driving change.",
+
+      "isPartOf": {
+
+        "@id": "https://urban.org.in/#org"
+
+      },
+
+      "inLanguage": "en-IN",
+
+      "speakable": {
+
+        "@type": "SpeakableSpecification",
+
+        "cssSelector": [
+
+          "h1",
+
+          ".hero-lede",
+
+          ".lede"
+
+        ]
+
+      }
+
+    },
+
+    {
+
+      "@type": "BreadcrumbList",
+
+      "itemListElement": [
+
+        {
+
+          "@type": "ListItem",
+
+          "position": 1,
+
+          "name": "Home",
+
+          "item": "https://urban.org.in/"
+
+        }
+
+      ]
+
+    }
+
+  ]
+
+}
+
+</script>
+
+<style data-ucan="chrome">
+
+/* ——— site chrome: one header + one footer on every page ———
+
+   Self-contained on purpose: three different base64 stylesheets exist across
+
+   the site, so nothing here may depend on page-specific custom properties. */
+
+.bar{position:sticky;top:0;z-index:90;background:rgba(251,250,246,.92);
+
+  -webkit-backdrop-filter:saturate(180%) blur(12px);backdrop-filter:saturate(180%) blur(12px);
+
+  border-bottom:1px solid var(--line,#DCEAE6);transition:box-shadow .25s cubic-bezier(.22,.61,.36,1)}
+
+.bar.scrolled{box-shadow:0 1px 22px -10px rgba(14,83,72,.4)}
+
+.bar-in{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4.5vw,52px);height:78px;
+
+  display:flex;align-items:center;justify-content:space-between;gap:24px}
+
+.bar .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink,#222120)}
+
+.bar .brand img{width:38px;height:38px;object-fit:contain;flex:0 0 38px}
+
+.bar .brand b{font-family:var(--display,'Archivo',Arial,sans-serif);font-weight:800;font-size:21px;
+
+  letter-spacing:-.02em;line-height:1;display:block}
+
+.bar .brand small{display:block;font-weight:600;font-size:8.4px;letter-spacing:.13em;
+
+  text-transform:uppercase;color:var(--ink-soft,#57564F);margin-top:3px}
+
+.bar-cta{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans,'Public Sans',sans-serif);
+
+  font-size:14px;font-weight:700;text-decoration:none;color:var(--paper,#FBFAF6);
+
+  background:var(--teal-deep,#0E5348);padding:11px 20px;border-radius:2px;white-space:nowrap;
+
+  border:1.5px solid var(--teal-deep,#0E5348);transition:background .2s,transform .2s}
+
+.bar-cta:hover{background:var(--ink,#222120);border-color:var(--ink,#222120);transform:translateY(-2px)}
+
+/* Neutralise anything the page's own stylesheet says about these elements —
+
+   three different base64 stylesheets are in play and two of them still carry
+
+   rules from when .nav / .header WAS that page's header. */
+
+.bar .ucnav-bar{margin:0;padding:0;border:0;background:none;box-shadow:none;
+
+  height:auto;line-height:normal;position:static;display:block}
+
+.bar .brand span{line-height:1}
+
+.bar-cta{line-height:1;height:44px;letter-spacing:0}
+
+.burger{display:none;width:46px;height:46px;border:1px solid var(--line,#DCEAE6);background:transparent;
+
+  border-radius:2px;cursor:pointer;padding:0;align-items:center;justify-content:center;flex:0 0 46px}
+
+.burger span,.burger span::before,.burger span::after{display:block;width:19px;height:1.7px;
+
+  background:var(--ink,#222120);transition:transform .25s cubic-bezier(.22,.61,.36,1),background .2s}
+
+.burger span{position:relative}
+
+.burger span::before,.burger span::after{content:"";position:absolute;left:0}
+
+.burger span::before{top:-6px}
+
+.burger span::after{top:6px}
+
+.burger[aria-expanded="true"] span{background:transparent}
+
+.burger[aria-expanded="true"] span::before{transform:translateY(6px) rotate(45deg)}
+
+.burger[aria-expanded="true"] span::after{transform:translateY(-6px) rotate(-45deg)}
+
+.msheet{display:none;border-top:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6)}
+
+.msheet.open{display:block}
+
+.msheet>.wrap{max-width:1240px;margin:0 auto;padding:8px clamp(20px,4.5vw,52px) 20px}
+
+@media(max-width:1100px){
+
+  .bar .ucnav-bar{display:none}
+
+  .burger{display:inline-flex}
+
+}
+
+@media(max-width:420px){
+
+  .bar-cta{display:none}
+
+}
+
+
+
+/* ——— cookie banner ———
+
+   Bottom-of-viewport popup. Defined here (not in a page stylesheet) so it
+
+   behaves identically on all 148 pages. */
+
+.cc{position:fixed;left:0;right:0;bottom:0;z-index:120;
+
+  background:var(--paper,#FBFAF6);border-top:3px solid var(--teal-deep,#0E5348);
+
+  box-shadow:0 -8px 40px -18px rgba(14,83,72,.5);
+
+  transform:translateY(110%);visibility:hidden;
+
+  transition:transform .45s cubic-bezier(.22,.61,.36,1),visibility .45s;
+
+  font-family:var(--sans,'Public Sans',sans-serif)}
+
+.cc.show{transform:none;visibility:visible}
+
+.cc-in{max-width:1240px;margin:0 auto;padding:20px clamp(20px,4.5vw,52px);
+
+  display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+
+.cc-in>*{min-width:0}
+
+.cc-badge{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;
+
+  letter-spacing:.08em;text-transform:uppercase;color:var(--teal-text,#177A69);margin-bottom:7px}
+
+.cc-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--teal,#1F8F7B)}
+
+.cc h2{font-family:var(--display,'Archivo',Arial,sans-serif);font-size:16px;margin:0 0 6px;
+
+  color:var(--ink,#222120);line-height:1.3}
+
+.cc p{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-soft,#57564F);max-width:82ch}
+
+.cc p a{color:var(--teal-text,#177A69);font-weight:600}
+
+.cc-act{display:flex;gap:10px;flex-wrap:wrap}
+
+.cc-btn{padding:11px 20px;font-family:inherit;font-size:14px;font-weight:700;line-height:1;
+
+  border-radius:2px;cursor:pointer;border:1.5px solid var(--teal-deep,#0E5348);
+
+  background:var(--teal-deep,#0E5348);color:var(--paper,#FBFAF6);white-space:nowrap;
+
+  transition:transform .2s,background .2s}
+
+.cc-btn:hover{transform:translateY(-2px)}
+
+.cc-btn.alt{background:transparent;color:var(--teal-deep,#0E5348);border-color:var(--line,#DCEAE6)}
+
+.cc-btn.alt:hover{border-color:var(--teal,#1F8F7B)}
+
+@media(max-width:720px){
+
+  .cc-in{grid-template-columns:1fr;gap:14px}
+
+  .cc-act{width:100%}
+
+  .cc-btn{flex:1 1 auto}
+
+}
+
+
+
+/* ——— footer ——— */
+
+footer{background:var(--ink,#222120);color:#B9C4BF;padding:clamp(52px,6vw,72px) 0 26px;
+
+  border-top:1px solid rgba(255,255,255,.08);font-family:var(--sans,'Public Sans',sans-serif)}
+
+footer>.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4.5vw,52px)}
+
+.f-grid{display:grid;grid-template-columns:1.35fr .85fr .85fr 1.5fr;gap:clamp(26px,3.4vw,46px);
+
+  padding-bottom:42px;border-bottom:1px solid rgba(255,255,255,.1)}
+
+.f-grid>*{min-width:0}
+
+footer .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+
+footer .brand img{width:38px;height:38px;object-fit:contain;flex:0 0 38px}
+
+footer .brand b{font-family:var(--display,'Archivo',Arial,sans-serif);font-weight:800;font-size:21px;
+
+  letter-spacing:-.02em;line-height:1;display:block;color:#fff}
+
+footer .brand small{display:block;font-weight:600;font-size:8.4px;letter-spacing:.13em;
+
+  text-transform:uppercase;color:#8CA098;margin-top:3px}
+
+footer .blurb{max-width:300px;margin:20px 0 0;font-size:14.5px;color:#8CA098;line-height:1.6}
+
+footer h4{font-family:var(--sans,'Public Sans',sans-serif);font-weight:700;font-size:12.5px;
+
+  letter-spacing:.1em;text-transform:uppercase;color:#fff;margin:0 0 18px}
+
+footer ul{margin:0;padding:0;list-style:none}
+
+footer li{margin-bottom:11px;list-style:none}
+
+footer a{text-decoration:none;font-size:14.5px;color:#B9C4BF;transition:color .18s}
+
+footer a:hover{color:var(--lime,#CDDE71)}
+
+.f-subtext{margin:0 0 16px;font-size:14px;line-height:1.6;color:#8CA098}
+
+.fnrow{display:flex;gap:8px;flex-wrap:wrap}
+
+.fnrow input{flex:1 1 150px;min-width:0;padding:11px 13px;font-family:inherit;font-size:14.5px;
+
+  color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);border-radius:2px}
+
+.fnrow input::placeholder{color:#8CA098}
+
+.fnrow input:focus{outline:2px solid var(--lime,#CDDE71);outline-offset:1px}
+
+.fnrow button{padding:11px 20px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;
+
+  color:var(--ink,#222120);background:var(--lime,#CDDE71);border:1.5px solid var(--lime,#CDDE71);
+
+  border-radius:2px;white-space:nowrap;transition:transform .2s}
+
+.fnrow button:hover{transform:translateY(-2px)}
+
+.fconsent{display:grid;grid-template-columns:auto 1fr;gap:10px;margin-top:13px;align-items:start}
+
+.fconsent input{margin-top:3px;width:16px;height:16px;flex:0 0 16px;accent-color:var(--teal,#1F8F7B)}
+
+.fconsent label{font-size:12.5px;line-height:1.55;color:#8CA098;min-width:0}
+
+.fconsent label a{font-size:12.5px;color:var(--lime,#CDDE71)}
+
+.f-sub .nerr,.f-sub .nok{display:none;margin:12px 0 0;font-size:13px;line-height:1.5;font-weight:600}
+
+.f-sub .nerr{color:#FFC9B0}
+
+.f-sub .nok{color:var(--lime,#CDDE71)}
+
+.f-legal{margin:13px 0 0;font-size:11.5px;line-height:1.55;color:#75857E}
+
+.f-legal a{font-size:11.5px;color:#8CA098}
+
+.f-social{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:20px !important}
+
+.f-social li{margin-bottom:0}
+
+.f-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-top:24px;
+
+  font-size:13px;color:#7C8B85}
+
+.f-bottom a{color:#7C8B85;margin-left:18px;font-size:13px}
+
+.cookie-link{margin-left:18px;background:none;border:0;padding:0;font-family:inherit;font-size:13px;
+
+  color:#7C8B85;cursor:pointer;text-decoration:underline}
+
+.cookie-link:hover{color:var(--lime,#CDDE71)}
+
+@media(max-width:1040px){
+
+  .f-grid{grid-template-columns:1fr 1fr;row-gap:36px}
+
+  .f-sub{grid-column:1/-1}
+
+}
+
+@media(max-width:560px){
+
+  .f-grid{grid-template-columns:1fr}
+
+  .f-bottom{flex-direction:column;gap:8px}
+
+  .f-bottom a,.cookie-link{margin-left:0;margin-right:16px}
+
+}
+
+</style>
+
+<style data-ucan="nav">
+
+/* ——— site nav: 5 top-level items with dropdowns (mirrors urban.org.in IA) ——— */
+
+.ucnav-bar{display:block}
+
+.ucnav{display:flex;align-items:center;gap:clamp(2px,1.1vw,14px);flex-wrap:nowrap}
+
+.ucnav-i{position:relative;display:flex;align-items:center}
+
+.ucnav-t{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;
+
+  font-family:var(--sans);font-size:14.5px;font-weight:600;line-height:1;
+
+  color:var(--ink);text-decoration:none;background:none;border:0;cursor:pointer;
+
+  padding:10px 10px;border-radius:2px;transition:color .18s ease,background .18s ease}
+
+.ucnav-t:hover,.ucnav-i:hover>.ucnav-t{color:var(--teal-deep);background:rgba(31,143,123,.07)}
+
+.ucnav-t.on{color:var(--teal-deep)}
+
+.ucnav-t.on::after{content:"";position:absolute;left:10px;right:10px;bottom:2px;height:2px;background:var(--teal)}
+
+.ucnav-i>.ucnav-t.on::after{left:10px;right:22px}
+
+.ucnav-cv{width:9px;height:6px;flex:0 0 9px;transition:transform .2s ease;opacity:.75}
+
+.ucnav-i:hover .ucnav-cv,.ucnav-i.open .ucnav-cv{transform:rotate(180deg)}
+
+.ucnav-dd{position:absolute;top:100%;left:0;min-width:246px;padding:8px;
+
+  background:var(--paper,#FBFAF6);border:1px solid var(--line);
+
+  box-shadow:0 18px 44px -22px rgba(14,83,72,.55);
+
+  opacity:0;visibility:hidden;transform:translateY(-6px);
+
+  transition:opacity .18s ease,transform .18s ease,visibility .18s;z-index:80}
+
+.ucnav-i:hover .ucnav-dd,.ucnav-i.open .ucnav-dd,.ucnav-i:focus-within .ucnav-dd{opacity:1;visibility:visible;transform:translateY(0)}
+
+.ucnav-dd a{display:block;padding:10px 12px;font-family:var(--sans);font-size:14px;font-weight:500;
+
+  line-height:1.35;color:var(--ink-soft);text-decoration:none;border-radius:2px}
+
+.ucnav-dd a:hover,.ucnav-dd a:focus-visible{background:var(--paper-alt,#E9F5F2);color:var(--teal-deep)}
+
+.ucnav-i:last-child .ucnav-dd{left:auto;right:0}
+
+.ucnav-gh{margin:8px 12px 4px;padding-top:9px;border-top:1px solid var(--line);
+
+  font-family:var(--sans);font-weight:700;font-size:10.5px;letter-spacing:.13em;
+
+  text-transform:uppercase;color:var(--ink-soft);opacity:.8}
+
+.ucnav-dd .ucnav-gh+a{padding-left:12px}
+
+
+
+/* mobile sheet */
+
+.ucmob{display:flex;flex-direction:column;gap:2px}
+
+.ucmob-t{display:block;padding:13px 0;font-family:var(--display);font-weight:700;
+
+  font-size:19px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+
+.ucmob-g{border-bottom:1px solid var(--line);padding:13px 0}
+
+.ucmob-h{font-family:var(--display);font-weight:700;font-size:19px;color:var(--ink);margin:0 0 6px}
+
+.ucmob-l{display:flex;flex-direction:column}
+
+.ucmob-l a{padding:8px 0 8px 14px;font-family:var(--sans);font-size:15px;font-weight:500;
+
+  color:var(--ink-soft);text-decoration:none;border-left:2px solid var(--line)}
+
+.ucmob-l a:hover{color:var(--teal-deep);border-left-color:var(--teal)}
+
+.ucmob-gh{margin:12px 0 4px;font-family:var(--sans);font-weight:700;font-size:10.5px;
+
+  letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);opacity:.8}
+
+.ucmob-cta{color:var(--teal-deep)}
+
+</style>
+
+<style data-ucan="rhythm">
+
+/* ——— vertical rhythm ——— */
+
+.crumb{display:none}.art-link,.letter a,.art a,.feature a{overflow-wrap:anywhere}.letter p,.art p,.feature p,.stat-desc,.letter h3{overflow-wrap:break-word}.nl-fig{margin:0 0 1.5rem;border-radius:8px;overflow:hidden;background:var(--mint,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.nl-fig img{display:block;width:100%;height:auto}.art .nl-fig{margin-bottom:1.25rem}.nl-fig figcaption{padding:.6rem 1rem;font-size:.75rem;font-weight:600;color:var(--ink-soft,#57564F);background:var(--paper,#FBFAF6)}.c-card p{margin-top:0!important}@media(min-width:1021px){.two-col{grid-template-columns:1.15fr 0.85fr!important}}.eyebrow-spacer{display:none}@media(min-width:1021px){.eyebrow-spacer{display:inline-flex;visibility:hidden;margin-bottom:32px}}.chip img{filter:none!important;opacity:1!important}.proof-quote{--wash:rgba(31,143,123,.10)!important;--acc:#1F8F7B!important}.ptrow .pt{min-height:150px!important}.ptrow .pt img{max-height:96px!important}.mgrid a{min-height:150px!important}.mgrid img{max-height:88px!important}.sec-head h2{font-size:clamp(27px,3.6vw,40px)!important;letter-spacing:-.02em!important;max-width:22ch}.brand img{width:auto!important;height:auto!important;flex:0 0 auto!important}.vm-card{display:flex;flex-direction:column}.vm-card .brochure-btn{margin-top:auto;align-self:flex-start;padding-top:14px}.vm-card .vm-text+.brochure-btn,.vm-card .brochure-btn{margin-top:auto}@media(min-width:1001px){.vm-card .brochure-btn{margin-top:auto}.vm-card{min-height:100%}}.bar .brand img{width:168px!important;max-width:168px!important}footer .brand img{width:178px!important;max-width:178px!important}.bar-in{height:92px}.ucnav-t{font-size:16px}.bar-cta{font-size:15px;height:46px;padding:0 22px}html{scroll-padding-top:108px}@media(max-width:1100px){.bar .brand img{width:148px!important;max-width:148px!important}.bar-in{height:80px}html{scroll-padding-top:96px}}@media(max-width:560px){.bar .brand img{width:130px!important;max-width:130px!important}.bar-in{height:70px}}.sec{padding:clamp(52px,5.6vw,80px) 0}
+
+.section{padding:clamp(54px,5.8vw,84px) 0}
+
+.sec-head{grid-template-columns:1fr;margin-bottom:clamp(26px,3vw,38px)}
+
+.sec-head>*{min-width:0}
+
+.section-head{max-width:74ch}
+
+
+
+/* a heading sitting directly on a full-bleed band needs far less air below it */
+
+.sec:has(+.impact-band),.sec[style*="padding-bottom:0"]{padding-bottom:0}
+
+.sec[style*="padding-bottom:0"] .sec-head{margin-bottom:clamp(20px,2.4vw,30px)}
+
+.impact-band,.stat-band{padding:clamp(34px,4vw,52px) 0}
+
+
+
+/* a text column next to a tall diagram: centre it rather than leaving the
+
+   diagram's lower half beside empty space */
+
+.split-mid{align-items:center}
+
+.split-mid .fw{min-height:0}
+
+
+
+/* session dates wrapped onto two lines ("February 21, 2025") */
+
+@media(min-width:901px){.sdate{width:11.5em;white-space:nowrap}}
+
+
+
+/* the hero already carries generous padding; don't stack another full gap on it */
+
+.hero+.sec,.hero+.section{padding-top:clamp(44px,4.8vw,68px)}
+
+</style>
+
+<style data-ucan="fallback">@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:500;size-adjust:93.4%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:600;size-adjust:95.5%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:700;size-adjust:99%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"Arch Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:800;size-adjust:104.3%;ascent-override:90%;descent-override:22%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial"),local("ArialMT"),local("Helvetica Neue");font-weight:400;size-adjust:105.3%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial"),local("ArialMT"),local("Helvetica Neue");font-weight:500;size-adjust:106.1%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:600;size-adjust:98.9%;ascent-override:92%;descent-override:24%;line-gap-override:0%}@font-face{font-family:"PS Fallback";src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold");font-weight:700;size-adjust:100.3%;ascent-override:92%;descent-override:24%;line-gap-override:0%}.hero-lede{max-width:39.2em}.sec-head h2{max-width:13.1em}.section-head{max-width:45.3em}.post-hero img{aspect-ratio:16/9;height:auto}</style><style data-ucan="type">
+/* form controls don't inherit font-family from the page; without this a
+   <button class="btn"> falls back to the UA default (Arial) while the
+   same class on an <a> renders in Public Sans */
+button,input,select,textarea{font-family:inherit}
+
+/* kickers inside a .body column lost their styling to `.body p` */
+main p.kicker{font-family:var(--sans,'Public Sans',sans-serif)!important;font-size:12.5px!important;line-height:1.62!important;font-weight:700!important;letter-spacing:.14em!important;text-transform:uppercase!important;color:var(--teal-text,#177A69)!important}
+main .on-dark.kicker,main .kicker.on-dark{color:var(--lime,#CDDE71)!important}
+
+/* One type scale and one bullet, applied last so it settles the differences between the shell pages, the newsletter template and the imported WordPress bodies. Classed paragraphs (kickers, leads, captions) keep their own role sizes. */
+main h1{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(38px,6.4vw,76px)!important;line-height:1.05!important;letter-spacing:-.03em}
+main h2{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em}
+main h3{font-family:var(--display,Archivo)!important;font-weight:700!important;font-size:clamp(18px,1.9vw,21px)!important;line-height:1.32!important;letter-spacing:-.01em}
+main p:not([class]){font-size:17px!important;line-height:1.62!important}
+/* prose lists had list-style:none with no marker, so bullets were invisible; match the .blist component the rest of the site uses */
+main ul:not([class]){list-style:none;margin:18px 0 0;padding:0}
+main ul:not([class])>li{list-style:none!important;display:block!important;position:relative;padding:11px 0 11px 20px;border-top:1px dashed var(--line,#DCEAE6);font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;min-width:0;overflow-wrap:break-word}
+main ul:not([class])>li:first-child{border-top:0}
+main ul:not([class])>li::before{content:"";position:absolute;left:0;top:calc(11px + .81em - 3.5px);width:7px;height:7px;background:var(--teal,#1F8F7B);border-radius:50%}
+main ol:not([class]){margin:18px 0 0;padding-left:22px}
+main ol:not([class])>li{font-size:16px;color:var(--ink-soft,#57564F);line-height:1.62;padding:5px 0}
+main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
+</style>
+<style data-ucan="logos">
+/* One tile size for Member Organisations, Friends of U-CAN and Forum partners */
+.logo-grid,.logo-grid.friends,.mgrid,.ptrow{display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important;max-width:none!important}
+.logo-grid>li,.mgrid>li,.ptrow>li{min-width:0}
+.chip,.ptrow .pt{padding:0!important;min-height:150px!important}
+.chip a,.mgrid a,.ptrow .pt a{display:flex!important;align-items:center;justify-content:center;
+  width:100%;height:100%;min-height:150px!important;padding:22px!important;box-sizing:border-box}
+.chip img,.mgrid img,.ptrow .pt img{max-height:88px!important;max-width:82%!important;
+  width:auto!important;height:auto!important;object-fit:contain}
+@media(max-width:980px){.logo-grid,.logo-grid.friends,.mgrid,.ptrow{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:680px){.logo-grid,.logo-grid.friends,.mgrid,.ptrow{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+  .chip,.ptrow .pt,.chip a,.mgrid a,.ptrow .pt a{min-height:120px!important}
+  .chip img,.mgrid img,.ptrow .pt img{max-height:68px!important}}
+</style>
+<style data-ucan="heads">.sec-head:has(>.kicker:first-child){row-gap:0!important}.sec-head>.kicker:first-child+:is(h2,h3){margin-top:2px!important}.sec-head>:is(h2,h3)+.lead{margin-top:16px!important}main h3.fx-h3-lg{font-size:clamp(27px,3.6vw,40px)!important;line-height:1.18!important;letter-spacing:-.02em!important}</style><style data-ucan="hero">
+/* Centred hero. The headline now owns the width the diagram used to share. */
+.hero{position:relative;isolation:isolate;padding:clamp(64px,8vw,112px) 0 clamp(56px,6vw,84px)!important}
+.hero-grid{display:block!important;position:relative;z-index:1;text-align:center}
+.hero-grid>div{max-width:1040px;margin:0 auto}
+.hero .eyebrow{justify-content:center}
+.hero .eyebrow::after{content:"";width:24px;height:1.5px;background:currentColor;flex:0 0 24px}
+.hero h1{max-width:13.1em!important;margin:24px auto 26px!important;text-align:center;text-wrap:balance}
+/* Pinned breaks: balanced wrapping moved "into" between lines 1 and 2 when the
+   webfont replaced its fallback, shifting the whole hero. */
+.hero h1 .hbr{display:none}
+@media(min-width:768px){.hero h1 .hbr{display:inline}.hero h1{max-width:14.2em!important;text-wrap:wrap}}
+.hero .lede{max-width:39em!important;margin:0 auto!important}
+.hero-actions{justify-content:center}
+.hero-proof{justify-content:center;max-width:560px;margin-left:auto!important;margin-right:auto!important}
+.hero-proof div{text-align:center}
+
+/* words arrive from where they were, and settle into one line of thought */
+/* Transform only: the words are legible from the very first paint (so the
+   headline counts as painted at once - it is the page's LCP), they just
+   travel the last few pixels into place. Composited, no main-thread work. */
+.hero h1 .hw{display:inline-block;animation:hwin .8s cubic-bezier(.2,.75,.25,1) both;
+  animation-delay:calc(var(--i) * 45ms)}
+@keyframes hwin{from{transform:translate(calc(var(--dx) * .45),calc(var(--dy) * .45)) rotate(calc(var(--r) * .6))}
+  to{transform:none}}
+/* the orange underline draws with scaleX rather than background-size, which
+   the browser can't hand to the compositor */
+.hero h1 .accent{position:relative;background:none!important;animation:none!important}
+.hero h1 .accent::after{content:"";position:absolute;left:0;right:0;bottom:.02em;height:.16em;
+  background:var(--orange,#FEAE00);z-index:-1;transform:scaleX(0);transform-origin:left center;
+  animation:swashx .9s .75s cubic-bezier(.22,.61,.36,1) forwards}
+@keyframes swashx{to{transform:scaleX(1)}}
+
+/* the field: individuals drifting, linking up when they come close */
+.hero-field{position:absolute;inset:0 0 auto 0;z-index:0;width:100%;display:block;
+  pointer-events:none;
+  -webkit-mask-image:radial-gradient(ellipse 46% 52% at 50% 46%,rgba(0,0,0,.18) 0%,rgba(0,0,0,.55) 55%,#000 100%);
+          mask-image:radial-gradient(ellipse 46% 52% at 50% 46%,rgba(0,0,0,.18) 0%,rgba(0,0,0,.55) 55%,#000 100%)}
+@media(prefers-reduced-motion:reduce){.hero h1 .hw{animation:none}.hero h1 .accent::after{animation:none;transform:none}}
+</style>
+<style data-ucan="friends">/* Friends of U-CAN reads as a second group of the same section: the teal eyebrow Our Members uses, with no rule running off it */.eyebrow.tier-friends{display:flex;margin:clamp(40px,4.6vw,56px) 0 clamp(24px,2.8vw,32px)}</style><style data-ucan="why2">.why2-head{max-width:100%}.why2-head h2{max-width:24em;margin:18px 0 0}.why2-grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(28px,4.4vw,64px);align-items:stretch;margin-top:clamp(34px,4vw,52px)}.why2-story{display:flex;flex-direction:column;gap:clamp(22px,2.6vw,30px);min-width:0}.why2-story .body-text p{margin:0 0 16px}.why2-story .body-text p:last-child{margin-bottom:0}.why2-scale{margin:0;padding:clamp(18px,2.2vw,26px);background:var(--paper-alt,#E9F5F2);border:1px solid var(--line,#DCEAE6)}.why2-scale svg{display:block;width:100%;height:auto}.w2-metro circle{fill:var(--teal-deep,#0E5348)}.w2-towns circle{fill:var(--teal,#1F8F7B);opacity:.55}.why2-scale circle{transform-box:fill-box;transform-origin:center;transform:scale(0);transition:transform .5s cubic-bezier(.3,1.4,.5,1) var(--d)}.why2-scale.in circle{transform:scale(1)}.why2-scale figcaption{display:grid;grid-template-columns:.36fr .64fr;gap:12px;margin-top:12px;font-family:var(--sans,'Public Sans',sans-serif);font-size:13px;line-height:1.4;color:var(--ink-soft,#57564F)}.why2-scale figcaption b{display:block;font-family:var(--display,Archivo,sans-serif);font-weight:800;font-size:clamp(17px,1.8vw,21px);color:var(--teal-deep,#0E5348);letter-spacing:-.01em}.why2-quote{position:relative;margin:0;display:flex;flex-direction:column;justify-content:space-between;gap:26px;padding:clamp(28px,3.4vw,44px);background:var(--teal-deep,#0E5348);color:#FBFAF6;overflow:hidden}.why2-quote::after{content:"";position:absolute;right:-90px;top:-90px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(78,198,178,.28),rgba(78,198,178,0) 70%);pointer-events:none}.why2-mark{position:absolute;left:clamp(22px,2.8vw,36px);top:clamp(4px,1vw,12px);font-family:var(--display,Archivo,serif);font-weight:800;font-size:96px;line-height:1;color:var(--lime,#CDDE71);opacity:.9}.why2-quote blockquote{margin:36px 0 0;position:relative}.why2-quote blockquote p{margin:0!important;font-family:var(--display,Archivo,sans-serif)!important;font-weight:500;font-size:clamp(17px,1.55vw,19px)!important;line-height:1.6!important;color:#FBFAF6}.why2-by{display:flex;align-items:center;gap:16px;padding-top:22px;border-top:1px solid rgba(251,250,246,.16)}.why2-by img{width:64px;height:64px;border-radius:50%;object-fit:cover;flex:0 0 64px;box-shadow:0 0 0 2px var(--teal-deep,#0E5348),0 0 0 4px var(--lime,#CDDE71)}.why2-by b{display:block;font-family:var(--display,Archivo,sans-serif);font-size:16px;color:#FBFAF6}.why2-by em{display:block;margin-top:3px;font-style:normal;font-size:13px;line-height:1.45;color:#B9C4BF}@media(max-width:900px){.why2-grid{grid-template-columns:1fr}}@media(max-width:520px){.why2-scale figcaption{grid-template-columns:1fr 1fr}}@media(prefers-reduced-motion:reduce){.why2-scale circle{transition:none;transform:none}}</style><style data-ucan="a11y">footer .f-h{font-family:var(--sans,'Public Sans',sans-serif)!important;font-weight:700;font-size:12.5px!important;line-height:1.4;letter-spacing:.1em;text-transform:uppercase;color:var(--paper,#FBFAF6);margin:0 0 18px}.f-legal,.f-legal a{color:#8CA098!important}#fnform a{text-decoration:underline!important;text-underline-offset:2px}.pr-num{color:var(--teal,#1F8F7B)!important}.pr:hover .pr-num,.pr:focus-within .pr-num{color:var(--teal-deep,#0E5348)!important}.f-bottom>span:last-child{display:inline-flex;flex-wrap:wrap;align-items:center;column-gap:20px;row-gap:8px}.f-bottom>span:last-child a,.f-bottom .cookie-link{display:inline-flex;align-items:center;min-height:24px;margin:0!important}</style><style data-ucan="a11y-home">footer{content-visibility:visible!important;contain-intrinsic-size:none!important}.c-card .c-word{color:var(--teal,#1F8F7B)!important}</style></head>
+
+<body>
+
+
+
+<a class="skip" href="#main">Skip to main content</a>
+
+
+
+<header class="bar" id="bar">
+
+  <div class="bar-in">
+
+    <a class="brand" href="%%UCAN_HOME%%/" aria-label="U-CAN — Urban Collective Action Network, home">
+
+      <img src="%%UCAN_THEME%%/assets/img/u-can-urban-collective-action-network-08e2484273.svg" width="107" height="40" alt="U-CAN — Urban Collective Action Network" fetchpriority="high" decoding="async">
+
+    </a>
+
+    <nav class="ucnav-bar" aria-label="Primary"><div class="ucnav"><div class="ucnav-i"><a class="ucnav-t" href="%%UCAN_HOME%%/about">About Us<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></a><div class="ucnav-dd"><a href="%%UCAN_HOME%%/about">About U-CAN</a><a href="%%UCAN_HOME%%/our-people">Our People</a><a href="%%UCAN_HOME%%/impact">Impact</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Initiatives<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="%%UCAN_HOME%%/urban-reforms-collective">Urban Reforms Collective (URC)</a><a href="%%UCAN_HOME%%/rfc">Request for Collaboration (RFC)</a><a href="%%UCAN_HOME%%/learning-network">Learning Network for Urban Managers</a><a href="%%UCAN_HOME%%/fellowship">U-CAN Fellowship</a><p class="ucnav-gh">Fellowship</p><a href="%%UCAN_HOME%%/meet-the-fellows">Meet the 2024-25 Fellows</a><a href="%%UCAN_HOME%%/fellow-blogs">Blogs by Our Fellows</a><a href="%%UCAN_HOME%%/ld-calendar">L&D Calendar</a></div></div><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Events<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="%%UCAN_HOME%%/city-mixers">U-CAN City Mixers</a><a href="%%UCAN_HOME%%/annual-forum-2025">The U-CAN Annual Forum 2025</a></div></div><a class="ucnav-t" href="%%UCAN_HOME%%/our-members">Our Members</a><div class="ucnav-i"><button type="button" class="ucnav-t" aria-expanded="false" aria-haspopup="true">Media<svg class="ucnav-cv" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button><div class="ucnav-dd"><a href="%%UCAN_HOME%%/newsletter">Newsletter</a><a href="%%UCAN_HOME%%/city-champions">City Champions</a><a href="%%UCAN_HOME%%/policy-webinars">Policy Webinars</a></div></div></div></nav>
+
+    <a class="bar-cta" href="%%UCAN_HOME%%/newsletter#subscribe">Subscribe</a>
+
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="msheet" aria-label="Open navigation menu"><span></span></button>
+
+  </div>
+
+  <div class="msheet" id="msheet"><div class="wrap"><div class="ucmob"><div class="ucmob-g"><p class="ucmob-h">About Us</p><div class="ucmob-l"><a href="%%UCAN_HOME%%/about">About U-CAN</a><a href="%%UCAN_HOME%%/our-people">Our People</a><a href="%%UCAN_HOME%%/impact">Impact</a></div></div><div class="ucmob-g"><p class="ucmob-h">Initiatives</p><div class="ucmob-l"><a href="%%UCAN_HOME%%/urban-reforms-collective">Urban Reforms Collective (URC)</a><a href="%%UCAN_HOME%%/rfc">Request for Collaboration (RFC)</a><a href="%%UCAN_HOME%%/learning-network">Learning Network for Urban Managers</a><a href="%%UCAN_HOME%%/fellowship">U-CAN Fellowship</a><p class="ucmob-gh">Fellowship</p><a href="%%UCAN_HOME%%/meet-the-fellows">Meet the 2024-25 Fellows</a><a href="%%UCAN_HOME%%/fellow-blogs">Blogs by Our Fellows</a><a href="%%UCAN_HOME%%/ld-calendar">L&D Calendar</a></div></div><div class="ucmob-g"><p class="ucmob-h">Events</p><div class="ucmob-l"><a href="%%UCAN_HOME%%/city-mixers">U-CAN City Mixers</a><a href="%%UCAN_HOME%%/annual-forum-2025">The U-CAN Annual Forum 2025</a></div></div><a class="ucmob-t" href="%%UCAN_HOME%%/our-members">Our Members</a><div class="ucmob-g"><p class="ucmob-h">Media</p><div class="ucmob-l"><a href="%%UCAN_HOME%%/newsletter">Newsletter</a><a href="%%UCAN_HOME%%/city-champions">City Champions</a><a href="%%UCAN_HOME%%/policy-webinars">Policy Webinars</a></div></div><a class="ucmob-t ucmob-cta" href="%%UCAN_HOME%%/newsletter#subscribe">Subscribe</a></div></div></div>
+
+</header>
+
+
+
+<main id="main">
+
+
+
+<!-- ===================== HERO ===================== -->
+
+<section class="hero" aria-labelledby="h1">
+  <canvas class="hero-field" aria-hidden="true"></canvas>
+
+  <div class="wrap hero-grid">
+
+    <div>
+
+      <p class="eyebrow">Urban Collective Action Network</p>
+
+      <h1 id="h1"><span class="hw" style="--i:0;--dx:-60px;--dy:-26px;--r:-6deg">Turning</span> <span class="hw" style="--i:1;--dx:44px;--dy:-40px;--r:5deg">individual</span> <span class="hw" style="--i:2;--dx:70px;--dy:18px;--r:7deg">effort</span> <span class="hw" style="--i:3;--dx:-30px;--dy:36px;--r:-4deg">into</span><br class="hbr"> <span class="accent"><span class="hw" style="--i:4;--dx:-46px;--dy:30px;--r:0deg">collective</span> <span class="hw" style="--i:5;--dx:52px;--dy:-28px;--r:0deg">action</span></span> <span class="hw" style="--i:6;--dx:-64px;--dy:22px;--r:-5deg">across</span><br class="hbr"> <span class="hw" style="--i:7;--dx:38px;--dy:40px;--r:4deg">India's</span> <span class="hw" style="--i:8;--dx:-24px;--dy:-34px;--r:-3deg">cities</span> <span class="hw" style="--i:9;--dx:60px;--dy:-16px;--r:6deg">and</span> <span class="hw" style="--i:10;--dx:-40px;--dy:30px;--r:-5deg">towns</span></h1>
+
+      <p class="lede">U-CAN convenes urban practitioners, governments, researchers and philanthropies to champion liveable cities for their residents, and communicate the need to attract capital to the urban sector.</p>
+
+      <div class="hero-actions">
+
+        <a class="btn" href="%%UCAN_HOME%%/about">Explore our work <span class="arrow" aria-hidden="true">→</span></a>
+
+        <a class="btn ghost" href="%%UCAN_HOME%%/our-members">Meet our members</a>
+
+      </div>
+
+      <div class="hero-proof" id="hero-proof">
+
+        <div class="pop"><b data-to="8">8</b><span>Members</span></div>
+
+        <div class="pop"><b data-to="500" data-suffix="+">500+</b><span>Practitioners</span></div>
+
+        <div class="pop"><b data-to="25" data-suffix="+">25+</b><span>Cities</span></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- Photo band: real people, real forum -->
+
+  <div class="photo-band">
+
+    <div class="shot">
+
+      <img loading="lazy" srcset="%%UCAN_THEME%%/assets/img/practitioners-researchers-media-and-government-o-d8f17bc4d5-760.webp 760w, %%UCAN_THEME%%/assets/img/practitioners-researchers-media-and-government-o-d8f17bc4d5.webp 1400w" sizes="100vw" src="%%UCAN_THEME%%/assets/img/practitioners-researchers-media-and-government-o-d8f17bc4d5.webp" width="1400" height="612" decoding="async" fetchpriority="low" alt="Practitioners, researchers, media and government officials at U-CAN's first Annual Forum">
+
+    </div>
+
+    <p class="cap">Key attendees at U-CAN's first Annual Forum</p>
+
+  </div>
+
+
+
+  <div class="wrap">
+
+    <div class="capsule rv in">
+
+      <p class="eyebrow">In brief</p>
+
+      <p class="txt">U-CAN is a national network connecting urban practitioners, government officials, researchers and philanthropies working to build more liveable cities across India. Since launching, the network has brought together 500+ practitioners, 200+ government officials and 25+ cities to share what works and act on it together. Here's how U-CAN turns individual effort into collective action, and what it's helped build so far.</p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ===================== WHY U-CAN ===================== -->
+
+<section class="section" id="about" aria-labelledby="why-h">
+
+  <!-- WHY:start --><div class="wrap why2"><div class="why2-head rv"><p class="eyebrow">Why U-CAN?</p><h2 id="why-h">India's urban challenges are too complex for any one organisation to solve alone, so we create the conditions to enable collaboration between organisations.</h2></div><div class="why2-grid"><div class="why2-story"><figure class="why2-scale rv"><svg viewBox="0 0 560 160" aria-hidden="true" focusable="false"><g class="w2-metro"><circle cx="46" cy="62" r="17" style="--d:0ms"/><circle cx="98" cy="38" r="13" style="--d:90ms"/><circle cx="92" cy="100" r="15" style="--d:180ms"/><circle cx="148" cy="72" r="12" style="--d:270ms"/><circle cx="40" cy="128" r="11" style="--d:360ms"/></g><g class="w2-towns"><circle cx="236.0" cy="22.0" r="2.6" style="--d:300ms"/><circle cx="250.6" cy="22.0" r="2.6" style="--d:307ms"/><circle cx="265.2" cy="22.0" r="2.6" style="--d:314ms"/><circle cx="279.8" cy="22.0" r="2.6" style="--d:321ms"/><circle cx="294.4" cy="22.0" r="2.6" style="--d:328ms"/><circle cx="309.0" cy="22.0" r="2.6" style="--d:335ms"/><circle cx="323.6" cy="22.0" r="2.6" style="--d:342ms"/><circle cx="338.2" cy="22.0" r="2.6" style="--d:349ms"/><circle cx="352.8" cy="22.0" r="2.6" style="--d:356ms"/><circle cx="367.4" cy="22.0" r="2.6" style="--d:363ms"/><circle cx="382.0" cy="22.0" r="2.6" style="--d:370ms"/><circle cx="396.6" cy="22.0" r="2.6" style="--d:377ms"/><circle cx="411.2" cy="22.0" r="2.6" style="--d:384ms"/><circle cx="425.8" cy="22.0" r="2.6" style="--d:391ms"/><circle cx="440.4" cy="22.0" r="2.6" style="--d:398ms"/><circle cx="455.0" cy="22.0" r="2.6" style="--d:405ms"/><circle cx="469.6" cy="22.0" r="2.6" style="--d:412ms"/><circle cx="484.2" cy="22.0" r="2.6" style="--d:419ms"/><circle cx="498.8" cy="22.0" r="2.6" style="--d:426ms"/><circle cx="513.4" cy="22.0" r="2.6" style="--d:433ms"/><circle cx="528.0" cy="22.0" r="2.6" style="--d:440ms"/><circle cx="542.6" cy="22.0" r="2.6" style="--d:447ms"/><circle cx="243.0" cy="36.4" r="2.6" style="--d:454ms"/><circle cx="257.6" cy="36.4" r="2.6" style="--d:461ms"/><circle cx="272.2" cy="36.4" r="2.6" style="--d:468ms"/><circle cx="286.8" cy="36.4" r="2.6" style="--d:475ms"/><circle cx="301.4" cy="36.4" r="2.6" style="--d:482ms"/><circle cx="316.0" cy="36.4" r="2.6" style="--d:489ms"/><circle cx="330.6" cy="36.4" r="2.6" style="--d:496ms"/><circle cx="345.2" cy="36.4" r="2.6" style="--d:503ms"/><circle cx="359.8" cy="36.4" r="2.6" style="--d:510ms"/><circle cx="374.4" cy="36.4" r="2.6" style="--d:517ms"/><circle cx="389.0" cy="36.4" r="2.6" style="--d:524ms"/><circle cx="403.6" cy="36.4" r="2.6" style="--d:531ms"/><circle cx="418.2" cy="36.4" r="2.6" style="--d:538ms"/><circle cx="432.8" cy="36.4" r="2.6" style="--d:545ms"/><circle cx="447.4" cy="36.4" r="2.6" style="--d:552ms"/><circle cx="462.0" cy="36.4" r="2.6" style="--d:559ms"/><circle cx="476.6" cy="36.4" r="2.6" style="--d:566ms"/><circle cx="491.2" cy="36.4" r="2.6" style="--d:573ms"/><circle cx="505.8" cy="36.4" r="2.6" style="--d:580ms"/><circle cx="520.4" cy="36.4" r="2.6" style="--d:587ms"/><circle cx="535.0" cy="36.4" r="2.6" style="--d:594ms"/><circle cx="549.6" cy="36.4" r="2.6" style="--d:601ms"/><circle cx="236.0" cy="50.8" r="2.6" style="--d:608ms"/><circle cx="250.6" cy="50.8" r="2.6" style="--d:615ms"/><circle cx="265.2" cy="50.8" r="2.6" style="--d:622ms"/><circle cx="279.8" cy="50.8" r="2.6" style="--d:629ms"/><circle cx="294.4" cy="50.8" r="2.6" style="--d:636ms"/><circle cx="309.0" cy="50.8" r="2.6" style="--d:643ms"/><circle cx="323.6" cy="50.8" r="2.6" style="--d:650ms"/><circle cx="338.2" cy="50.8" r="2.6" style="--d:657ms"/><circle cx="352.8" cy="50.8" r="2.6" style="--d:664ms"/><circle cx="367.4" cy="50.8" r="2.6" style="--d:671ms"/><circle cx="382.0" cy="50.8" r="2.6" style="--d:678ms"/><circle cx="396.6" cy="50.8" r="2.6" style="--d:685ms"/><circle cx="411.2" cy="50.8" r="2.6" style="--d:692ms"/><circle cx="425.8" cy="50.8" r="2.6" style="--d:699ms"/><circle cx="440.4" cy="50.8" r="2.6" style="--d:706ms"/><circle cx="455.0" cy="50.8" r="2.6" style="--d:713ms"/><circle cx="469.6" cy="50.8" r="2.6" style="--d:720ms"/><circle cx="484.2" cy="50.8" r="2.6" style="--d:727ms"/><circle cx="498.8" cy="50.8" r="2.6" style="--d:734ms"/><circle cx="513.4" cy="50.8" r="2.6" style="--d:741ms"/><circle cx="528.0" cy="50.8" r="2.6" style="--d:748ms"/><circle cx="542.6" cy="50.8" r="2.6" style="--d:755ms"/><circle cx="243.0" cy="65.2" r="2.6" style="--d:762ms"/><circle cx="257.6" cy="65.2" r="2.6" style="--d:769ms"/><circle cx="272.2" cy="65.2" r="2.6" style="--d:776ms"/><circle cx="286.8" cy="65.2" r="2.6" style="--d:783ms"/><circle cx="301.4" cy="65.2" r="2.6" style="--d:790ms"/><circle cx="316.0" cy="65.2" r="2.6" style="--d:797ms"/><circle cx="330.6" cy="65.2" r="2.6" style="--d:804ms"/><circle cx="345.2" cy="65.2" r="2.6" style="--d:811ms"/><circle cx="359.8" cy="65.2" r="2.6" style="--d:818ms"/><circle cx="374.4" cy="65.2" r="2.6" style="--d:825ms"/><circle cx="389.0" cy="65.2" r="2.6" style="--d:832ms"/><circle cx="403.6" cy="65.2" r="2.6" style="--d:839ms"/><circle cx="418.2" cy="65.2" r="2.6" style="--d:846ms"/><circle cx="432.8" cy="65.2" r="2.6" style="--d:853ms"/><circle cx="447.4" cy="65.2" r="2.6" style="--d:860ms"/><circle cx="462.0" cy="65.2" r="2.6" style="--d:867ms"/><circle cx="476.6" cy="65.2" r="2.6" style="--d:874ms"/><circle cx="491.2" cy="65.2" r="2.6" style="--d:881ms"/><circle cx="505.8" cy="65.2" r="2.6" style="--d:888ms"/><circle cx="520.4" cy="65.2" r="2.6" style="--d:895ms"/><circle cx="535.0" cy="65.2" r="2.6" style="--d:902ms"/><circle cx="549.6" cy="65.2" r="2.6" style="--d:909ms"/><circle cx="236.0" cy="79.6" r="2.6" style="--d:916ms"/><circle cx="250.6" cy="79.6" r="2.6" style="--d:923ms"/><circle cx="265.2" cy="79.6" r="2.6" style="--d:930ms"/><circle cx="279.8" cy="79.6" r="2.6" style="--d:937ms"/><circle cx="294.4" cy="79.6" r="2.6" style="--d:944ms"/><circle cx="309.0" cy="79.6" r="2.6" style="--d:951ms"/><circle cx="323.6" cy="79.6" r="2.6" style="--d:958ms"/><circle cx="338.2" cy="79.6" r="2.6" style="--d:965ms"/><circle cx="352.8" cy="79.6" r="2.6" style="--d:972ms"/><circle cx="367.4" cy="79.6" r="2.6" style="--d:979ms"/><circle cx="382.0" cy="79.6" r="2.6" style="--d:986ms"/><circle cx="396.6" cy="79.6" r="2.6" style="--d:993ms"/><circle cx="411.2" cy="79.6" r="2.6" style="--d:1000ms"/><circle cx="425.8" cy="79.6" r="2.6" style="--d:1007ms"/><circle cx="440.4" cy="79.6" r="2.6" style="--d:1014ms"/><circle cx="455.0" cy="79.6" r="2.6" style="--d:1021ms"/><circle cx="469.6" cy="79.6" r="2.6" style="--d:1028ms"/><circle cx="484.2" cy="79.6" r="2.6" style="--d:1035ms"/><circle cx="498.8" cy="79.6" r="2.6" style="--d:1042ms"/><circle cx="513.4" cy="79.6" r="2.6" style="--d:1049ms"/><circle cx="528.0" cy="79.6" r="2.6" style="--d:1056ms"/><circle cx="542.6" cy="79.6" r="2.6" style="--d:1063ms"/><circle cx="243.0" cy="94.0" r="2.6" style="--d:1070ms"/><circle cx="257.6" cy="94.0" r="2.6" style="--d:1077ms"/><circle cx="272.2" cy="94.0" r="2.6" style="--d:1084ms"/><circle cx="286.8" cy="94.0" r="2.6" style="--d:1091ms"/><circle cx="301.4" cy="94.0" r="2.6" style="--d:1098ms"/><circle cx="316.0" cy="94.0" r="2.6" style="--d:1105ms"/><circle cx="330.6" cy="94.0" r="2.6" style="--d:1112ms"/><circle cx="345.2" cy="94.0" r="2.6" style="--d:1119ms"/><circle cx="359.8" cy="94.0" r="2.6" style="--d:1126ms"/><circle cx="374.4" cy="94.0" r="2.6" style="--d:1133ms"/><circle cx="389.0" cy="94.0" r="2.6" style="--d:1140ms"/><circle cx="403.6" cy="94.0" r="2.6" style="--d:1147ms"/><circle cx="418.2" cy="94.0" r="2.6" style="--d:1154ms"/><circle cx="432.8" cy="94.0" r="2.6" style="--d:1161ms"/><circle cx="447.4" cy="94.0" r="2.6" style="--d:1168ms"/><circle cx="462.0" cy="94.0" r="2.6" style="--d:1175ms"/><circle cx="476.6" cy="94.0" r="2.6" style="--d:1182ms"/><circle cx="491.2" cy="94.0" r="2.6" style="--d:1189ms"/><circle cx="505.8" cy="94.0" r="2.6" style="--d:1196ms"/><circle cx="520.4" cy="94.0" r="2.6" style="--d:303ms"/><circle cx="535.0" cy="94.0" r="2.6" style="--d:310ms"/><circle cx="549.6" cy="94.0" r="2.6" style="--d:317ms"/><circle cx="236.0" cy="108.4" r="2.6" style="--d:324ms"/><circle cx="250.6" cy="108.4" r="2.6" style="--d:331ms"/><circle cx="265.2" cy="108.4" r="2.6" style="--d:338ms"/><circle cx="279.8" cy="108.4" r="2.6" style="--d:345ms"/><circle cx="294.4" cy="108.4" r="2.6" style="--d:352ms"/><circle cx="309.0" cy="108.4" r="2.6" style="--d:359ms"/><circle cx="323.6" cy="108.4" r="2.6" style="--d:366ms"/><circle cx="338.2" cy="108.4" r="2.6" style="--d:373ms"/><circle cx="352.8" cy="108.4" r="2.6" style="--d:380ms"/><circle cx="367.4" cy="108.4" r="2.6" style="--d:387ms"/><circle cx="382.0" cy="108.4" r="2.6" style="--d:394ms"/><circle cx="396.6" cy="108.4" r="2.6" style="--d:401ms"/><circle cx="411.2" cy="108.4" r="2.6" style="--d:408ms"/><circle cx="425.8" cy="108.4" r="2.6" style="--d:415ms"/><circle cx="440.4" cy="108.4" r="2.6" style="--d:422ms"/><circle cx="455.0" cy="108.4" r="2.6" style="--d:429ms"/><circle cx="469.6" cy="108.4" r="2.6" style="--d:436ms"/><circle cx="484.2" cy="108.4" r="2.6" style="--d:443ms"/><circle cx="498.8" cy="108.4" r="2.6" style="--d:450ms"/><circle cx="513.4" cy="108.4" r="2.6" style="--d:457ms"/><circle cx="528.0" cy="108.4" r="2.6" style="--d:464ms"/><circle cx="542.6" cy="108.4" r="2.6" style="--d:471ms"/><circle cx="243.0" cy="122.8" r="2.6" style="--d:478ms"/><circle cx="257.6" cy="122.8" r="2.6" style="--d:485ms"/><circle cx="272.2" cy="122.8" r="2.6" style="--d:492ms"/><circle cx="286.8" cy="122.8" r="2.6" style="--d:499ms"/><circle cx="301.4" cy="122.8" r="2.6" style="--d:506ms"/><circle cx="316.0" cy="122.8" r="2.6" style="--d:513ms"/><circle cx="330.6" cy="122.8" r="2.6" style="--d:520ms"/><circle cx="345.2" cy="122.8" r="2.6" style="--d:527ms"/><circle cx="359.8" cy="122.8" r="2.6" style="--d:534ms"/><circle cx="374.4" cy="122.8" r="2.6" style="--d:541ms"/><circle cx="389.0" cy="122.8" r="2.6" style="--d:548ms"/><circle cx="403.6" cy="122.8" r="2.6" style="--d:555ms"/><circle cx="418.2" cy="122.8" r="2.6" style="--d:562ms"/><circle cx="432.8" cy="122.8" r="2.6" style="--d:569ms"/><circle cx="447.4" cy="122.8" r="2.6" style="--d:576ms"/><circle cx="462.0" cy="122.8" r="2.6" style="--d:583ms"/><circle cx="476.6" cy="122.8" r="2.6" style="--d:590ms"/><circle cx="491.2" cy="122.8" r="2.6" style="--d:597ms"/><circle cx="505.8" cy="122.8" r="2.6" style="--d:604ms"/><circle cx="520.4" cy="122.8" r="2.6" style="--d:611ms"/><circle cx="535.0" cy="122.8" r="2.6" style="--d:618ms"/><circle cx="549.6" cy="122.8" r="2.6" style="--d:625ms"/><circle cx="236.0" cy="137.2" r="2.6" style="--d:632ms"/><circle cx="250.6" cy="137.2" r="2.6" style="--d:639ms"/><circle cx="265.2" cy="137.2" r="2.6" style="--d:646ms"/><circle cx="279.8" cy="137.2" r="2.6" style="--d:653ms"/><circle cx="294.4" cy="137.2" r="2.6" style="--d:660ms"/><circle cx="309.0" cy="137.2" r="2.6" style="--d:667ms"/><circle cx="323.6" cy="137.2" r="2.6" style="--d:674ms"/><circle cx="338.2" cy="137.2" r="2.6" style="--d:681ms"/><circle cx="352.8" cy="137.2" r="2.6" style="--d:688ms"/><circle cx="367.4" cy="137.2" r="2.6" style="--d:695ms"/><circle cx="382.0" cy="137.2" r="2.6" style="--d:702ms"/><circle cx="396.6" cy="137.2" r="2.6" style="--d:709ms"/><circle cx="411.2" cy="137.2" r="2.6" style="--d:716ms"/><circle cx="425.8" cy="137.2" r="2.6" style="--d:723ms"/><circle cx="440.4" cy="137.2" r="2.6" style="--d:730ms"/><circle cx="455.0" cy="137.2" r="2.6" style="--d:737ms"/><circle cx="469.6" cy="137.2" r="2.6" style="--d:744ms"/><circle cx="484.2" cy="137.2" r="2.6" style="--d:751ms"/><circle cx="498.8" cy="137.2" r="2.6" style="--d:758ms"/><circle cx="513.4" cy="137.2" r="2.6" style="--d:765ms"/><circle cx="528.0" cy="137.2" r="2.6" style="--d:772ms"/><circle cx="542.6" cy="137.2" r="2.6" style="--d:779ms"/></g></svg><figcaption><span><b>A handful</b> of metropolitan cities</span><span><b>Nearly 10,000</b> smaller towns and cities</span></figcaption></figure><div class="body-text"><p class="rv d1">Most of what shapes urban policy in India comes from a handful of metropolitan cities. But the real story, and much of the country's urban growth, is playing out in nearly 10,000 smaller towns and cities, often with little data and even less coordination between the people working to improve them.</p><p class="rv d2">U-CAN exists to be the connective tissue that's missing: a trusted space for practitioners, government, researchers and philanthropies to connect, learn from each other, and act together.</p></div></div><figure class="why2-quote rv d1"><span class="why2-mark" aria-hidden="true">&ldquo;</span><blockquote><p>The spark for U-CAN emerged from two intertwined realisations. First, we may be running out of time for slow, linear change; our cities need bold, accelerated action built on collective momentum. Second, when the right people and ideas meet in a shared conversation, they can catalyse transformative change at scale. U-CAN was born from that belief: a space for collaboration beyond boundaries.</p></blockquote><figcaption class="why2-by"><img src="%%UCAN_THEME%%/assets/img/shilpa-kumar-founding-member-of-u-can-and-managi-c9c0ed061c.webp" width="132" height="132" loading="lazy" decoding="async" alt="Shilpa Kumar, Founding Member of U-CAN and Managing Director &amp; Head of India at British International Investment"><span><b>Shilpa Kumar</b><em>Founding Member, U-CAN and Managing Director &amp; Head of India, British International Investment</em></span></figcaption></figure></div></div><!-- WHY:end -->
+
+
+
+  <!-- ===================== WHAT WE DO ===================== -->
+
+  <div class="wrap" id="what-we-do">
+
+    <div class="cs-head rv in">
+
+      <p class="eyebrow">What we do</p>
+
+      <h2>Our 3Cs of Collective Action</h2>
+
+    </div>
+
+    <div class="cards-3">
+
+      <article class="c-card rv in" tabindex="0" style="--accent:var(--teal);--wash:rgba(31,143,123,.10)">
+
+        <span class="c-index" aria-hidden="true">01</span>
+
+        <span class="c-ico" aria-hidden="true">
+
+          <svg viewBox="0 0 40 40" role="presentation"><circle cx="20" cy="20" r="6.5"></circle><circle cx="8" cy="12" r="3.4"></circle><circle cx="32" cy="12" r="3.4"></circle><circle cx="8" cy="28" r="3.4"></circle><circle cx="32" cy="28" r="3.4"></circle><path d="M11 13.4 14.6 16M29 13.4 25.4 16M11 26.6 14.6 24M29 26.6 25.4 24"></path></svg>
+
+        </span>
+
+        <h3><span class="c-word">Convene</span>Create spaces to connect</h3>
+
+        <p>We create safe, structured spaces, both online and in-person, for members to share what's worked, what hasn't, and where new collaborations can begin.</p>
+
+      </article>
+
+      <article class="c-card rv d1 in" tabindex="0" style="--accent:var(--teal-light);--wash:rgba(78,198,178,.14)">
+
+        <span class="c-index" aria-hidden="true">02</span>
+
+        <span class="c-ico" aria-hidden="true">
+
+          <svg viewBox="0 0 40 40" role="presentation"><path d="M20 30V15"></path><path d="m13 21 7-7 7 7"></path><path d="M9 32h22"></path><circle cx="20" cy="9" r="3"></circle></svg>
+
+        </span>
+
+        <h3><span class="c-word">Champion</span>Align action, drive reform</h3>
+
+        <p>We help members align strategies, pool resources and coordinate action around shared goals, working through the Urban Reforms Collective's engagement with government and a shared narrative on the role of Tier II and III cities in India's growth.</p>
+
+      </article>
+
+      <article class="c-card rv d2 in" tabindex="0" style="--accent:var(--teal-deep);--wash:rgba(14,83,72,.10)">
+
+        <span class="c-index" aria-hidden="true">03</span>
+
+        <span class="c-ico" aria-hidden="true">
+
+          <svg viewBox="0 0 40 40" role="presentation"><path d="M8 16v8h5l8 6V10l-8 6z"></path><path d="M26 15a7 7 0 0 1 0 10M30 11a12 12 0 0 1 0 18"></path></svg>
+
+        </span>
+
+        <h3><span class="c-word">Communicate</span>Build the case for cities</h3>
+
+        <p>We communicate cities as complex, interconnected systems, making the case for the human and financial capital needed to address urban challenges collectively.</p>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ===================== IMPACT ===================== -->
+
+<section class="section alt" id="impact" aria-labelledby="impact-h" style="padding-bottom:clamp(72px,9vw,116px)">
+
+  <div class="wrap">
+
+    <div class="section-head rv in">
+
+      <p class="eyebrow">Impact</p>
+
+      <h2 id="impact-h">What we've built together</h2>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="stats" id="stats">
+
+    <div class="wrap">
+
+      <p class="lab">At a glance</p>
+
+      <div class="stats-row">
+
+        <div class="stat pop">
+
+          <span class="s-ico" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 8.5 8 15v10l12 6.5L32 25V15z" opacity=".28"></path><path d="M20 8.5 8 15v10l12 6.5L32 25V15z" fill="none" stroke-width="1.8"></path><path d="M13 12.5h5.4M13 16h5.4M13 19.5h5.4M22 12.5h5M22 16h5M22 19.5h5" stroke-width="1.6"></path></svg></span>
+
+          <span class="s-kick">A network of</span>
+
+          <b data-to="8">8</b>
+
+          <span class="s-cap">Member organisations</span>
+
+        </div>
+
+        <div class="stat pop">
+
+          <span class="s-ico" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="12" r="4.4"></circle><circle cx="9.5" cy="27" r="4"></circle><circle cx="30.5" cy="27" r="4"></circle><path d="M17 15.5 12 23.5M23 15.5l5 8M13.5 27h13" fill="none" stroke-width="1.8"></path></svg></span>
+
+          <span class="s-kick">Bringing together</span>
+
+          <b data-to="500" data-suffix="+">500+</b>
+
+          <span class="s-cap">Practitioners connected</span>
+
+        </div>
+
+        <div class="stat pop">
+
+          <span class="s-ico" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 5 32 11v2H8v-2z"></path><path d="M11 15v13M17 15v13M23 15v13M29 15v13" fill="none" stroke-width="2.4"></path><path d="M7 30h26v3H7z"></path></svg></span>
+
+          <span class="s-kick">Working with</span>
+
+          <b data-to="200" data-suffix="+">200+</b>
+
+          <span class="s-cap">Government officials engaged</span>
+
+        </div>
+
+        <div class="stat pop">
+
+          <span class="s-ico" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 5c-5.8 0-10.5 4.6-10.5 10.4C9.5 23 20 35 20 35s10.5-12 10.5-19.6C30.5 9.6 25.8 5 20 5z"></path><circle cx="20" cy="15.2" r="3.6" fill="var(--teal-deep)"></circle></svg></span>
+
+          <span class="s-kick">Across</span>
+
+          <b data-to="25" data-suffix="+">25+</b>
+
+          <span class="s-cap">Cities represented</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="wrap">
+
+    <div class="impact-grid">
+
+      <article class="i-card rv no-ico in">
+
+        <p class="n">01</p>
+
+        <h3>Bringing policy and lived experience to the same table</h3>
+
+        <p>The Annual Forum brought 100+ participants across 20+ organisations together, including government officials at the Ministry of Housing and Urban Affairs.</p>
+
+      </article>
+
+      <article class="i-card rv d1 no-ico in">
+
+        <p class="n">02</p>
+
+        <h3>Advancing women's voices in urban practice</h3>
+
+        <p>The U-CAN Women's Fellowship's inaugural, all-women cohort of 6 professionals and 2 entrepreneurs worked through embedded practice and mentorship, on projects spanning Gurugram, Bengaluru, Jaipur and Chennai.</p>
+
+      </article>
+
+      <article class="i-card rv d2 no-ico in">
+
+        <p class="n">03</p>
+
+        <h3>Scaling a governance platform across borders</h3>
+
+        <p>The Request for Collaboration initiative turned cross-organisation work into a governance platform now running in 3 Indian cities and Nairobi, Kenya.</p>
+
+      </article>
+
+      <article class="i-card rv d3 no-ico in">
+
+        <p class="n">04</p>
+
+        <h3>Reaching 15,000+ people on urban issues</h3>
+
+        <p>Through 4 podcast episodes, 10+ webinars, and 30+ newsletters, U-CAN has built an audience for substantive conversation about India's urban challenges.</p>
+
+      </article>
+
+    </div>
+
+    <div style="margin-top:clamp(36px,4vw,52px)">
+
+      <a class="btn ghost" href="%%UCAN_HOME%%/impact">See our full impact <span class="arrow" aria-hidden="true">→</span></a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ===================== OUR MEMBERS ===================== -->
+
+<section class="section" id="members" aria-labelledby="members-h">
+
+  <div class="wrap">
+
+    <div class="section-head rv in" style="margin-bottom:clamp(30px,3.6vw,44px)">
+
+      <p class="eyebrow">Our Members</p>
+
+      <h2 id="members-h" class="vh">Our Members</h2>
+
+    </div>
+
+    <div>
+
+      <ul class="logo-grid" aria-label="U-CAN member organisations">
+
+        <li class="chip rv in"><a href="https://artha.global/" target="_blank" rel="noopener noreferrer" aria-label="Artha Global — visit website">
+
+          <img width="700" height="300" src="%%UCAN_THEME%%/assets/img/artha-global-logo-cc6ae7093a.webp" alt="Artha Global logo" loading="lazy" decoding="async">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+        <li class="chip rv in"><a href="https://cprindia.org/" target="_blank" rel="noopener noreferrer" aria-label="Centre for Policy Research — visit website">
+
+          <img width="700" height="300" src="%%UCAN_THEME%%/assets/img/centre-for-policy-research-logo-fc8445d7a7.webp" alt="Centre for Policy Research logo" loading="lazy" decoding="async">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+        <li class="chip rv d1 in"><a href="https://egov.org.in/" target="_blank" rel="noopener noreferrer" aria-label="eGov Foundation — visit website">
+
+          <img srcset="%%UCAN_THEME%%/assets/img/egov-foundation-logo-f623aa609f-800.webp 800w, %%UCAN_THEME%%/assets/img/egov-foundation-logo-f623aa609f.webp 1024w" sizes="100vw" width="1024" height="260" src="%%UCAN_THEME%%/assets/img/egov-foundation-logo-f623aa609f.webp" alt="eGov Foundation logo" loading="lazy" decoding="async">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+        <li class="chip rv d1 in"><a href="https://www.janaagraha.org/" target="_blank" rel="noopener noreferrer" aria-label="Janaagraha — visit website">
+
+          <img width="700" height="300" src="%%UCAN_THEME%%/assets/img/janaagraha-logo-985127bfc1.webp" alt="Janaagraha logo" loading="lazy" decoding="async">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+        <li class="chip rv d2 in"><a href="https://praja.org/" target="_blank" rel="noopener noreferrer" aria-label="Praja Foundation — visit website">
+
+          <img width="700" height="300" src="%%UCAN_THEME%%/assets/img/praja-foundation-logo-7ae1e89a9b.webp" alt="Praja Foundation logo" loading="lazy" decoding="async">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+        <li class="chip rv d2 in"><a href="https://www.reapbenefit.org/" target="_blank" rel="noopener noreferrer" aria-label="Reap Benefit — visit website">
+
+          <img width="700" height="300" src="%%UCAN_THEME%%/assets/img/reap-benefit-logo-e142694e13.webp" alt="Reap Benefit logo" loading="lazy" decoding="async">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+        <li class="chip rv d3 in"><a href="https://shelter-associates.org/" target="_blank" rel="noopener noreferrer" aria-label="Shelter Associates — visit website">
+
+          <img width="700" height="300" src="%%UCAN_THEME%%/assets/img/shelter-associates-logo-5ebfb355a7.webp" alt="Shelter Associates logo" loading="lazy" decoding="async">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+        <li class="chip rv d3 in"><a href="https://wri-india.org/" target="_blank" rel="noopener noreferrer" aria-label="WRI India — visit website">
+
+          <img src="%%UCAN_THEME%%/assets/img/wri-india-logo-3052bd5545.svg" alt="WRI India logo" loading="lazy" decoding="async" width="185" height="37">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+      </ul>
+
+
+
+      <p class="eyebrow tier-friends">Friends of U-CAN</p>
+
+      <ul class="logo-grid friends" aria-label="Friends of U-CAN">
+
+        <li class="chip rv in"><a href="https://www.mahilahousingtrust.org/" target="_blank" rel="noopener noreferrer" aria-label="Mahila Housing Trust — visit website">
+
+          <img width="700" height="300" src="%%UCAN_THEME%%/assets/img/mahila-housing-trust-logo-d50608d443.webp" alt="Mahila Housing Trust logo" loading="lazy" decoding="async">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+        <li class="chip rv in"><a href="https://iisc.ac.in/" target="_blank" rel="noopener noreferrer" aria-label="Indian Institute of Science — visit website">
+
+          <img width="700" height="300" src="%%UCAN_THEME%%/assets/img/indian-institute-of-science-logo-13c84eb948.webp" alt="Indian Institute of Science logo" loading="lazy" decoding="async">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+        <li class="chip rv d1 in"><a href="https://www.c40.org/" target="_blank" rel="noopener noreferrer" aria-label="C40 Cities — visit website">
+
+          <img width="185" height="115" src="%%UCAN_THEME%%/assets/img/c40-cities-logo-8b3d4f418e.png" alt="C40 Cities logo" loading="lazy" decoding="async">
+
+          <span class="go" aria-hidden="true">↗</span>
+
+        </a></li>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<!-- ===================== STAY CONNECTED ===================== -->
+
+
+
+
+
+</main>
+
+
+
+<footer>
+
+  <div class="wrap">
+
+    <div class="f-grid">
+
+      <div>
+
+        <a class="brand" href="%%UCAN_HOME%%/" aria-label="U-CAN home">
+
+          <img src="%%UCAN_THEME%%/assets/img/u-can-urban-collective-action-network-08e2484273.svg" width="107" height="40" alt="U-CAN — Urban Collective Action Network" loading="lazy" decoding="async">
+
+        </a>
+
+        <p class="blurb">Uniting diverse urban voices to collectively shape our cities.</p>
+
+      </div>
+
+      <nav aria-label="Quick links">
+
+        <h2 class="f-h">Explore</h2>
+
+        <ul>
+
+          <li><a href="%%UCAN_HOME%%/about">About U-CAN</a></li>
+
+          <li><a href="%%UCAN_HOME%%/our-people">Our People</a></li>
+
+          <li><a href="%%UCAN_HOME%%/impact">Impact</a></li>
+
+          <li><a href="%%UCAN_HOME%%/our-members">Our Members</a></li>
+
+          <li><a href="%%UCAN_HOME%%/city-mixers">City Mixers</a></li>
+
+          <li><a href="%%UCAN_HOME%%/annual-forum-2025">Annual Forum 2025</a></li>
+
+        </ul>
+
+      </nav>
+
+      <nav aria-label="Initiatives">
+
+        <h2 class="f-h">Initiatives</h2>
+
+        <ul>
+
+          <li><a href="%%UCAN_HOME%%/urban-reforms-collective">Urban Reforms Collective</a></li>
+
+          <li><a href="%%UCAN_HOME%%/rfc">Request for Collaboration</a></li>
+
+          <li><a href="%%UCAN_HOME%%/learning-network">Learning Network</a></li>
+
+          <li><a href="%%UCAN_HOME%%/fellowship">U-CAN Fellowship</a></li>
+
+          <li><a href="%%UCAN_HOME%%/newsletter">Newsletter</a></li>
+
+          <li><a href="%%UCAN_HOME%%/policy-webinars">Policy Webinars</a></li>
+
+          <li><a href="%%UCAN_HOME%%/city-champions">City Champions</a></li>
+
+        </ul>
+
+      </nav>
+
+      <div class="f-sub" id="connect">
+
+        <h2 class="f-h">Stay connected</h2>
+
+        <p class="f-subtext">One email a month on urban governance, our programmes and ways to get involved.</p>
+
+        <form class="fnform" id="fnform" method="post" action="https://urban.org.in/newsletter/" novalidate="">
+
+          <div class="fnrow">
+
+            <label class="vh" for="f-email">Your email address</label>
+
+            <input id="f-email" name="email" type="email" autocomplete="email" required="" placeholder="Your email address">
+
+            <button type="submit">Subscribe</button>
+
+          </div>
+
+          <div class="fconsent">
+
+            <input type="checkbox" id="f-consent" name="consent" required="">
+
+            <label for="f-consent">I agree that U-CAN may use my email address to send its newsletter, event invitations and programme details. I can withdraw this consent at any time by writing to <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>.</label>
+
+          </div>
+
+          <p class="nerr" role="alert">Please enter a valid email address and tick the consent box to continue.</p>
+
+          <p class="nok" role="status">Thanks — you're on the list. We've recorded your consent and the time it was given.</p>
+
+          <p class="f-legal">U-CAN is the Data Fiduciary for this data under the Digital Personal Data Protection Act, 2023. Request access, correction or erasure at <a href="mailto:privacy@urban.org.in">privacy@urban.org.in</a>. See our <a href="%%UCAN_HOME%%/privacy-policy">Privacy Policy</a>.</p>
+
+        </form>
+
+        <ul class="f-social">
+
+          <li><a href="https://www.youtube.com/@U-CAN24" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+
+          <li><a href="https://www.linkedin.com/company/urban-collective-action-network-u-can/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+
+          <li><a href="mailto:connect@urban.org.in">connect@urban.org.in</a></li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+    <div class="f-bottom">
+
+      <span>© U-CAN 2026. All Rights Reserved</span>
+
+      <span><a href="%%UCAN_HOME%%/terms-of-use">Terms of Use</a><a href="%%UCAN_HOME%%/privacy-policy">Privacy Policy</a><a href="%%UCAN_HOME%%/data-rights">Your Data Rights</a><button type="button" class="cookie-link" id="cookie-reopen">Manage cookies</button></span>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+
+
+<!-- ============ DPDP-aligned cookie & privacy consent ============ -->
+
+
+
+
+
+
+
+
+
+
+
+<!-- COOKIE BANNER -->
+
+<div class="cc" id="cc" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+
+  <div class="cc-in">
+
+    <div>
+
+      <span class="cc-badge">Your privacy</span>
+
+      <p>We use only essential cookies to make this site work. With your consent we would also measure anonymous usage to improve it. You can change this at any time from &ldquo;Manage cookies&rdquo; in the footer.</p>
+
+    </div>
+
+    <div class="cc-act">
+
+      <button type="button" class="cc-btn alt" id="cc-reject">Essential only</button>
+
+      <button type="button" class="cc-btn" id="cc-accept">Accept analytics</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script data-ucan="behaviour">
+
+/* U-CAN shared behaviour — inlined into every page in standalone/.
+
+   Defensive by design: every feature no-ops if its markup is absent, so the
+
+   same block can be dropped into all page variants (.bar shell, index's .nav,
+
+   the newsletter masthead). Keep it dependency-free and idempotent. */
+
+(function () {
+
+  "use strict";
+
+
+
+  var reduced = false;
+
+  try {
+
+    reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  } catch (e) {}
+
+
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+
+
+  /* ---------- 1. sticky header shadow ---------- */
+
+  (function stickyBar() {
+
+    var bar = $("#bar") || $("#nav") || $(".header");
+
+    if (!bar) return;
+
+    var onScroll = function () {
+
+      if (window.scrollY > 8) bar.classList.add("scrolled");
+
+      else bar.classList.remove("scrolled");
+
+    };
+
+    onScroll();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+  })();
+
+
+
+  /* ---------- 2. mobile menu ----------
+
+     three markup variants across the site:
+
+       shell pages : #burger  -> #msheet        (.open)
+
+       index.html  : #burger  -> #mobile-menu   (.open)
+
+       newsletter  : #menuBtn -> #mob-nav       (.open) + #closeBtn        */
+
+  (function mobileMenu() {
+
+    var pairs = [
+
+      { btn: "#burger", panel: "#msheet" },
+
+      { btn: "#burger", panel: "#mobile-menu" },
+
+      { btn: "#menuBtn", panel: "#mob-nav" }
+
+    ];
+
+    pairs.forEach(function (p) {
+
+      var btn = $(p.btn), panel = $(p.panel);
+
+      if (!btn || !panel || btn.dataset.ucanBound) return;
+
+      btn.dataset.ucanBound = "1";
+
+
+
+      var setOpen = function (open) {
+
+        panel.classList.toggle("open", open);
+
+        btn.classList.toggle("open", open);
+
+        btn.setAttribute("aria-expanded", open ? "true" : "false");
+
+        panel.setAttribute("aria-hidden", open ? "false" : "true");
+
+        document.documentElement.style.overflow = open ? "hidden" : "";
+
+      };
+
+      setOpen(false);
+
+
+
+      btn.addEventListener("click", function (e) {
+
+        e.preventDefault();
+
+        setOpen(!panel.classList.contains("open"));
+
+      });
+
+
+
+      var close = $("#closeBtn");
+
+      if (close) close.addEventListener("click", function () { setOpen(false); });
+
+
+
+      // close on link click and on Escape
+
+      $$("a", panel).forEach(function (a) {
+
+        a.addEventListener("click", function () { setOpen(false); });
+
+      });
+
+      document.addEventListener("keydown", function (e) {
+
+        if (e.key === "Escape" && panel.classList.contains("open")) {
+
+          setOpen(false);
+
+          btn.focus();
+
+        }
+
+      });
+
+    });
+
+  })();
+
+
+
+  /* ---------- 2b. desktop nav dropdowns ----------
+
+     Hover is pure CSS; this adds click + keyboard so the menus are usable
+
+     without a pointer, and closes them on Escape / outside click. */
+
+  (function navDropdowns() {
+
+    var items = $$(".ucnav-i");
+
+    if (!items.length) return;
+
+
+
+    var closeAll = function (except) {
+
+      items.forEach(function (it) {
+
+        if (it === except) return;
+
+        it.classList.remove("open");
+
+        var t = $(".ucnav-t", it);
+
+        if (t && t.tagName === "BUTTON") t.setAttribute("aria-expanded", "false");
+
+      });
+
+    };
+
+
+
+    items.forEach(function (it) {
+
+      var trigger = $(".ucnav-t", it);
+
+      if (!trigger) return;
+
+
+
+      trigger.addEventListener("click", function (e) {
+
+        // a real link (About Us) still navigates on click; only buttons toggle
+
+        if (trigger.tagName !== "BUTTON") return;
+
+        e.preventDefault();
+
+        var open = it.classList.toggle("open");
+
+        trigger.setAttribute("aria-expanded", open ? "true" : "false");
+
+        closeAll(it);
+
+      });
+
+
+
+      it.addEventListener("keydown", function (e) {
+
+        if (e.key === "Escape" && it.classList.contains("open")) {
+
+          it.classList.remove("open");
+
+          if (trigger.tagName === "BUTTON") trigger.setAttribute("aria-expanded", "false");
+
+          trigger.focus();
+
+        }
+
+      });
+
+    });
+
+
+
+    document.addEventListener("click", function (e) {
+
+      if (!e.target.closest || !e.target.closest(".ucnav-i")) closeAll(null);
+
+    });
+
+  })();
+
+
+
+  /* ---------- 3. scroll reveal ---------- */
+
+  (function reveal() {
+
+    var els = $$(".rv, .reveal");
+
+    if (!els.length) return;
+
+    var show = function (el) { el.classList.add("in", "visible"); };
+
+    if (reduced || !("IntersectionObserver" in window)) {
+
+      els.forEach(show);
+
+      return;
+
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+
+      entries.forEach(function (en) {
+
+        if (en.isIntersecting) { show(en.target); io.unobserve(en.target); }
+
+      });
+
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+
+    els.forEach(function (el) {
+
+      // already-visible markup stays visible; just observe the rest
+
+      if (el.classList.contains("in") || el.classList.contains("visible")) { io.observe(el); }
+
+      else io.observe(el);
+
+    });
+
+  })();
+
+
+
+  /* ---------- 4. stat count-ups ----------
+
+     <span data-to="15000" data-suffix="+" data-comma>  */
+
+  (function countUps() {
+
+    var nums = $$("[data-to]");
+
+    if (!nums.length) return;
+
+
+
+    var render = function (el, val) {
+
+      var comma = el.hasAttribute("data-comma");
+
+      var suffix = el.getAttribute("data-suffix") || "";
+
+      var out = comma ? Math.round(val).toLocaleString("en-IN") : String(Math.round(val));
+
+      el.textContent = out + suffix;
+
+    };
+
+
+
+    var run = function (el) {
+
+      if (el.dataset.ucanDone) return;
+
+      el.dataset.ucanDone = "1";
+
+      var to = parseFloat(el.getAttribute("data-to")) || 0;
+
+      if (reduced) { render(el, to); return; }
+
+      var dur = 1100, start = null;
+
+      var step = function (ts) {
+
+        if (start === null) start = ts;
+
+        var p = Math.min((ts - start) / dur, 1);
+
+        var eased = 1 - Math.pow(1 - p, 3);
+
+        render(el, to * eased);
+
+        if (p < 1) requestAnimationFrame(step);
+
+        else { render(el, to); el.classList.add("pop"); }
+
+      };
+
+      requestAnimationFrame(step);
+
+    };
+
+
+
+    if (reduced || !("IntersectionObserver" in window)) { nums.forEach(run); return; }
+
+    var io = new IntersectionObserver(function (entries) {
+
+      entries.forEach(function (en) {
+
+        if (en.isIntersecting) { run(en.target); io.unobserve(en.target); }
+
+      });
+
+    }, { threshold: 0.4 });
+
+    nums.forEach(function (el) { io.observe(el); });
+
+  })();
+
+
+
+  /* ---------- 5. DPDP newsletter consent gate ----------
+
+     Hard requirement: submit is blocked unless a valid email AND the consent
+
+     checkbox are both present, and an auditable consent record is produced. */
+
+  (function newsletterGate() {
+
+    var NOTICE_VERSION = "ucan-newsletter-notice-2026-01";
+
+    // three form variants exist across the site
+
+    var forms = $$("#nform, #nl-form, #fnform, form[aria-label='Newsletter signup']");
+
+    if (!forms.length) return;
+
+
+
+    forms.forEach(function (form) {
+
+      if (form.dataset.ucanBound) return;
+
+      form.dataset.ucanBound = "1";
+
+
+
+      var email = $("input[type=email]", form);
+
+      var consent = $("input[type=checkbox]", form);
+
+      // message elements may sit just outside the <form>
+
+      var scope = form.closest("section, .subscribe-box, div") || document;
+
+      var err = $("#nerr", scope) || $("#nl-err", scope) || $(".nerr, .nl-err", scope);
+
+      var ok = $("#nok", scope) || $("#nl-ok", scope) || $(".nok, .nl-ok", scope);
+
+
+
+      // these are display:none in CSS with no .show rule, so drive them inline
+
+      var toggle = function (el, on) {
+
+        if (!el) return;
+
+        el.classList.toggle("show", on);
+
+        el.style.display = on ? "block" : "none";
+
+      };
+
+      toggle(err, false); toggle(ok, false);
+
+
+
+      form.addEventListener("submit", function (e) {
+
+        e.preventDefault();
+
+        toggle(err, false); toggle(ok, false);
+
+
+
+        var value = (email && email.value || "").trim();
+
+        var validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value);
+
+        var agreed = !consent || consent.checked; // gate only if a box exists
+
+
+
+        if (!validEmail || !agreed) {
+
+          toggle(err, true);
+
+          if (!validEmail && email) email.focus();
+
+          else if (consent) consent.focus();
+
+          return;
+
+        }
+
+
+
+        // auditable consent record (DPDP Act 2023)
+
+        var record = {
+
+          email: value,
+
+          consent: true,
+
+          purpose: "U-CAN newsletter, event invitations and programme details",
+
+          noticeVersion: NOTICE_VERSION,
+
+          timestamp: new Date().toISOString(),
+
+          page: location.pathname
+
+        };
+
+        try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
+
+
+
+        form.reset();
+
+        toggle(ok, true);
+
+      });
+
+
+
+      // Clear the error only on a genuine correction. Deliberately NOT on the
+
+      // email's `change`: that fires when focus moves to the checkbox, which
+
+      // would wipe the error the submit handler had just shown.
+
+      if (email) email.addEventListener("input", function () { toggle(err, false); });
+
+      if (consent) consent.addEventListener("change", function () { toggle(err, false); });
+
+    });
+
+  })();
+
+
+
+  /* ---------- 6. cookie banner (most-privacy-preserving default) ---------- */
+
+  (function cookieBanner() {
+
+    var KEY = "ucan_consent_v1";
+
+    var cc = $("#cc");
+
+    var reopen = $("#cookie-reopen");
+
+    if (!cc && !reopen) return;
+
+
+
+    var save = function (choice) {
+
+      try {
+
+        localStorage.setItem(KEY, JSON.stringify({
+
+          analytics: choice === "accept",
+
+          ts: new Date().toISOString()
+
+        }));
+
+      } catch (e) {}
+
+    };
+
+    var stored = function () {
+
+      try { return localStorage.getItem(KEY); } catch (e) { return null; }
+
+    };
+
+    var show = function () { if (cc) cc.classList.add("show"); };
+
+    var hide = function () { if (cc) cc.classList.remove("show"); };
+
+
+
+    if (cc && !stored()) {
+
+      setTimeout(show, 10000); // surfaces after 10s
+
+    }
+
+    var accept = $("#cc-accept"), reject = $("#cc-reject");
+
+    if (accept) accept.addEventListener("click", function () { save("accept"); hide(); });
+
+    if (reject) reject.addEventListener("click", function () { save("reject"); hide(); });
+
+    if (reopen) reopen.addEventListener("click", function (e) { e.preventDefault(); show(); });
+
+  })();
+
+
+
+  /* ---------- 7. archive: load more + year filter ----------
+
+     Two listings use this: the newsletter archive (.issue tiles, which also
+
+     get the year filter) and the Fellows' blog grid (.bcard). */
+
+  (function archive() {
+
+    var btn = $("#loadBtn"), wrap = $("#loadMore");
+
+    var issues = $$(".issue, .bcard");
+
+    var filters = $$(".filter-btn");
+
+    if (!issues.length) return;
+
+
+
+    // remember which tiles start collapsed so "All" can restore that view
+
+    issues.forEach(function (el) {
+
+      if (el.classList.contains("hidden")) el.dataset.collapsed = "1";
+
+    });
+
+
+
+    var showAll = function () {
+
+      issues.forEach(function (el) { el.classList.remove("hidden"); });
+
+      if (wrap) wrap.style.display = "none";
+
+    };
+
+
+
+    if (btn) btn.addEventListener("click", showAll);
+
+
+
+    filters.forEach(function (b) {
+
+      b.addEventListener("click", function () {
+
+        var year = b.dataset.filter;
+
+        filters.forEach(function (o) { o.classList.toggle("active", o === b); });
+
+        if (year === "all") {
+
+          // back to the collapsed default
+
+          issues.forEach(function (el) {
+
+            el.classList.toggle("hidden", el.dataset.collapsed === "1");
+
+          });
+
+          if (wrap) wrap.style.display = "";
+
+          return;
+
+        }
+
+        issues.forEach(function (el) {
+
+          // the newsletter archive keys on year, the blog grid on author
+
+          var key = el.dataset.year || el.dataset.author;
+
+          el.classList.toggle("hidden", key !== year);
+
+        });
+
+        if (wrap) wrap.style.display = "none";
+
+      });
+
+    });
+
+  })();
+
+
+
+  /* ---------- 8. back to top (newsletter article) ---------- */
+
+  (function backToTop() {
+
+    var btt = $("#btt");
+
+    if (!btt) return;
+
+    var onScroll = function () { btt.classList.toggle("show", window.scrollY > 600); };
+
+    onScroll();
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    btt.addEventListener("click", function () {
+
+      window.scrollTo({ top: 0, behavior: reduced ? "auto" : "smooth" });
+
+    });
+
+  })();
+
+
+
+  /* ---------- 9. FAQ accordion ----------
+
+     URC uses native <details>, which needs no JS. This only adds the
+
+     one-open-at-a-time behaviour when several sit in the same .faq group. */
+
+  (function faq() {
+
+    var groups = $$(".faq");
+
+    groups.forEach(function (g) {
+
+      var items = $$("details", g);
+
+      if (items.length < 2) return;
+
+      items.forEach(function (d) {
+
+        d.addEventListener("toggle", function () {
+
+          if (!d.open) return;
+
+          items.forEach(function (o) { if (o !== d) o.open = false; });
+
+        });
+
+      });
+
+    });
+
+  })();
+
+
+
+  /* ---------- 10. tabs (Fellowship: knowledge / network / funding) ----------
+
+     Markup is fully usable with JS off — every pane renders, and only the
+
+     first is hidden once this runs. */
+
+  (function tabs() {
+
+    $$("[data-tabs]").forEach(function (root) {
+
+      var btns = $$('[role="tab"]', root);
+
+      var panes = $$('[role="tabpanel"]', root);
+
+      if (btns.length < 2 || btns.length !== panes.length) return;
+
+
+
+      var select = function (i, focus) {
+
+        btns.forEach(function (b, n) {
+
+          b.setAttribute("aria-selected", n === i ? "true" : "false");
+
+          b.tabIndex = n === i ? 0 : -1;
+
+        });
+
+        panes.forEach(function (p, n) { p.hidden = n !== i; });
+
+        if (focus) btns[i].focus();
+
+      };
+
+
+
+      btns.forEach(function (b, i) {
+
+        b.addEventListener("click", function () { select(i); });
+
+        b.addEventListener("keydown", function (e) {
+
+          var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+
+          if (!d) return;
+
+          e.preventDefault();
+
+          select((i + d + btns.length) % btns.length, true);
+
+        });
+
+      });
+
+      select(0);
+
+    });
+
+  })();
+
+})();
+
+</script>
+
+
+
+<script data-ucan="hero">
+/* Individual effort into collective action, drawn: dots drift on their own and
+   link when they come within reach of each other; the visitor's cursor pulls
+   nearby dots in and links them too. Canvas only, no layout, so no CLS; it
+   sleeps when the hero is off screen and draws a single still frame for
+   reduced-motion. */
+(function () {
+  var hero = document.querySelector('.hero');
+  var cv = hero && hero.querySelector('.hero-field');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d');
+  var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var W = 0, H = 0, dpr = 1, dots = [], mouse = null, on = true, raf = 0;
+  var LINK = 128, PULL = 170;
+
+  function size() {
+    var r = hero.getBoundingClientRect();
+    var g = hero.querySelector('.hero-grid');
+    var gb = g ? g.getBoundingClientRect().bottom - r.top : r.height;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = r.width; H = Math.min(r.height, Math.round(gb + 56));
+    cv.style.height = H + 'px';
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var want = Math.max(28, Math.min(90, Math.round(W * H / 15000)));
+    while (dots.length < want) dots.push(dot());
+    dots.length = want;
+  }
+  function dot() {
+    var a = Math.random() * Math.PI * 2, v = 0.12 + Math.random() * 0.22;
+    return { x: Math.random() * (W || 1200), y: Math.random() * (H || 700),
+             vx: Math.cos(a) * v, vy: Math.sin(a) * v, r: 1.4 + Math.random() * 1.8 };
+  }
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    var i, j, a, b, dx, dy, d;
+    for (i = 0; i < dots.length; i++) {
+      a = dots[i];
+      if (mouse) {
+        dx = mouse.x - a.x; dy = mouse.y - a.y; d = Math.sqrt(dx * dx + dy * dy);
+        if (d < PULL && d > 1) { a.vx += dx / d * 0.018; a.vy += dy / d * 0.018; }
+      }
+      a.vx *= 0.992; a.vy *= 0.992;
+      var sp = Math.sqrt(a.vx * a.vx + a.vy * a.vy);
+      if (sp < 0.1) { a.vx *= 1.04; a.vy *= 1.04; }
+      if (sp > 1.1) { a.vx *= 0.9; a.vy *= 0.9; }
+      a.x += a.vx; a.y += a.vy;
+      if (a.x < -10) a.x = W + 10; else if (a.x > W + 10) a.x = -10;
+      if (a.y < -10) a.y = H + 10; else if (a.y > H + 10) a.y = -10;
+    }
+    ctx.lineWidth = 1;
+    for (i = 0; i < dots.length; i++) {
+      a = dots[i];
+      for (j = i + 1; j < dots.length; j++) {
+        b = dots[j]; dx = a.x - b.x; dy = a.y - b.y;
+        if (Math.abs(dx) > LINK || Math.abs(dy) > LINK) continue;
+        d = Math.sqrt(dx * dx + dy * dy);
+        if (d < LINK) {
+          ctx.strokeStyle = 'rgba(31,143,123,' + (0.26 * (1 - d / LINK)).toFixed(3) + ')';
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+      }
+      if (mouse) {
+        dx = a.x - mouse.x; dy = a.y - mouse.y; d = Math.sqrt(dx * dx + dy * dy);
+        if (d < PULL) {
+          ctx.strokeStyle = 'rgba(14,83,72,' + (0.45 * (1 - d / PULL)).toFixed(3) + ')';
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+        }
+      }
+    }
+    for (i = 0; i < dots.length; i++) {
+      a = dots[i];
+      ctx.fillStyle = 'rgba(31,143,123,.55)';
+      ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.2832); ctx.fill();
+    }
+    if (mouse) {
+      ctx.fillStyle = '#0E5348';
+      ctx.beginPath(); ctx.arc(mouse.x, mouse.y, 4.5, 0, 6.2832); ctx.fill();
+    }
+  }
+  function loop() { frame(); raf = on && !document.hidden ? requestAnimationFrame(loop) : 0; }
+  function start() { if (!raf && !still) raf = requestAnimationFrame(loop); }
+
+  function boot() {
+    size();
+    if (still) { frame(); return; }
+    start();
+    hero.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') return;
+      var r = hero.getBoundingClientRect();
+      mouse = { x: e.clientX - r.left, y: e.clientY - r.top };
+    });
+    hero.addEventListener('pointerleave', function () { mouse = null; });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        on = es[0].isIntersecting; if (on) start();
+      }).observe(hero);
+    }
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) start(); });
+  }
+  var t;
+  window.addEventListener('resize', function () {
+    clearTimeout(t); t = setTimeout(function () { size(); if (still) frame(); }, 150);
+  });
+  // after first paint, so the canvas never competes with the headline for LCP
+  if ('requestIdleCallback' in window) requestIdleCallback(boot, { timeout: 1200 });
+  else setTimeout(boot, 300);
+})();
+</script>
+</body></html>

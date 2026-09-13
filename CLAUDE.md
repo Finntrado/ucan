@@ -896,22 +896,45 @@ real result on the rest; check pages individually if it happens again.
 
 ---
 
-## 28. WordPress conversion (in progress) — `wp-theme/ucan/`
+## 28. WordPress — `wp-theme/ucan/` is a STATIC MIRROR (current approach)
+
+**The PHP-template/CPT conversion described below was abandoned** after its
+first real render on LocalWP looked badly wrong (page-specific CSS lost,
+dynamic sections drifting from the design). It is preserved at git tag
+**`wp-php-templates`**; everything under "History" below documents that
+attempt and does not describe the current theme.
+
+**Current theme** — guarantees the WP site looks exactly like Vercel:
+- `_scripts/wp/build_static_theme.py` copies every `standalone/*.html`
+  byte-for-byte into `wp-theme/ucan/pages/` and mirrors `assets/` +
+  `newsletters/`. Its only change: relative URLs become placeholders —
+  asset paths in **any** attribute or CSS `url()` → `%%UCAN_THEME%%/…`,
+  page slugs in `href`/`data-tag` → `%%UCAN_HOME%%/…`. It fails if any
+  relative asset reference survives (a `data-poster` on the Forum video was
+  the one that did at first).
+- `functions.php` answers `template_redirect` (priority 0, before
+  `redirect_canonical`): `/` → `pages/index.html`, `/<slug>` →
+  `pages/<slug>.html`, placeholders swapped, output raw, exit. No
+  `wp_head()`, no admin bar — nothing WP can restyle. `index.php` is the 404.
+- **URL shape mirrors `vercel.json`**: `/about/` 301s to `/about`, `/index`
+  to `/`. Not cosmetic — fellow-blog/profile filter chips do
+  `location.href = el.dataset.tag` with relative slugs.
+- wp-admin, login, REST, sitemaps, and root queries (`/?s=`, `/?p=`) fall
+  through to WordPress untouched.
+- **Trade-off, deliberately accepted:** content is edited in `standalone/`
+  and rebuilt, not in wp-admin. Re-run the build after every change to
+  `standalone/`, then copy `wp-theme/ucan` into the WP install.
+- Verification: `_scripts/qa/wpparity.js [wpBase] [staticBase] [pages…]` —
+  screenshots each page on WP and on `serve.py` at 1440 + 390 and requires
+  byte-identical pixels, zero 4xx/failed requests, zero console errors.
+  Only wait on in-viewport images (lazy ones never fire `load` and hang it).
+- On Windows, never `rmtree` `pages/` — a shell sitting in it locks the dir.
+
+### History — the abandoned PHP-template conversion (tag `wp-php-templates`)
 
 The client's original ask was a WordPress site; `standalone/` is the finished
-design/content, built static for fast iteration. This section starts turning
-it into a real installable WP theme so the client gets an actual CMS. Full
-plan: `.claude/plans/greedy-moseying-magpie.md`. **All 8 phases (0, 2–7) are
-now done.** Every CPT, every hub/legal page, and the one-time content
-importer all exist. What's left is entirely outside this sandbox: install
-this theme on a real WordPress site, run the importer, and click through
-it — nothing here has ever been rendered or executed (§28's own
-standing caveat, repeated in each phase).
-
-**No PHP/MySQL/WP-CLI in this sandbox** (checked — none on PATH). Every file
-here is hand-reviewed code, never executed or clicked through locally.
-Real verification needs a real WP install (LocalWP, Docker, or a host's
-staging site) — do that before treating any phase as "done," not just this one.
+design/content, built static for fast iteration. This attempt turned it into
+PHP templates + CPTs + an importer (phases 0, 2–7 below).
 
 ### What phase 0 built
 `_scripts/wp/build_scaffold.py` extracts the chrome that's already

@@ -2,7 +2,7 @@
 Theme Name: U-CAN
 Theme URI: https://urban.org.in/
 Author: Urban Collective Action Network
-Description: Custom theme for U-CAN (Urban Collective Action Network) - editorial-civic design system. Page styles are inlined via header.php for parity with the static build this theme replaces; this file exists only so WordPress recognises the theme.
-Version: 0.1.0
+Description: Static-mirror theme. Serves the finished standalone/ pages byte-for-byte (only asset/link URLs are re-rooted), so the WordPress site looks exactly like the Vercel build. Regenerate with _scripts/wp/build_static_theme.py - never edit pages/ by hand.
+Version: 1.0.0
 Text Domain: ucan
 */
