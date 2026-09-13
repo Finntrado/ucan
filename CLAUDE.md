@@ -1375,3 +1375,20 @@ the extractor to force a phantom 23rd person into existence.
   it against a disposable local WP install first (LocalWP, or Docker),
   confirm counts match each JSON file's length, and spot-check a handful
   of posts of each type against their original `standalone/*.html` page.
+
+### First real run (LocalWP) — one genuine bug found immediately
+`wp ucan import all --dir=...` failed with `'all' is not a registered
+subcommand` — the very first command actually executed against a real
+WordPress install. Root cause: `WP_CLI::add_command('ucan import',
+'UCAN_Import_Command')` registers **every public method of the class as
+its own subcommand** named after the method - it does not let one method
+dispatch on an arbitrary first positional argument the way the original
+`import( $args )` method assumed. So `wp ucan import members`,
+`wp ucan import fellows` etc. had actually been reachable all along; only
+`all` was broken, because no method was named `all`. Fixed by adding a
+real `all()` method that calls the others in dependency order (fellows
+before blogs). This is exactly the class of bug static review alone
+couldn't catch - the code was syntactically valid PHP that called
+existing methods correctly, it was WP-CLI's own registration model that
+worked differently than assumed. Confirms the point made throughout this
+phase: nothing here counts as verified until it's actually been run.

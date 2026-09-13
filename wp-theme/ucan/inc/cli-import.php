@@ -131,46 +131,45 @@ function ucan_import_get_tag_term_id( $slug, $name ) {
 class UCAN_Import_Command {
 
 	/**
-	 * Imports content.
+	 * Imports every content type, in dependency order (fellows before
+	 * blogs, since a blog post looks up its fellow's post ID by slug).
+	 *
+	 * Corrected from an earlier version of this file that tried to make
+	 * one `import( <type> )` method dispatch by its first positional
+	 * argument - that's not how WP-CLI's class-based registration works:
+	 * `WP_CLI::add_command( 'ucan import', 'UCAN_Import_Command' )`
+	 * exposes every public method of the class as its own subcommand
+	 * named after the method (so `pages`, `members`, `fellows` etc. below
+	 * were already reachable as `wp ucan import members` and so on - only
+	 * `wp ucan import all` was ever actually broken, since no method was
+	 * named `all`). Found on the first real run against an actual
+	 * WordPress install, not caught by static review alone.
 	 *
 	 * ## OPTIONS
 	 *
-	 * <type>
-	 * : all | members | fellows | etn-events | blogs | mixers | webinar-recaps | newsletters | pages
-	 *
-	 * [--dir=<dir>]
-	 * : Directory holding the JSON files from extract_content.py. Required for every type except "pages".
+	 * --dir=<dir>
+	 * : Directory holding the JSON files from extract_content.py.
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp ucan import all --dir=/srv/www/data
-	 *     wp ucan import pages
+	 *     wp ucan import all --dir=wp-content/ucan-import-data
 	 *
 	 * @when after_wp_load
 	 */
-	public function import( $args, $assoc_args ) {
-		$type = isset( $args[0] ) ? $args[0] : '';
-		$dir  = isset( $assoc_args['dir'] ) ? $assoc_args['dir'] : '';
-
-		if ( 'all' === $type ) {
-			$this->pages( array(), array() );
-			$this->members( array(), array( 'dir' => $dir ) );
-			$this->fellows( array(), array( 'dir' => $dir ) );
-			$this->etn_events( array(), array( 'dir' => $dir ) );
-			$this->blogs( array(), array( 'dir' => $dir ) );
-			$this->mixers( array(), array( 'dir' => $dir ) );
-			$this->webinar_recaps( array(), array( 'dir' => $dir ) );
-			$this->newsletters( array(), array( 'dir' => $dir ) );
-			WP_CLI::success( 'All content imported.' );
-			return;
+	public function all( $args, $assoc_args ) {
+		$dir = isset( $assoc_args['dir'] ) ? $assoc_args['dir'] : '';
+		if ( ! $dir ) {
+			WP_CLI::error( 'Missing --dir=<path to the JSON data files>' );
 		}
-
-		$method = str_replace( '-', '_', $type );
-		if ( ! method_exists( $this, $method ) || 'import' === $method ) {
-			WP_CLI::error( "Unknown type: $type" );
-		}
-		$this->$method( array(), array( 'dir' => $dir ) );
-		WP_CLI::success( "$type imported." );
+		$this->pages( array(), array() );
+		$this->members( array(), array( 'dir' => $dir ) );
+		$this->fellows( array(), array( 'dir' => $dir ) );
+		$this->etn_events( array(), array( 'dir' => $dir ) );
+		$this->blogs( array(), array( 'dir' => $dir ) );
+		$this->mixers( array(), array( 'dir' => $dir ) );
+		$this->webinar_recaps( array(), array( 'dir' => $dir ) );
+		$this->newsletters( array(), array( 'dir' => $dir ) );
+		WP_CLI::success( 'All content imported.' );
 	}
 
 	/**
@@ -207,6 +206,14 @@ class UCAN_Import_Command {
 		WP_CLI::log( "Pages created: $n (of " . count( $slugs ) . ')' );
 	}
 
+	/**
+	 * Imports the 22 U-CAN member profiles (ucan_member CPT).
+	 *
+	 * ## OPTIONS
+	 *
+	 * --dir=<dir>
+	 * : Directory holding the JSON files from extract_content.py.
+	 */
 	public function members( $args, $assoc_args ) {
 		$rows = ucan_import_read_json( $assoc_args['dir'], 'members.json' );
 		$group_term_ids = array();
@@ -248,6 +255,14 @@ class UCAN_Import_Command {
 		WP_CLI::log( "Members created: $n (of " . count( $rows ) . ')' );
 	}
 
+	/**
+	 * Imports the 8 U-CAN Fellows (ucan_fellow CPT).
+	 *
+	 * ## OPTIONS
+	 *
+	 * --dir=<dir>
+	 * : Directory holding the JSON files from extract_content.py.
+	 */
 	public function fellows( $args, $assoc_args ) {
 		$rows = ucan_import_read_json( $assoc_args['dir'], 'fellows.json' );
 		$n = 0;
@@ -278,6 +293,14 @@ class UCAN_Import_Command {
 		WP_CLI::log( "Fellows created: $n (of " . count( $rows ) . ')' );
 	}
 
+	/**
+	 * Imports L&D sessions, Policy Webinars and the one City Mixer note (ucan_etn_event CPT).
+	 *
+	 * ## OPTIONS
+	 *
+	 * --dir=<dir>
+	 * : Directory holding the JSON files from extract_content.py.
+	 */
 	public function etn_events( $args, $assoc_args ) {
 		$rows = ucan_import_read_json( $assoc_args['dir'], 'etn_events.json' );
 		$n = 0;
@@ -309,6 +332,14 @@ class UCAN_Import_Command {
 		WP_CLI::log( "Etn events created: $n (of " . count( $rows ) . ')' );
 	}
 
+	/**
+	 * Imports the 58 fellow blog posts (ucan_blog CPT). Run after fellows.
+	 *
+	 * ## OPTIONS
+	 *
+	 * --dir=<dir>
+	 * : Directory holding the JSON files from extract_content.py.
+	 */
 	public function blogs( $args, $assoc_args ) {
 		$rows = ucan_import_read_json( $assoc_args['dir'], 'blogs.json' );
 		$n = 0;
@@ -349,6 +380,14 @@ class UCAN_Import_Command {
 		WP_CLI::log( "Blog posts created: $n (of " . count( $rows ) . ')' );
 	}
 
+	/**
+	 * Imports the 11 City Mixer write-ups (ucan_mixer CPT).
+	 *
+	 * ## OPTIONS
+	 *
+	 * --dir=<dir>
+	 * : Directory holding the JSON files from extract_content.py.
+	 */
 	public function mixers( $args, $assoc_args ) {
 		$rows = ucan_import_read_json( $assoc_args['dir'], 'mixers.json' );
 		$n = 0;
@@ -377,6 +416,14 @@ class UCAN_Import_Command {
 		WP_CLI::log( "Mixers created: $n (of " . count( $rows ) . ')' );
 	}
 
+	/**
+	 * Imports the 4 webinar recap articles (ucan_webinar_recap CPT).
+	 *
+	 * ## OPTIONS
+	 *
+	 * --dir=<dir>
+	 * : Directory holding the JSON files from extract_content.py.
+	 */
 	public function webinar_recaps( $args, $assoc_args ) {
 		$rows = ucan_import_read_json( $assoc_args['dir'], 'webinar_recaps.json' );
 		$n = 0;
@@ -400,6 +447,14 @@ class UCAN_Import_Command {
 		WP_CLI::log( "Webinar recaps created: $n (of " . count( $rows ) . ')' );
 	}
 
+	/**
+	 * Imports the 29 newsletter issues (ucan_newsletter CPT).
+	 *
+	 * ## OPTIONS
+	 *
+	 * --dir=<dir>
+	 * : Directory holding the JSON files from extract_content.py.
+	 */
 	public function newsletters( $args, $assoc_args ) {
 		$rows = ucan_import_read_json( $assoc_args['dir'], 'newsletters.json' );
 		$n = 0;
