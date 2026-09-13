@@ -63,13 +63,28 @@ add_action( 'wp_enqueue_scripts', 'ucan_enqueue_assets' );
  * later phases and should be additive to, not a replacement for, this hook.
  */
 function ucan_document_head() {
-	// Page templates (page-about.php etc., phase 2 onward) set these two
+	// Page templates (page-about.php etc., phase 2 onward) set these
 	// globals before calling get_header(), so their extracted-verbatim
 	// meta description and full JSON-LD graph (already carrying correct
 	// absolute urban.org.in canonical URLs) take priority over anything
 	// generated generically below.
 	$page_meta   = isset( $GLOBALS['ucan_page_meta'] ) ? $GLOBALS['ucan_page_meta'] : array();
 	$page_jsonld = isset( $GLOBALS['ucan_page_jsonld'] ) ? $GLOBALS['ucan_page_jsonld'] : '';
+	$page_css    = isset( $GLOBALS['ucan_page_css'] ) ? $GLOBALS['ucan_page_css'] : '';
+
+	// Found on the first real render against a live WP install (not
+	// caught by any static review): the static build's <style
+	// data-ucan="base"> tag is NOT byte-identical across every page like
+	// phase 0 assumed from checking only about.html - the first ~8.5KB
+	// (reset/tokens/typography/generic components) is genuinely shared,
+	// but several pages append their OWN extra component CSS inside that
+	// same tag (.pcard/.grp on Our People, member-profile styles, the
+	// newsletter masthead/TOC styles, etc.) that header.php's one fixed
+	// copy never carried. Every page/template with real page-specific CSS
+	// sets it here the same way as $ucan_page_meta/$ucan_page_jsonld.
+	if ( $page_css ) {
+		printf( '<style data-ucan="page">%s</style>' . "\n", $page_css );
+	}
 
 	$description = isset( $page_meta['description'] ) ? $page_meta['description'] : '';
 	if ( ! $description ) {
