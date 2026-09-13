@@ -5,17 +5,39 @@
  * Every front-end URL that matches a page in pages/ is answered with that
  * page's HTML exactly as built for Vercel - no header.php/footer.php, no
  * wp_head(), nothing WordPress could restyle. The only change is swapping
- * the two URL placeholders written by _scripts/wp/build_static_theme.py.
+ * the URL placeholders written by _scripts/wp/build_static_theme.py.
  *
  * URL shape mirrors vercel.json (cleanUrls + trailingSlash:false): /about,
  * not /about/ or /about.html. That matters beyond looks - a few inline
  * scripts navigate with relative slugs, which only resolve correctly from
  * a slash-less URL.
  *
- * wp-admin, wp-login, REST, feeds and sitemaps are untouched.
+ * Also here, so the old urban.org.in can be switched off:
+ * - every old URL (/about-us/, /member/<slug>/, /etn/<slug>/, ...) 301s to
+ *   its new page (redirects.php, generated from each page's old canonical)
+ * - /sitemap.xml lists every page; WP core's own sitemap is off
+ * - the same security headers Vercel sends
+ * - newsletter signups are saved to this database (inc/subscribers.php)
+ *
+ * wp-admin, wp-login and the REST API are untouched.
  */
 
 defined( 'ABSPATH' ) || exit;
+
+require_once __DIR__ . '/inc/subscribers.php';
+
+add_filter( 'wp_sitemaps_enabled', '__return_false' );
+add_filter(
+	'robots_txt',
+	function ( $output, $public ) {
+		if ( $public ) {
+			$output .= "\nSitemap: " . home_url( '/sitemap.xml' ) . "\n";
+		}
+		return $output;
+	},
+	10,
+	2
+);
 
 add_action( 'template_redirect', 'ucan_serve_static_page', 0 );
 
@@ -24,12 +46,17 @@ function ucan_serve_static_page() {
 	$path    = (string) wp_parse_url( $request, PHP_URL_PATH );
 	$query   = (string) wp_parse_url( $request, PHP_URL_QUERY );
 	$base    = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
+	$home    = untrailingslashit( home_url() );
 
-	$rel = $path;
+	$rel = rawurldecode( $path );
 	if ( '' !== $base && 0 === strpos( $rel, $base ) ) {
 		$rel = substr( $rel, strlen( $base ) );
 	}
 	$slug = trim( $rel, '/' );
+
+	if ( 'sitemap.xml' === $slug ) {
+		ucan_sitemap( $home );
+	}
 
 	if ( '' === $slug ) {
 		// Leave real WP queries on the root (?s=, ?p=, previews) to WordPress.
@@ -37,16 +64,13 @@ function ucan_serve_static_page() {
 			return;
 		}
 		$slug = 'index';
-	} elseif ( ! preg_match( '/^[a-z0-9-]+$/', $slug ) ) {
-		return;
 	}
 
 	$file = get_template_directory() . '/pages/' . $slug . '.html';
-	if ( ! is_file( $file ) ) {
+	if ( ! preg_match( '/^[a-z0-9-]+$/', $slug ) || ! is_file( $file ) ) {
+		ucan_redirect_old_url( $slug, $home, $query );
 		return;
 	}
-
-	$home = untrailingslashit( home_url() );
 
 	if ( 'index' === $slug && '' !== trim( $rel, '/' ) ) {
 		wp_safe_redirect( $home . '/', 301 );
@@ -59,13 +83,67 @@ function ucan_serve_static_page() {
 
 	$html = file_get_contents( $file );
 	$html = str_replace(
-		array( '%%UCAN_THEME%%', '%%UCAN_HOME%%' ),
-		array( get_template_directory_uri(), $home ),
+		array( '%%UCAN_THEME%%', '%%UCAN_HOME%%', '%%UCAN_API%%' ),
+		array( get_template_directory_uri(), $home, esc_url_raw( rest_url( 'ucan/v1/subscribe' ) ) ),
 		$html
 	);
 
 	status_header( 200 );
 	header( 'Content-Type: text/html; charset=UTF-8' );
+	ucan_security_headers();
 	echo $html; // phpcs:ignore WordPress.Security.EscapeOutput -- trusted, theme-bundled page.
 	exit;
+}
+
+/** Old urban.org.in URL -> its page on this site (301), if there is one. */
+function ucan_redirect_old_url( $old, $home, $query ) {
+	static $map = null;
+	if ( null === $map ) {
+		$map = include __DIR__ . '/redirects.php';
+	}
+	$key = strtolower( trim( $old, '/' ) );
+	if ( isset( $map[ $key ] ) ) {
+		$to = 'index' === $map[ $key ] ? '/' : '/' . $map[ $key ];
+		wp_safe_redirect( $home . $to . ( '' !== $query ? '?' . $query : '' ), 301 );
+		exit;
+	}
+}
+
+function ucan_sitemap( $home ) {
+	status_header( 200 );
+	header( 'Content-Type: application/xml; charset=UTF-8' );
+	echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+	echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+	foreach ( glob( get_template_directory() . '/pages/*.html' ) as $f ) {
+		$slug = basename( $f, '.html' );
+		$loc  = 'index' === $slug ? $home . '/' : $home . '/' . $slug;
+		printf( "<url><loc>%s</loc><lastmod>%s</lastmod></url>\n", esc_url( $loc ), esc_html( gmdate( 'Y-m-d', filemtime( $f ) ) ) );
+	}
+	echo '</urlset>';
+	exit;
+}
+
+/** Same policy as standalone/vercel.json, with the theme's own origin allowed. */
+function ucan_security_headers() {
+	$origin = wp_parse_url( get_template_directory_uri() );
+	$assets = "'self'";
+	if ( ! empty( $origin['host'] ) ) {
+		$assets .= ' ' . $origin['scheme'] . '://' . $origin['host'] . ( ! empty( $origin['port'] ) ? ':' . $origin['port'] : '' );
+	}
+	$csp = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; "
+		. "script-src $assets 'unsafe-inline'; style-src $assets 'unsafe-inline' data:; font-src $assets data:; "
+		. "img-src $assets data:; media-src $assets; frame-src https://www.youtube-nocookie.com https://www.youtube.com; "
+		. "connect-src 'self'";
+	// https-only headers: over plain http (e.g. a LocalWP test site) browsers
+	// ignore COOP and log a console error, and upgrading requests breaks assets
+	if ( is_ssl() ) {
+		$csp .= '; upgrade-insecure-requests';
+		header( 'Strict-Transport-Security: max-age=63072000; includeSubDomains' );
+		header( 'Cross-Origin-Opener-Policy: same-origin' );
+	}
+	header( 'Content-Security-Policy: ' . $csp );
+	header( 'X-Content-Type-Options: nosniff' );
+	header( 'X-Frame-Options: DENY' );
+	header( 'Referrer-Policy: strict-origin-when-cross-origin' );
+	header( 'Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()' );
 }

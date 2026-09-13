@@ -1334,9 +1334,9 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <li><span>The solutions they built with institutions and communities</span></li>
         <li><span>And the Fellowship model that supported them</span></li>
       </ol>
-      <a class="btn pubdl" href="https://urban.org.in/u-can-fellowship-report-2025" target="_blank" rel="noopener noreferrer">Download full report <span class="ar" aria-hidden="true">&#8594;</span></a>
+      <a class="btn pubdl" href="assets/docs/u-can-fellowship-report-2025-026bad2d.pdf" target="_blank" rel="noopener noreferrer">Download full report <span class="ar" aria-hidden="true">&#8594;</span></a>
       </div>
-      <a class="pubcover rv d2" href="https://urban.org.in/u-can-fellowship-report-2025" target="_blank" rel="noopener noreferrer"
+      <a class="pubcover rv d2" href="assets/docs/u-can-fellowship-report-2025-026bad2d.pdf" target="_blank" rel="noopener noreferrer"
          aria-label="Download Shaping Urban Futures: Stories from the U-CAN Fellowship, the 2025 Fellowship report">
         <img src="assets/fellowship-report-2025-cover.webp" width="391" height="597" loading="lazy" decoding="async"
              alt="Cover of Shaping Urban Futures: Stories from the U-CAN Fellowship, the U-CAN Fellowship report 2025">
@@ -1639,6 +1639,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+        if (err && err.dataset.msg) err.textContent = err.dataset.msg;
         toggle(err, false); toggle(ok, false);
 
         var value = (email && email.value || "").trim();
@@ -1663,8 +1664,31 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         };
         try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
 
-        form.reset();
-        toggle(ok, true);
+        var endpoint = form.getAttribute("data-endpoint");
+        if (!endpoint || !window.fetch) { form.reset(); toggle(ok, true); return; }
+
+        var btn = $("button[type=submit]", form);
+        if (btn) btn.disabled = true;
+        var body = new FormData();
+        body.append("email", record.email);
+        body.append("consent", "yes");
+        body.append("notice_version", record.noticeVersion);
+        body.append("page", record.page);
+        fetch(endpoint, { method: "POST", body: body, credentials: "same-origin", headers: { Accept: "application/json" } })
+          .then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              if (!r.ok || !j.ok) throw new Error("subscribe failed");
+            });
+          })
+          .then(function () { form.reset(); toggle(ok, true); })
+          .catch(function () {
+            if (err) {
+              if (!err.dataset.msg) err.dataset.msg = err.textContent;
+              err.textContent = "Sorry, we couldn't save your subscription just now. Please try again in a moment.";
+            }
+            toggle(err, true);
+          })
+          .then(function () { if (btn) btn.disabled = false; });
       });
 
       // Clear the error only on a genuine correction. Deliberately NOT on the

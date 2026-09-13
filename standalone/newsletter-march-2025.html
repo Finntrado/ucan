@@ -1103,6 +1103,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+        if (err && err.dataset.msg) err.textContent = err.dataset.msg;
         toggle(err, false); toggle(ok, false);
 
         var value = (email && email.value || "").trim();
@@ -1125,10 +1126,33 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           timestamp: new Date().toISOString(),
           page: location.pathname
         };
-        try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
-
-        form.reset();
-        toggle(ok, true);
+        try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
+
+        var endpoint = form.getAttribute("data-endpoint");
+        if (!endpoint || !window.fetch) { form.reset(); toggle(ok, true); return; }
+
+        var btn = $("button[type=submit]", form);
+        if (btn) btn.disabled = true;
+        var body = new FormData();
+        body.append("email", record.email);
+        body.append("consent", "yes");
+        body.append("notice_version", record.noticeVersion);
+        body.append("page", record.page);
+        fetch(endpoint, { method: "POST", body: body, credentials: "same-origin", headers: { Accept: "application/json" } })
+          .then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              if (!r.ok || !j.ok) throw new Error("subscribe failed");
+            });
+          })
+          .then(function () { form.reset(); toggle(ok, true); })
+          .catch(function () {
+            if (err) {
+              if (!err.dataset.msg) err.dataset.msg = err.textContent;
+              err.textContent = "Sorry, we couldn't save your subscription just now. Please try again in a moment.";
+            }
+            toggle(err, true);
+          })
+          .then(function () { if (btn) btn.disabled = false; });
       });
 
       // Clear the error only on a genuine correction. Deliberately NOT on the
@@ -1290,4 +1314,28 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 })();
 </script>
 
+<script data-ucan="yt">
+/* Click-to-load YouTube: the still is already on the page, so nothing is
+   requested from YouTube until someone actually presses play. Without JS the
+   thumbnail stays an ordinary link to the video. */
+(function () {
+  var links = document.querySelectorAll('.nl-video .ytlite[data-yt]');
+  Array.prototype.forEach.call(links, function (a) {
+    a.addEventListener('click', function (e) {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      e.preventDefault();
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + a.dataset.yt +
+              '?autoplay=1&rel=0';
+      f.title = a.getAttribute('aria-label') || 'Video';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; ' +
+                'gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      f.setAttribute('loading', 'lazy');
+      a.replaceWith(f);
+      f.focus();
+    });
+  });
+})();
+</script>
 </body></html>

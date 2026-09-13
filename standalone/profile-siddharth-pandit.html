@@ -1207,6 +1207,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+        if (err && err.dataset.msg) err.textContent = err.dataset.msg;
         toggle(err, false); toggle(ok, false);
 
         var value = (email && email.value || "").trim();
@@ -1229,10 +1230,33 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           timestamp: new Date().toISOString(),
           page: location.pathname
         };
-        try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
-
-        form.reset();
-        toggle(ok, true);
+        try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
+
+        var endpoint = form.getAttribute("data-endpoint");
+        if (!endpoint || !window.fetch) { form.reset(); toggle(ok, true); return; }
+
+        var btn = $("button[type=submit]", form);
+        if (btn) btn.disabled = true;
+        var body = new FormData();
+        body.append("email", record.email);
+        body.append("consent", "yes");
+        body.append("notice_version", record.noticeVersion);
+        body.append("page", record.page);
+        fetch(endpoint, { method: "POST", body: body, credentials: "same-origin", headers: { Accept: "application/json" } })
+          .then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              if (!r.ok || !j.ok) throw new Error("subscribe failed");
+            });
+          })
+          .then(function () { form.reset(); toggle(ok, true); })
+          .catch(function () {
+            if (err) {
+              if (!err.dataset.msg) err.dataset.msg = err.textContent;
+              err.textContent = "Sorry, we couldn't save your subscription just now. Please try again in a moment.";
+            }
+            toggle(err, true);
+          })
+          .then(function () { if (btn) btn.disabled = false; });
       });
 
       // Clear the error only on a genuine correction. Deliberately NOT on the

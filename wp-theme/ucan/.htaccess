@@ -1,0 +1,12 @@
+# Apache only (nginx ignores this): let browsers cache the theme's static
+# files. 30 days rather than immutable - newsletters/ names are not hashed.
+<IfModule mod_headers.c>
+	<FilesMatch "\.(webp|jpe?g|png|svg|gif|ico|woff2?|pdf|mp4|webm)$">
+		Header set Cache-Control "public, max-age=2592000"
+	</FilesMatch>
+</IfModule>
+# pages/ is served through functions.php, never directly
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteRule ^pages/ - [F]
+</IfModule>

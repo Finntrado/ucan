@@ -1027,7 +1027,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
     <h1 id="h1">Enabling Collaboration as a Way of Working in India's Urban Ecosystem</h1>
     <p class="hero-lede">The <b>Request for Collaboration (RFC)</b> is an initiative by U-CAN that explores how organisations can move from <b>intent to practice</b> when it comes to collaboration, through experimentation, reflection, and shared learning.</p>
     <div class="hero-actions">
-      <a class="btn on-photo" href="https://urban.org.in/from-parellel-to-together-building-a-collaboration-practice-for-indias-urban-ecosystem" target="_blank" rel="noopener noreferrer">Read the Phase I Report <span class="ar" aria-hidden="true">→</span></a>
+      <a class="btn on-photo" href="assets/docs/from-parallel-to-together-rfc-phase-1-report-88415045.pdf" target="_blank" rel="noopener noreferrer">Read the Phase I Report <span class="ar" aria-hidden="true">→</span></a>
       <a class="btn ghost-photo" href="#what">What is the RFC?</a>
     </div>
   </div>
@@ -1132,7 +1132,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         <div style="height:22px"></div>
         <p>The RFC has created an opportunity to observe how collaboration unfolded through the first phase of the initiative, and inform the creation of a <strong>practice-informed framework</strong> that will evolve with the RFC initiative in subsequent phases.</p>
         <div class="hero-actions" style="margin-top:28px">
-          <a class="btn" href="https://urban.org.in/from-parellel-to-together-building-a-collaboration-practice-for-indias-urban-ecosystem" target="_blank" rel="noopener noreferrer">Read the report <span class="ar" aria-hidden="true">→</span></a>
+          <a class="btn" href="assets/docs/from-parallel-to-together-rfc-phase-1-report-88415045.pdf" target="_blank" rel="noopener noreferrer">Read the report <span class="ar" aria-hidden="true">→</span></a>
         </div>
         
       </div>
@@ -1437,6 +1437,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+        if (err && err.dataset.msg) err.textContent = err.dataset.msg;
         toggle(err, false); toggle(ok, false);
 
         var value = (email && email.value || "").trim();
@@ -1461,8 +1462,31 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
         };
         try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
 
-        form.reset();
-        toggle(ok, true);
+        var endpoint = form.getAttribute("data-endpoint");
+        if (!endpoint || !window.fetch) { form.reset(); toggle(ok, true); return; }
+
+        var btn = $("button[type=submit]", form);
+        if (btn) btn.disabled = true;
+        var body = new FormData();
+        body.append("email", record.email);
+        body.append("consent", "yes");
+        body.append("notice_version", record.noticeVersion);
+        body.append("page", record.page);
+        fetch(endpoint, { method: "POST", body: body, credentials: "same-origin", headers: { Accept: "application/json" } })
+          .then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              if (!r.ok || !j.ok) throw new Error("subscribe failed");
+            });
+          })
+          .then(function () { form.reset(); toggle(ok, true); })
+          .catch(function () {
+            if (err) {
+              if (!err.dataset.msg) err.dataset.msg = err.textContent;
+              err.textContent = "Sorry, we couldn't save your subscription just now. Please try again in a moment.";
+            }
+            toggle(err, true);
+          })
+          .then(function () { if (btn) btn.disabled = false; });
       });
 
       // Clear the error only on a genuine correction. Deliberately NOT on the

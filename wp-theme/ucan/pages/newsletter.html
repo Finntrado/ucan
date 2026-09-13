@@ -333,13 +333,13 @@ button { font: inherit; cursor: pointer; background: none; border: 0px; color: i
 <title>Newsletter — Urban Governance Updates | U-CAN</title>
 <meta name="description" content="Join U-CAN's community for monthly updates on urban governance, fellowship insights, city reform stories, and collaboration opportunities across India's Tier II and Tier III cities.">
 
-<link rel="canonical" href="https://urban.org.in/newsletter/">
+<link rel="canonical" href="%%UCAN_HOME%%/newsletter">
 <link rel="icon" href="%%UCAN_THEME%%/assets/img/favicon-78b77e29b1.png">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Newsletter — Urban Governance Updates | U-CAN">
 <meta property="og:description" content="Monthly updates on urban governance, fellowship insights, and city reform stories from India's Tier II and Tier III cities.">
-<meta property="og:url" content="https://urban.org.in/newsletter/">
+<meta property="og:url" content="%%UCAN_HOME%%/newsletter">
 <meta property="og:site_name" content="U-CAN — Urban Collective Action Network">
 <meta property="og:locale" content="en_IN">
 <meta name="twitter:card" content="summary_large_image">
@@ -374,10 +374,10 @@ button { font: inherit; cursor: pointer; background: none; border: 0px; color: i
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://urban.org.in/#org",
+      "@id": "%%UCAN_HOME%%/#org",
       "name": "Urban Collective Action Network (U-CAN)",
       "alternateName": "U-CAN",
-      "url": "https://urban.org.in/",
+      "url": "%%UCAN_HOME%%/",
       "email": "connect@urban.org.in",
       "description": "U-CAN is a network of organisations working together to strengthen urban problem-solving in India's Tier II and Tier III cities.",
       "foundingDate": "2022",
@@ -389,12 +389,12 @@ button { font: inherit; cursor: pointer; background: none; border: 0px; color: i
     },
     {
       "@type": "WebPage",
-      "@id": "https://urban.org.in/newsletter/#page",
-      "url": "https://urban.org.in/newsletter/",
+      "@id": "%%UCAN_HOME%%/newsletter#page",
+      "url": "%%UCAN_HOME%%/newsletter",
       "name": "Newsletter | U-CAN, Urban Collective Action Network",
       "description": "Urban governance insights from U-CAN, delivered monthly. Browse past editions of the newsletter.",
       "isPartOf": {
-        "@id": "https://urban.org.in/#org"
+        "@id": "%%UCAN_HOME%%/#org"
       },
       "inLanguage": "en-IN",
       "speakable": {
@@ -413,13 +413,13 @@ button { font: inherit; cursor: pointer; background: none; border: 0px; color: i
           "@type": "ListItem",
           "position": 1,
           "name": "Home",
-          "item": "https://urban.org.in/"
+          "item": "%%UCAN_HOME%%/"
         },
         {
           "@type": "ListItem",
           "position": 2,
           "name": "Newsletter",
-          "item": "https://urban.org.in/newsletter/"
+          "item": "%%UCAN_HOME%%/newsletter"
         }
       ]
     }
@@ -800,7 +800,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
     <div class="subscribe-box" id="subscribe">
         <h2>Subscribe</h2>
         <p>Urban governance insights, delivered monthly. No spam.</p>
-        <form method="post" aria-label="Newsletter signup" novalidate="">
+        <form action="%%UCAN_API%%" data-endpoint="%%UCAN_API%%" method="post" aria-label="Newsletter signup" novalidate="">
           <label>
             <span style="position:absolute;left:-9999px">Email address</span>
             <div class="sub-field">
@@ -859,7 +859,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       <div class="f-sub" id="connect">
         <h2 class="f-h">Stay connected</h2>
         <p class="f-subtext">One email a month on urban governance, our programmes and ways to get involved.</p>
-        <form class="fnform" id="fnform" method="post" novalidate="">
+        <form action="%%UCAN_API%%" data-endpoint="%%UCAN_API%%" class="fnform" id="fnform" method="post" novalidate="">
           <div class="fnrow">
             <label class="vh" for="f-email">Your email address</label>
             <input id="f-email" name="email" type="email" autocomplete="email" required="" placeholder="Your email address">
@@ -1125,6 +1125,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+        if (err && err.dataset.msg) err.textContent = err.dataset.msg;
         toggle(err, false); toggle(ok, false);
 
         var value = (email && email.value || "").trim();
@@ -1147,10 +1148,33 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           timestamp: new Date().toISOString(),
           page: location.pathname
         };
-        try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
-
-        form.reset();
-        toggle(ok, true);
+        try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
+
+        var endpoint = form.getAttribute("data-endpoint");
+        if (!endpoint || !window.fetch) { form.reset(); toggle(ok, true); return; }
+
+        var btn = $("button[type=submit]", form);
+        if (btn) btn.disabled = true;
+        var body = new FormData();
+        body.append("email", record.email);
+        body.append("consent", "yes");
+        body.append("notice_version", record.noticeVersion);
+        body.append("page", record.page);
+        fetch(endpoint, { method: "POST", body: body, credentials: "same-origin", headers: { Accept: "application/json" } })
+          .then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              if (!r.ok || !j.ok) throw new Error("subscribe failed");
+            });
+          })
+          .then(function () { form.reset(); toggle(ok, true); })
+          .catch(function () {
+            if (err) {
+              if (!err.dataset.msg) err.dataset.msg = err.textContent;
+              err.textContent = "Sorry, we couldn't save your subscription just now. Please try again in a moment.";
+            }
+            toggle(err, true);
+          })
+          .then(function () { if (btn) btn.disabled = false; });
       });
 
       // Clear the error only on a genuine correction. Deliberately NOT on the

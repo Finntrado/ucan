@@ -569,7 +569,7 @@ footer a:hover { color: var(--lime); }
 
 <meta name="description" content="U-CAN unites urban practitioners, government and philanthropies to build liveable Indian cities. See how we are driving change.">
 
-<link rel="canonical" href="https://www.urban.org.in/">
+<link rel="canonical" href="%%UCAN_HOME%%/">
 
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
@@ -589,9 +589,9 @@ footer a:hover { color: var(--lime); }
 
 <meta name="author" content="Urban Collective Action Network (U-CAN)">
 
-<link rel="alternate" hreflang="en-in" href="https://www.urban.org.in/">
+<link rel="alternate" hreflang="en-in" href="%%UCAN_HOME%%/">
 
-<link rel="alternate" hreflang="x-default" href="https://www.urban.org.in/">
+<link rel="alternate" hreflang="x-default" href="%%UCAN_HOME%%/">
 
 
 
@@ -607,9 +607,9 @@ footer a:hover { color: var(--lime); }
 
 <meta property="og:description" content="U-CAN unites urban practitioners, government and philanthropies to build liveable Indian cities. See how we are driving change.">
 
-<meta property="og:url" content="https://www.urban.org.in/">
+<meta property="og:url" content="%%UCAN_HOME%%/">
 
-<meta property="og:image" content="https://urban.org.in/assets/img/og-annual-forum.jpg">
+<meta property="og:image" content="%%UCAN_THEME%%/assets/img/og-annual-forum.jpg">
 
 <meta property="og:image:width" content="1400">
 
@@ -627,7 +627,7 @@ footer a:hover { color: var(--lime); }
 
 <meta name="twitter:description" content="U-CAN unites urban practitioners, government and philanthropies to build liveable Indian cities. See how we are driving change.">
 
-<meta name="twitter:image" content="https://urban.org.in/assets/img/og-annual-forum.jpg">
+<meta name="twitter:image" content="%%UCAN_THEME%%/assets/img/og-annual-forum.jpg">
 
 <meta name="twitter:image:alt" content="Practitioners, researchers, media and government officials at U-CAN's first Annual Forum">
 
@@ -664,13 +664,13 @@ footer a:hover { color: var(--lime); }
 
       "@type": "Organization",
 
-      "@id": "https://urban.org.in/#org",
+      "@id": "%%UCAN_HOME%%/#org",
 
       "name": "Urban Collective Action Network (U-CAN)",
 
       "alternateName": "U-CAN",
 
-      "url": "https://urban.org.in/",
+      "url": "%%UCAN_HOME%%/",
 
       "email": "connect@urban.org.in",
 
@@ -694,15 +694,15 @@ footer a:hover { color: var(--lime); }
 
       "@type": "WebSite",
 
-      "@id": "https://urban.org.in/#website",
+      "@id": "%%UCAN_HOME%%/#website",
 
-      "url": "https://urban.org.in/",
+      "url": "%%UCAN_HOME%%/",
 
       "name": "Urban Collective Action Network (U-CAN)",
 
       "publisher": {
 
-        "@id": "https://urban.org.in/#org"
+        "@id": "%%UCAN_HOME%%/#org"
 
       },
 
@@ -714,9 +714,9 @@ footer a:hover { color: var(--lime); }
 
       "@type": "WebPage",
 
-      "@id": "https://urban.org.in/#page",
+      "@id": "%%UCAN_HOME%%/#page",
 
-      "url": "https://urban.org.in/",
+      "url": "%%UCAN_HOME%%/",
 
       "name": "Urban Collective Action Network for India's cities | U-CAN",
 
@@ -724,7 +724,7 @@ footer a:hover { color: var(--lime); }
 
       "isPartOf": {
 
-        "@id": "https://urban.org.in/#org"
+        "@id": "%%UCAN_HOME%%/#org"
 
       },
 
@@ -762,7 +762,7 @@ footer a:hover { color: var(--lime); }
 
           "name": "Home",
 
-          "item": "https://urban.org.in/"
+          "item": "%%UCAN_HOME%%/"
 
         }
 
@@ -1806,7 +1806,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 
         <p class="f-subtext">One email a month on urban governance, our programmes and ways to get involved.</p>
 
-        <form class="fnform" id="fnform" method="post" novalidate="">
+        <form action="%%UCAN_API%%" data-endpoint="%%UCAN_API%%" class="fnform" id="fnform" method="post" novalidate="">
 
           <div class="fnrow">
 
@@ -2370,6 +2370,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 
         e.preventDefault();
 
+        if (err && err.dataset.msg) err.textContent = err.dataset.msg;
         toggle(err, false); toggle(ok, false);
 
 
@@ -2416,11 +2417,31 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 
         try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
 
+        var endpoint = form.getAttribute("data-endpoint");
+        if (!endpoint || !window.fetch) { form.reset(); toggle(ok, true); return; }
 
-
-        form.reset();
-
-        toggle(ok, true);
+        var btn = $("button[type=submit]", form);
+        if (btn) btn.disabled = true;
+        var body = new FormData();
+        body.append("email", record.email);
+        body.append("consent", "yes");
+        body.append("notice_version", record.noticeVersion);
+        body.append("page", record.page);
+        fetch(endpoint, { method: "POST", body: body, credentials: "same-origin", headers: { Accept: "application/json" } })
+          .then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              if (!r.ok || !j.ok) throw new Error("subscribe failed");
+            });
+          })
+          .then(function () { form.reset(); toggle(ok, true); })
+          .catch(function () {
+            if (err) {
+              if (!err.dataset.msg) err.dataset.msg = err.textContent;
+              err.textContent = "Sorry, we couldn't save your subscription just now. Please try again in a moment.";
+            }
+            toggle(err, true);
+          })
+          .then(function () { if (btn) btn.disabled = false; });
 
       });
 

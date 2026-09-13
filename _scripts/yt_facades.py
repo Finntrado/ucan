@@ -91,10 +91,7 @@ for f in sorted(glob.glob(os.path.join(ROOT, '*.html'))):
     s, k = IFRAME.subn(repl, s)
     s = re.sub(r'<style data-ucan="ytf">.*?</style>', '', s, flags=re.S)
     s = re.sub(r'<script data-ucan="ytf">.*?</script>', '', s, flags=re.S)
-    # JS (the in-page youtube-nocookie player) is deliberately NOT injected any
-    # more: the site must load nothing third-party, so a facade click follows
-    # its own link to YouTube in a new tab. See _scripts/localonly.py.
-    s = s.replace('</head>', CSS + '</head>', 1)
+    s = s.replace('</head>', CSS + '</head>', 1).replace('</body>', JS + '</body>', 1)
     io.open(f, 'w', encoding='utf-8', newline='').write(s)
     n_pages += 1; n_vids += k
     print('  %-60s %d video(s)' % (os.path.basename(f), k))

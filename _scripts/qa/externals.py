@@ -60,9 +60,17 @@ for d in DIRS:
                     else:
                         loads[('<%s %s>' % (tag, key), host)].add(name)
 
+# the one approved third party: the click-to-play player, requested only
+# when a visitor presses play
+ALLOWED = {'www.youtube-nocookie.com'}
 print('== WOULD BE FETCHED (must be empty) ==')
 for (ctx, host), pages in sorted(loads.items()):
-    print('  %-40s %-32s %3d pages  e.g. %s' % (ctx, host, len(pages), sorted(pages)[0]))
+    if host not in ALLOWED:
+        print('  %-40s %-32s %3d pages  e.g. %s' % (ctx, host, len(pages), sorted(pages)[0]))
+print('\n== approved third party (on click only) ==')
+for (ctx, host), pages in sorted(loads.items()):
+    if host in ALLOWED:
+        print('  %-40s %-32s %3d pages' % (ctx, host, len(pages)))
 print('\n== references only (links/meta, never fetched) ==')
 for (tag, key, host), n in refs.most_common():
     print('  %-6s %-22s %-32s %d' % (tag, key, host, n))

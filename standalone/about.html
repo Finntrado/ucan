@@ -779,7 +779,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
       <article class="vm-card dark rv in" id="vision-card">
         <p class="vm-eyebrow"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"></path><circle cx="12" cy="12" r="3"></circle></svg></i> Vision</p>
         <p class="vm-text">Indian cities should be livable, equitable, and inclusive—places where all citizens are empowered to partner with government agencies to improve last-mile service delivery.</p>
-        <a class="btn on-photo brochure-btn" href="https://urban.org.in/ucan-brochure-final/" target="_blank" rel="noopener noreferrer">Download our Brochure <span aria-hidden="true">→</span></a>
+        <a class="btn on-photo brochure-btn" href="assets/docs/ucan-brochure-6ee7abee.pdf" target="_blank" rel="noopener noreferrer">Download our Brochure <span aria-hidden="true">→</span></a>
       </article>
       <article class="vm-card rv d1 in" id="mission">
         <p class="vm-eyebrow"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5 19 19M19 5l-2.5 2.5M7.5 16.5 5 19"></path><circle cx="12" cy="12" r="3.4"></circle></svg></i> Mission</p>
@@ -1314,6 +1314,7 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
 
       form.addEventListener("submit", function (e) {
         e.preventDefault();
+        if (err && err.dataset.msg) err.textContent = err.dataset.msg;
         toggle(err, false); toggle(ok, false);
 
         var value = (email && email.value || "").trim();
@@ -1336,10 +1337,33 @@ main ol:not([class])>li::marker{color:var(--teal,#1F8F7B);font-weight:700}
           timestamp: new Date().toISOString(),
           page: location.pathname
         };
-        try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
-
-        form.reset();
-        toggle(ok, true);
+        try { console.log("[U-CAN] newsletter consent record", record); } catch (e2) {}
+
+        var endpoint = form.getAttribute("data-endpoint");
+        if (!endpoint || !window.fetch) { form.reset(); toggle(ok, true); return; }
+
+        var btn = $("button[type=submit]", form);
+        if (btn) btn.disabled = true;
+        var body = new FormData();
+        body.append("email", record.email);
+        body.append("consent", "yes");
+        body.append("notice_version", record.noticeVersion);
+        body.append("page", record.page);
+        fetch(endpoint, { method: "POST", body: body, credentials: "same-origin", headers: { Accept: "application/json" } })
+          .then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              if (!r.ok || !j.ok) throw new Error("subscribe failed");
+            });
+          })
+          .then(function () { form.reset(); toggle(ok, true); })
+          .catch(function () {
+            if (err) {
+              if (!err.dataset.msg) err.dataset.msg = err.textContent;
+              err.textContent = "Sorry, we couldn't save your subscription just now. Please try again in a moment.";
+            }
+            toggle(err, true);
+          })
+          .then(function () { if (btn) btn.disabled = false; });
       });
 
       // Clear the error only on a genuine correction. Deliberately NOT on the

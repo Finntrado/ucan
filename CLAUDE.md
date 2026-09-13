@@ -901,26 +901,54 @@ site, not YouTube, not a font CDN. Outbound `<a>` links, `canonical`/`hreflang`/
 `og:*` meta and JSON-LD URLs are references, not fetches, and are fine (they
 point at urban.org.in on purpose, §27).
 
-What §27 had still left, fixed by `_scripts/localonly.py` (idempotent — run it
-after any build step, then `_scripts/wp/build_static_theme.py`):
-- `<link rel="preconnect" href="https://urban.org.in/">` on 148 pages — opened a
-  connection to the old site on every load for nothing.
-- **YouTube is no longer embedded in-page.** The click-to-play facades
-  (`<script data-ucan="ytf">` on 3 pages, `"yt"` on 11 newsletter issues)
-  swapped in a `youtube-nocookie.com` iframe. Removed; each facade is already an
-  `<a href="https://www.youtube.com/watch?v=…" target="_blank">`, so a click now
-  opens YouTube in a new tab. `yt_facades.py` no longer injects that script.
-- Newsletter forms' `action="https://urban.org.in/newsletter/"` (177) — only
-  mattered with JS off (the gate always `preventDefault()`s), but then it posted
-  the visitor's email to the old site. Dropped.
-- The newsletter share `<style>`+`<script data-ucan="share">` were injected
-  **twice** on 27 issues (copy-link handler bound twice). De-duplicated.
+**The one approved exception: YouTube click-to-play** (`<script data-ucan="ytf">`
+/ `"yt"`, 14 pages). The user wants videos playing on the site; nothing is
+requested from YouTube until a visitor presses play. Do not remove it again.
 
-**Known gap, not fixed — needs a decision:** the newsletter signup has never
-sent the email anywhere. The DPDP gate validates, `console.log`s a consent
-record, and shows the success message, but nothing is stored or delivered. A
-static Vercel site has no backend to receive it; WordPress could (a local
-subscriber table or `wp_mail`). Until one is chosen, signups are lost.
+Fix-up scripts, all idempotent, run in this order after any build step:
+1. `_scripts/localonly.py`
+   - strips `<link rel="preconnect" href="https://urban.org.in/">` (148 pages)
+   - drops newsletter forms' `action="https://urban.org.in/newsletter/"` (177)
+   - de-duplicates byte-identical `data-ucan` blocks (the newsletter share
+     style+script were injected twice on 27 issues)
+2. `_scripts/newsletter_submit.py` — the shared newsletter gate POSTs to the
+   form's `data-endpoint` when it has one and only shows success once the
+   server confirms. No `data-endpoint` (the static Vercel build) = old
+   behaviour, nothing saved.
+3. `_scripts/localize_flipbooks.py` — brochure, RFC Phase I report and
+   Fellowship report 2025 were urban.org.in pages wrapping flipbooklets.com
+   viewers; the real PDFs are now in `assets/docs/` and linked directly.
+4. `_scripts/wp/build_static_theme.py`
+
+Old-site links still dead after this, deliberately left (need U-CAN):
+`/careers/` (2 links in 2024 newsletters, expired openings),
+`/u-can-fellowship-2024-2025/` and `/webinars/community-engagement/` (already
+404/500 on the live old site).
+
+### Newsletter signups → WordPress database (`wp-theme/ucan/inc/subscribers.php`)
+- Table `{prefix}ucan_subscribers` (email unique, consent purpose, notice
+  version, source page, consented_at UTC) — created on activation or on the
+  first request after a version bump.
+- `POST /wp-json/ucan/v1/subscribe`; the theme build adds
+  `data-endpoint`/`action` = `%%UCAN_API%%` (→ `rest_url()`) to every
+  `method="post"` form. JS off: plain post, 303 back to the page.
+- Re-subscribing refreshes the consent record; 10 signups/hour per IP hash.
+- wp-admin → **Subscribers**: search, CSV export (formula-injection safe),
+  delete (DPDP erasure).
+- **Only WordPress saves signups.** Vercel has no backend.
+
+### Cutover (switching urban.org.in off) — handled in the WP theme build
+- Every page's canonical is its OLD urban.org.in URL. The build rewrites every
+  absolute urban.org.in URL: `/assets|newsletters/…` → theme URL (og:image,
+  JSON-LD images); a page's old URL → its new URL (`/about-us/` → `/about`) in
+  canonical, hreflang, og:url, JSON-LD and in-page links. Vercel's copy keeps
+  the old URLs.
+- `redirects.php` (generated from the same map): functions.php 301s every old
+  URL to its new page, so old Google results and inbound links keep working.
+- `/sitemap.xml` lists all pages (WP core sitemap disabled, robots.txt points
+  at it). Security headers match vercel.json (form-action 'self';
+  `upgrade-insecure-requests`/HSTS only over https). `.htaccess` in the theme:
+  30-day caching for static files, `pages/` not directly fetchable.
 
 Verification:
 - `_scripts/qa/externals.py` — static scan of both `standalone/` and

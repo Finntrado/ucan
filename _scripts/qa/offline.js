@@ -36,9 +36,17 @@ const ORIGIN = new URL(BASE).origin;
       // (Playwright throws on frame() for a popup's very first navigation -
       // that throw IS the new-tab case; the main page navigating away is
       // caught separately by the page.url() check below)
-      let fromPage;
-      try { fromPage = req.frame().page() === page; } catch (e) { fromPage = !req.isNavigationRequest(); }
-      if (!fromPage) { popups.push(u); return route.abort(); }
+      let frame = null;
+      try { frame = req.frame(); } catch (e) {}
+      if (!frame ? req.isNavigationRequest() : frame.page() !== page) { popups.push(u); return route.abort(); }
+      // YouTube is the one approved third party: only inside the player
+      // iframe a visitor creates by pressing play
+      if (frame && frame !== page.mainFrame()) {
+        const yt = h => /(^|\.)(youtube-nocookie\.com|youtube\.com|ytimg\.com|googlevideo\.com|google\.com|gstatic\.com|doubleclick\.net|ggpht\.com)$/.test(h);
+        let fh = '';
+        try { fh = new URL(frame.url()).hostname; } catch (e) {}
+        if (yt(new URL(u).hostname) || /youtube/.test(fh)) return route.abort();
+      }
       problems.push('EXTERNAL ' + req.resourceType() + ' ' + u);
       return route.abort();
     });
@@ -69,10 +77,21 @@ const ORIGIN = new URL(BASE).origin;
 
       // video facades (clicked, not just present)
       const yt = await page.$$('.ytlite');
-      for (const a of yt.slice(0, 2)) { await a.scrollIntoViewIfNeeded(); await a.click().catch(() => {}); await page.waitForTimeout(800); }
+      // (elements can be hidden, e.g. inside a collapsed tab - never let
+      // scrolling to one hang the run)
+      for (const a of yt.slice(0, 2)) {
+        await a.scrollIntoViewIfNeeded({ timeout: 3000 }).catch(() => {});
+        await a.click({ timeout: 3000 }).catch(() => {});
+        await page.waitForTimeout(800);
+      }
       // lightbox
       const lb = await page.$('[data-full]');
-      if (lb) { await lb.scrollIntoViewIfNeeded(); await lb.click().catch(() => {}); await page.waitForTimeout(800); await page.keyboard.press('Escape'); }
+      if (lb) {
+        await lb.scrollIntoViewIfNeeded({ timeout: 3000 }).catch(() => {});
+        await lb.click({ timeout: 3000 }).catch(() => {});
+        await page.waitForTimeout(800);
+        await page.keyboard.press('Escape');
+      }
       // local video: make it actually request its data
       await page.evaluate(() => document.querySelectorAll('video').forEach(v => { v.preload = 'auto'; v.load(); }));
       // newsletter form: valid email + consent, submit
@@ -86,6 +105,15 @@ const ORIGIN = new URL(BASE).origin;
           if (cb && !cb.checked) { cb.checked = true; cb.dispatchEvent(new Event('change', { bubbles: true })); }
         });
         await page.evaluate(() => document.querySelector('#fnform').requestSubmit());
+        // it must actually succeed (on WordPress: saved to the DB first)
+        try {
+          await page.waitForFunction(() => {
+            const ok = document.querySelector('#fnform .nok');
+            return ok && getComputedStyle(ok).display !== 'none';
+          }, null, { timeout: 8000 });
+        } catch (e) {
+          problems.push('newsletter signup did not show success');
+        }
       }
       await page.waitForTimeout(p === 'index' ? 11000 : 1500); // cookie banner once, on the homepage
 
