@@ -1208,3 +1208,14 @@ function ucan_newsletter_display_fields( $post ) {
 		'archive_label' => ucan_newsletter_archive_label( $edition, $month ),
 	);
 }
+
+// ------------------------------------------------------------- phase 7 --
+/**
+ * The one-time content importer (inc/cli-import.php) only ever loads
+ * under WP-CLI, never on a normal page request - it registers
+ * `wp ucan import <type> --dir=<path>` (see that file's own docblock for
+ * usage). Not runnable in this sandbox (no PHP/MySQL/WP-CLI here).
+ */
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	require_once get_template_directory() . '/inc/cli-import.php';
+}

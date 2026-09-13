@@ -60,6 +60,13 @@ PAGES = [
     ('rfc.html', 'rfc', 'Request for Collaboration'),
     ('city-champions.html', 'city-champions', 'City Champions'),
     ('annual-forum-2025.html', 'annual-forum-2025', 'Annual Forum 2025'),
+    ('privacy-policy.html', 'privacy-policy', 'Privacy Policy'),
+    ('terms-of-use.html', 'terms-of-use', 'Terms of Use'),
+    # data-rights.html is NOT here - page-data-rights.php was hand-patched
+    # to append its page-specific "dpdp" mailto-composer script (the only
+    # one of these three legal pages that carries one), so re-running this
+    # for it would silently delete that script. Same discipline as
+    # our-people/fellowship/etc.
 ]
 
 ASSET_URI = "<?php echo esc_url( get_template_directory_uri() ); ?>/assets/"

@@ -1,0 +1,112 @@
+[
+ {
+  "slug": "mixer-01",
+  "title": "Hosted by WRI India",
+  "menu_order": 1,
+  "post_date": "2025-04-11",
+  "city": "Bangalore",
+  "host_organisation": "WRI India",
+  "image": "assets/img/mixers/wri-1-768x576-fdc2b783-640.webp",
+  "content_html": "<p>The first-ever U-CAN City Mixer brought member organisations together for an evening buzzing with curiosity and energy. Conversations flowed across urban systems, climate resilience, and inclusive planning. One standout moment was Dr. Siji Chacko from Jan Sahas sharing insights on putting migrant workers at the heart of climate resilience efforts. The discussion that followed was timely, grounded, and deeply resonant, setting the tone for what it means to learn together as a community.</p>"
+ },
+ {
+  "slug": "mixer-02",
+  "title": "Hosted by Artha Global",
+  "menu_order": 2,
+  "post_date": "2025-04-14",
+  "city": "Mumbai",
+  "host_organisation": "Artha Global",
+  "image": "assets/img/mixers/artha-1-768x576-f2570c36-640.webp",
+  "content_html": "<p>The mixer unfolded into a rich evening of dialogue and reflection. Dr. Anita Patil-Deshmukh of PUKAR shared her experiences with participatory urban research, sparking thoughtful exchanges with peers from Praja Foundation, Shelter Associates, and other member organisations. Across conversations, the power of thinking out loud with peers who care about the same complex questions was palpable.</p>"
+ },
+ {
+  "slug": "mixer-03",
+  "title": "Hosted by Janaagraha",
+  "menu_order": 3,
+  "post_date": "2025-07-17",
+  "city": "Bangalore",
+  "host_organisation": "Janaagraha",
+  "image": "assets/img/mixers/janaagraha-1-768x576-43b77b3a-640.webp",
+  "content_html": "<p>Back in Bangalore, Janaagraha welcomed the U-CAN community with warmth and insight. Vishwanath S shared compelling stories from the water ecosystem, drawing lessons from cities across India. Srikanth Viswanatha, CEO, offered a glimpse into Janaagraha’s culture, sparking conversations about what it takes to shift city systems. Through speed networking, storytelling, and reflection, one thing became clear: openness and curiosity create real collective power.</p>"
+ },
+ {
+  "slug": "mixer-04",
+  "title": "Hosted by Praja Foundation",
+  "menu_order": 4,
+  "post_date": "2025-10-10",
+  "city": "Mumbai",
+  "host_organisation": "Praja Foundation",
+  "image": "assets/img/mixers/whatsapp-image-2025-10-10-at-5-57-03-pm--2cc0d83e-640.webp",
+  "content_html": "<p>In Mumbai, our October mixer with Praja Foundation turned into an evening of honest reflection on what it takes to strengthen city systems from within. Former councillor Ravi Raja shared insights from his years in public service, sparking dialogue on how governance, transparency, and trust evolve over time. The conversations reminded us that lasting reform is built through continuity.</p>"
+ },
+ {
+  "slug": "mixer-05",
+  "title": "Hosted by WRI India",
+  "menu_order": 5,
+  "post_date": "2025-12-12",
+  "city": "New Delhi",
+  "host_organisation": "WRI India",
+  "image": "assets/img/mixers/delhi-mixer-768x576-f61bb2f0-640.webp",
+  "content_html": "<p>In December, our City Mixer opened beyond U-CAN membership, bringing together urban practitioners, researchers, and students for an evening of curiosity and dialogue. We were delighted to have Nidhi Batra, Founder of Sehreeti Developmental Practices Foundation, share her work in participatory research and community engagement in Delhi’s historic neighbourhoods, Mehrauli and Chandni Chowk, using poetry and art to explore memory, place, and urban practice. She also highlighted Sehreeti’s biodiversity initiatives with young people in Haryana and Gurugram, including using community radio to amplify citizens’ voices.</p>"
+ },
+ {
+  "slug": "mixer-06",
+  "title": "Hosted by Praja Foundation",
+  "menu_order": 6,
+  "post_date": "2025-12-19",
+  "city": "Mumbai",
+  "host_organisation": "Praja Foundation",
+  "image": "assets/img/mixers/praja-768x576-1-7d841b15-640.webp",
+  "content_html": "<p>To wrap up 2025, Praja Foundation hosted a U-CAN City Mixer in Mumbai, bringing people together for an evening of dialogue and reflection. Prof. Amita Bhide from TISS shared insights from her long-standing work with urban poor communities, community organisations, and housing rights movements. Her stories sparked conversations on how urban change is shaped through sustained dialogue, grounded research, and collective action.</p>"
+ },
+ {
+  "slug": "mixer-07",
+  "title": "Hosted by Reap Benefit",
+  "menu_order": 7,
+  "post_date": "2026-01-30",
+  "city": "Bangalore",
+  "host_organisation": "Reap Benefit",
+  "image": "assets/img/mixers/gdgdg-768x576-281f44b5-640.webp",
+  "content_html": "<p>We began 2026 with our first City Mixer of the year, hosted by Reap Benefit, and experimented with a new format: “Adda.” In this open, unstructured space, anyone could speak for five to seven minutes on a topic of their choice. What emerged were candid reflections and questions that rarely surface in formal settings, reminding us that meaningful dialogue often begins by loosening structure. Our Urban Champion, Sailee Rane, Head of Ecosystem Messaging at Rainmatter Foundation, shared her work on building a community of climate narrative builders. From simplifying climate news to creative practices like “100 Days of Blue Skies,” she reflected on how storytelling can make climate change immediate, human, and harder to ignore.</p>"
+ },
+ {
+  "slug": "mixer-08",
+  "title": "Hosted by Centre for Policy Research",
+  "menu_order": 8,
+  "post_date": "2026-02-20",
+  "city": "New Delhi",
+  "host_organisation": "Centre for Policy Research",
+  "image": "assets/img/mixers/rb-mixer-768x576-a2beb0cf-640.webp",
+  "content_html": "<p>In February, we gathered at the Centre for Policy Research in New Delhi for a City Mixer that asked a simple but unsettling question: where is the demand for collective action in our cities today? Guided by our Urban Champion, Jagan Shah, the conversation examined whether collective action has been reduced to a technocratic tool, and what it means to act meaningfully together in contexts where participation can feel procedural. Drawing on thinkers such as Gayatri Chakravorty Spivak, Hannah Arendt, and Richard Sennett, the discussion moved between theory and lived experience, leaving us with a shared recognition that collective action must be continually nurtured, not assumed.</p>"
+ },
+ {
+  "slug": "mixer-09",
+  "title": "Hosted by eGov Foundation",
+  "menu_order": 9,
+  "post_date": "2026-04-10",
+  "city": "Bangalore",
+  "host_organisation": "eGov Foundation",
+  "image": "assets/img/mixers/3-1-768x576-510911ad-640.webp",
+  "content_html": "<p>In April, we hosted our first City Mixer in collaboration with the Charles Correa Foundation and Nagari Short Films, hosted by eGov Foundation. The evening focused on water, not just as a policy problem, but as a shared urban experience that is personal, uneven, and often invisible until it isn&#x27;t. Screenings of &#x27;Pipe Dream&#x27;, &#x27;The Many Journeys of Water&#x27;, and &#x27;Samayada Harivu&#x27; (Flow of Time) traced how water moves through cities and through people&#x27;s lives, bringing together filmmakers, practitioners, and urban thinkers for the conversation. Reflections from Shruti Parthasarathy (Founder, ReRooted.Films), Vikash Tiwari (director of &#x27;Samayada Harivu&#x27;), and Vishwanath S (Director, Biome Environmental Solutions, and Professor, Azim Premji University) drew out questions of access and ownership, the visible and invisible actors shaping who gets water and who doesn&#x27;t, and the systems that continue working, or failing, long after water leaves the tap. As the conversation turned to Bangalore, it took in the city&#x27;s lakes and surrounding communities, the challenges of equitable access, and the often overlooked realities of sewage and sanitation that underpin urban life.</p>"
+ },
+ {
+  "slug": "mixer-10",
+  "title": "Hosted by Artha Global",
+  "menu_order": 10,
+  "post_date": "2026-04-24",
+  "city": "Mumbai",
+  "host_organisation": "Artha Global",
+  "image": "assets/img/mixers/whatsapp-image-2026-04-28-at-6-18-41-pm--3085f105-640.webp",
+  "content_html": "<p>On April 24th, we brought the City Mixer to Mumbai, in continued collaboration with the Charles Correa Foundation and Nagari Short Films. We opened with a simple question: name a street, a corner, or a spot in the city that feels truly yours, and why. It drew out specific, lived-in answers, and did something more deliberate: it located people in the city before asking them to step outside it. The three films that followed took the conversation to Dhobi Talao (Mumbai), Guwahati, and Delhi, tracing how cities are shaped through ongoing negotiation over space, ecology, and infrastructure. Two of the three stories were not about Mumbai, yet the room did not treat them as distant. Reflections from Sarah Zia, Sudhanshu Patra, and Anubhav Borgohain helped hold this movement across contexts, drawing connections while also pushing on the limits of those comparisons. What is beginning to emerge across these mixers is not a shared set of answers, but a shared way of reading cities. Each context changes how the others are understood, and that feels like where something useful is starting to take shape.</p>"
+ },
+ {
+  "slug": "mixer-11",
+  "title": "Hosted by Shelter Associates",
+  "menu_order": 11,
+  "post_date": "2026-05-15",
+  "city": "Pune",
+  "host_organisation": "Shelter Associates",
+  "image": "assets/city-mixer-pune-shelter-associates.webp",
+  "content_html": "<p>We brought the City Mixer to Pune, in collaboration with the Charles Correa Foundation and Nagari Short Films, hosted by Shelter Associates. Screenings of A Work in Progress and Homes on the Line set the tone for shared experiences and a conversation with speakers Nipun Prabhakar, Amit Rathee, and Dhanashree Gurav. The discussions opened up reflections on how cities are shaped and experienced on the ground. From the realities of informal settlements and the often unseen costs of large-scale development, to the quiet ingenuity of communities reusing construction and demolition waste, the conversation surfaced the layered ways in which urban change is lived and negotiated. It also explored possible solutions, existing ones, and different modes of engagement. It concluded with a shared understanding that accountability must work both ways between institutions and citizens, reaffirming the role of citizens as active participants in shaping neighbourhoods, strengthening local systems, and imagining more equitable urban futures.</p>"
+ }
+]

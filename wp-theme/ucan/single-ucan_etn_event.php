@@ -51,8 +51,10 @@ while ( have_posts() ) :
         <div class="grp"><h2>Session lead <span style="color:var(--teal-text)"><?php echo esc_html( $f['lead_name'] ); ?></span></h2>
         <?php if ( $f['lead_bio'] ) : ?><p><?php echo esc_html( $f['lead_bio'] ); ?></p><?php endif; ?></div>
         <?php endif; ?>
+        <?php if ( get_the_content() ) : ?>
         <div class="grp"><h2>About the session</h2>
         <?php the_content(); ?></div>
+        <?php endif; ?>
       </div>
       <?php else : ?>
       <div class="rv">

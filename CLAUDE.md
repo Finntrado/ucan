@@ -901,11 +901,12 @@ real result on the rest; check pages individually if it happens again.
 The client's original ask was a WordPress site; `standalone/` is the finished
 design/content, built static for fast iteration. This section starts turning
 it into a real installable WP theme so the client gets an actual CMS. Full
-plan: `.claude/plans/greedy-moseying-magpie.md`. **Phases 0, 2, 3, 4, 5 and 6
-are done (scaffold, the 7 hub pages, and every CPT: members, fellows, L&D
-sessions/webinars, fellow blogs, city mixers, webinar recaps, newsletters);
-phase 7 (the importer, legal-page mail handler) is not started — this is
-now the last phase.**
+plan: `.claude/plans/greedy-moseying-magpie.md`. **All 8 phases (0, 2–7) are
+now done.** Every CPT, every hub/legal page, and the one-time content
+importer all exist. What's left is entirely outside this sandbox: install
+this theme on a real WordPress site, run the importer, and click through
+it — nothing here has ever been rendered or executed (§28's own
+standing caveat, repeated in each phase).
 
 **No PHP/MySQL/WP-CLI in this sandbox** (checked — none on PATH). Every file
 here is hand-reviewed code, never executed or clicked through locally.
@@ -1269,22 +1270,108 @@ convention). This wasn't fixable in the template itself since
 and every `single-ucan_newsletter.php` render/render nothing until real
 `ucan_newsletter` posts exist (phase 7's importer) — not a bug.
 
-### What's deliberately not done yet (see the plan for the full phase list)
-- Every CPT the plan called for is now built: `ucan_member`, `ucan_fellow`,
-  `ucan_etn_event` (L&D sessions + Policy Webinars + one City Mixer note),
-  `ucan_blog`, `ucan_mixer`, `ucan_webinar_recap` and `ucan_newsletter`
-  (phases 3–6, above) — all the same pattern (plain `register_post_meta()`
-  + `add_meta_box()`, not ACF, so a nonprofit client isn't left
-  maintaining a plugin license). Phase 7 is the importer and legal pages
-  only — no more CPTs to design.
-- No content importer yet — the plan is a one-time PHP script reusing the
-  same field-extraction approach already proven four times in this repo
-  (`build_members.py`, `build_fellowship.py`, `build_ld.py`,
-  `build_events.py`), just pointed at the finished local HTML instead of
-  scraping the live site.
-- The Data Rights page's mail-composing link is not yet replaced with a
-  real `wp_mail()` form handler (phase 7) — trivial in WP, impossible in
-  the static build, but not done.
-- Per-type JSON-LD (`Person`, `Article`, `ProfilePage`, `FAQPage`) isn't
-  emitted yet — only the site-wide `Organization` node, added per type as
-  each CPT phase lands.
+### Phase 7 — legal pages, the mail-handler correction, and the importer
+
+**Legal pages** (`page-privacy-policy.php`, `page-terms-of-use.php`,
+`page-data-rights.php`) — all three slugs already matched their real
+canonicals, verbatim extraction like phase 2's hub pages, no CPT needed.
+
+**A plan-level mistake caught by actually reading the form, before
+building anything against it.** Phase 0's original plan said the Data
+Rights page's "mail-composing link" would become a real `wp_mail()`
+server-side handler in phase 7 — written before that form had ever been
+read closely. Reading `#dr-form` in `data-rights.html` shows it has **no
+email input field at all** — just a request-type radio and an optional
+note — and a page-specific inline script (`data-ucan="dpdp"`) composes a
+`mailto:` link and hands off to the visitor's own mail client. The
+page's own copy explains why: *"nothing you type here is stored or sent
+anywhere else... please send it from the email address you subscribed
+with."* That's deliberate, not a limitation the static build was stuck
+with: a mail-to link gets the sender's own verified address for free,
+and a form that collects an email address and posts it to a server for
+someone else to read is exactly the phishing-heuristic shape U-CAN's own
+DPDP copy warns against. **A real `wp_mail()` handler would have been a
+privacy downgrade, not an upgrade.** `page-data-rights.php` carries the
+exact same script over unchanged instead — see its own doc comment for
+the full reasoning, kept there so this doesn't get "fixed" again later
+by someone trusting the old plan text over the actual page.
+
+**The importer**: `_scripts/wp/extract_content.py` parses every finished
+`standalone/*.html` page into plain JSON (`_scripts/wp/data/*.json`, one
+file per CPT) — never re-scrapes the live site, same discipline as every
+`build_*.py`/`prep_*.py` in this repo. `wp-theme/ucan/inc/cli-import.php`
+(loaded only under WP-CLI, via a `defined('WP_CLI') && WP_CLI` guard in
+`functions.php`) reads that JSON and creates the real posts/meta/taxonomy
+terms/featured images via `wp ucan import <type> --dir=<path>` — see that
+file's own docblock for the full command list. Idempotent (checks
+`get_posts()` by slug before creating anything), so a partial/failed run
+is safe to just re-run, matching §24's "a partial build is worse than a
+failed one" rule.
+
+**Four real bugs the extraction script had, caught by actually checking
+the output against the source rather than trusting a "successful" run:**
+- The fellow-card regex expected `</span><span class="fo">` with no gap,
+  but the source has whitespace/indentation between them — silently
+  matched **0 of 8 fellows** until checked.
+- The blog-tags regex captured each card's `.btags` span non-greedily up
+  to the first `</span>` it found — which belonged to the *first
+  individual tag pill inside it*, not `.btags`' own closing tag, so every
+  one of the **58** posts came out with an empty tag list. Fixed by
+  capturing up to the next sibling element (`<span class="bm">`) instead
+  of the first same-named closing tag — an inner element's own closing
+  tag isn't a safe non-greedy boundary when the block being captured can
+  contain more of that same tag, the same reason this repo's scrapers
+  have hit this exact class of bug before (§18's "de-duplicating by exact
+  text fails" note, a different symptom of the same root cause).
+- Two of the 12 L&D sessions
+  (`ld-storytelling-masterclass-4-using-oral-stories-at-wor.html`,
+  `ld-urban-planning-in-india-experiences-and-lessons-for.html`) have
+  **only** a "Session lead" block, no separate "About the session" text —
+  a fixed-marker extraction silently threw a `ValueError` on the second
+  of the 12 files, not the first, so a script that "ran clean on the
+  first file" would still have broken midway. `single-ucan_etn_event.php`
+  was also fixed to not render an empty "About the session" heading when
+  there's nothing under it.
+- **Every content-wrapper extraction** (L&D about-section, policy-webinar
+  body, webinar recap, blog post) originally captured the wrapper
+  `<div>`/`<article>` tag *itself* along with the inner content - since
+  each matching `single-*.php` template already renders that exact
+  wrapper around `the_content()`, importing this as-is would have
+  double-nested every one of those elements. Fixed with one `inner()`
+  helper (strips the start marker) used consistently — except
+  newsletters, checked against `single-ucan_newsletter.php` specifically
+  *because* it doesn't wrap its own `the_content()` call in anything, so
+  its extraction correctly keeps the `<nav class="toc">` block the
+  others' would have stripped.
+
+**A stale headcount caught along the way, not a bug**: extraction found
+**22** member profiles, not the 23 CLAUDE.md's own page inventory (§6)
+still names — accounted for by an early request in this project's
+history to remove the Anhad Hundal profile, which was never reflected
+back into that count. Not re-litigated here; flagged so nobody "fixes"
+the extractor to force a phantom 23rd person into existence.
+
+**What the importer does *not* attempt, and why:**
+- No image optimisation/resizing beyond what WordPress's own
+  `wp_generate_attachment_metadata()` does on upload — the source images
+  are already sized appropriately (§26's performance pass), so this is
+  correct, not a shortcut.
+- `pages()` creates the 19 Pages every `page-<slug>.php` template needs
+  to exist for the file-name convention to auto-apply — **not** a "Home"
+  page, since `front-page.php` is used by WP's own template hierarchy
+  unconditionally when present, no Reading-settings page needed.
+- Per-type JSON-LD (`Person`, `Article`, `ProfilePage`, `FAQPage`) still
+  isn't emitted per-CPT-post — only the site-wide `Organization` node
+  and the 8 hub pages' own verbatim-carried graphs (phase 2). Flagged as
+  a known gap, not attempted here: it would need per-type schema
+  generation logic this round didn't scope, and guessing at it without
+  checking real per-type examples first would repeat this exact phase's
+  own lesson about not building against untested assumptions.
+- **Cannot be verified beyond static review** — same standing caveat as
+  every phase: no PHP/MySQL/WP-CLI in this sandbox. The importer's SQL-
+  adjacent logic (`wp_insert_post`, `wp_set_object_terms`,
+  `set_post_thumbnail`) is standard, well-documented WP-CLI/core API, but
+  has never actually run. Before trusting it against production data: run
+  it against a disposable local WP install first (LocalWP, or Docker),
+  confirm counts match each JSON file's length, and spot-check a handful
+  of posts of each type against their original `standalone/*.html` page.
