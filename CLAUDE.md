@@ -894,6 +894,47 @@ whole script even though the server is still up and every other check
 time. Wrapped the per-page loop in try/catch so one flaky page can't hide a
 real result on the rest; check pages individually if it happens again.
 
+## 27a. Fully standalone — the page loads nothing from any other origin
+
+Rule: **no page may fetch anything from any host but its own** — not the old
+site, not YouTube, not a font CDN. Outbound `<a>` links, `canonical`/`hreflang`/
+`og:*` meta and JSON-LD URLs are references, not fetches, and are fine (they
+point at urban.org.in on purpose, §27).
+
+What §27 had still left, fixed by `_scripts/localonly.py` (idempotent — run it
+after any build step, then `_scripts/wp/build_static_theme.py`):
+- `<link rel="preconnect" href="https://urban.org.in/">` on 148 pages — opened a
+  connection to the old site on every load for nothing.
+- **YouTube is no longer embedded in-page.** The click-to-play facades
+  (`<script data-ucan="ytf">` on 3 pages, `"yt"` on 11 newsletter issues)
+  swapped in a `youtube-nocookie.com` iframe. Removed; each facade is already an
+  `<a href="https://www.youtube.com/watch?v=…" target="_blank">`, so a click now
+  opens YouTube in a new tab. `yt_facades.py` no longer injects that script.
+- Newsletter forms' `action="https://urban.org.in/newsletter/"` (177) — only
+  mattered with JS off (the gate always `preventDefault()`s), but then it posted
+  the visitor's email to the old site. Dropped.
+- The newsletter share `<style>`+`<script data-ucan="share">` were injected
+  **twice** on 27 issues (copy-link handler bound twice). De-duplicated.
+
+**Known gap, not fixed — needs a decision:** the newsletter signup has never
+sent the email anywhere. The DPDP gate validates, `console.log`s a consent
+record, and shows the success message, but nothing is stored or delivered. A
+static Vercel site has no backend to receive it; WordPress could (a local
+subscriber table or `wp_mail`). Until one is chosen, signups are lost.
+
+Verification:
+- `_scripts/qa/externals.py` — static scan of both `standalone/` and
+  `wp-theme/ucan/pages/`, every absolute URL classified as fetch vs reference.
+  The fetch list must be empty.
+- `_scripts/qa/offline.js [base] [pages…]` — runtime: blocks every non-local
+  request and fails on any attempt, after scrolling, clicking every
+  show-all/tab/filter, video facades, the lightbox, loading the local video and
+  submitting the newsletter form. Also fails on broken images (re-fetched once
+  first — see the §27 server trap), 4xx, console/page errors.
+- Harness traps: Playwright throws on `request.frame()` for a new tab's first
+  navigation — that is the facade opening YouTube, not a page fetch. Some
+  consent checkboxes are custom-styled, so `.check()` can't click them.
+
 ---
 
 ## 28. WordPress — `wp-theme/ucan/` is a STATIC MIRROR (current approach)
