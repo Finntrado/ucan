@@ -1066,3 +1066,145 @@ function ucan_register_webinar_recap_cpt() {
 	);
 }
 add_action( 'init', 'ucan_register_webinar_recap_cpt' );
+
+// ------------------------------------------------------ ucan_newsletter --
+/**
+ * Phase 6: the newsletter archive (was newsletter-<slug>.html). Real
+ * canonical is /newsletter/<slug>/ on all 29 issue pages checked - the
+ * hub page (page-newsletter.php) sits at plain /newsletter/, which
+ * coexists fine with a CPT rewrite of the same base name (a Page occupies
+ * the one-segment path, the CPT's rewrite rule only matches two-segment
+ * `newsletter/<post-slug>/` paths) - the same nesting already used for
+ * ucan_member ("member"), ucan_etn_event ("etn") etc.
+ *
+ * Two real issue_kind values, found by checking every issue file for
+ * `class="masthead"` rather than assuming: **27 of 29** are `designed`
+ * (a full masthead + table-of-contents + editorial sections, one straight
+ * WYSIWYG body - CLAUDE.md §20's older note that only the June 2026 brief
+ * was fully designed is now stale, worth a correction pass on that
+ * section separately); the remaining 2 (Jan/Feb 2024) are `cover_only` -
+ * just a cover image + "not yet published, subscribe" note, matching what
+ * §20 originally described for the whole archive.
+ *
+ * Three edition families share the `designed` layout with different
+ * mastheads - "U-CAN Newsletter", "The Urban Brief", "Member Lens" -
+ * stored as a free-text `edition_name` meta rather than an enum, since a
+ * client adding a fourth series later shouldn't need a code change.
+ * post_title carries the full display title verbatim (e.g. "The Urban
+ * Brief — June 2026"); the masthead date line and archive-card date come
+ * from the post's own post_date (get_the_date()), not a separate field -
+ * set it to the real issue month on import and ordering/prev-next just
+ * works, same pattern as ucan_etn_event/ucan_mixer.
+ */
+function ucan_register_newsletter_cpt() {
+	register_post_type(
+		'ucan_newsletter',
+		array(
+			'labels'       => array(
+				'name'          => 'Newsletter Issues',
+				'singular_name' => 'Newsletter Issue',
+				'add_new_item'  => 'Add New Issue',
+				'edit_item'     => 'Edit Issue',
+			),
+			'public'       => true,
+			'has_archive'  => false, // page-newsletter.php is the hub
+			'show_in_rest' => true,
+			'menu_icon'    => 'dashicons-email-alt',
+			'supports'     => array( 'title', 'editor', 'thumbnail', 'excerpt' ),
+			'rewrite'      => array( 'slug' => 'newsletter', 'with_front' => false ),
+		)
+	);
+}
+add_action( 'init', 'ucan_register_newsletter_cpt' );
+
+function ucan_newsletter_meta_box() {
+	add_meta_box( 'ucan_newsletter_details', 'Issue Details', 'ucan_render_newsletter_meta_box', 'ucan_newsletter', 'side' );
+}
+add_action( 'add_meta_boxes', 'ucan_newsletter_meta_box' );
+
+function ucan_render_newsletter_meta_box( $post ) {
+	wp_nonce_field( 'ucan_newsletter_save', 'ucan_newsletter_nonce' );
+	$kind = get_post_meta( $post->ID, 'issue_kind', true );
+	if ( ! $kind ) {
+		$kind = 'designed';
+	}
+	echo '<p><label for="ucan_issue_kind"><strong>Kind</strong></label><br><select id="ucan_issue_kind" name="ucan_issue_kind" class="widefat">';
+	foreach ( array( 'designed' => 'Designed edition (masthead + sections)', 'cover_only' => 'Cover only (not yet written up)' ) as $k => $lbl ) {
+		printf( '<option value="%1$s"%2$s>%3$s</option>', esc_attr( $k ), selected( $kind, $k, false ), esc_html( $lbl ) );
+	}
+	echo '</select></p>';
+
+	$fields = array(
+		'ucan_edition_name' => array( 'edition_name', 'Edition name (e.g. "U-CAN Newsletter", "The Urban Brief", "Member Lens")' ),
+		'ucan_masthead_sub' => array( 'masthead_sub', 'Masthead sub-line (designed only)' ),
+		'ucan_pdf_path'     => array( 'pdf_path', 'PDF path, relative to the theme, e.g. "newsletters/august-2024.pdf" (optional)' ),
+	);
+	foreach ( $fields as $field => $spec ) {
+		list( $meta_key, $label ) = $spec;
+		$value = get_post_meta( $post->ID, $meta_key, true );
+		printf(
+			'<p><label for="%1$s"><strong>%2$s</strong></label><br><input type="text" id="%1$s" name="%1$s" class="widefat" value="%3$s"></p>',
+			esc_attr( $field ), esc_html( $label ), esc_attr( $value )
+		);
+	}
+}
+
+function ucan_save_newsletter_meta( $post_id ) {
+	if ( ! isset( $_POST['ucan_newsletter_nonce'] ) || ! wp_verify_nonce( $_POST['ucan_newsletter_nonce'], 'ucan_newsletter_save' ) ) {
+		return;
+	}
+	if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		return;
+	}
+	if ( isset( $_POST['ucan_issue_kind'] ) && in_array( $_POST['ucan_issue_kind'], array( 'designed', 'cover_only' ), true ) ) {
+		update_post_meta( $post_id, 'issue_kind', sanitize_key( wp_unslash( $_POST['ucan_issue_kind'] ) ) );
+	}
+	$map = array(
+		'ucan_edition_name' => 'edition_name',
+		'ucan_masthead_sub' => 'masthead_sub',
+		'ucan_pdf_path'     => 'pdf_path',
+	);
+	foreach ( $map as $field => $meta_key ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			update_post_meta( $post_id, $meta_key, sanitize_text_field( wp_unslash( $_POST[ $field ] ) ) );
+		}
+	}
+}
+add_action( 'save_post_ucan_newsletter', 'ucan_save_newsletter_meta' );
+
+/**
+ * The archive card's month label follows the edition's own convention -
+ * "{Month} Newsletter" for the plain U-CAN Newsletter, "{Edition} —
+ * {Month}" for everything else (Urban Brief, Member Lens, and any future
+ * series) - checked against every row in newsletter.html's archive grid,
+ * this simple rule reproduces all of them without a per-edition lookup
+ * table that would need updating for a new series.
+ */
+function ucan_newsletter_archive_label( $edition_name, $month ) {
+	if ( 'U-CAN Newsletter' === $edition_name ) {
+		return $month . ' Newsletter';
+	}
+	return $edition_name . ' — ' . $month;
+}
+
+function ucan_newsletter_display_fields( $post ) {
+	$kind    = get_post_meta( $post->ID, 'issue_kind', true );
+	$edition = get_post_meta( $post->ID, 'edition_name', true );
+	if ( ! $kind ) {
+		$kind = 'designed';
+	}
+	if ( ! $edition ) {
+		$edition = 'U-CAN Newsletter';
+	}
+	$month = get_the_date( 'F', $post );
+	return array(
+		'kind'          => $kind,
+		'edition_name'  => $edition,
+		'masthead_sub'  => get_post_meta( $post->ID, 'masthead_sub', true ),
+		'pdf_path'      => get_post_meta( $post->ID, 'pdf_path', true ),
+		'month'         => $month,
+		'year'          => get_the_date( 'Y', $post ),
+		'month_year'    => get_the_date( 'F Y', $post ),
+		'archive_label' => ucan_newsletter_archive_label( $edition, $month ),
+	);
+}

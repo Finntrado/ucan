@@ -901,10 +901,11 @@ real result on the rest; check pages individually if it happens again.
 The client's original ask was a WordPress site; `standalone/` is the finished
 design/content, built static for fast iteration. This section starts turning
 it into a real installable WP theme so the client gets an actual CMS. Full
-plan: `.claude/plans/greedy-moseying-magpie.md`. **Phases 0, 2, 3, 4 and 5 are
-done (scaffold, the 7 hub pages, the member CPT, fellows/L&D
-sessions/fellow blogs, city mixers/webinars/city champions); phases 6–7
-(newsletters, importer, legal-page mail handler) are not started.**
+plan: `.claude/plans/greedy-moseying-magpie.md`. **Phases 0, 2, 3, 4, 5 and 6
+are done (scaffold, the 7 hub pages, and every CPT: members, fellows, L&D
+sessions/webinars, fellow blogs, city mixers, webinar recaps, newsletters);
+phase 7 (the importer, legal-page mail handler) is not started — this is
+now the last phase.**
 
 **No PHP/MySQL/WP-CLI in this sandbox** (checked — none on PATH). Every file
 here is hand-reviewed code, never executed or clicked through locally.
@@ -1202,12 +1203,80 @@ file slugs — added to `slugs.py` and the nav seeder, same fix as before;
 `ucan_etn_event`/`ucan_mixer`/`ucan_webinar_recap` single template render
 empty until real posts exist (phase 7's importer) — not a bug.
 
+### Phase 6 — the `ucan_newsletter` CPT, and a stale doc caught along the way
+Checked all 29 `newsletter-<slug>.html` canonicals before writing anything,
+same discipline as every phase: all agree on `/newsletter/<slug>/`, so
+rewrite slug **`newsletter`** — this coexists fine with `page-newsletter.php`
+sitting at the one-segment `/newsletter/` itself (a Page's own slug and a
+CPT rewrite base can share a name; the CPT's rule only matches the
+two-segment `newsletter/<post-slug>/` shape), the same nesting already
+used for `ucan_member` ("member") and `ucan_etn_event` ("etn").
+
+**Found while checking, not assuming: §20's claim that only the June 2026
+brief is "fully designed" and everything else is a bare cover placeholder
+is now stale.** Grepped every issue file for `class="masthead"` rather
+than trusting the old note — **27 of 29** issues now have a full
+masthead + table-of-contents + editorial-sections layout (three edition
+families: "U-CAN Newsletter", "The Urban Brief", "Member Lens"); only 2
+(January/February 2024) are still the bare cover-placeholder §20
+originally described for the whole archive. This is a real drift between
+CLAUDE.md and the actual `standalone/` files — §20 itself hasn't been
+corrected here since that's static-build history, not part of this WP
+conversion, but flagging it so nobody relies on the stale claim.
+
+`ucan_newsletter` stores this as `issue_kind` (`designed` | `cover_only`),
+branched in `single-ucan_newsletter.php`. The designed body (TOC +
+whatever sections that month has — Editor's note, Fellowship Corner,
+State of Our Cities, Member Highlights, etc., genuinely different set
+per issue) is left as one `post_content` WYSIWYG field rather than
+modelled into rigid sub-fields — checked several designed issues
+side-by-side to confirm the section set really does vary enough that a
+fixed schema would be fighting the content, not helping it. Everything
+that IS consistent across all designed issues stays structured meta:
+`edition_name` (free text, not an enum — a client adding a fourth series
+later shouldn't need a code change), `masthead_sub`, and an optional
+`pdf_path`. The archive card's label format
+(`ucan_newsletter_archive_label()`) follows one simple rule derived from
+checking every row in the source archive grid — `"{Month} Newsletter"`
+for the plain U-CAN Newsletter, `"{Edition} — {Month}"` for everything
+else — rather than a lookup table that would need a new entry per series.
+
+`page-newsletter.php`'s featured card is now **whichever issue is
+actually newest by `post_date`**, not a hardcoded slug like the static
+version — next month's issue becomes "Latest edition" automatically once
+it's the newest post, no re-edit needed. The archive grid's "first N
+visible, rest behind Show all" cutoff (12) was reverse-engineered from
+the source rather than assumed to be year-based — checked, and the
+visible set spans two years (all of 2026 plus four 2025 issues), so it's
+a fixed count, not "this year only."
+
+**A real asset gap found and fixed while wiring the "Download the PDF"
+button**: `standalone/newsletters/` (26 PDFs + 174 inline images used
+inside designed-issue bodies, 145 MB) sits **outside** `standalone/assets/`,
+so phase 0's wholesale `cp -r assets` never picked it up — genuinely
+missing from the theme until now. Copied to `wp-theme/ucan/newsletters/`
+verbatim. **Flagged, not fully solved**: any `src=`/`href=` inside an
+imported designed issue's `post_content` that points at a bare relative
+`newsletters/img/...` path will resolve wrong once served from a post's
+own permalink depth (e.g. `/newsletter/august-2024/`) — phase 7's
+importer needs to rewrite those to absolute
+`get_template_directory_uri() . '/newsletters/...'` URLs, the same
+discipline already applied to every other asset in this repo (§27's
+convention). This wasn't fixable in the template itself since
+`post_content` is raw stored HTML from the eventual database.
+
+**Same expected gap as phases 3–5:** the featured card, the archive grid,
+and every `single-ucan_newsletter.php` render/render nothing until real
+`ucan_newsletter` posts exist (phase 7's importer) — not a bug.
+
 ### What's deliberately not done yet (see the plan for the full phase list)
-- `ucan_member`, `ucan_fellow`, `ucan_etn_event` (L&D sessions + Policy
-  Webinars + one City Mixer note), `ucan_blog`, `ucan_mixer` and
-  `ucan_webinar_recap` are all built (phases 3–5, above). `ucan_newsletter`
-  is phase 6, same pattern (plain `register_post_meta()` + `add_meta_box()`,
-  not ACF, so a nonprofit client isn't left maintaining a plugin license).
+- Every CPT the plan called for is now built: `ucan_member`, `ucan_fellow`,
+  `ucan_etn_event` (L&D sessions + Policy Webinars + one City Mixer note),
+  `ucan_blog`, `ucan_mixer`, `ucan_webinar_recap` and `ucan_newsletter`
+  (phases 3–6, above) — all the same pattern (plain `register_post_meta()`
+  + `add_meta_box()`, not ACF, so a nonprofit client isn't left
+  maintaining a plugin license). Phase 7 is the importer and legal pages
+  only — no more CPTs to design.
 - No content importer yet — the plan is a one-time PHP script reusing the
   same field-extraction approach already proven four times in this repo
   (`build_members.py`, `build_fellowship.py`, `build_ld.py`,
