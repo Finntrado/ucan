@@ -25,6 +25,40 @@
 defined( 'ABSPATH' ) || exit;
 
 require_once __DIR__ . '/inc/subscribers.php';
+require_once __DIR__ . '/inc/canonical.php';
+
+/**
+ * The theme outputs raw HTML directly (see ucan_serve_static_page below) and
+ * never calls wp_head()/wp_footer(), which is exactly the hook plugins like
+ * WPCode use to inject anything site-wide. Run those hooks anyway and splice
+ * their output into the page, so any such plugin keeps working without
+ * needing per-page edits. Strip the usual default-WP head clutter first
+ * (RSD/pingback/shortlink/emoji script/generator tag) - it was never on
+ * these pages and shouldn't appear now just because the hook fires.
+ */
+add_action(
+	'init',
+	function () {
+		remove_action( 'wp_head', 'rsd_link' );
+		remove_action( 'wp_head', 'wlwmanifest_link' );
+		remove_action( 'wp_head', 'wp_generator' );
+		remove_action( 'wp_head', 'wp_shortlink_wp_head' );
+		remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+		remove_action( 'wp_print_styles', 'print_emoji_styles' );
+		remove_action( 'wp_head', 'rest_output_link_wp_head' );
+		remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+	}
+);
+
+function ucan_run_wp_head_footer() {
+	ob_start();
+	do_action( 'wp_head' );
+	$head = ob_get_clean();
+	ob_start();
+	do_action( 'wp_footer' );
+	$foot = ob_get_clean();
+	return array( $head, $foot );
+}
 
 add_filter( 'wp_sitemaps_enabled', '__return_false' );
 add_filter(
@@ -46,7 +80,7 @@ function ucan_serve_static_page() {
 	$path    = (string) wp_parse_url( $request, PHP_URL_PATH );
 	$query   = (string) wp_parse_url( $request, PHP_URL_QUERY );
 	$base    = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
-	$home    = untrailingslashit( home_url() );
+	$home    = ucan_public_origin( untrailingslashit( home_url() ) );
 
 	$rel = rawurldecode( $path );
 	if ( '' !== $base && 0 === strpos( $rel, $base ) ) {
@@ -55,7 +89,7 @@ function ucan_serve_static_page() {
 	$slug = trim( $rel, '/' );
 
 	if ( 'sitemap.xml' === $slug ) {
-		ucan_sitemap( $home );
+		ucan_sitemap( UCAN_CANON_ORIGIN );
 	}
 
 	if ( '' === $slug ) {
@@ -84,9 +118,19 @@ function ucan_serve_static_page() {
 	$html = file_get_contents( $file );
 	$html = str_replace(
 		array( '%%UCAN_THEME%%', '%%UCAN_HOME%%', '%%UCAN_API%%' ),
-		array( get_template_directory_uri(), $home, esc_url_raw( rest_url( 'ucan/v1/subscribe' ) ) ),
+		array( ucan_on_origin( get_template_directory_uri(), $home ), $home, ucan_on_origin( esc_url_raw( rest_url( 'ucan/v1/subscribe' ) ), $home ) ),
 		$html
 	);
+
+	$html = ucan_canonicalise_head( $html, $home );
+
+	list( $head_extra, $foot_extra ) = ucan_run_wp_head_footer();
+	if ( $head_extra && false !== strpos( $html, '</head>' ) ) {
+		$html = str_replace( '</head>', $head_extra . '</head>', $html );
+	}
+	if ( $foot_extra && false !== strpos( $html, '</body>' ) ) {
+		$html = str_replace( '</body>', $foot_extra . '</body>', $html );
+	}
 
 	status_header( 200 );
 	header( 'Content-Type: text/html; charset=UTF-8' );
