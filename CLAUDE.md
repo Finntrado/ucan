@@ -1484,3 +1484,60 @@ couldn't catch - the code was syntactically valid PHP that called
 existing methods correctly, it was WP-CLI's own registration model that
 worked differently than assumed. Confirms the point made throughout this
 phase: nothing here counts as verified until it's actually been run.
+
+---
+
+## 29. SEO / AEO / GEO — "Urban Perspectives" (built, NOT yet live on urban.org.in)
+
+**Status: built in the repo and previewable on the Vercel copy; nothing has been published to
+urban.org.in** (user instruction: "no need to publish these pages or menu now").
+
+- **The Vercel copy is noindexed**: `vercel.json` sends `X-Robots-Tag: noindex, nofollow, noarchive,
+  nosnippet` for host `u-can-puce.vercel.app` (a `has: host` rule, so a real domain attached
+  later is unaffected). Verified with `curl -I`. Do not add a `robots.txt` Disallow there — a
+  blocked crawler can never see the noindex.
+- **Live robots.txt** (WP virtual file) already allows every crawler incl. AI ones
+  (GPTBot, ClaudeBot, PerplexityBot, Google-Extended…) and lists `/sitemap.xml`. No explicit
+  AI rules added yet. If added later, repeat the `Disallow: /wp-admin/` lines inside each
+  named group — a named group ignores the `*` group.
+- **Pages** (`standalone/`): `sustainable-urban-development-india` (what it is),
+  `urban-collaboration-checklist` (how; has a PDF + HowTo schema), `citizen-centric-urban-solutions`
+  (design), `municipal-government-reform-india` (institutions/finance), `inclusive-urban-governance-india`
+  (equity), and hub `urban-perspectives`. Distinct intents on purpose so they don't cannibalise.
+- **Build**: `_scripts/seo/build_articles.py` (source = the client's Google Docs, HTML export saved in
+  `_scripts/seo/src/`; per-page SEO/AEO copy in `articles_config.py`). Shell = `blog-the-urban-haze.html`.
+  Order after any change: `build_checklist_pdf.py` → `build_articles.py --pdf-name <printed name>` →
+  `add_menu.py` → `add_related.py` → `menu_breakpoint.py` → `localonly.py` chain → `wp/build_static_theme.py`.
+  All idempotent. Doc export URL: `https://docs.google.com/document/d/<id>/export?format=html`
+  (works when the doc is "anyone with the link"); the HTML export keeps hyperlinks, the txt export does not.
+- **Each page has**: question H2 + a 40–60 word direct answer (asserted at build), key takeaways, a
+  sourced-statistics box, an HTML/CSS diagram (semantic list inside `role=group aria-label`, legible on
+  mobile), FAQ (real `<h3>` questions = FAQPage entries), hyperlinked sources (`utm_*` stripped),
+  author box, related reading, dates, one JSON-LD graph (Organization, WebPage, Article, BreadcrumbList,
+  FAQPage; HowTo on the checklist). FAQ/HowTo rich results are restricted by Google now — the markup is
+  for machine parsing, not SERP decoration.
+- **Statistics rule (hard):** every figure is checked against the page it links to. Not used because they
+  could not be verified against the cited page: "145 River Cities Alliance members by April 2025"
+  (PIB release is from 2022), "480 million urban population in 2020", NUDM "2021" launch year.
+  Secondary sources kept from the docs and worth swapping for primaries: Drishti IAS (World Bank report),
+  Byju's (Twelfth Schedule).
+- **Author is a placeholder**: `AUTHOR` in `articles_config.py` = "U-CAN editorial team" (Organization).
+  Set `kind: 'Person'` + name/bio when U-CAN supplies a named author. Dates = 2026-09-19 (build day).
+- **Menu**: new top-level "Urban Perspectives" (link to the hub + 5-item dropdown) on desktop, mobile
+  sheet and footer of all pages. **Adding a 6th item pushed the desktop nav past its width at
+  1101–1139px, so the burger breakpoint moved 1100 → 1160px** (`menu_breakpoint.py`; §13's
+  "thresholds are tuned to the item count" trap, again). Check with `_scripts/qa/navwidth.js`.
+  Bug caught by that test: the first `add_menu.patch()` closed `.ucnav` one `</div>` early.
+- **Internal links**: `add_related.py` adds a crawlable "Go deeper" block to URC, RFC, Learning Network
+  and the 58 fellow blogs (not tag pages), and enriches the Organization JSON-LD node on every page
+  (logo, contactPoint, knowsAbout; `sameAs` LinkedIn + YouTube already existed).
+- **To publish later** the live theme needs: the 5 pages + hub + PDF, the changed pages (menu, related
+  block, Org record, burger breakpoint), and the PDF uploaded to the WP media library. The WPVibe
+  `write_file` tool cannot write `.pdf` and a page is ~100KB, so prefer a theme zip upload or a
+  server-side article composer; ask the user which.
+- **Still needs from U-CAN**: named author(s) + bios; Search Console / Bing verification tokens
+  (a `wp_head` hook can print them); a public address if a Google Business Profile is wanted;
+  Wikidata entry (needs an account — user action).
+- **Measurement**: `_seo/ai-citation-log.md` (monthly ChatGPT/Perplexity/Gemini/AI Overviews check).
+  No analytics is installed and the CSP (`script-src 'self' 'unsafe-inline'`) would block GA — adding
+  analytics means editing the CSP in `vercel.json` and `functions.php` `ucan_security_headers()`.

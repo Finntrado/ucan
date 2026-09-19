@@ -1,0 +1,24 @@
+const { chromium } = require('playwright');
+(async () => {
+  const b = await chromium.launch();
+  const B = 'http://localhost:8099';
+  let p = await b.newPage({ viewport: { width: 1440, height: 1000 } });
+  await p.goto(B + '/urban-collaboration-checklist', { waitUntil: 'load' });
+  await p.evaluate(() => document.querySelectorAll('.rv').forEach(e => e.classList.add('in')));
+  await p.screenshot({ path: 'out/seo/checklist-top.png' });
+  const dg = await p.$('.dg-fig'); await dg.scrollIntoViewIfNeeded(); await dg.screenshot({ path: 'out/seo/checklist-diagram.png' });
+  const st = await p.$('.stats-wrap'); await st.screenshot({ path: 'out/seo/checklist-stats.png' });
+  await p.goto(B + '/municipal-government-reform-india', { waitUntil: 'load' });
+  await p.evaluate(() => document.querySelectorAll('.rv').forEach(e => e.classList.add('in')));
+  const d2 = await p.$('.dg-fig'); await d2.screenshot({ path: 'out/seo/municipal-diagram.png' });
+  await p.goto(B + '/inclusive-urban-governance-india', { waitUntil: 'load' });
+  await p.evaluate(() => document.querySelectorAll('.rv').forEach(e => e.classList.add('in')));
+  const d3 = await p.$('.dg-fig'); await d3.screenshot({ path: 'out/seo/inclusive-diagram.png' });
+  await p.goto(B + '/urban-perspectives', { waitUntil: 'load' }); await p.screenshot({ path: 'out/seo/hub.png' });
+  p = await b.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 });
+  await p.goto(B + '/sustainable-urban-development-india', { waitUntil: 'load' });
+  await p.evaluate(() => document.querySelectorAll('.rv').forEach(e => e.classList.add('in')));
+  await p.screenshot({ path: 'out/seo/mobile-top.png' });
+  await p.evaluate(() => window.scrollTo(0, 1300)); await p.waitForTimeout(300); await p.screenshot({ path: 'out/seo/mobile-mid.png' });
+  await b.close();
+})();
