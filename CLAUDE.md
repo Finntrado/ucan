@@ -1528,6 +1528,11 @@ urban.org.in** (user instruction: "no need to publish these pages or menu now").
   1101–1139px, so the burger breakpoint moved 1100 → 1160px** (`menu_breakpoint.py`; §13's
   "thresholds are tuned to the item count" trap, again). Check with `_scripts/qa/navwidth.js`.
   Bug caught by that test: the first `add_menu.patch()` closed `.ucnav` one `</div>` early.
+- **Share bar** (top + bottom of each article): LinkedIn, X, WhatsApp, Email, Copy link, plus a native
+  "Share…" button that only appears where `navigator.share` exists (phones). Same icons/pattern as the
+  newsletter pages; no third-party script (plain share links + one inline script). It shares the
+  **canonical** `https://urban.org.in/<slug>`, so on the noindexed Vercel preview the shared link
+  points at urban.org.in and 404s until the pages are published.
 - **Internal links**: `add_related.py` adds a crawlable "Go deeper" block to URC, RFC, Learning Network
   and the 58 fellow blogs (not tag pages), and enriches the Organization JSON-LD node on every page
   (logo, contactPoint, knowsAbout; `sameAs` LinkedIn + YouTube already existed).

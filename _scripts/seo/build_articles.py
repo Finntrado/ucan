@@ -360,6 +360,7 @@ def main_html(cfg, title, lede, body, faq, sources, notes, blocks_all, pdf_href)
 
     answer = ('<section class="art-answer" aria-labelledby="ans-h"><h2 id="ans-h">%s</h2><p>%s</p></section>'
               % (esc(cfg['q']), esc(cfg['answer'])))
+    answer = share_html(cfg, title, 'Share this guide') + answer
     take = ('<section class="art-take" aria-labelledby="tk-h"><h2 id="tk-h">Key takeaways</h2><ul>%s</ul></section>'
             % ''.join('<li>%s</li>' % esc(t) for t in cfg['takeaways']))
     main = ('<main id="main">%s<section class="sec art" aria-label="Article"><div class="wrap art-wrap">'
@@ -371,9 +372,47 @@ def main_html(cfg, title, lede, body, faq, sources, notes, blocks_all, pdf_href)
         hero, answer, take, ''.join(body_html), faq_html,
         ('<section id="sources" class="srcs" aria-labelledby="src-h"><h2 id="src-h">Sources and further reading</h2>%s</section>' % src_html) if src_html else '',
         ('<div class="art-note"><p class="art-note-k">About this article</p>%s</div>' % notes_html) if notes_html else '',
-        author_html(), related_html(cfg), dl, toc, dl)
+        author_html() + share_html(cfg, title, 'Found this useful? Share it').replace('class="art-share"', 'class="art-share bottom"'), related_html(cfg), dl, toc, dl)
+    main = main.replace('</main>', SHARE_JS + '</main>')
     return main, dict(h2=h2s, items=items, words=n_words + words(faq_html), read=read_min)
 
+
+# ---------------------------------------------------------------- share
+
+ICON = {
+    'linkedin': '<path d="M4.98 3.5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM.5 8h4V21h-4zM8 8h3.8v1.8h.05c.53-.95 1.83-1.95 3.76-1.95C19.7 7.85 21 10.1 21 13.3V21h-4v-6.9c0-1.65-.03-3.77-2.3-3.77-2.3 0-2.65 1.8-2.65 3.65V21H8z" fill="currentColor"/>',
+    'x': '<path d="M17.5 2h3.3l-7.2 8.24L22 22h-6.6l-5.18-6.78L4.3 22H1l7.7-8.8L1.4 2H8.2l4.68 6.19L17.5 2zm-1.16 18h1.83L7.75 3.9H5.79z" fill="currentColor"/>',
+    'whatsapp': '<path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.8 14.18c-.24.68-1.42 1.31-1.95 1.35-.5.04-.98.22-3.3-.69-2.79-1.1-4.55-3.96-4.69-4.15-.14-.19-1.12-1.49-1.12-2.85s.71-2.02.96-2.3c.25-.27.55-.34.73-.34h.52c.17 0 .4-.06.62.48.24.57.8 1.98.87 2.12.07.14.12.31.02.5-.09.19-.14.31-.28.47l-.42.49c-.14.14-.28.29-.12.57.16.27.72 1.18 1.54 1.91 1.06.94 1.95 1.24 2.22 1.38.27.14.43.12.59-.07.16-.19.68-.79.86-1.06.18-.27.36-.22.61-.13.24.09 1.55.73 1.82.86.27.14.44.2.51.32.06.11.06.67-.18 1.35z" fill="currentColor"/>',
+    'email': '<path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm9 8.2L4.4 7h15.2z" fill="currentColor"/>',
+    'link': '<path d="M10.6 13.4a4 4 0 0 0 5.66 0l3-3a4 4 0 1 0-5.66-5.66l-1.5 1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M13.4 10.6a4 4 0 0 0-5.66 0l-3 3a4 4 0 1 0 5.66 5.66l1.5-1.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>',
+    'share': '<path d="M12 3v12M8 7l4-4 4 4M5 12v7h14v-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+}
+
+
+def share_html(cfg, title, label):
+    from urllib.parse import quote
+    url = '%s/%s' % (SITE, cfg['slug'])
+    u, t = quote(url, safe=''), quote(title, safe='')
+    a = lambda href, name, key, txt: ('<a href="%s" target="_blank" rel="noopener noreferrer" aria-label="Share on %s"><svg viewBox="0 0 24 24" aria-hidden="true">%s</svg>%s</a>'
+                                      % (href.replace('&', '&amp;'), name, ICON[key], txt))
+    return ('<div class="art-share" data-title="%s" data-url="%s"><span class="lbl">%s</span>%s%s%s%s'
+            '<button type="button" class="art-copy" hidden><svg viewBox="0 0 24 24" aria-hidden="true">%s</svg><span>Copy link</span></button>'
+            '<button type="button" class="art-native" hidden><svg viewBox="0 0 24 24" aria-hidden="true">%s</svg><span>Share…</span></button></div>') % (
+        H.escape(title, quote=True), url, esc(label),
+        a('https://www.linkedin.com/sharing/share-offsite/?url=' + u, 'LinkedIn', 'linkedin', 'LinkedIn'),
+        a('https://twitter.com/intent/tweet?url=%s&text=%s' % (u, t), 'X', 'x', 'X'),
+        a('https://api.whatsapp.com/send?text=%s%%20%s' % (t, u), 'WhatsApp', 'whatsapp', 'WhatsApp'),
+        a('mailto:?subject=%s&body=%s' % (t, u), 'Email', 'email', 'Email'),
+        ICON['link'], ICON['share'])
+
+
+SHARE_JS = ('<script data-ucan="artshare">(function(){var bars=document.querySelectorAll(".art-share");'
+            'Array.prototype.forEach.call(bars,function(bar){var url=bar.getAttribute("data-url"),title=bar.getAttribute("data-title");'
+            'var copy=bar.querySelector(".art-copy"),nat=bar.querySelector(".art-native");'
+            'if(copy&&navigator.clipboard){copy.hidden=false;var lb=copy.querySelector("span");copy.addEventListener("click",function(){'
+            'navigator.clipboard.writeText(url).then(function(){var old=lb.textContent;lb.textContent="Link copied";setTimeout(function(){lb.textContent=old;},1800);});});}'
+            'if(nat&&navigator.share){nat.hidden=false;nat.addEventListener("click",function(){navigator.share({title:title,url:url}).catch(function(){});});}'
+            '});})();</script>')
 
 # ---------------------------------------------------------------- schema
 
@@ -496,6 +535,13 @@ ARTICLE_CSS += r"""
 .art .art-answer h2{font-size:clamp(19px,2vw,24px)!important}
 .art .stat b{color:var(--teal-deep,#0E5348)!important}.art .stat span,.art .stat small{color:var(--ink-soft,#57564F)!important}
 .art .art-related li,.art .authorcard p{border-top:0}
+.art-share{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;margin:0 0 22px}
+.art-share .lbl{font:700 11px/1 var(--sans,'Public Sans',sans-serif);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft,#57564F);margin-right:.25rem}
+.art .art-share a,.art .art-share button{display:inline-flex;align-items:center;justify-content:center;gap:.45rem;height:40px;padding:0 .95rem;border-radius:999px;border:1px solid var(--line,#DCEAE6);background:var(--paper,#FBFAF6);color:var(--ink,#222120)!important;font:600 13px/1 var(--sans,'Public Sans',sans-serif);text-decoration:none!important;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .18s}
+.art .art-share a:hover,.art .art-share button:hover,.art .art-share a:focus-visible,.art .art-share button:focus-visible{background:var(--teal-deep,#0E5348);border-color:var(--teal-deep,#0E5348);color:#fff!important;transform:translateY(-1px)}
+.art-share svg{width:15px;height:15px;flex:none}.art-share button[hidden]{display:none}
+.art-share.bottom{margin:26px 0 0;padding-top:20px;border-top:1px solid var(--line,#DCEAE6)}
+@media(max-width:520px){.art .art-share a,.art .art-share button{height:38px;padding:0 .8rem}}
 """
 
 HEAD_STRIP = [
