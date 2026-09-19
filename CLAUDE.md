@@ -1580,3 +1580,14 @@ WordPress core; `http://…/wp-login.php` served the login form in clear text; `
 - **Rollback**: WPVibe publish keeps the previous theme as `ucan-wpvibe-backup`.
 - After go-live also: add `https://www.urban.org.in` as a **Domain property** in Search Console, resubmit
   `/sitemap.xml`, and turn on the host's own "Force HTTPS" so static files (images/PDFs) are covered too.
+
+---
+
+## 31. Custom 404/410 page + legacy 301 redirects
+
+- **Real status codes, never a homepage redirect** (that is a soft 404). Unknown URL -> branded 404 (`noindex, follow`, "Did you mean" suggestions from `inc/page-titles.php`, popular pages). Removed-for-good URLs -> **410** with "removed" wording. Old URLs with a successor -> single **301** to `https://www.urban.org.in/<page>` (query string dropped).
+- **Data**: `_scripts/seo/build_redirects.py` writes `wp-theme/ucan/redirects-extra.php` (exact 301s incl. old `/wp-content/uploads/` files -> theme assets, exact 410s, ordered patterns; old-URL inventory came from the Internet Archive CDX API). `build_static_theme.py` still owns `redirects.php` (canonical-path map).
+- **Code**: `inc/redirects.php` (`ucan_resolve_legacy`, `ucan_legacy_redirect`, `ucan_serve_error_page`, `ucan_error_template`, 404 log at Tools > "404 log": path, count, referrer HOST only, cap 300, scanners ignored). The error page is composed at request time from `pages/about.html` chrome + `inc/404-fragment.html` (so it never drifts from the site header/footer). `/author/*` -> 410, `/?author=N` -> bare 404.
+- **Vercel** serves `standalone/404.html` automatically with a 404 status.
+- **Build order**: `build_redirects.py` -> `build_404.py` -> `_scripts/wp/build_static_theme.py` -> `test_redirects.py` + `test_canonical.py`. When Urban Perspectives goes live, re-run `build_404.py --with-perspectives`.
+- **Trap (again)**: a `python - <<'PY'` heredoc turned `\b` into a backspace byte and `\n` into real newlines. Use Edit/Write for anything with escapes; grep for `\x08` after.

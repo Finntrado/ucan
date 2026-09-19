@@ -26,6 +26,7 @@ defined( 'ABSPATH' ) || exit;
 
 require_once __DIR__ . '/inc/subscribers.php';
 require_once __DIR__ . '/inc/canonical.php';
+require_once __DIR__ . '/inc/redirects.php';
 
 /**
  * The theme outputs raw HTML directly (see ucan_serve_static_page below) and
@@ -100,6 +101,10 @@ function ucan_serve_static_page() {
 		$slug = 'index';
 	}
 
+	if ( '404' === $slug ) { // pages/404.html is the error template, never a page
+		ucan_serve_error_page( 404 );
+	}
+
 	$file = get_template_directory() . '/pages/' . $slug . '.html';
 	if ( ! preg_match( '/^[a-z0-9-]+$/', $slug ) || ! is_file( $file ) ) {
 		ucan_redirect_old_url( $slug, $home, $query );
@@ -151,6 +156,7 @@ function ucan_redirect_old_url( $old, $home, $query ) {
 		wp_safe_redirect( $home . $to . ( '' !== $query ? '?' . $query : '' ), 301 );
 		exit;
 	}
+	ucan_legacy_redirect( $key, $home );
 }
 
 function ucan_sitemap( $home ) {
@@ -160,6 +166,9 @@ function ucan_sitemap( $home ) {
 	echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 	foreach ( glob( get_template_directory() . '/pages/*.html' ) as $f ) {
 		$slug = basename( $f, '.html' );
+		if ( '404' === $slug ) {
+			continue;
+		}
 		$loc  = 'index' === $slug ? $home . '/' : $home . '/' . $slug;
 		printf( "<url><loc>%s</loc><lastmod>%s</lastmod></url>\n", esc_url( $loc ), esc_html( gmdate( 'Y-m-d', filemtime( $f ) ) ) );
 	}

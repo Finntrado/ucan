@@ -22,7 +22,7 @@
  *     public pages allowed; same protections as before (admin, login, REST,
  *     search). If "Discourage search engines" is ticked in wp-admin, WordPress's
  *     own disallow-all is left untouched.
- *  5. /?author=N and /author/* return 404 (no username disclosure).
+ *  5. /?author=N returns 404 and /author/* returns 410 (no username disclosure).
  *
  * robots.txt is a courtesy for crawlers, not a security control: nothing
  * sensitive is listed in it, and real protection is authentication + HTTPS.
@@ -108,8 +108,16 @@ function ucan_enforce_https_and_host() {
 	}
 	// no username disclosure: /?author=1 and /author/<login>/
 	$path = (string) wp_parse_url( $uri, PHP_URL_PATH );
-	if ( isset( $_GET['author'] ) || 0 === stripos( $path, '/author/' ) ) {
+	if ( isset( $_GET['author'] ) ) {
 		status_header( 404 );
+		nocache_headers();
+		exit;
+	}
+	if ( 0 === stripos( $path, '/author/' ) ) { // author archives were removed for good
+		if ( function_exists( 'ucan_serve_error_page' ) ) {
+			ucan_serve_error_page( 410 );
+		}
+		status_header( 410 );
 		nocache_headers();
 		exit;
 	}

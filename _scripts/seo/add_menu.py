@@ -67,6 +67,13 @@ def repair(s):
     return s.replace(BAD, GOOD)
 
 
+def unpatch(s):
+    """Remove the Urban Perspectives menu again (for pages that must not link to unpublished pages)."""
+    s = re.sub(r'<div class="ucnav-i" ' + re.escape(MARK) + r'>.*?</div></div>', '', s, flags=re.S)
+    s = re.sub(r'<div class="ucmob-g"><p class="ucmob-h">Urban Perspectives</p>.*?</div></div>', '', s, flags=re.S)
+    return s.replace('<li><a href="%s">Urban Perspectives</a></li>' % HUB, '')
+
+
 def write(path, text):
     for attempt in range(20):  # Windows OSError 22 retry, see localonly.py
         try:

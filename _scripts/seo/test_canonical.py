@@ -75,7 +75,7 @@ case('Host header with CRLF is rejected', H('urban.org.in\r\nX-Injected: 1'), EN
 case('URI with CRLF cannot inject headers', H('urban.org.in', True, '/a\r\nSet-Cookie: x=1'), ENF, r'Location: https://www\.urban\.org\.in/\r?\n', forbid=(r'Set-Cookie',))
 # ---- author enumeration --------------------------------------------------------
 case('/?author=1 -> 404', H('www.urban.org.in', True, '/?author=1'), ENF, r'Status: 404', forbid=(r'admin',))
-case('/author/admin/ -> 404', H('www.urban.org.in', True, '/author/admin/'), ENF, r'Status: 404')
+case('/author/admin/ -> 410 (archives removed, no username confirmed)', H('www.urban.org.in', True, '/author/admin/'), ENF, r'Status: 410', forbid=(r'PASSED-THROUGH',))
 # ---- head canonicalisation -----------------------------------------------------
 HTML = ('<head><link rel="canonical" href="http://ucan-test.local/about/?utm=1#x">'
         '<link rel="alternate" hreflang="en-in" href="http://ucan-test.local/about">'

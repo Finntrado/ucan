@@ -42,6 +42,8 @@ def old_key(path):
 
 OLD_TO_SLUG = {}
 for _slug in page_slugs:
+    if _slug == '404':  # the error template: deliberately has no canonical
+        continue
     _s = io.open(os.path.join(SRC, _slug + '.html'), encoding='utf-8').read()
     _m = re.search(r'<link rel="canonical" href="([^"]+)"', _s)
     _o = OLD_SITE.match(_m.group(1)) if _m else None
