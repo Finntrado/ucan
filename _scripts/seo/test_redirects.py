@@ -48,6 +48,8 @@ function wp_safe_redirect($u, $c = 302) { header('Location: ' . $u, true, $c); e
 %(server)s
 require '%(theme)s/inc/canonical.php';
 require '%(theme)s/inc/redirects.php';
+require '%(theme)s/inc/analytics.php';
+function esc_js($s) { return addslashes($s); }
 %(body)s
 """
 
@@ -191,6 +193,17 @@ o = run(dict(SERVER, REQUEST_URI='/x'), 'ucan_legacy_redirect("about-us-2", "htt
 ok('legacy 301 goes to the www origin, one hop', 'Status: 301' in o and 'Location: https://www.urban.org.in/about' in o, o[:200])
 o = run(dict(SERVER, REQUEST_URI='/x'), 'ucan_legacy_redirect("unknown-thing", "https://www.urban.org.in"); echo "NO-RULE";')
 ok('no rule: returns so the 404 page can render', 'NO-RULE' in o)
+
+# --- Google Analytics: consent-gated, production hosts only ---
+SNIP = 'echo ucan_inject_analytics("<html><body>x</body></html>"); echo "\\nCSP:" . json_encode(ucan_analytics_csp());'
+o = run(SERVER, SNIP)
+ok('GA: snippet injected on www.urban.org.in with the right ID', 'data-ucan="analytics"' in o and 'G-TT92QE00S9' in o, o[:200])
+ok('GA: loads only after reading consent', 'if(ok())load();' in o and o.count('googletagmanager.com/gtag/js') == 1)
+ok('GA: ads/signals off, IP anonymised', 'allow_google_signals:false' in o and 'allow_ad_personalization_signals:false' in o and 'anonymize_ip:true' in o)
+ok('GA: CSP widened for Google on prod', 'https://www.googletagmanager.com' in o.split('CSP:')[1].replace('\/', '/') and 'google-analytics.com' in o.split('CSP:')[1])
+for h in ('ucan-test.local', 'u-can-puce.vercel.app'):
+    o = run(dict(SERVER, HTTP_HOST=h), SNIP)
+    ok('GA: NOT injected and CSP unchanged on ' + h, 'analytics' not in o.split('CSP:')[0] and o.split('CSP:')[1].count('google') == 0, o[:200])
 
 print('\n%d failing' % bad)
 sys.exit(1 if bad else 0)

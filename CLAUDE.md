@@ -1591,3 +1591,15 @@ WordPress core; `http://…/wp-login.php` served the login form in clear text; `
 - **Vercel** serves `standalone/404.html` automatically with a 404 status.
 - **Build order**: `build_redirects.py` -> `build_404.py` -> `_scripts/wp/build_static_theme.py` -> `test_redirects.py` + `test_canonical.py`. When Urban Perspectives goes live, re-run `build_404.py --with-perspectives`.
 - **Trap (again)**: a `python - <<'PY'` heredoc turned `\b` into a backspace byte and `\n` into real newlines. Use Edit/Write for anything with escapes; grep for `\x08` after.
+
+---
+
+## 32. Google Analytics 4 (`wp-theme/ucan/inc/analytics.php`)
+
+- **Measurement ID `G-TT92QE00S9`** (property 543884984 - the numeric property ID cannot be used for tracking).
+- **Consent-gated**: nothing is requested from Google until the visitor picks "Accept analytics" (`ucan_consent_v1` -> `analytics:true`). "Essential only" / a later reject sets `ga-disable-<ID>` and deletes the `_ga*` cookies. Returning visitors who accepted load it on the next page. No ad features (signals + personalisation off), IP anonymisation requested.
+- **WordPress production hosts only** (`ucan_is_prod_host()`): injected by `ucan_inject_analytics()` in `functions.php`, never into `standalone/`, so the noindexed Vercel copy, LocalWP and previews send nothing. The CSP (`ucan_security_headers()`) is widened for `googletagmanager.com` / `*.google-analytics.com` / `*.analytics.google.com` only on those hosts; `vercel.json` is unchanged.
+- **Second approved exception to §27a** (after YouTube click-to-play): Google Analytics, consent-gated.
+- **Privacy policy** gained an "Analytics Cookies (Google Analytics) - only with Your consent" paragraph (standalone + live theme). The banner copy already said "measure anonymous usage".
+- **Tests**: `test_redirects.py` (6 GA checks: injected on prod, ID, signals off, CSP, absent on local/Vercel hosts) and `_scripts/qa/ga_consent.js` (Playwright, Google mocked: zero requests before consent, loads on accept, stops + clears cookies on reject).
+- **Not done**: GA4 property settings live in Google's UI (data retention 14 months, Google signals off, internal-traffic filter) - the user should check them.

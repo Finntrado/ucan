@@ -27,6 +27,7 @@ defined( 'ABSPATH' ) || exit;
 require_once __DIR__ . '/inc/subscribers.php';
 require_once __DIR__ . '/inc/canonical.php';
 require_once __DIR__ . '/inc/redirects.php';
+require_once __DIR__ . '/inc/analytics.php';
 
 /**
  * The theme outputs raw HTML directly (see ucan_serve_static_page below) and
@@ -128,6 +129,7 @@ function ucan_serve_static_page() {
 	);
 
 	$html = ucan_canonicalise_head( $html, $home );
+	$html = ucan_inject_analytics( $html );
 
 	list( $head_extra, $foot_extra ) = ucan_run_wp_head_footer();
 	if ( $head_extra && false !== strpos( $html, '</head>' ) ) {
@@ -183,10 +185,11 @@ function ucan_security_headers() {
 	if ( ! empty( $origin['host'] ) ) {
 		$assets .= ' ' . $origin['scheme'] . '://' . $origin['host'] . ( ! empty( $origin['port'] ) ? ':' . $origin['port'] : '' );
 	}
+	$ga  = ucan_analytics_csp();
 	$csp = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; "
-		. "script-src $assets 'unsafe-inline'; style-src $assets 'unsafe-inline' data:; font-src $assets data:; "
-		. "img-src $assets data:; media-src $assets; frame-src https://www.youtube-nocookie.com https://www.youtube.com; "
-		. "connect-src 'self'";
+		. "script-src $assets{$ga['script']} 'unsafe-inline'; style-src $assets 'unsafe-inline' data:; font-src $assets data:; "
+		. "img-src $assets{$ga['img']} data:; media-src $assets; frame-src https://www.youtube-nocookie.com https://www.youtube.com; "
+		. "connect-src 'self'{$ga['connect']}";
 	// https-only headers: over plain http (e.g. a LocalWP test site) browsers
 	// ignore COOP and log a console error, and upgrading requests breaks assets
 	if ( is_ssl() ) {
