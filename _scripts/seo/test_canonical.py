@@ -18,7 +18,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, '..', '..'))
 MODULE = os.path.join(ROOT, 'wp-theme', 'ucan', 'inc', 'canonical.php').replace('\\', '/')
-PHP = (glob.glob(os.path.expanduser('~/AppData/Roaming/Local/lightning-services/php-*/bin/win64/php-cgi.exe')) or ['php-cgi'])[0]
+PHP = os.environ.get('UCAN_PHP') or (glob.glob(os.path.expanduser('~/AppData/Roaming/Local/lightning-services/php-*/bin/win64/php-cgi.exe')) or ['php-cgi'])[0]
 
 STUB = r"""<?php
 define('ABSPATH', '/');
