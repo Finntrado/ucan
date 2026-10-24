@@ -1603,3 +1603,13 @@ WordPress core; `http://…/wp-login.php` served the login form in clear text; `
 - **Privacy policy** gained an "Analytics Cookies (Google Analytics) - only with Your consent" paragraph (standalone + live theme). The banner copy already said "measure anonymous usage".
 - **Tests**: `test_redirects.py` (6 GA checks: injected on prod, ID, signals off, CSP, absent on local/Vercel hosts) and `_scripts/qa/ga_consent.js` (Playwright, Google mocked: zero requests before consent, loads on accept, stops + clears cookies on reject).
 - **Not done**: GA4 property settings live in Google's UI (data retention 14 months, Google signals off, internal-traffic filter) - the user should check them.
+
+---
+
+## 33. Mobile menu freeze (Oct 2026) - `_scripts/fix_menu_lock.py`, `inc/menufix.php`
+
+- **Symptom (live, worst on blog posts / newsletter issues / fellow-blogs):** tapping the burger froze the page, the menu "disappeared" (drawn ~1,400px above the screen) or did not reach the bottom, and closing jumped the scroll.
+- **Causes:** (1) live page copies had drifted - two different scroll locks (`html{overflow:hidden}` and a pinned `body{position:fixed}`) and some pages (blog posts, newsletter issues) lacked the "menu is a fixed overlay" CSS, so the open menu stretched the sticky header ~1,100px. (2) `body{overflow-x:hidden}` turns body into its own scroll box once html is `overflow:hidden`. (3) The header's backdrop-filter makes it the containing block of the fixed menu, so the menu goes wherever the header goes. (4) Pinning the body re-lays out `content-visibility:auto` sections, so restoring the scroll lands 80-450px off.
+- **Fix:** never move the page. Open = `html.ucan-menu-open{overflow:hidden}`; body `overflow-x:clip`; the menu is an explicit fixed overlay sized to the visible screen (`100dvh`, header 80px / 70px <=560px), scrolls itself, overscroll contained, closes on resize to desktop.
+- **Live delivery:** `functions.php` -> `ucan_canonical_behaviour()` swaps every served page's own `<script data-ucan="behaviour">` for `inc/behaviour.js` and adds `inc/menulock.css` (also on the 404/410 page). Live pages can no longer drift from the tested script.
+- **Test:** `_scripts/qa/menutest.js <base> [--all|page...]` (Chromium + WebKit, real touch taps - `page.tap()` auto-scrolls the element into view and fakes a scroll shift). Checks: menu on screen, last link reachable, page does not scroll behind it, same position after close, normal scrolling after.

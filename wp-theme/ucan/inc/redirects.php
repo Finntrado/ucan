@@ -180,6 +180,9 @@ function ucan_serve_error_page( $code = 404 ) {
 		ucan_log_404( $path );
 	}
 	$html = ucan_fill_placeholders( $html );
+	if ( function_exists( 'ucan_canonical_behaviour' ) ) {
+		$html = ucan_canonical_behaviour( $html );
+	}
 
 	status_header( $code );
 	header( 'Content-Type: text/html; charset=UTF-8' );

@@ -28,6 +28,7 @@ require_once __DIR__ . '/inc/subscribers.php';
 require_once __DIR__ . '/inc/canonical.php';
 require_once __DIR__ . '/inc/redirects.php';
 require_once __DIR__ . '/inc/analytics.php';
+require_once __DIR__ . '/inc/menufix.php';
 
 /**
  * The theme outputs raw HTML directly (see ucan_serve_static_page below) and
@@ -129,6 +130,7 @@ function ucan_serve_static_page() {
 	);
 
 	$html = ucan_canonicalise_head( $html, $home );
+	$html = ucan_canonical_behaviour( $html );
 	$html = ucan_inject_analytics( $html );
 
 	list( $head_extra, $foot_extra ) = ucan_run_wp_head_footer();
