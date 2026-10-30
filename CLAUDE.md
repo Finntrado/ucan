@@ -1613,3 +1613,18 @@ WordPress core; `http://…/wp-login.php` served the login form in clear text; `
 - **Fix:** never move the page. Open = `html.ucan-menu-open{overflow:hidden}`; body `overflow-x:clip`; the menu is an explicit fixed overlay sized to the visible screen (`100dvh`, header 80px / 70px <=560px), scrolls itself, overscroll contained, closes on resize to desktop.
 - **Live delivery:** `functions.php` -> `ucan_canonical_behaviour()` swaps every served page's own `<script data-ucan="behaviour">` for `inc/behaviour.js` and adds `inc/menulock.css` (also on the 404/410 page). Live pages can no longer drift from the tested script.
 - **Test:** `_scripts/qa/menutest.js <base> [--all|page...]` (Chromium + WebKit, real touch taps - `page.tap()` auto-scrolls the element into view and fakes a scroll shift). Checks: menu on screen, last link reachable, page does not scroll behind it, same position after close, normal scrolling after.
+
+---
+
+## 34. Fast pages - Apache serves prebuilt files (`wp-theme/ucan/inc/fastcache.php`)
+
+- **Why:** PageSpeed field data showed TTFB 2 s, FCP 2.8 s, LCP 2.7 s, CLS 0, so TTFB was nearly all of it. Measured: static file ~100 ms after connect, page through WordPress 450-880 ms, and redirects from apex/http boot WordPress too (+0.6 s).
+- **How:** first visit saves the exact response to `wp-content/ucan-cache/<slug>.html` (home = `__home.html`, so `/index` still 301s). A block at the top of the root `.htaccess` serves it without PHP and does the apex/http redirect for page-shaped URLs. Logged-in visitors, POST, query strings, trailing slashes, old URLs and 404s still reach WordPress.
+- **Not a cache plugin:** those skip PHP and lose the CSP/HSTS headers. `ucan-cache/.htaccess` is written from `headers_list()` right after `ucan_security_headers()`, so the headers cannot drift.
+- **Install is self-testing:** the cache folder's rules must answer a real request, the exact block must pass in a throwaway folder (a parse error only breaks that folder), then after writing the root file real requests check a page, login, query strings and both redirects. Any failure restores the file byte for byte and records `ucan_fc_state['why']`. It is not retried until the rules change.
+- **Freshness:** files are dropped on a new theme build (checked on any request that reaches PHP), on `save_post`, plugin changes, WPCode snippet changes, and daily. **After a publish, make one PHP request** (any connector call does) so the old files go.
+- **Off switch:** `wp option update ucan_fc_off 1`, then any PHP request. If PHP itself is down, delete the `# BEGIN U-CAN fast pages` block from the root `.htaccess` in the host's file manager.
+- **Check it:** a served page has `X-UCAN-Cache: HIT`. `wp option get ucan_fc_state` shows `rules` when installed or `why` when it backed out.
+- **Tests:** `_scripts/seo/test_fastcache.py` (43 scenarios, mocks the loopback requests; Apache's parsing is only proven live by the preflight step).
+- **No-store:** WordPress treats these URLs as a 404 query and sends `no-store`, which blocks the back/forward cache. `ucan_serve_static_page()` now sends `no-cache` instead.
+- **Connector trap:** the Easy MCP connector (`wp_*` tools) is attached to **pphfglobal.org**, not this site. Use WPVibe for urban.org.in.
