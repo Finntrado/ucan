@@ -7,3 +7,4 @@ _scripts/seo/out/
 # theme zips made for file-manager uploads are build artefacts, far over GitHub's 100 MB limit
 wp-theme/*.zip
 *.zip
+upload-to-wordpress/
