@@ -1628,3 +1628,14 @@ WordPress core; `http://…/wp-login.php` served the login form in clear text; `
 - **Tests:** `_scripts/seo/test_fastcache.py` (43 scenarios, mocks the loopback requests; Apache's parsing is only proven live by the preflight step).
 - **No-store:** WordPress treats these URLs as a 404 query and sends `no-store`, which blocks the back/forward cache. `ucan_serve_static_page()` now sends `no-cache` instead.
 - **Connector trap:** the Easy MCP connector (`wp_*` tools) is attached to **pphfglobal.org**, not this site. Use WPVibe for urban.org.in.
+
+---
+
+## 35. RFC Collaboration Toolkit (Nov 2026) - edited on the LIVE theme, not rebuilt
+
+- **What:** RFC hero buttons are now "Download the Collaboration Toolkit" then "Read the Phase I Report" ("What is the RFC?" removed), and a new `#toolkit` section ("Putting it into practice" / "A Toolkit for Collaboration", copy verbatim from Akshay) sits under the framework section with the PDF cover.
+- **Live delivery was surgical:** three `edit_file` edits on `pages/rfc.html` in a WPVibe draft, then publish. The live pages are an **older build without Urban Perspectives** (§29, deliberately unpublished), so writing the repo's `wp-theme/ucan/pages/rfc.html` over it would have published those links. **Never full-overwrite a live page from the repo while §29 is unpublished.**
+- **Live file locations differ from the repo:** on the live site the PDF and cover are in the WP media library (`/wp-content/uploads/2026/11/U-CAN-Collaboration-Toolkit.pdf`, `...-cover.webp`, attachments 13 and 14). The repo has the same files at `assets/docs/u-can-collaboration-toolkit-cf30d7b8.pdf` and `assets/img/collaboration-toolkit-cover-4a442496.webp`. Both work; reconcile on the next full theme publish.
+- **Live edit trap:** the live `pages/*.html` don't match the repo line-for-line, and multi-line `old_content` failed to match. Anchor `edit_file` on single lines.
+- **Getting binaries onto the server:** WPVibe can't write `.pdf`/`.webp` into the theme, and `upload_media` needs a public URL. A Vercel preview is login-protected and `_vercel_share` links need cookies, so a temporary Vercel automation-bypass secret (`?x-vercel-protection-bypass=`) was created, used for the two imports, then revoked.
+- **Pending (on hold, waiting on U-CAN):** an interactive HTML version of the toolkit (unlisted + noindex), emailed results, a per-submission results page with PDF download, and form submissions in the wp-admin dashboard next to Subscribers. Open questions: should two organisations' submissions be paired, and which parts of the form are included. Email: the domain already has Google Workspace + Brevo verified, so the plan is WP Mail SMTP + Brevo.
