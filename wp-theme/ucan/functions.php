@@ -29,6 +29,7 @@ require_once __DIR__ . '/inc/canonical.php';
 require_once __DIR__ . '/inc/redirects.php';
 require_once __DIR__ . '/inc/analytics.php';
 require_once __DIR__ . '/inc/menufix.php';
+require_once __DIR__ . '/inc/fastcache.php';
 
 /**
  * The theme outputs raw HTML directly (see ucan_serve_static_page below) and
@@ -144,6 +145,10 @@ function ucan_serve_static_page() {
 	status_header( 200 );
 	header( 'Content-Type: text/html; charset=UTF-8' );
 	ucan_security_headers();
+	// WordPress treats these URLs as a 404 query and sends no-store, which rules out instant back/forward
+	header( 'Cache-Control: no-cache' );
+	header_remove( 'Expires' );
+	ucan_fc_save( $slug, $html );
 	echo $html; // phpcs:ignore WordPress.Security.EscapeOutput -- trusted, theme-bundled page.
 	exit;
 }
