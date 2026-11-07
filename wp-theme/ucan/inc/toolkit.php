@@ -180,7 +180,7 @@ function ucan_tk_page() {
 
 	$origin = function_exists( 'ucan_public_origin' ) ? ucan_public_origin( untrailingslashit( home_url() ) ) : untrailingslashit( home_url() );
 	$api    = function_exists( 'ucan_on_origin' ) ? ucan_on_origin( esc_url_raw( rest_url( 'ucan/v1/toolkit' ) ), $origin ) : esc_url_raw( rest_url( 'ucan/v1/toolkit' ) );
-	$art    = ucan_tk_asset( 'assets/img/toolkit-cover-art-4e1ee696.webp', '/wp-content/uploads/2026/11/toolkit-cover-art-4e1ee696.webp' );
+	$art    = ucan_tk_asset( 'assets/img/toolkit-cover-art-4e1ee696.webp', '/wp-content/uploads/2026/11/Collaboration-Toolkit-cover-art.webp' );
 	$pdf    = ucan_tk_asset( 'assets/docs/u-can-collaboration-toolkit-cf30d7b8.pdf', '/wp-content/uploads/2026/11/U-CAN-Collaboration-Toolkit.pdf' );
 	$data   = wp_json_encode( ucan_tk_data(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE );
 	$repl   = array(
