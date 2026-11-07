@@ -1639,3 +1639,29 @@ WordPress core; `http://…/wp-login.php` served the login form in clear text; `
 - **Live edit trap:** the live `pages/*.html` don't match the repo line-for-line, and multi-line `old_content` failed to match. Anchor `edit_file` on single lines.
 - **Getting binaries onto the server:** WPVibe can't write `.pdf`/`.webp` into the theme, and `upload_media` needs a public URL. A Vercel preview is login-protected and `_vercel_share` links need cookies, so a temporary Vercel automation-bypass secret (`?x-vercel-protection-bypass=`) was created, used for the two imports, then revoked.
 - **Pending (on hold, waiting on U-CAN):** an interactive HTML version of the toolkit (unlisted + noindex), emailed results, a per-submission results page with PDF download, and form submissions in the wp-admin dashboard next to Subscribers. Open questions: should two organisations' submissions be paired, and which parts of the form are included. Email: the domain already has Google Workspace + Brevo verified, so the plan is WP Mail SMTP + Brevo.
+
+---
+
+## 36. Collaboration Toolkit online (`/collaboration-toolkit`) - `wp-theme/ucan/inc/toolkit*`
+
+The PDF toolkit (§35) as a paired online form. **Unlisted**: not in the nav, sitemap, llms.txt or `pages/`; `noindex, nofollow, noarchive` (meta + `X-Robots-Tag`), `Referrer-Policy: no-referrer` (the URL carries private keys), `Cache-Control: no-store`.
+
+- **Flow:** organisation A picks the parts (Parts 1+2 by default; Part 3 asks which stages are relevant, as the PDF says), rates every statement 1-5, may suggest an "Action to take" per section and Part 3 "Journey learnings", gives an email + DPDP consent, submits. A gets a private partner link `?pair=CODE` (10 chars, no 0/O/1/I/L) by screen and email. B opens it, answers the same sections without seeing A's answers, submits; joint results show at once and are emailed to A, B and `connect@urban.org.in`. Either side reopens them at `?results=KEY` (32 hex). The same partner link cannot be used twice.
+- **Files:** `inc/toolkit.php` (table, REST, scoring, emails, admin, page composer), `inc/toolkit-data.json` (every word of the PDF, verbatim - 178 strings checked against the PDF text; also in `_scripts/toolkit/`), `inc/toolkit.css`, `inc/toolkit.js`, `inc/toolkit-fragment.html`. The page is **composed per request** from `pages/about.html`'s live header/footer (like the 404 page), so it never drifts from the site and never lands in the fast-page cache.
+- **REST:** `POST /wp-json/ucan/v1/toolkit/submit` (12/hour per IP hash, honeypot `website`), `GET .../toolkit/pair/<code>`, `GET .../toolkit/result/<key>` (120/hour). Results carry names and numbers only, never email addresses.
+- **Scoring (server only, so page, email and admin always agree):** section average per organisation; band on the average rounded half up (>=3.5 strong/high, >=2.5 emerging/moderate, else needs attention/low); joint band on the mean of both averages. "What does this tell you?" row: Part 1 any red -> red, no amber -> mostly green, else mix; Part 2 any red or amber>green -> the third row, no amber -> mostly green, else mix; Part 3 has none in the PDF. Agreement = share of statements within one point; "differed most" = gaps of 2+.
+- **Emails** go through `wp_mail` (HTML, `Reply-To: connect@urban.org.in`). The host's PHP mail is unreliable: install **WP Mail SMTP + Brevo** (Brevo is already verified on the domain, see §35). Rows are stored either way; wp-admin has "Resend email".
+- **Tests:** `_scripts/qa/toolkit_e2e.js <base> [adminUser adminPass]` - 48 checks: both flows, validation, independence, results, reopen, double-submit refusal, bad keys, print view, headers, overflow at 5 widths, wp-admin list/filter/CSV, zero console errors. Run against a throwaway WordPress (SQLite integration plugin + `php -S` with a router that serves the symlinked theme's static files and maps `/dir/` to `index.php`; an mu-plugin writes mail to `wp-content/mail.log`).
+- **Live:** the cover art and PDF sit in the WP media library (`/wp-content/uploads/2026/11/…`) until the next full theme publish; `ucan_tk_asset()` prefers the theme copy when it exists.
+
+## 37. Form submissions register - every form that stores personal data
+
+All stored submissions live in this WordPress database and appear in **wp-admin > Form submissions** (one menu; each form adds its own submenu with `add_submenu_page( 'ucan-subscribers', … )` at priority 11). Keep this table current when a form is added or changed.
+
+| Form | Where on the site | Table | Rows | wp-admin | Sort / filter | Export | Erasure |
+|---|---|---|---|---|---|---|---|
+| Newsletter signup | footer `#fnform` on every page, `newsletter#subscribe` | `{prefix}ucan_subscribers` | one per email (consent record: purpose, notice version, page, UTC time) | Form submissions > Newsletter subscribers | search email; newest first | CSV | Delete row |
+| Collaboration Toolkit | `/collaboration-toolkit` (unlisted) | `{prefix}ucan_toolkit` | one per organisation; A and B of a pair share `pair_code` + `result_key` | Form submissions > Collaboration Toolkit | search org/name/email/code; status (both done / waiting); newest, oldest, org A-Z | CSV (contacts + every section's averages and result) | Delete pair (both rows) |
+| Data rights request | `/data-rights` | **none** - composes an email in the visitor's own mail client on purpose (§26, phase 7 note) | - | - | - | - | - |
+
+Rules for a new form: own table with a `notice_version` and UTC timestamp, DPDP consent checkbox naming the purpose, honeypot + per-IP-hash rate limit, everything escaped on output, CSV export with the formula-injection guard, a delete action, and a row in this table.

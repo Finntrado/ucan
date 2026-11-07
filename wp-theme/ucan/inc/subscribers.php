@@ -129,7 +129,9 @@ function ucan_subscribe_respond( $wants_json, $ok, $status ) {
 add_action(
 	'admin_menu',
 	function () {
-		add_menu_page( 'Newsletter subscribers', 'Subscribers', 'manage_options', 'ucan-subscribers', 'ucan_subscribers_admin', 'dashicons-email-alt', 26 );
+		add_menu_page( 'Newsletter subscribers', 'Form submissions', 'manage_options', 'ucan-subscribers', 'ucan_subscribers_admin', 'dashicons-email-alt', 26 );
+		// one menu for every form's stored submissions; other forms add a submenu here (see inc/toolkit.php)
+		add_submenu_page( 'ucan-subscribers', 'Newsletter subscribers', 'Newsletter subscribers', 'manage_options', 'ucan-subscribers', 'ucan_subscribers_admin' );
 	}
 );
 

@@ -30,6 +30,7 @@ require_once __DIR__ . '/inc/redirects.php';
 require_once __DIR__ . '/inc/analytics.php';
 require_once __DIR__ . '/inc/menufix.php';
 require_once __DIR__ . '/inc/fastcache.php';
+require_once __DIR__ . '/inc/toolkit.php';
 
 /**
  * The theme outputs raw HTML directly (see ucan_serve_static_page below) and
