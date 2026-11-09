@@ -70,6 +70,12 @@ function ucan_on_origin( $url, $origin ) {
 
 function ucan_is_backend_uri( $uri ) {
 	$path = (string) wp_parse_url( $uri, PHP_URL_PATH );
+	// Any direct .php entry point other than index.php (e.g. GoDaddy's one-time
+	// SSO file /deleteme.sso<hash>.php) must run on the host it was called on:
+	// a 301 to www consumed the login before it could set the auth cookie.
+	if ( preg_match( '#^/[^/]+\.php$#i', $path ) && ! preg_match( '#^/index\.php$#i', $path ) ) {
+		return true;
+	}
 	return (bool) preg_match( '#^/(wp-admin|wp-login\.php|wp-json|wp-cron\.php|xmlrpc\.php|wp-comments-post\.php)(/|$)#i', $path )
 		|| false !== strpos( (string) wp_parse_url( $uri, PHP_URL_QUERY ), 'rest_route=' );
 }
