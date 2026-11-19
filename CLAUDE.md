@@ -1666,3 +1666,9 @@ All stored submissions live in this WordPress database and appear in **wp-admin 
 | Data rights request | `/data-rights` | **none** - composes an email in the visitor's own mail client on purpose (§26, phase 7 note) | - | - | - | - | - |
 
 Rules for a new form: own table with a `notice_version` and UTC timestamp, DPDP consent checkbox naming the purpose, honeypot + per-IP-hash rate limit, everything escaped on output, CSV export with the formula-injection guard, a delete action, and a row in this table.
+
+## 38. Roots and Horizons on Our Members (Nov 2026) - live, surgical edit
+
+- New `#roots-and-horizons` section (cover + PDF + `DigitalDocument` JSON-LD) between Member Organisations and Friends of U-CAN; Friends switched to plain `.sec` so backgrounds alternate. Copy is verbatim from the booklet's Foreword. The user asked for it here even though the content PDF had moved Roots and Horizons to Impact.
+- Live copy = one `edit_file` on `pages/our-members.html` (same reason as §35: never full-overwrite live pages while §29 is unpublished). On the live site the files are in the media library (`/wp-content/uploads/2026/11/Roots-and-Horizons-cover.webp`, attachment 17; `...Roots-and-Horizons-U-CAN-Members-in-Focus.pdf`, attachment 18), and the live section carries its CSS and JSON-LD inline beside it. The repo uses `assets/` paths and merges the JSON-LD into the page graph. Reconcile on the next full theme publish.
+- Files reached WordPress via a temporary Vercel automation-bypass secret on the branch preview, revoked straight after (same method as §35).
