@@ -1489,8 +1489,9 @@ phase: nothing here counts as verified until it's actually been run.
 
 ## 29. SEO / AEO / GEO — "Urban Perspectives" (built, NOT yet live on urban.org.in)
 
-**Status: built in the repo and previewable on the Vercel copy; nothing has been published to
-urban.org.in** (user instruction: "no need to publish these pages or menu now").
+**Status: built in the repo and previewable on the Vercel copy. Nov 2026: the user decided to publish them**
+(supersedes the earlier "no need to publish these pages or menu now"). They go live with the first real run of the
+deploy workflow (§36). `llms.txt` and the 404 suggestions were regenerated with `--with-perspectives` for that.
 
 - **The Vercel copy is noindexed**: `vercel.json` sends `X-Robots-Tag: noindex, nofollow, noarchive,
   nosnippet` for host `u-can-puce.vercel.app` (a `has: host` rule, so a real domain attached
@@ -1656,7 +1657,7 @@ User-requested keyword slug. `standalone/rfc.html` is now `standalone/enabling-c
 3. Run the workflow once as a **dry run** and read the itemized list before enabling anything.
 
 **Why the first dry run matters - the live theme is NOT a clean copy of the repo (found Nov 2026):**
-- The repo's theme contains the **unpublished Urban Perspectives pages + menu** (§29; user instruction "no need to publish these now"). A sync publishes them, and the new menu item appears on every page. Decide first: publish them, or hold the deploy.
+- The repo's theme contains the Urban Perspectives pages + menu (§29). **Decision (Nov 2026): publish them.** The sync makes them live and the new menu item appears on every page.
 - The live theme has 176 `pages/*.html`, the repo 183 (6 Perspectives pages + `404.html`), and common pages differ in size in both directions (e.g. live `index.html` 126.2 KB vs repo 125.7 KB, `city-mixers` 121.8 vs 120.7), so the live copy carries edits, or an older build, that the repo does not. `--delete` plus `--checksum` will overwrite all of it.
 - Live-only edits found so far: the **Roots and Horizons** section on `our-members` (added directly on the server, §18). It has now been ported into `standalone/our-members.html` (with the 3D-book cover) so a sync cannot delete it. The booklet PDF and cover stay in the WP media library (`/wp-content/uploads/2026/11/`), referenced by root-absolute URL, so they work on WordPress but not on the Vercel preview; `linkaudit.js` skips `/wp-content/uploads/` for that reason. The live version also changed the Friends of U-CAN section from `sec alt` to `sec`; mirrored.
 

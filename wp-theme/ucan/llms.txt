@@ -21,6 +21,15 @@ Homepage: https://www.urban.org.in/
 - [Our Members](https://www.urban.org.in/our-members): Meet the organisations powering U-CAN's work, from founding members to Friends of U-CAN.
 - [Our Impact](https://www.urban.org.in/impact): See U-CAN's impact in numbers and stories, from peer learning networks and the Request for Collaboration to the Fellowship, City Mixers and Roots and Horizons.
 
+## Urban Perspectives (knowledge series)
+
+- [Urban Perspectives: Urban Governance in India](https://www.urban.org.in/urban-perspectives): Urban Perspectives: U-CAN's knowledge series on how India's cities are governed, from sustainable development and collaboration to municipal reform and inclusion.
+- [Sustainable Urban Development in India: Explained](https://www.urban.org.in/sustainable-urban-development-india): Sustainable urban development in India is about governance, not just infrastructure: strong institutions, climate resilience, participation and collaboration.
+- [Urban Collaboration Checklist: A Free 10-Step Framework](https://www.urban.org.in/urban-collaboration-checklist): A practical 10-step Urban Collaboration Checklist for cities: define the problem, test readiness, agree roles, measure outcomes. Free one-page PDF.
+- [Citizen-Centric Urban Solutions for Indian Cities](https://www.urban.org.in/citizen-centric-urban-solutions): How to design Indian cities around the people who live in them: participation, feedback loops, digital access and measuring what residents actually experience.
+- [Municipal Government Reform in India: Powers & Finance](https://www.urban.org.in/municipal-government-reform-india): Municipal government reform in India: why city governments need the authority, money, people and accountability to match their duties. With a checklist.
+- [Inclusive Urban Governance in India: Who Gets a Voice?](https://www.urban.org.in/inclusive-urban-governance-india): Inclusive urban governance in India: who is missing from city decisions, and how representation, access, voice and accountability make cities work for all.
+
 ## Initiatives
 
 - [Urban Reforms Collective (URC)](https://www.urban.org.in/urban-reforms-collective): The Urban Reforms Collective (URC) is a pan-India platform convened by U-CAN, bringing organisations together to shape and champion systemic urban reforms.
