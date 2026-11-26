@@ -32,7 +32,7 @@ Homepage: https://www.urban.org.in/
 
 ## Initiatives
 
-- [Urban Reforms Collective (URC)](https://www.urban.org.in/urban-reforms-collective): The Urban Reforms Collective (URC) is a pan-India platform convened by U-CAN, bringing organisations together to shape and champion systemic urban reforms.
+- [Urban Reforms Collective (URC)](https://www.urban.org.in/urban-reforms-initiative): The Urban Reforms Collective (URC) is a pan-India platform convened by U-CAN, bringing organisations together to shape and champion systemic urban reforms.
 - [Request for Collaboration (RFC)](https://www.urban.org.in/enabling-collaboration-indias-urban-ecosystem): The Request for Collaboration (RFC) is U-CAN's initiative exploring how organisations move from intent to practice, testing what real collaboration requires.
 - [Learning Network for Urban Managers](https://www.urban.org.in/learning-network): The Learning Network for Urban Managers is a peer-driven platform run by Artha Global, with the support of U-CAN, enabling municipal officials to learn from each other's real city challenges.
 - [The U-CAN Fellowship](https://www.urban.org.in/fellowship): The U-CAN Fellowship is a year-long program placing women leaders inside urban institutions across India. See what the 2024-25 cohort built.

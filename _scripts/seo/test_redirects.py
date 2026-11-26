@@ -161,7 +161,7 @@ ok('404: status 404', 'Status: 404' in o, o[:200])
 ok('404: heading + popular pages', "This page isn't here" in o and 'Popular pages' in o and 'href="/about"' in o)
 ok('404: noindex header + meta', 'X-Robots-Tag: noindex' in o and 'name="robots" content="noindex, follow"' in o)
 ok('404: no canonical, no JSON-LD, no unresolved placeholders', 'rel="canonical"' not in o and 'ld+json' not in o and '%%UCAN' not in o)
-ok('404: "did you mean" suggests the right page for a typo', 'Did you mean' in o and 'href="/urban-reforms-collective"' in o, re.findall(r'e404-sugg.{0,300}', o)[:1])
+ok('404: "did you mean" suggests the right page for a typo', 'Did you mean' in o and 'href="/urban-reforms-initiative"' in o, re.findall(r'e404-sugg.{0,300}', o)[:1])
 ok('404: stops after rendering (exit)', 'AFTER' not in o)
 ok('404: assets/links resolved to the www origin', 'https://www.urban.org.in/wp-content/themes/ucan/assets' in o)
 ok('404: pending (unpublished) pages are not linked or suggested', 'urban-perspectives' not in o[o.find('<main'):o.find('</main>')] and 'urban-collaboration-checklist' not in o[o.find('<main'):o.find('</main>')])  # the menu comes from the shell page

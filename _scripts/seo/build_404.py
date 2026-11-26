@@ -41,7 +41,7 @@ WITH_P = '--with-perspectives' in sys.argv
 POPULAR = [
     ('about', 'About U-CAN', 'Who we are and what we do'),
     ('impact', 'Our impact', 'The network in numbers and stories'),
-    ('urban-reforms-collective', 'Urban Reforms Collective', 'A pan-India platform for systemic urban reform'),
+    ('urban-reforms-initiative', 'Urban Reforms Collective', 'A pan-India platform for systemic urban reform'),
     ('enabling-collaboration-indias-urban-ecosystem', 'Request for Collaboration', 'From intent to practice, together'),
     ('fellowship', 'The U-CAN Fellowship', 'Women leaders inside urban institutions'),
     ('learning-network', 'Learning Network', 'Peer learning for municipal officials'),

@@ -43,7 +43,7 @@ to('fellow-blogs', 'blogs-by-fellows')
 to('meet-the-fellows', 'meet-the-fellows-2', 'shashi-meet-the-fellows')
 to('ld-calendar', 'fellowship-ld-2', 'category/past-sessions', 'category/upcoming-sessions')
 to('annual-forum-2025', 'the-u-can-annual-forum-2025-2', 'the-u-can-summit', 'category/u-can-summit')
-to('urban-reforms-collective', 'urban-reforms-collective-championing-a-collective-reform-agenda-for-indias-cities')
+to('urban-reforms-initiative', 'urban-reforms-collective', 'urban-reforms-collective-championing-a-collective-reform-agenda-for-indias-cities')
 to('enabling-collaboration-indias-urban-ecosystem', 'rfc', 'requests-for-collaboration', 'from-parellel-to-together-building-a-collaboration-practice-for-indias-urban-ecosystem')
 to('fellowship', 'u-can-fellowship-report-2025', 'u-can-fellowship-2024-2025', 'u-can-fellowship-2024-2025-first-draft',
    'citizen-engagement-fellowship', 'citizen-engagement-fellowship-2', 'civic-leader-fellowship-application',

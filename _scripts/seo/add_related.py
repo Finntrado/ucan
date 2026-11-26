@@ -23,7 +23,7 @@ from articles_config import ARTICLES, RELATED_BLURB, SITE  # noqa: E402
 
 ROOT = os.path.normpath(os.path.join(HERE, '..', '..'))
 STANDALONE = os.path.join(ROOT, 'standalone')
-TARGETS = ['urban-reforms-collective', 'enabling-collaboration-indias-urban-ecosystem', 'learning-network']
+TARGETS = ['urban-reforms-initiative', 'enabling-collaboration-indias-urban-ecosystem', 'learning-network']
 
 CSS = ('<style data-ucan="upl">.upl{background:var(--paper-alt,#E9F5F2);border-top:1px solid var(--line,#DCEAE6)}'
        '.upl .wrap{padding-top:clamp(36px,5vw,64px);padding-bottom:clamp(36px,5vw,64px)}'

@@ -170,7 +170,7 @@ return array(
 	'terms-of-use' => 'Terms of Use',
 	'urban-collaboration-checklist' => 'Urban Collaboration Checklist: A Free 10-Step Framework',
 	'urban-perspectives' => 'Urban Perspectives: Urban Governance in India',
-	'urban-reforms-collective' => 'Urban Reforms Collective (URC)',
+	'urban-reforms-initiative' => 'Urban Reforms Collective (URC)',
 	'webinar-beyond-silos-the-case-for-collective-action-copy' => 'Working Across Organisations: What Does It Really Take?',
 	'webinar-beyond-silos-the-case-for-collective-action' => 'Beyond Silos: The Case for Collective Action',
 	'webinar-policy-webinar-affordable-urban-housing' => 'Policy Webinar: Affordable Urban Housing',

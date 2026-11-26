@@ -51,13 +51,6 @@ UCAN_NOWDOC_END;
 		$new_css = <<<'UCAN_NOWDOC_END'
 @@NEW_CSS_TAIL@@
 UCAN_NOWDOC_END;
-		$old_mk = <<<'UCAN_NOWDOC_END'
-@@OLD_MARKUP@@
-UCAN_NOWDOC_END;
-		$new_mk = <<<'UCAN_NOWDOC_END'
-@@NEW_MARKUP@@
-UCAN_NOWDOC_END;
-
 		$orig = array(); // path => original contents (only files that change)
 		$plan = array(); // path => new contents
 
@@ -89,15 +82,25 @@ UCAN_NOWDOC_END;
 				throw new Exception( 'cannot read our-members.html' );
 			}
 			$base = isset( $orig[ $om ] ) ? $orig[ $om ] : $s;
-			foreach ( array( array( $old_css, $new_css, 'cover CSS' ), array( $old_mk, $new_mk, 'cover markup' ) ) as $p ) {
-				$c = substr_count( $s, $p[0] );
-				if ( 1 === $c ) {
-					$s = str_replace( $p[0], $p[1], $s );
-				} elseif ( 0 === $c && 1 === substr_count( $s, $p[1] ) ) {
-					$log[] = 'Our Members ' . $p[2] . ': already applied.';
-				} else {
-					throw new Exception( 'Our Members ' . $p[2] . ' did not match exactly once (' . $c . ')' );
+			$c = substr_count( $s, $old_css );
+			if ( 1 === $c ) {
+				$s = str_replace( $old_css, $new_css, $s );
+			} elseif ( 0 === $c && 1 === substr_count( $s, $new_css ) ) {
+				$log[] = 'Our Members cover CSS: already applied.';
+			} else {
+				throw new Exception( 'Our Members cover CSS did not match exactly once (' . $c . ')' );
+			}
+			// markup: wrap the cover <img> (found by its file name, so other attributes and the
+			// whitespace / line endings around it do not matter)
+			if ( false !== strpos( $s, '<span class="tk-book">' ) ) {
+				$log[] = 'Our Members cover markup: already applied.';
+			} else {
+				$img_re = '~<img src="/wp-content/uploads/2026/11/Roots-and-Horizons-cover\.webp"[^>]*>~';
+				$c      = preg_match_all( $img_re, $s );
+				if ( 1 !== $c ) {
+					throw new Exception( 'Our Members cover image tag found ' . (int) $c . ' times, expected 1' );
 				}
+				$s = preg_replace( $img_re, '<span class="tk-book"><span class="tk-back"></span>$0<span class="tk-gloss"></span></span>', $s, 1 );
 			}
 			if ( $s !== $base ) {
 				$orig[ $om ] = $base;

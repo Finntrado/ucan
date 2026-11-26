@@ -46,7 +46,7 @@ FRIENDS = ['Mahila Housing Trust', 'Indian Institute of Science (IISc)', 'C40 Ci
 
 SECTIONS = [
     ('About U-CAN', ['about', 'our-people', 'our-members', 'impact']),
-    ('Initiatives', ['urban-reforms-collective', 'enabling-collaboration-indias-urban-ecosystem', 'learning-network', 'fellowship', 'meet-the-fellows',
+    ('Initiatives', ['urban-reforms-initiative', 'enabling-collaboration-indias-urban-ecosystem', 'learning-network', 'fellowship', 'meet-the-fellows',
                      'fellow-blogs', 'ld-calendar']),
     ('Events', ['city-mixers', 'annual-forum-2025']),
     ('Media', ['newsletter', 'city-champions', 'policy-webinars']),

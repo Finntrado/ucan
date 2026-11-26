@@ -108,6 +108,16 @@
   ],
   "redirects": [
     {
+      "source": "/urban-reforms-collective",
+      "destination": "/urban-reforms-initiative",
+      "statusCode": 301
+    },
+    {
+      "source": "/urban-reforms-collective/",
+      "destination": "/urban-reforms-initiative",
+      "statusCode": 301
+    },
+    {
       "source": "/rfc",
       "destination": "/enabling-collaboration-indias-urban-ecosystem",
       "statusCode": 301
