@@ -26,7 +26,9 @@ for (const f of pages) {
   if (/[\x00-\x08\x0B\x0C\x0E-\x1F]/.test(s)) corrupt.push(f);
   for (const m of s.matchAll(/(?:href|src)="([^"#?][^"]*)"/g)) {
     let t = m[1];
-    if (/^(https?:|mailto:|tel:|data:|#|\/\/)/.test(t) || t === '/') continue;
+    // /wp-content/uploads/ is WordPress's media library on the live server (e.g. the
+    // Roots and Horizons cover + PDF): it is deliberately not in this repo.
+    if (/^(https?:|mailto:|tel:|data:|#|\/\/|\/wp-content\/uploads\/)/.test(t) || t === '/') continue;
     t = t.replace(/^\.\//, '').split('#')[0].split('?')[0];
     if (!t || have.has(t) || have.has(t.replace(/\.html$/, '')) ||
         fs.existsSync(path.join(DIR, t))) continue;

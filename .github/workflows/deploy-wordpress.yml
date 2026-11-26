@@ -1,0 +1,163 @@
+name: Deploy theme to urban.org.in
+
+# Push to main  ->  build the WordPress theme from standalone/  ->  sync it to
+# wp-content/themes/ucan on the server over SSH  ->  clear the fast-page cache
+# and smoke-test the live site.
+#
+# Only the theme folder is touched. wp-content/uploads (the media library),
+# plugins, the database and wp-config.php are never read or written here.
+#
+# One-time setup: see CLAUDE.md section 36 (repository secrets + the
+# "production" environment).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'standalone/**'
+      - 'wp-theme/**'
+      - '_scripts/wp/**'
+      - '.github/workflows/deploy-wordpress.yml'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run: show what would change on the server, upload nothing'
+        type: boolean
+        default: true
+
+# Two deploys must never run at once (rsync --delete against a half-synced folder).
+concurrency:
+  group: deploy-wordpress
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    # Safe by default: a push only deploys once you set the repository VARIABLE
+    # DEPLOY_ENABLED to "true" (Settings > Secrets and variables > Actions > Variables).
+    # A manual run (Actions > Run workflow) always works, and defaults to a dry run.
+    if: github.event_name == 'workflow_dispatch' || vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: production   # secrets live here; add required reviewers in repo Settings if you want an approval gate
+    env:
+      SITE: https://www.urban.org.in
+      # a push deploys for real; a manual run defaults to a dry run
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build the theme from standalone/
+        run: python _scripts/wp/build_static_theme.py
+
+      - name: Sanity-check the build
+        run: |
+          set -eu
+          theme=wp-theme/ucan
+          for f in functions.php index.php style.css redirects.php redirects-extra.php pages/index.html pages/about.html; do
+            test -s "$theme/$f" || { echo "::error::missing or empty $theme/$f"; exit 1; }
+          done
+          pages=$(ls "$theme/pages" | wc -l)
+          echo "pages in theme: $pages"
+          test "$pages" -ge 150 || { echo "::error::only $pages pages built, expected 150+"; exit 1; }
+          # every page in standalone/ must exist in the theme, and nothing stale may be left behind
+          for f in standalone/*.html; do
+            test -f "$theme/pages/$(basename "$f")" || { echo "::error::$f was not built into the theme"; exit 1; }
+          done
+          for f in "$theme"/pages/*.html; do
+            test -f "standalone/$(basename "$f")" || { echo "::error::stale theme page with no source: $f (git rm it)"; exit 1; }
+          done
+
+      - name: Check the deploy settings
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -eu
+          for v in DEPLOY_HOST DEPLOY_USER DEPLOY_PATH DEPLOY_SSH_KEY DEPLOY_KNOWN_HOSTS; do
+            eval "val=\${$v}"
+            test -n "$val" || { echo "::error::secret $v is not set (see CLAUDE.md section 36)"; exit 1; }
+          done
+          # rsync --delete is only safe against the theme folder itself
+          case "$DEPLOY_PATH" in
+            */wp-content/themes/ucan|*/wp-content/themes/ucan/) ;;
+            *) echo "::error::DEPLOY_PATH must end in /wp-content/themes/ucan (got a different folder), refusing to sync"; exit 1 ;;
+          esac
+
+      - name: Set up SSH
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          set -eu
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Sync theme to the server
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -eu
+          port="${DEPLOY_PORT:-22}"
+          dest="${DEPLOY_PATH%/}/"
+          ssh_cmd="ssh -i $HOME/.ssh/deploy_key -p $port -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$HOME/.ssh/known_hosts"
+          flags="-rltz --checksum --delete --omit-dir-times --chmod=D755,F644 --exclude=.git --exclude=.github --stats"
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "DRY RUN: nothing will be uploaded or deleted"
+            flags="$flags --dry-run --itemize-changes"
+          fi
+          rsync $flags -e "$ssh_cmd" wp-theme/ucan/ "$DEPLOY_USER@$DEPLOY_HOST:$dest"
+
+      - name: Drop the fast-page cache
+        if: env.DRY_RUN != 'true'
+        run: |
+          # A request that reaches PHP makes WordPress notice the new theme build and
+          # delete wp-content/ucan-cache (otherwise Apache keeps serving old pages).
+          # A query string always bypasses the cached files.
+          for i in 1 2 3; do
+            curl -fsS -o /dev/null --max-time 30 "$SITE/?deploy=${GITHUB_SHA}" && break
+            sleep 5
+          done
+
+      - name: Smoke-test the live site
+        if: env.DRY_RUN != 'true'
+        run: |
+          set -u
+          fail=0
+          code() { curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$1"; }
+          want200() {
+            for i in 1 2 3; do c=$(code "$SITE$1"); [ "$c" = 200 ] && { echo "ok   200 $1"; return; }; sleep 5; done
+            echo "::error::$1 returned $c, expected 200"; fail=1
+          }
+          want301() {
+            # $1 old path, $2 expected Location path
+            for i in 1 2 3; do
+              h=$(curl -s -o /dev/null -D - --max-time 30 "$SITE$1")
+              c=$(printf '%s' "$h" | head -1 | awk '{print $2}')
+              l=$(printf '%s' "$h" | tr -d '\r' | awk -F': ' 'tolower($1)=="location"{print $2}')
+              [ "$c" = 301 ] && case "$l" in *"$2") echo "ok   301 $1 -> $l"; return;; esac
+              sleep 5
+            done
+            echo "::error::$1 gave $c ($l), expected 301 to $2"; fail=1
+          }
+          want200 /
+          want200 /about
+          want200 /enabling-collaboration-indias-urban-ecosystem
+          want200 /sitemap.xml
+          want301 /rfc /enabling-collaboration-indias-urban-ecosystem
+          exit $fail

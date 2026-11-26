@@ -514,7 +514,7 @@ The last PDF-backed pages are built. 34 pages → **59**.
 
 | Page | Source |
 |---|---|
-| `our-members.html` | PDF p.57 verbatim. Both H2 casing fixes applied ("our members" → **Member Organisations**, "friends of u-can" → **Friends of U-CAN**) and the PDF's alt text on all 11 logos. Logos were lifted from `index.html`, where they were already base64-inlined — no re-download. **"Roots and Horizons" is deliberately absent**: the PDF moves it to Impact. |
+| `our-members.html` | PDF p.57 verbatim. Both H2 casing fixes applied ("our members" → **Member Organisations**, "friends of u-can" → **Friends of U-CAN**) and the PDF's alt text on all 11 logos. Logos were lifted from `index.html`, where they were already base64-inlined — no re-download. **"Roots and Horizons"** was absent (the PDF moves it to Impact) until the live site added a "U-CAN members in focus" section on this page by hand; it is now in the repo too, with a CSS 3D-book cover (see §36). |
 | `fellowship.html` | PDF pp.20–22 verbatim. Note the PDF **rewrites** the live page (past tense, "women leaders", inaugural cohort framing) — the PDF wins. |
 | `meet-the-fellows.html` | PDF p.26, including its exact `alt` strings. |
 | `profile-fellow-<slug>.html` ×8 | Bios/photos/host org from `urban.org.in/<slug>/`; title tag + meta description verbatim from PDF pp.27–28. |
@@ -1641,3 +1641,25 @@ User-requested keyword slug. `standalone/rfc.html` is now `standalone/enabling-c
 - **After deploy:** `wp-content/ucan-cache/rfc.html` may still be served by Apache without PHP until the cache is dropped (§34). Make one PHP request (any 404 URL) after the new theme is live, then check `/rfc` returns 301.
 - Test: `_scripts/seo/test_redirects.py` has two new table rows; run it where `php-cgi` exists (not available in the Claude cloud container, where the resolver was checked directly with PHP CLI instead).
 
+
+---
+
+## 36. Push-to-deploy: GitHub Action -> wp-content/themes/ucan (`.github/workflows/deploy-wordpress.yml`)
+
+**What it does:** build the theme (`_scripts/wp/build_static_theme.py`), sanity-check it (every `standalone/*.html` built, no stale `pages/*.html`), `rsync --checksum --delete` `wp-theme/ucan/` to the server's theme folder over SSH, make one PHP request so the fast-page cache is dropped (§34), then smoke-test (`/`, `/about`, the RFC page, `/sitemap.xml` return 200; `/rfc` returns 301). It never touches `wp-content/uploads`, plugins, the database or `wp-config.php`, and refuses to run unless `DEPLOY_PATH` ends in `/wp-content/themes/ucan`.
+
+**Safe by default:** a manual run (Actions > "Deploy theme to urban.org.in" > Run workflow) defaults to a **dry run** that lists what would change. A push to `main` only deploys once the repository *variable* `DEPLOY_ENABLED` = `true`.
+
+**One-time setup (needs the host's SSH access; nothing secret goes in chat):**
+1. Make a deploy-only key on your own machine: `ssh-keygen -t ed25519 -N "" -C github-deploy -f ucan-deploy`. Add `ucan-deploy.pub` to the server user's `~/.ssh/authorized_keys` (hPanel/cPanel: SSH access). The host needs `rsync` installed (most do); if not, an SFTP variant is needed.
+2. GitHub > repo Settings > Environments > **production** > add secrets: `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PORT` (optional, default 22), `DEPLOY_PATH` (e.g. `/home/USER/public_html/wp-content/themes/ucan`), `DEPLOY_SSH_KEY` (contents of `ucan-deploy`), `DEPLOY_KNOWN_HOSTS` (output of `ssh-keyscan -p PORT HOST`, ideally checked against the fingerprint in the host panel). Optionally add required reviewers on that environment for an approval gate.
+3. Run the workflow once as a **dry run** and read the itemized list before enabling anything.
+
+**Why the first dry run matters - the live theme is NOT a clean copy of the repo (found Nov 2026):**
+- The repo's theme contains the **unpublished Urban Perspectives pages + menu** (§29; user instruction "no need to publish these now"). A sync publishes them, and the new menu item appears on every page. Decide first: publish them, or hold the deploy.
+- The live theme has 176 `pages/*.html`, the repo 183 (6 Perspectives pages + `404.html`), and common pages differ in size in both directions (e.g. live `index.html` 126.2 KB vs repo 125.7 KB, `city-mixers` 121.8 vs 120.7), so the live copy carries edits, or an older build, that the repo does not. `--delete` plus `--checksum` will overwrite all of it.
+- Live-only edits found so far: the **Roots and Horizons** section on `our-members` (added directly on the server, §18). It has now been ported into `standalone/our-members.html` (with the 3D-book cover) so a sync cannot delete it. The booklet PDF and cover stay in the WP media library (`/wp-content/uploads/2026/11/`), referenced by root-absolute URL, so they work on WordPress but not on the Vercel preview; `linkaudit.js` skips `/wp-content/uploads/` for that reason. The live version also changed the Friends of U-CAN section from `sec alt` to `sec`; mirrored.
+
+**Rollback:** revert the commit on `main` (the workflow redeploys the previous theme), or re-run it on an older commit. WPVibe's publish backup does not apply to this path.
+
+**Traps:** the theme build never deletes pages that left `standalone/` (the sanity step fails the run if a stale `pages/*.html` exists - `git rm` it, see §35). `--checksum` is required because CI checkouts give every file a fresh mtime. Do not run two deploys at once (the workflow's `concurrency` group serialises them).
