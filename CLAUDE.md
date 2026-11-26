@@ -1664,3 +1664,12 @@ User-requested keyword slug. `standalone/rfc.html` is now `standalone/enabling-c
 **Rollback:** revert the commit on `main` (the workflow redeploys the previous theme), or re-run it on an older commit. WPVibe's publish backup does not apply to this path.
 
 **Traps:** the theme build never deletes pages that left `standalone/` (the sanity step fails the run if a stale `pages/*.html` exists - `git rm` it, see §35). `--checksum` is required because CI checkouts give every file a fresh mtime. Do not run two deploys at once (the workflow's `concurrency` group serialises them).
+
+---
+
+## 37. Why the connector cannot publish the theme, and the server-side one-off method (Nov 2026)
+
+- **Cause of the failed publishes:** `publish_draft_theme` copies the whole ~325 MB theme (plus a backup zip) inside one PHP request. WPVibe's connection report shows `Maximum execution time of 30 seconds exceeded` in `sodium_compat`. Raising the limit with a WPCode snippet only moved the failure from a fast 500 to a 60 s client timeout. **Do not retry the publish; it will not become reliable on this host.** The permanent fix is the GitHub deploy (§36) or moving the heavy media out of the theme folder.
+- **Method for small live changes meanwhile:** a WPCode PHP snippet (location `admin_only`, hook `admin_init`, `manage_options` only) that edits the live theme files directly: backup first to `wp-content/ucan-backup-<name>-<date>/`, exact-once string replacement, atomic writes, automatic rollback on any failure, runs once (option flag). The user enables it in wp-admin (only they can). `_scripts/wp/oneoff_rfc_rename/` holds the template, generator and test harness: the harness runs the real snippet against a fixture of the theme (success run + forced mid-way failure proving rollback). Copy that pattern for the next change.
+- **The live theme has files the repo does not** (found Nov 2026): `inc/toolkit.php`, `inc/toolkit.js`, `inc/toolkit.css`, `inc/toolkit-data.json`, `inc/toolkit-fragment.html` (the "tk-" classes), and the live `functions.php` is 214 lines vs the repo's 212. **A repo-to-live sync with `--delete` (§36) would delete the toolkit.** Before the first real deploy, pull those files into the repo (or exclude them in the rsync) and diff `functions.php`.
+- **RFC rename status:** done in the repo (§35). Live: applied by snippet "U-CAN one-time: rename RFC page + 3D book" (WPCode id 22); check `wp option get ucan_rfc_rename_log`.
