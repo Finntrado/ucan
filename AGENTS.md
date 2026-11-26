@@ -816,3 +816,14 @@ read it, so the listing and the profiles cannot disagree.
 ### Better routes, when the user is ready
 - **GitHub deploy (section 36):** needs the host's SFTP/SSH details (GoDaddy panel > SSH Access, or whoever hosts the WordPress site) and the repo's live-only toolkit files merged first. It removes the need for every step above.
 - **Change Manager (optional idea, not built):** one reviewed, permanent snippet that stores change requests as data (rename page, replace text, relabel link, add redirect) and shows them under Tools > Site changes with Approve / Rollback buttons, so the user clicks Approve instead of enable/update/disable. Only build it if the user asks: it is a standing capability on the live site, and its admin page and connector hand-off cannot be tested without a real WordPress.
+
+### 39a. STANDING RULE (user, Nov 2026): follow the best route, and security comes first
+Order of priority for every live change: **1. security, 2. not breaking the site, 3. speed.** If a faster route is less safe, take the safer one and say so.
+
+- **Best route:** the GitHub deploy (section 36) once the host's SFTP/SSH details exist; until then the tested one-time snippet route above. Never fall back to untested edits or to `publish_draft_theme` to save time.
+- **Least privilege, always:** snippets only touch the files they name (theme `pages/` + a few data files), run only for `manage_options` users inside wp-admin, accept no user input, and run no received code. Anything broader needs the user's explicit OK first.
+- **Nothing runs without the user:** snippets are saved OFF and only the user enables them (that is the approval). Never ask for, paste or store passwords, keys, tokens or Application Passwords in chat, files or commits; credentials go only into GitHub Secrets or the host panel, entered by the user. Deploy keys are deploy-only and scoped to the theme folder.
+- **Reversible or not at all:** every change is backed up first, written atomically, and rolled back automatically on failure; test the failure path before shipping. Prefer changes that can be undone by a reverse snippet.
+- **Never weaken** HTTPS/HSTS, the CSP and security headers, the consent-gated analytics, the DPDP consent flows, the robots/canonical rules or the noindex on the Vercel preview (section 27a, section 29, section 30, section 32). No third-party scripts, no widened CSP, no new external fetches without the user's explicit approval.
+- **Leave no standing access behind:** deactivate one-time snippets after use, delete stale drafts, keep the connector's access to what is needed, and tell the user when an Application Password or connector can be revoked (wp-admin > Users > Profile > Application Passwords).
+- **Say it when something looks risky** (drift between the live theme and the repo, backup folders accumulating, a host setting that cannot be verified), instead of working around it silently.
