@@ -156,7 +156,6 @@ return array(
 	'newsletter/urban-collectiveaction-network-newsletter-january-2024' => 'newsletter-urban-collectiveaction-network-newsletter-january-2024',
 	'newsletter/urban-collectiveaction-network-newsletter-march-2024' => 'newsletter-urban-collectiveaction-network-newsletter-march-2024',
 	'ramya-ma' => 'profile-fellow-ramya-ma',
-	'requests-for-collaboration' => 'rfc',
 	'sharathappriyaa-venkatesan' => 'profile-fellow-sharathappriyaa-venkatesan',
 	'shreya-krishnan' => 'profile-fellow-shreya-krishnan',
 	'shubhi-kesarwani' => 'profile-fellow-shubhi-kesarwani',

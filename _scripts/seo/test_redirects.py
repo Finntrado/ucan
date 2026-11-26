@@ -81,6 +81,8 @@ def ok(name, cond, detail=''):
 first_upload = re.search(r"'(wp-content/uploads/[^']+)' => '([^']+)'", open(os.path.join(THEME, 'redirects-extra.php'), encoding='utf-8').read())
 TABLE = {
     'about-us-2': [301, '/about'],
+    'rfc': [301, '/enabling-collaboration-indias-urban-ecosystem'],
+    'requests-for-collaboration/': [301, '/enabling-collaboration-indias-urban-ecosystem'],
     'About-Us-2/': [301, '/about'],
     'category/fellow-blogs/page/3': [301, '/fellow-blogs'],
     'category/manisha': [301, '/profile-fellow-manisha-bisht'],

@@ -23,7 +23,7 @@ ucan/
 │   ├── newsletter.html
 │   ├── newsletter-urban-brief-june-2026.html
 │   ├── urban-reforms-collective.html
-│   ├── rfc.html
+│   ├── enabling-collaboration-indias-urban-ecosystem.html   # Request for Collaboration (was rfc.html)
 │   ├── city-mixers.html
 │   ├── annual-forum-2025.html
 │   └── profile-<slug>.html          # 23 member profiles, generated — see §14
@@ -281,7 +281,7 @@ git push origin main
 | `newsletter.html` | Newsletter — Urban Governance Updates | Newsletter — Urban Governance Updates | Done, in repo (wasn't in the original chat's inventory — recovered from a saved snapshot) |
 | `newsletter-urban-brief-june-2026.html` | The Urban Brief — June 2026 (newsletter detail) | The Urban Brief — June 2026 | Done, in repo (also not in the original inventory) |
 | `urban-reforms-collective.html` | Urban Reforms Collective (URC) | Championing a Collective Reform Agenda for India's Cities | **Rebuilt from scratch** — see §12 |
-| `rfc.html` | Request for Collaboration (RFC) | Enabling Collaboration as a Way of Working in India's Urban Ecosystem | **Rebuilt from scratch** — see §12 |
+| `enabling-collaboration-indias-urban-ecosystem.html` | Request for Collaboration (RFC) | Enabling Collaboration as a Way of Working in India's Urban Ecosystem | **Rebuilt from scratch** — see §12 |
 | `city-mixers.html` | U-CAN City Mixers (11 events) | U-CAN City Mixers | **Built** — see §16 |
 | `annual-forum-2025.html` | The U-CAN Annual Forum 2025 | The U-CAN Annual Forum 2025 | **Built** — see §16 |
 | `our-members.html` | Our Members (8 orgs + 3 Friends) | Our Members | **Built** — see §18 |
@@ -1628,3 +1628,16 @@ WordPress core; `http://…/wp-login.php` served the login form in clear text; `
 - **Tests:** `_scripts/seo/test_fastcache.py` (43 scenarios, mocks the loopback requests; Apache's parsing is only proven live by the preflight step).
 - **No-store:** WordPress treats these URLs as a 404 query and sends `no-store`, which blocks the back/forward cache. `ucan_serve_static_page()` now sends `no-cache` instead.
 - **Connector trap:** the Easy MCP connector (`wp_*` tools) is attached to **pphfglobal.org**, not this site. Use WPVibe for urban.org.in.
+
+---
+
+## 35. RFC page renamed: `/rfc` -> `/enabling-collaboration-indias-urban-ecosystem`
+
+User-requested keyword slug. `standalone/rfc.html` is now `standalone/enabling-collaboration-indias-urban-ecosystem.html` (canonical `https://urban.org.in/enabling-collaboration-indias-urban-ecosystem/`); every `href="rfc"` on all 183 pages was repointed, and `rfc` was swapped for the new slug in `add_related.py`, `build_404.py`, `build_llms_txt.py` and two QA scripts.
+
+- **Permanent redirects, single hop** (no chains): `/rfc`, `/requests-for-collaboration` (the old WordPress URL) and the old `/from-parellel-to-together-...` URL all 301 straight to the new page. WordPress: `to(...)` in `_scripts/seo/build_redirects.py` -> `redirects-extra.php`. Vercel: `redirects` in `standalone/vercel.json` (`statusCode: 301`).
+- **Build order matters here:** `build_static_theme.py` first (it regenerates `redirects.php`), then `build_redirects.py` (it warns "shadows an existing canonical redirect" if run against a stale `redirects.php`), then `build_404.py`, `build_llms_txt.py`.
+- **Stale file trap:** the theme build does not delete pages that no longer exist in `standalone/`, so `wp-theme/ucan/pages/rfc.html` had to be `git rm`'d by hand. Left in place it would shadow the redirect (the router serves a matching page before it checks legacy rules).
+- **After deploy:** `wp-content/ucan-cache/rfc.html` may still be served by Apache without PHP until the cache is dropped (§34). Make one PHP request (any 404 URL) after the new theme is live, then check `/rfc` returns 301.
+- Test: `_scripts/seo/test_redirects.py` has two new table rows; run it where `php-cgi` exists (not available in the Claude cloud container, where the resolver was checked directly with PHP CLI instead).
+

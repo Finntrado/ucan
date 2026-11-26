@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
   const ul = p.locator('main ul:not([class])', { hasText: 'With Service Providers' }).first();
   await ul.scrollIntoViewIfNeeded(); await p.waitForTimeout(300); await ul.screenshot({ path: 'out/pp-list.png' });
   // every mixed-content li across a few pages: does the text start on the same line as the bullet?
-  for (const n of ['privacy-policy', 'terms-of-use', 'rfc', 'blog-the-urban-haze', 'newsletter-october-2025']) {
+  for (const n of ['privacy-policy', 'terms-of-use', 'enabling-collaboration-indias-urban-ecosystem', 'blog-the-urban-haze', 'newsletter-october-2025']) {
     await p.goto(`http://127.0.0.1:8099/${n}.html`, { waitUntil: 'load' });
     const r = await p.evaluate(() => { let ok = 0, bad = 0;
       document.querySelectorAll('main ul:not([class]) > li').forEach(li => {

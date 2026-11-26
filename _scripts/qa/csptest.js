@@ -7,7 +7,7 @@ const path = require('path');
 const V = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'standalone', 'vercel.json'), 'utf8'));
 const CSP = V.headers[0].headers.find(h => h.key === 'Content-Security-Policy').value;
 const PAGES = process.argv.slice(2).length ? process.argv.slice(2) :
-  ['index', 'about', 'rfc', 'annual-forum-2025', 'newsletter', 'fellowship', 'newsletter-october-2025',
+  ['index', 'about', 'enabling-collaboration-indias-urban-ecosystem', 'annual-forum-2025', 'newsletter', 'fellowship', 'newsletter-october-2025',
    'policy-webinars', 'city-champions', 'city-mixers', 'learning-network', 'fellow-blogs', 'our-people', 'privacy-policy'];
 
 (async () => {

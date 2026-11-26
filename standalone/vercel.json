@@ -105,5 +105,22 @@
         }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/rfc",
+      "destination": "/enabling-collaboration-indias-urban-ecosystem",
+      "statusCode": 301
+    },
+    {
+      "source": "/requests-for-collaboration",
+      "destination": "/enabling-collaboration-indias-urban-ecosystem",
+      "statusCode": 301
+    },
+    {
+      "source": "/requests-for-collaboration/",
+      "destination": "/enabling-collaboration-indias-urban-ecosystem",
+      "statusCode": 301
+    }
   ]
 }
