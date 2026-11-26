@@ -2,6 +2,8 @@
 
 Working guide for continuing the **urban.org.in** (Urban Collective Action Network / U-CAN) website redesign in Claude Code. Read this fully before touching any page.
 
+> **Making a change on the LIVE urban.org.in (URL, label, text)? Read §39 first.** It is the proven route (repo + tested one-time WPCode snippet) and the things it cannot do. Do not use `publish_draft_theme` (§37).
+
 ---
 
 
@@ -1688,3 +1690,41 @@ User-requested URL change only (title, H1 and content are unchanged: the page is
 
 ### 38a. Menu label follows the new URL (Nov 2026)
 The three navigation links to the URC page (desktop dropdown, mobile menu, footer; 549 links on 183 pages) now read **"Urban Reforms Initiative"** (was "Urban Reforms Collective (URC)" / "Urban Reforms Collective"). The "(URC)" suffix is dropped because the acronym no longer matches. **Only link text changed**: the page's `<title>`, H1, body copy, breadcrumbs, JSON-LD names, the 404 popular-pages list and llms.txt still say "Collective" (not asked; the PDF-approved copy). Live: one-time snippet from `_scripts/wp/oneoff_link_label/` (parameterised: `gen.py <slug> <old-label-regex> <new> <key> template.php out.php`; harness compares all pages with the repo byte for byte + rollback test). WPCode id 24; `wp option get ucan_label_urc_log`. Re-run order matters: the nav is generated, so a future nav rebuild must carry this label.
+
+---
+
+## 39. PLAYBOOK: how to make a change on the LIVE site (suggest this route up front)
+
+**Situation (Nov 2026):** urban.org.in is WordPress on shared Apache hosting; the host's SFTP/SSH details are not known, so the GitHub deploy (§36) is not enabled, and the connector's `publish_draft_theme` cannot publish the 325 MB theme (§37). Everything below was proven live in one session: the RFC rename, the URC rename and the menu relabel all went out this way with no failures. **When the user asks for a URL / label / text change, propose this route straight away, and say what it cannot do.**
+
+### Which tool for which change
+| Change asked for | Route |
+|---|---|
+| Page URL (slug) change + permanent 301 | `_scripts/wp/oneoff_page_rename/` (`gen.py <old> <new> template.php out.php`) |
+| Menu / footer / link label | `_scripts/wp/oneoff_link_label/` (`gen.py <slug> <old-label-regex> <new> <key> template.php out.php`) |
+| Replace some text on pages | copy `oneoff_link_label`, change the regex/replacement; keep backup, atomic writes, rollback, the harness |
+| A new page, images, PDFs, video, anything big | **not possible this way.** Needs the deploy (§36), or the user uploads media in wp-admin (Media library; reference it by the root-absolute `/wp-content/uploads/...` URL, as Roots and Horizons does) |
+| PHP (functions.php, inc/*.php logic) | avoid. Only with `php -l` + a logic test, and it still cannot be published without the deploy |
+| Something the whole theme needs (Urban Perspectives, toolkit files) | the deploy (§36). Do not try the connector publish again |
+
+### The steps, in order (every time)
+1. **Repo first.** Edit `standalone/` (scripts for repeated edits), run the build chain (order in §35/§38; **always `build_404.py --with-perspectives` and `build_llms_txt.py --with-perspectives`**), then `linkaudit.js` and a Playwright check (one h1, canonical, JSON-LD parses, no overflow at 1440/768/390/320). Commit and push.
+2. **Generate the live snippet** from the template, `php -l` it, and run its `harness.php` against a fixture (`git archive HEAD wp-theme/ucan/pages ...`): the success case must make **every page byte-identical to the repo's rebuilt page**, and the forced-failure case must restore every file. Do not ship a snippet that has not passed both.
+3. **Save it with `code_snippet`** (type php, location `admin_only`). It is saved OFF and only the user can switch it on. Give them the `enable_url`. Never call `publish_draft_theme`.
+4. **User:** switch it Active, click Update, open any wp-admin page, read the notice (green = done, red = it restored everything and names the reason).
+5. **Verify:** `run_wp_cli` `option get <the log option>`, then `get_page_html` on the new URL and the menu. The connector follows redirects, so ask the user to confirm the 301 in a private window. Then `code_snippet action=deactivate` on the snippet (no approval needed).
+6. **SEO follow-up:** Search Console URL Inspection > Request indexing on the new address, re-submit `/sitemap.xml`, keep the 301 permanently.
+7. **Log it** in this file and commit. Backups stay on the server in `wp-content/ucan-backup-*` (blocked from the web).
+
+### Traps this route already hit (do not repeat)
+- A red notice "did not match exactly once" means the live text differs from the repo (line endings, attributes). Make matches tolerant (find the tag by a stable attribute, not by surrounding whitespace), and re-test with CRLF and no-whitespace fixtures. The script restores everything, so a failure is safe.
+- `code_snippet update` on a snippet that is ON needs the user's approval and switches it OFF. A snippet left active but failing re-checks on every wp-admin page load, so deactivate or replace it.
+- Always run `ucan_fc_purge` (the snippets do): Apache serves cached pages without PHP, so an old URL would otherwise keep answering.
+- The live theme is not a clean copy of the repo (toolkit files, a slightly different `functions.php`, Roots and Horizons). The snippets only touch what they name, so they are safe. A full sync is not (§36, §37).
+- Delete any stale draft theme (`delete_draft_theme`): publishing an old draft would undo the day's changes.
+- WPVibe allows 100 calls per rolling 24 hours (about 50 were used in the first session); batch reads, and avoid fetching whole pages (inline CSS makes them 100 KB+).
+- Never put credentials in chat. Heredocs mangle backslashes: write PHP/regex files with the Write tool.
+
+### Better routes, when the user is ready
+- **GitHub deploy (§36):** needs the host's SFTP/SSH details (GoDaddy panel > SSH Access, or whoever hosts the WordPress site) and the repo's live-only toolkit files merged first. It removes the need for every step above.
+- **Change Manager (optional idea, not built):** one reviewed, permanent snippet that stores change requests as data (rename page, replace text, relabel link, add redirect) and shows them under Tools > Site changes with Approve / Rollback buttons, so the user clicks Approve instead of enable/update/disable. Only build it if the user asks: it is a standing capability on the live site, and its admin page and connector hand-off cannot be tested without a real WordPress.
