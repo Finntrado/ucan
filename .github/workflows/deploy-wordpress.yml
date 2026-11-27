@@ -116,7 +116,7 @@ jobs:
           port="${DEPLOY_PORT:-22}"
           dest="${DEPLOY_PATH%/}/"
           ssh_cmd="ssh -i $HOME/.ssh/deploy_key -p $port -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$HOME/.ssh/known_hosts"
-          flags="-rltz --checksum --delete --omit-dir-times --chmod=D755,F644 --exclude=.git --exclude=.github --stats"
+          flags="-rltz --checksum --delete --omit-dir-times --chmod=D755,F644 --exclude=.git --exclude=.github --exclude=/inc/toolkit* --stats"
           if [ "$DRY_RUN" = "true" ]; then
             echo "DRY RUN: nothing will be uploaded or deleted"
             flags="$flags --dry-run --itemize-changes"

@@ -30,6 +30,11 @@ require_once __DIR__ . '/inc/redirects.php';
 require_once __DIR__ . '/inc/analytics.php';
 require_once __DIR__ . '/inc/menufix.php';
 require_once __DIR__ . '/inc/fastcache.php';
+// Resource toolkit: lives only on the live server (not in this repo), and the
+// deploy workflow excludes inc/toolkit* from its sync, so guard the load.
+if ( is_file( __DIR__ . '/inc/toolkit.php' ) ) {
+	require_once __DIR__ . '/inc/toolkit.php';
+}
 
 /**
  * The theme outputs raw HTML directly (see ucan_serve_static_page below) and
